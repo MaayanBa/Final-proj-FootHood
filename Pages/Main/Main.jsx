@@ -1,5 +1,6 @@
 import React from 'react'
-import { View, Text , StyleSheet} from 'react-native'
+import { View, Text , StyleSheet} from 'react-native';
+import Header from './Header'
 
 const styles = StyleSheet.create({
     container: {
@@ -30,6 +31,7 @@ export default function Main() {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
+                <Header/>
                 <Text style={styles.title}>Main</Text>
             </View>
             <View style={styles.mainContent}></View>

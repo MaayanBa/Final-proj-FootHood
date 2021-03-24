@@ -120,7 +120,7 @@ export default function LoginUser(props) {
     else {
       console.log(values, 'Not Saved')
     }
-    props.navigation.navigate('MainNav');
+    props.navigation.navigate('TabNav');
   }
   const setStorage = async (userData) => {
     try {

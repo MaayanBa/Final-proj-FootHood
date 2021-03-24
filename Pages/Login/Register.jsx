@@ -100,8 +100,6 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
   }
-
-
 })
 
 
@@ -133,7 +131,7 @@ export default function Register(props) {
   const [staminaStars, setStaminaStars] = useState(4);
   const [prefferedRole, setPrefferedRole] = useState('midfield');
   const [strongLeg, setStrongLeg] = React.useState('right');
-  const [choosenGender, setChoosenGender] = useState(null)
+
 
 
   const onChange = (event, selectedDate) => {
@@ -299,12 +297,12 @@ export default function Register(props) {
                 </View>
 
                 <View style={styles.formGroup}>
-                  <Text style={styles.inputLabel}>Gender: {choosenGender} </Text>
+                  <Text style={styles.inputLabel}>Gender: {gender} </Text>
                   <View style={styles.gender}>
-                    <TouchableOpacity onPress={() => checkGender('male'), () => setChoosenGender('Male')}>
+                    <TouchableOpacity onPress={() => checkGender('male')}>
                       <Foundation name="male-symbol" size={24} color="green" />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => checkGender('female'), () => setChoosenGender('Female')}>
+                    <TouchableOpacity onPress={() => checkGender('female')}>
                       <Foundation name="female-symbol" size={24} color="pink" />
                     </TouchableOpacity>
                   </View>
@@ -375,9 +373,9 @@ export default function Register(props) {
                         { label: 'Attack', value: 'attack' },
                       ]}
                       defaultValue={prefferedRole}
-                      containerStyle={{ height: 30 }}
-                      placeholder="Choose Preffered Role"
-                      style={{ backgroundColor: '#fafafa' }}
+                      containerStyle={{ height: 30, width:300 }}
+                      //placeholder="Choose Preffered Role"
+                      style={{ backgroundColor: '#fafafa'}}
                       itemStyle={{
                         justifyContent: 'flex-end',
                       }}
