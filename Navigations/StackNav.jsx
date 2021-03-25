@@ -7,6 +7,7 @@ import TabNav from './TabNav';
 import AddNewTeam from '../Pages/MyTeams/AddNewTeam';
 import TeamPage from '../Pages/MyTeams/TeamPage';
 import CreateNewGame from '../Pages/MyTeams/CreateNewGame';
+import TeamDetailsPage from '../Pages/MyTeams/TeamDetailsPage';
 
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -34,6 +35,7 @@ export default function StackNav() {
                 <Stack.Screen name="AddNewTeam" component={AddNewTeam}/>
                 <Stack.Screen name="TeamPage" component={TeamPage} />
                 <Stack.Screen name="CreateNewGame" component={CreateNewGame} />
+                <Stack.Screen name="TeamDetailsPage" component={TeamDetailsPage} />
             </Stack.Navigator>
         </NavigationContainer>
 

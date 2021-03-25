@@ -130,7 +130,7 @@ export default function TeamPage(props) {
         //   <SafeAreaView>
         // <ScrollView> 
         <View style={styles.container}>
-            <TouchableOpacity style={styles.TeamInformation} onPress={() => console.log(team.groupPhoto)}>
+            <TouchableOpacity style={styles.TeamInformation} onPress={()=>props.navigation.navigate('TeamDetailsPage')}>
                 <View style={styles.TeamInformation_Up}>
                     <View style={styles.TeamInformation_Up_Title}>
                         <Text style={styles.txtTeam}> Team</Text>
