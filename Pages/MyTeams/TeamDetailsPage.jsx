@@ -55,6 +55,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textTransform: "uppercase",
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    //alignItems: "center",
+    marginBottom: 70
+  },
   modalView: {
     margin: 20,
     backgroundColor: "white",
@@ -155,46 +161,49 @@ export default function TeamDetailsPage(props) {
     transparent={true} visible={rulesModalVisible}
     onRequestClose={() => setRuleModalVisible(!rulesModalVisible)}
   >
-    <View style={styles.modalView}>
-      <Text style={styles.modalTxt}>{team.rulesAndLaws}</Text>
-      <Pressable style={styles.btnClose} onPress={() => setRuleModalVisible(!rulesModalVisible)} >
-        <Text style={styles.textStyle}>Close</Text>
-      </Pressable>
+    <View style={styles.centeredView}>
+      <View style={styles.modalView}>
+        <Text style={styles.modalTxt}>{team.rulesAndLaws}</Text>
+        <Pressable style={styles.btnClose} onPress={() => setRuleModalVisible(!rulesModalVisible)} >
+          <Text style={styles.textStyle}>Close</Text>
+        </Pressable>
+      </View>
     </View>
   </ModalRulsAndLaws>
+
 
   const modal_AddNewPlayer = <ModalAddNewPlayer animationType="slide"
     transparent={true} visible={addPlayerModalVisible}
     onRequestClose={() => setAddPlayerModalVisible(!addPlayerModalVisible)}
   >
-
-    <View style={styles.modalView}>
-      <TouchableOpacity activeOpacity={0.8} style={styles.btnModal}>
-        <View style={styles.addPlayersBtns}>
-          <Feather name="link" size={24} color="black" />
-          <Text style={styles.txtBtnMdl}>&nbsp; Via Link</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity activeOpacity={0.8} style={styles.btnModal}>
-        <View style={styles.addPlayersBtns}>
-          <Feather name="user-plus" size={24} color="black" />
-          <Text style={styles.txtBtnMdl}>&nbsp; Contact List</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity activeOpacity={0.8} style={styles.btnModal}>
-        <View style={styles.addPlayersBtns}>
-          <Feather name="search" size={24} color="black" />
-          <Text style={styles.txtBtnMdl}>&nbsp; Search In App</Text>
-        </View>
-      </TouchableOpacity>
-      <Pressable style={styles.btnClose} onPress={() => setAddPlayerModalVisible(!addPlayerModalVisible)} >
-        <Text style={styles.textStyle}>Close</Text>
-      </Pressable>
+    <View style={styles.centeredView}>
+      <View style={styles.modalView}>
+        <TouchableOpacity activeOpacity={0.8} style={styles.btnModal}>
+          <View style={styles.addPlayersBtns}>
+            <Feather name="link" size={24} color="black" />
+            <Text style={styles.txtBtnMdl}>&nbsp; Via Link</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.8} style={styles.btnModal}>
+          <View style={styles.addPlayersBtns}>
+            <Feather name="user-plus" size={24} color="black" />
+            <Text style={styles.txtBtnMdl}>&nbsp; Contact List</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.8} style={styles.btnModal}>
+          <View style={styles.addPlayersBtns}>
+            <Feather name="search" size={24} color="black" />
+            <Text style={styles.txtBtnMdl}>&nbsp; Search In App</Text>
+          </View>
+        </TouchableOpacity>
+        <Pressable style={styles.btnClose} onPress={() => setAddPlayerModalVisible(!addPlayerModalVisible)} >
+          <Text style={styles.textStyle}>Close</Text>
+        </Pressable>
+      </View>
     </View>
-
   </ModalAddNewPlayer>
 
-const ExitTeam = () => { console.log('Leave Team') }
+  const ExitTeam = () => { console.log('Leave Team') }
   return (
     <SafeAreaView style={styles.container} >
 
