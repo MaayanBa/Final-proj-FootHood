@@ -149,7 +149,7 @@ export default function TeamPage(props) {
                 <Text style={styles.txtBtnTouch}>Create New Game</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity activeOpacity={0.8} onPress={() => ViewGames()} style={styles.btnTouch}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() =>props.navigation.navigate('GameList')} style={styles.btnTouch}>
                 <Text style={styles.txtBtnTouch}>View Games</Text>
             </TouchableOpacity>
 

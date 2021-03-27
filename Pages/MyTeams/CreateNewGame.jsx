@@ -1,27 +1,30 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   StyleSheet, TouchableOpacity, SafeAreaView,
   ScrollView, View, Text,
   StatusBar, Modal, Dimensions,
-  Pressable, Image, Button
+  Pressable, Image, LogBox
 } from 'react-native';
 // import { Formik } from "formik";
 // import * as yup from 'yup';
 import {
   Feather as Minus,
   Feather as Plus,
-  Feather as LocationFeather
+  Feather as LocationFeather,
+  Feather as CheckSquare,
+  Feather as EmptySquare,
 } from '@expo/vector-icons';
 import MapView, { Marker } from 'react-native-maps';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Checkbox } from 'react-native-paper';
+//import { CheckBox } from 'react-native-elements'
 
 const equipmentList = [
-  { id: 1, title: 'Water', checked: 'checked' },
-  { id: 2, title: 'Ball', checked: 'checked' },
-  { id: 3, title: 'First Aid Kit', checked: 'unchecked' },
-  { id: 4, title: 'Snacks', checked: 'unchecked' },
-  { id: 5, title: 'Air Pump', checked: 'unchecked' },
+  { id: 0, title: 'Water', checked: true },
+  { id: 1, title: 'Ball', checked: true },
+  { id: 2, title: 'First Aid Kit', checked: false },
+  { id: 3, title: 'Snacks', checked: false },
+  { id: 4, title: 'Air Pump', checked: false },
 ];
 
 const styles = StyleSheet.create({
@@ -31,6 +34,7 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingLeft: 30,
     paddingRight: 30,
+    paddingBottom: 20,
   },
   // safeArea: {
   //   //flex: 1,
@@ -144,13 +148,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     marginLeft: 50
   },
+
   btnCreateGame: {
-    alignItems: 'center',
-    //width: 100,
-    padding: 90,
-    margin:100
-    //padding:20
-  }
+    //elevation: 8,
+    backgroundColor: "#D9D9D9",
+    borderRadius: 10,
+    paddingVertical: 10,
+    //paddingHorizontal: 12,
+    marginTop: 30,
+    width: '80%',
+    alignSelf: 'center'
+  },
+  txtBtnTouch: {
+    fontSize: 18,
+    color: "black",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase"
+  },
 
 
 })
@@ -169,19 +184,35 @@ export default function CreateNewGame() {
 
   //const [tzOffsetInMinutes, setTzOffsetInMinutes] = useState(0);
   const [showshowDateTimePicker_Game, setShowDateTimePicker_Game] = useState(false);
-  const [dateGame, setDateGame] = useState(new Date(1598051730000));
+  const [dateGame, setDateGame] = useState(new Date());
   const [gameTime, setGameTime] = useState(new Date());
   const [showChoosenDateGame, setShowChoosenDateGame] = useState(false);
 
   const [gameOrRegistration, setGameOrRegistration] = useState(false)
 
   const [showDateTimePicker_Regi, setShowDateTimePicker_Regi] = useState(false);
-  const [dateRegistration, setDateRegistration] = useState(new Date(1598051730000));
-  const [registretionTime, setRegistretionTime] = useState(new Date());
+  const [dateRegistration, setDateRegistration] = useState(new Date());
+  const [registrationTime, setRegistretionTime] = useState(new Date());
   const [showLastRegistration, setShowLastRegistration] = useState(false);
 
-  const [equipmentList_state, setEquipmentList_state] = useState(equipmentList)
-  const [checked, setChecked] = useState(true);
+  const [equipmentList_state, setEquipmentList_state] = useState([...equipmentList])
+  const [renderCB, setRenderCB] = useState(true);
+
+
+  // useEffect(() => {
+  //   dateRegistration > dateGame ? alert('You must choose a date before the game date' ) : setShowDateTimePicker_Regi(true); // to show the picker again in time mode
+  // }, [dateRegistration])
+
+  useEffect(() => {
+    dateGame !== new Date() ?
+      dateGame < new Date() ? alert('The date you have choosen has passed') : setShowDateTimePicker_Game(true) // to show the picker again in time mode 
+      : null
+  }, [dateGame])
+
+  LogBox.ignoreLogs([
+    'TypeError: _reactNative.NativeModules.RNDatePickerAndroid.dismiss is not a function',
+  ]);
+
   const onChange = (event, selectedValue) => {
 
     if (gameOrRegistration === 'game') {
@@ -191,14 +222,14 @@ export default function CreateNewGame() {
         const currentDate = selectedValue || new Date();
         setDateGame(currentDate);
         setMode('time');
-        setShowDateTimePicker_Game(true); // to show the picker again in time mode
+
       } else if (mode === 'time') {
         const selectedTime = selectedValue || new Date();
         setGameTime(selectedTime);
         setShowChoosenDateGame(true);
       }
     }
-    else if (gameOrRegistration === 'registretion') {
+    else if (gameOrRegistration === 'registration') {
       setShowDateTimePicker_Regi(false);
 
       if (mode == 'date') {
@@ -250,15 +281,10 @@ export default function CreateNewGame() {
   </Modal>
 
   const showMode = (currentMode, belongTo) => {
-    console.log(belongTo);
-    console.log(currentMode);
-    // if (belongTo === 'game')
-    //   setShowChoosenDateGame(false)
+    //console.log(belongTo);     console.log(currentMode);
     setGameOrRegistration(belongTo);
     setMode(currentMode);
     belongTo === 'game' ? setShowDateTimePicker_Game(true) : setShowDateTimePicker_Regi(true);
-
-
   };
 
   const dateAndTime = (date, time) => {
@@ -286,20 +312,40 @@ export default function CreateNewGame() {
     }
   }
 
+
+  useEffect(() => {
+    setRenderCB(true);
+  }, [renderCB])
+
   const onChecked = (id) => {
-    const data = equipmentList_state;
-    data[id].checked === 'checked' ? data[id - 1].checked = 'unchecked' : data[id - 1].checked = 'checked';
+    setRenderCB(false);
+    let data = equipmentList_state;
+    //console.log(data[id].checked)
+    data[id].checked === true ? data[id].checked = false : data[id].checked = true;
     setEquipmentList_state(data);
+    //setRenderCB(true);
   }
 
-  let itemBoxes = equipmentList_state.map((item) => {
-    return (
-      <TouchableOpacity key={item.id} style={styles.checkBoxes} >
-        <Checkbox status={item.checked} onPress={() => onChecked(item.id)} />
-        <Text style={[styles.textStyle, { alignSelf: 'center' }]}>{item.title}</Text>
-      </TouchableOpacity>
-    );
-  });
+  // let itemBoxesOld = equipmentList_state.map((item) => {
+  //   return (
+  //     <TouchableOpacity key={item.id} style={styles.checkBoxes} >
+  //       <Checkbox status={item.checked} onPress={() => onChecked(item.id)} />
+  //       <Text style={[styles.textStyle, { alignSelf: 'center' }]}>{item.title}</Text>
+  //     </TouchableOpacity>
+  //   );
+  // });
+
+  const itemBoxes = () => {
+    return equipmentList_state.map((item) => {
+      return (
+        <TouchableOpacity key={item.id} style={styles.checkBoxes} onPress={() => onChecked(item.id)} >
+          {item.checked ? <CheckSquare size={30} name="check-square" /> : <EmptySquare size={30} name="square" />}
+          <Text style={[styles.textStyle, { alignSelf: 'center' }]}>{item.title}</Text>
+        </TouchableOpacity>
+      )
+    })
+  }
+
 
   return (
     <SafeAreaView>
@@ -373,14 +419,17 @@ export default function CreateNewGame() {
             />
           )}
 
-          {showChoosenDateGame && <Text style={[styles.textStyle, { color: 'orange', fontSize: 15, marginTop: 5 }]}>{dateAndTime(dateGame, gameTime)}</Text>}
+          {showChoosenDateGame &&
+            <Text style={[styles.textStyle, { color: 'orange', fontSize: 15, marginTop: 5 }]}>
+              {dateAndTime(dateGame, gameTime)}
+            </Text>}
 
           {/* Last date for registration */}
           <View style={styles.dateTime_View}>
-            <TouchableOpacity onPress={() => showMode('date', 'registretion')}>
+            <TouchableOpacity onPress={() => showMode('date', 'registration')}>
               <Image style={styles.imgCalander} source={require('../../assets/Calander.png')} />
             </TouchableOpacity>
-            <Text style={styles.txtLabel}>Last Time Registration:</Text>
+            <Text style={styles.txtLabel}>Final Registration Date:</Text>
           </View>
           {showDateTimePicker_Regi && (
             <DateTimePicker
@@ -394,27 +443,24 @@ export default function CreateNewGame() {
             />
           )}
 
-          {showLastRegistration && <Text style={[styles.textStyle, { color: 'orange', fontSize: 15, marginTop: 5 }]}>{dateAndTime(dateRegistration, registretionTime)}</Text>}
+          {showLastRegistration &&
+            <Text style={[styles.textStyle, { color: 'orange', fontSize: 15, marginTop: 5 }]}>
+              {dateAndTime(dateRegistration, registrationTime)}
+            </Text>}
 
           {/* Equipment required */}
           <View style={styles.checkBox_View}>
             <Text style={styles.txtLabel}>Equipment List:</Text>
-            {itemBoxes}
+            {/* {itemBoxesOld} */}
+            {renderCB && itemBoxes()}
           </View>
 
 
 
           {/* btn Create Game */}
-          <Button
-                  onPress={console.log("Btn Create New Game")}
-                  title="Create New Game"
-                  //disabled={!isValid}
-                  style={styles.btnCreateGame}
-                />
-
-          {/* <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame')} style={styles.btnTouch}>
-                <Text style={styles.txtBtnTouch}>Create New Game</Text>
-            </TouchableOpacity> */}
+          {renderCB && <TouchableOpacity activeOpacity={0.8} onPress={() => console.log("Btn Create New Game")} style={styles.btnCreateGame}>
+            <Text style={styles.txtBtnTouch}>Create New Game</Text>
+          </TouchableOpacity>}
         </View>
       </ScrollView>
     </SafeAreaView>
