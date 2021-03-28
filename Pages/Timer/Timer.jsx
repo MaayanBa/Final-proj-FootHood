@@ -31,7 +31,7 @@ export default function Timer() {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.title}>Timer</Text>
+                <Text style={styles.title}>Timerrr</Text>
             </View>
             <View style={styles.mainContent}></View>
             <View style={styles.footer}></View>
