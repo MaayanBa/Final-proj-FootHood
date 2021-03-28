@@ -1,61 +1,59 @@
 import React from 'react'
-import { Text, Button, StyleSheet, Image, View, StatusBar, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, Image, View, StatusBar, TouchableOpacity } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: StatusBar.currentHeight,
-        width: '100%',
-        paddingTop: 80,
         alignItems: 'center',
     },
-    gameInformation: {
+    GameInformation_Touch: {
         backgroundColor: '#D9D9D9',
-        padding: 15,
         width: '90%',
         borderRadius: 30,
+        marginTop: 30
     },
-    gameInformation_Up: {
-        flexDirection: 'row-reverse',
-        justifyContent: 'space-between',
-    },
-    gameInformation_players: {
-        fontSize: 10,
-        fontWeight: "bold",
-        flexDirection: "row",
-        justifyContent: "space-evenly",
-        padding: 10
-    },
-    gameInformation_Up_Title: {
+    gameTitle_View: {
         justifyContent: 'flex-start',
-        width: 350
+        paddingTop: 20
     },
-    txtGame: {
-        alignSelf: 'center',
+    gameInformation_View: {
+        padding: 20,
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    txtStyle: {
         paddingBottom: 20,
         fontWeight: "bold",
     },
-    txtGame_Name: {
+    header_txt: {
         alignSelf: 'center',
-        fontSize: 80,
+        fontSize: 30,
         fontWeight: "bold",
     },
-    wazeIcon: {
+    waze_Icon: {
         width: 50,
         height: 30,
-        tintColor: 'white'
+        tintColor: 'black',
+        alignSelf: 'flex-end'
+
     },
-    card: {
-        flex: 0.5,
-        justifyContent: 'space-evenly',
+    gameInformation_View_R: {
+        flexDirection: 'column',
+        justifyContent: 'space-between',
     },
-    enterButton: {
-        alignItems: 'center',
-        width: '50',
-        padding: 500,
-        paddingBottom: 300,
-        color: 'black'
+    gameInformation_View_R_Down: {
+        flexDirection: 'column',
+        alignItems: 'center'
     },
+    enter_btnTouch: {
+        borderRadius: 30,
+        backgroundColor: '#0078D7',
+        alignItems:'center',
+        paddingTop: 15,
+        alignSelf:'stretch'
+    },
+
 })
 
 const game = [
@@ -81,28 +79,32 @@ const game = [
 
 export default function GameList(props) {
     let gameCards = game.map((g, key) => {
-        return <TouchableOpacity key={key} style={styles.GameInformation} onPress={() => console.log(game.groupPhoto)}>
+        return <TouchableOpacity key={key} style={styles.GameInformation_Touch} onPress={() => console.log(game.groupPhoto)}>
             <View style={styles.card}>
-                <View style={styles.gameInformation_Up_Title}>
-                    <Text style={styles.txtGame}>{g.gameName}</Text>
+                <View style={styles.gameTitle_View}>
+                    <Text style={styles.header_txt}>{g.gameName}</Text>
                 </View>
-                <View style={styles.gameInformation_players}>
-                    <View>
-                        <Text>Date: {g.date}</Text>
-                        <Text>Number of Players: {g.numberOfPlayers}</Text>
-                        <Text>Location: {g.location}</Text>
-                        <TouchableOpacity>
-                            <Text>Take me there<Image source={require('../../assets/Waze.png')} resizeMode="contain" style={styles.wazeIcon} /></Text>
-                        </TouchableOpacity>
+                <View style={styles.gameInformation_View}>
+                    <View style={styles.gameInformation_View_R}>
+                        <View>
+                            <Text style={styles.txtStyle}>Time: {g.time}</Text>
+                            <Text style={styles.txtStyle}>Age range: {g.ageRange}</Text>
+                        </View>
+                        <View style={styles.gameInformation_View_R_Down}>
+                            <TouchableOpacity style={styles.enter_btnTouch} onPress={()=> console.log("btn enter game")}>
+                                <Text style={[styles.txtStyle,{color: 'white', alignItems:'center'}]}>ENTER</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-
-                    <View>
-                        <Text>Time: {g.time}</Text>
-                        <Text>Age range: {g.ageRange}</Text>
-                        <Button style={styles.enterButton}
-                            title="ENTER"
-                            onPress={() => alert('Enter button pressed')}
-                        />
+                    <View style={styles.gameInformation_View_L}>
+                        <Text style={styles.txtStyle}>Date: {g.date}</Text>
+                        <Text style={styles.txtStyle}>Number of Players: {g.numberOfPlayers}</Text>
+                        <Text style={styles.txtStyle}>Location: {g.location}</Text>
+                        <TouchableOpacity >
+                            <Text style={styles.txtStyle}>Take me there
+                            <Image source={require('../../assets/Waze.png')} resizeMode="contain" style={styles.waze_Icon} />
+                            </Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
