@@ -254,7 +254,9 @@ export default function CreateNewGame() {
     return equipmentList_state.map((item) => {
       return (
         <TouchableOpacity key={item.id} style={styles.checkBoxes} onPress={() => onChecked(item.id)} >
-          {item.checked ? <CheckSquare size={30} name="check-square" /> : <EmptySquare size={30} name="square" />}
+          {item.checked ?
+            <CheckSquare size={30} name="check-square" /> :
+            <EmptySquare size={30} name="square" />}
           <Text style={[styles.textStyle, { alignSelf: 'center' }]}>{item.title}</Text>
         </TouchableOpacity>
       )
@@ -314,7 +316,7 @@ export default function CreateNewGame() {
           </View>
 
           {/* Date and Time */}
-          <DateAndTime/>
+          <DateAndTime />
 
           {/* Equipment required */}
           <View style={styles.checkBox_View}>
