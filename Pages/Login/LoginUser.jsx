@@ -6,6 +6,8 @@ import * as yup from 'yup';
 import { Checkbox } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import * as Google from 'expo-google-app-auth';
+
 import AppCss from '../../CSS/AppCss';
 
 const styles = StyleSheet.create({
@@ -74,10 +76,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 7
   },
-  remeberAndForgot:{
-    flexDirection:"row",
-    justifyContent:'space-between'
+  remeberAndForgot: {
+    flexDirection: "row",
+    justifyContent: 'space-between'
 
+  },
+  faceAndGmail_btn:{
+    height:80,
+    width:80
   }
 
 })
@@ -96,6 +102,26 @@ const loginValidationSchema = yup.object().shape({
 export default function LoginUser(props) {
   const [checked, setChecked] = React.useState(false);
   const [userData, setUserData] = useState('');
+
+  async function signInWithGoogleAsync() {
+    try {
+      const result = await Google.logInAsync({
+        androidClientId: '24351265915-ljcsflkkpbm3vi3n16ug5d2ud6k51ujn.apps.googleusercontent.com',
+        iosClientId: '24351265915-9skrp62884dhu2eo38qp879o2j0ihehp.apps.googleusercontent.com',
+        scopes: ['profile', 'email'],
+      });
+
+      if (result.type === 'success') {
+        //console.log(result);
+        return result;
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      return { error: true };
+    }
+  }
+
 
   useEffect(() => {
     readStorage()
@@ -226,6 +252,24 @@ export default function LoginUser(props) {
                 </View>
               </TouchableOpacity>
             </View>
+
+
+            <View style={styles.formGroup}>
+              <View style={{flexDirection:'row', justifyContent:'center'}}>
+                <TouchableOpacity onPress={() => LogByFacebook()}>
+                  <View style={styles.loginBtn}>
+                    <Image source={require('../../assets/Facebook.png')} style={styles.faceAndGmail_btn} />
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => signInWithGoogleAsync()}>
+                  <View style={styles.loginBtn}>
+                    <Image source={require('../../assets/Gmail.png')} style={styles.faceAndGmail_btn} />
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+
           </>
         )}
       </Formik>

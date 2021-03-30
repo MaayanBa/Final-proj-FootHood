@@ -21,7 +21,6 @@ export default function App() {
       <ImageBackground source={require('./assets/WallPaper.png')} style={AppCss.imageBackGround}>
         <StatusBar backgroundColor="transparent" />
         <StackNav />
-
       </ImageBackground >
     </TokenProvider>
   );
