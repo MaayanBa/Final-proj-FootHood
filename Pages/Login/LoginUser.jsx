@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, Button, StatusBar, Image, ImageBackground } from 'react-native';
-import { Formik, Field, Form, useField, FieldAttributes, FieldArray } from "formik";
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, StatusBar, Image, ImageBackground } from 'react-native';
+import { Formik} from "formik";
 import * as yup from 'yup';
-//import { Text } from 'react-native-elements';
 import { Checkbox } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -19,8 +18,9 @@ const styles = StyleSheet.create({
   },
   title: {
     alignItems: 'center',
-    padding: 40,
-
+    color: 'white',
+    fontSize: 32,
+    marginBottom: 30
   },
   textInput: {
     height: 40,
@@ -52,6 +52,9 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     alignItems: "flex-start",
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16
   },
   noAccount: {
     alignItems: 'center',
@@ -67,18 +70,39 @@ const styles = StyleSheet.create({
   },
   check: {
     flexDirection: "row-reverse",
-    //justifyContent: "space-between",
   },
   rememberMe: {
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 7
+    padding: 7,
+    color: 'white'
   },
-  remeberAndForgot:{
-    flexDirection:"row",
-    justifyContent:'space-between'
-
-  }
+  remeberAndForgot: {
+    flexDirection: "row",
+    justifyContent: 'space-between'
+  },
+  forgotPassText: {
+    color: 'white'
+  },
+  noAccountTxt: {
+    color: 'white'
+  },
+  btnLogin: {
+    backgroundColor: "#D9D9D9",
+    borderRadius: 10,
+    paddingVertical: 10,
+    marginTop: 30,
+    width: '40%',
+    alignSelf: 'center',
+    padding: 5,
+  },
+  txtBtnTouch: {
+    fontSize: 18,
+    color: "black",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase"
+  },
 
 })
 
@@ -144,7 +168,7 @@ export default function LoginUser(props) {
   return (
     <View style={styles.container}>
       <View style={styles.title}>
-        <Text h3>Login</Text>
+        <Text style={styles.title}>Login</Text>
       </View>
       <Formik
         validationSchema={loginValidationSchema}
@@ -193,12 +217,14 @@ export default function LoginUser(props) {
             <View style={styles.remeberAndForgot}>
               <TouchableOpacity onPress={() => Forgot()}>
                 <View style={styles.forgotPass}>
-                  <Text>Forgot Password</Text>
+                  <Text style={styles.forgotPassText}>Forgot Password</Text>
                 </View>
               </TouchableOpacity>
 
               <View style={styles.check}>
                 <Checkbox
+                  uncheckedColor='white'
+                  color='white'
                   status={checked ? 'checked' : 'unchecked'}
                   onPress={() => {
                     setChecked(!checked);
@@ -209,7 +235,7 @@ export default function LoginUser(props) {
 
             </View>
 
-            <View style={styles.formGroup}>
+            {/* <View style={styles.formGroup}>
               <View style={styles.loginBtn}>
                 <Button
                   onPress={handleSubmit}
@@ -217,12 +243,15 @@ export default function LoginUser(props) {
                   disabled={!isValid}
                 />
               </View>
-            </View>
+            </View> */}
+            <TouchableOpacity activeOpacity={0.8} onPress={handleSubmit} style={styles.btnLogin}>
+              <Text style={styles.txtBtnTouch}>Login</Text>
+            </TouchableOpacity>
 
             <View style={styles.formGroup}>
               <TouchableOpacity onPress={() => Register()}>
                 <View style={styles.noAccount}>
-                  <Text>Dont have an account?    Click to register</Text>
+                  <Text style={styles.noAccountTxt}>Dont have an account?    Click to register</Text>
                 </View>
               </TouchableOpacity>
             </View>
