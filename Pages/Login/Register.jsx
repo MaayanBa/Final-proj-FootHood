@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Component } from 'react';
-import { StyleSheet, Button, TextInput, View, TouchableOpacity, ScrollView, SafeAreaView, StatusBar, Platform, Image,Text } from 'react-native';
+import { StyleSheet, Button, TextInput, View, TouchableOpacity, ScrollView, SafeAreaView, StatusBar, Platform, Image, Text } from 'react-native';
 //import { Text } from 'react-native-elements';
 import { RadioButton } from 'react-native-paper';
 import { Formik, Field, Form, useField, FieldAttributes, FieldArray } from "formik";
@@ -14,7 +14,13 @@ import DropDownPicker from 'react-native-dropdown-picker';
 const styles = StyleSheet.create({
   title: {
     alignItems: 'center',
-    padding: 40,
+    padding: 20,
+  },
+  titletxt: {
+    alignItems: 'center',
+    color: 'white',
+    fontSize: 32,
+    marginBottom: 30
   },
   // signUpContainer: {
   //     width: '80%',
@@ -53,9 +59,13 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     alignItems: "flex-start",
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16
   },
   role: {
     padding: 20,
+    alignItems: 'center'
   },
   datePicker: {
     //alignItems: "flex-start",
@@ -65,14 +75,9 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: 'flex-start',
     // flexDirection: 'row-reverse'
-    
+
   },
-  prefferedLeg: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    padding: 10
-  },
-  radioButtonStyle:{
+  radioButtonStyle: {
     flexDirection: "row",
     justifyContent: "space-evenly",
   },
@@ -97,9 +102,30 @@ const styles = StyleSheet.create({
   },
   calanderStyle: {
     margin: 5,
-    height: 100,
-    width: 100,
-  }
+    height: 60,
+    width: 60,
+  },
+  prefferedLeg: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    padding: 8,
+  },
+  btnRegister: {
+    backgroundColor: "#D9D9D9",
+    borderRadius: 10,
+    paddingVertical: 10,
+    marginTop: 30,
+    width: '40%',
+    alignSelf: 'center',
+    padding: 5,
+  },
+  txtBtnTouch: {
+    fontSize: 18,
+    color: "black",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase"
+  },
 })
 
 
@@ -183,12 +209,13 @@ export default function Register(props) {
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.title}>
-            <Text h1>Register</Text>
+            <Text style={styles.titletxt}>Register</Text>
           </View>
           <Formik
             validationSchema={loginValidationSchema}
             initialValues={{
-              fullName: '',
+              firstName: '',
+              lastName: '',
               email: '',
               phoneNumber: '',
               password: '',
@@ -207,14 +234,26 @@ export default function Register(props) {
             {({ handleChange, handleSubmit, values, errors, isValid }) => (
               <>
                 <View style={styles.formGroup}>
-                  <Text style={styles.inputLabel}>Full Name:</Text>
+                  <Text style={styles.inputLabel}>First Name:</Text>
                   <View style={styles.sectionStyle}>
                     <Image source={require('../../assets/soccerPlayer.png')} style={styles.ImageStyle} />
                     <TextInput
-                      name="fullName"
-                      placeholder="Full Name"
-                      onChangeText={handleChange('fullName')}
-                      value={values.fullName}
+                      name="firstName"
+                      placeholder="First Name"
+                      onChangeText={handleChange('firstName')}
+                      value={values.firstName}
+                    />
+                  </View>
+                </View>
+                <View style={styles.formGroup}>
+                  <Text style={styles.inputLabel}>Last Name:</Text>
+                  <View style={styles.sectionStyle}>
+                    <Image source={require('../../assets/soccerPlayer.png')} style={styles.ImageStyle} />
+                    <TextInput
+                      name="lastName"
+                      placeholder="Last Name"
+                      onChangeText={handleChange('lastName')}
+                      value={values.lastName}
                     />
                   </View>
                 </View>
@@ -320,7 +359,7 @@ export default function Register(props) {
                     />
                   </View>
                 </View>
-                <View style={styles.formGroup,{flexDirection: "row-reverse",justifyContent:'space-between'}}>
+                <View style={styles.formGroup, { flexDirection: "row-reverse", justifyContent: 'space-between' }}>
                   <Text style={styles.inputLabel}>Date Of Birth:</Text>
                   <View style={styles.datePicker}>
                     <TouchableOpacity onPress={() => showDatepicker()}>
@@ -341,10 +380,10 @@ export default function Register(props) {
                   )}
                 </View>
 
-                <View style={styles.formGroup,{flexDirection: "row-reverse",justifyContent:'space-between'}}>
+                <View style={styles.formGroup, { flexDirection: "row-reverse", justifyContent: 'space-between' }}>
                   <Text style={styles.inputLabel}>Player Picture:</Text>
                   <TouchableOpacity onPress={() => btnOpenGalery()}>
-                    <Feather name="image" size={50} color="black" />
+                    <Feather name="image" size={60} color="white" />
                   </TouchableOpacity>
                 </View>
 
@@ -357,7 +396,7 @@ export default function Register(props) {
                       placeholder="Height"
                       onChangeText={handleChange('height')}
                       value={values.height}
-                      
+
                     />
                   </View>
                 </View>
@@ -373,9 +412,9 @@ export default function Register(props) {
                         { label: 'Attack', value: 'attack' },
                       ]}
                       defaultValue={prefferedRole}
-                      containerStyle={{ height: 30, width:300 }}
+                      containerStyle={{ height: 30, width: 200 }}
                       //placeholder="Choose Preffered Role"
-                      style={{ backgroundColor: '#fafafa'}}
+                      style={{ backgroundColor: '#fafafa' }}
                       itemStyle={{
                         justifyContent: 'flex-end',
                       }}
@@ -384,7 +423,7 @@ export default function Register(props) {
                     />
                   </View>
                 </View>
-                
+
                 <View style={styles.formGroup}>
                   <Text style={styles.inputLabel}>Current Fitness:</Text>
                   <View style={styles.starStamina}>
@@ -398,7 +437,7 @@ export default function Register(props) {
                   </View>
                 </View>
 
-                <View style={styles.formGroup}>
+                {/* <View style={styles.formGroup}>
                   <Text style={styles.inputLabel}>Strong Leg:</Text>
                   <View style={styles.prefferedLeg}>
                     <RadioButton.Group  onValueChange={newValue => setStrongLeg(newValue)} value={strongLeg}>
@@ -416,7 +455,32 @@ export default function Register(props) {
                     disabled={!isValid}
                     style={styles.signupButton}
                   />
+                </View> */}
+                <View style={styles.formGroup}>
+                  <Text style={styles.inputLabel}>Strong Leg:</Text>
+                  <View style={styles.prefferedLeg}>
+                    <TouchableOpacity>
+                      <Text style={styles.inputLabel}>Right</Text>
+                      <RadioButton
+                        value="right"
+                        status={strongLeg === 'right' ? 'checked' : 'unchecked'}
+                        onPress={() => setStrongLeg('right')}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                      <Text style={styles.inputLabel}>Left</Text>
+                      <RadioButton
+                        value="right"
+                        status={strongLeg === 'left' ? 'checked' : 'unchecked'}
+                        onPress={() => setStrongLeg('left')}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
+
+                <TouchableOpacity activeOpacity={0.8} onPress={handleSubmit} style={styles.btnRegister}>
+                  <Text style={styles.txtBtnTouch}>Sign Up</Text>
+                </TouchableOpacity>
               </>
             )}
           </Formik>

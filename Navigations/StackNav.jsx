@@ -28,7 +28,7 @@ const MyTheme = {
 export default function StackNav() {
     return (
         <NavigationContainer theme={MyTheme}>
-            <Stack.Navigator initialRouteName="TabNav" screenOptions={{headerBackTitleVisible: false, headerShown: false}}>
+            <Stack.Navigator initialRouteName="AddNewTeam" screenOptions={{headerBackTitleVisible: false, headerShown: false}}>
                 <Stack.Screen name="LoginUser" component={LoginUser}/>
                 <Stack.Screen name="Register" component={Register} />
                 <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
