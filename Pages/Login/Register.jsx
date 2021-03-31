@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
     paddingTop: StatusBar.currentHeight,
     width: '100%',
     padding: 20
-
   },
   // textInput: {
   //     height: 40,
