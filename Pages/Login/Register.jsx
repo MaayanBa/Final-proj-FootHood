@@ -300,10 +300,10 @@ export default function Register(props) {
                   <Text style={styles.inputLabel}>Gender: {gender} </Text>
                   <View style={styles.gender}>
                     <TouchableOpacity onPress={() => checkGender('male')}>
-                      <Foundation name="male-symbol" size={24} color="green" />
+                      <Foundation name="male-symbol" size={40} color="#32CD32" />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => checkGender('female')}>
-                      <Foundation name="female-symbol" size={24} color="pink" />
+                      <Foundation name="female-symbol" size={40} color="pink" />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -344,7 +344,11 @@ export default function Register(props) {
                 <View style={styles.formGroup,{flexDirection: "row-reverse",justifyContent:'space-between'}}>
                   <Text style={styles.inputLabel}>Player Picture:</Text>
                   <TouchableOpacity onPress={() => btnOpenGalery()}>
+<<<<<<< Updated upstream
                     <Feather name="image" size={50} color="black" />
+=======
+                    <Feather name="image" size={60} color="white" style={{margin: 6,}}/>
+>>>>>>> Stashed changes
                   </TouchableOpacity>
                 </View>
 
