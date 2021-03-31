@@ -4,7 +4,8 @@ import { Formik} from "formik";
 import * as yup from 'yup';
 import { Checkbox } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import * as Google from 'expo-google-app-auth';
+import * as Facebook from 'expo-facebook';
 import AppCss from '../../CSS/AppCss';
 
 const styles = StyleSheet.create({
@@ -103,6 +104,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textTransform: "uppercase"
   },
+  faceAndGmail_btn:{
+    height:85,
+    width:85
+  },
 
 })
 
@@ -120,6 +125,88 @@ const loginValidationSchema = yup.object().shape({
 export default function LoginUser(props) {
   const [checked, setChecked] = React.useState(false);
   const [userData, setUserData] = useState('');
+
+  async function signInWithGoogleAsync() {
+    try {
+      const result = await Google.logInAsync({
+        androidClientId: '24351265915-ljcsflkkpbm3vi3n16ug5d2ud6k51ujn.apps.googleusercontent.com',
+        iosClientId: '24351265915-9skrp62884dhu2eo38qp879o2j0ihehp.apps.googleusercontent.com',
+        scopes: ['profile', 'email'],
+      });
+
+      if (result.type === 'success') {
+        console.log(result);
+        return result;
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      return { error: true };
+    }
+  }
+
+
+  async function fetchdataFromFacebook() {
+    try{
+    const { type, token } = await Facebook.logInWithReadPermissionsAsync("2582654205369524", {
+      permissions: ["public_profile"],
+    });
+
+    if (type === "success") {
+      // Get the user's name using Facebook's Graph API
+      const response = await fetch(
+        `https://graph.facebook.com/me?fields=id,name,email,picture.type(large)&access_token=${token}`
+      );
+      const userInfo = await response.json();
+      console.log(userInfo)
+      //add async and db
+      // email = userInfo.email;
+      // password = userInfo.id;
+      checkUserLogin();
+    } else {
+      alert(`Facebook Login cancel`);
+      type === "cancel";
+    }
+  } catch ({ message }) {
+    alert(`Facebook Login Error: ${message}`);
+  }
+
+}
+//   try {
+//     await Facebook.initializeAsync({
+//       options: {
+//         appId: "2582654205369524",
+//         appName: "FootHood",
+//       },
+//     });
+//     const {
+//       type,
+//       token,
+//       expires,
+//       permissions,
+//       declinedPermissions,
+//     } = await Facebook.logInWithReadPermissionsAsync({
+//       permissions: ["public_profile", "email"],
+//     });
+//     if (type === "success") {
+//       // Get the user's name using Facebook's Graph API
+//       const response = await fetch(
+//         `https://graph.facebook.com/me?fields=id,name,email,picture.type(large)&access_token=${token}`
+//       );
+//       const userInfo = await response.json();
+//       console.log(userInfo)
+//       //add async and db
+//       // email = userInfo.email;
+//       // password = userInfo.id;
+//       checkUserLogin();
+//     } else {
+//       alert(`Facebook Login cancel`);
+//       type === "cancel";
+//     }
+//   } catch ({ message }) {
+//     alert(`Facebook Login Error: ${message}`);
+//   }
+// }
 
   useEffect(() => {
     readStorage()
@@ -255,6 +342,20 @@ export default function LoginUser(props) {
                 </View>
               </TouchableOpacity>
             </View>
+            <View style={styles.formGroup}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <TouchableOpacity onPress={() => fetchdataFromFacebook()}>
+                <View style={styles.loginBtn}>
+                  <Image source={require('../../assets/Facebook.png')} style={styles.faceAndGmail_btn} />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => signInWithGoogleAsync()}>
+                <View style={styles.loginBtn}>
+                  <Image source={require('../../assets/Gmail.png')} style={styles.faceAndGmail_btn} />
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
           </>
         )}
       </Formik>
