@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, Button, StatusBar, Image, ImageBackground } from 'react-native';
-import { Formik, Field, Form, useField, FieldAttributes, FieldArray } from "formik";
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, StatusBar, Image, ImageBackground } from 'react-native';
+import { Formik} from "formik";
 import * as yup from 'yup';
-//import { Text } from 'react-native-elements';
 import { Checkbox } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import * as Google from 'expo-google-app-auth';
-
+import * as Facebook from 'expo-facebook';
 import AppCss from '../../CSS/AppCss';
 
 const styles = StyleSheet.create({
@@ -21,8 +19,9 @@ const styles = StyleSheet.create({
   },
   title: {
     alignItems: 'center',
-    padding: 40,
-
+    color: 'white',
+    fontSize: 32,
+    marginBottom: 30
   },
   textInput: {
     height: 40,
@@ -54,6 +53,9 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     alignItems: "flex-start",
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16
   },
   noAccount: {
     alignItems: 'center',
@@ -69,18 +71,43 @@ const styles = StyleSheet.create({
   },
   check: {
     flexDirection: "row-reverse",
-    //justifyContent: "space-between",
   },
   rememberMe: {
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 7
+    padding: 7,
+    color: 'white'
   },
-  remeberAndForgot:{
-    flexDirection:"row",
-    justifyContent:'space-between'
-
-  }
+  remeberAndForgot: {
+    flexDirection: "row",
+    justifyContent: 'space-between'
+  },
+  forgotPassText: {
+    color: 'white'
+  },
+  noAccountTxt: {
+    color: 'white'
+  },
+  btnLogin: {
+    backgroundColor: "#D9D9D9",
+    borderRadius: 10,
+    paddingVertical: 10,
+    marginTop: 30,
+    width: '40%',
+    alignSelf: 'center',
+    padding: 5,
+  },
+  txtBtnTouch: {
+    fontSize: 18,
+    color: "black",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase"
+  },
+  faceAndGmail_btn:{
+    height:85,
+    width:85
+  },
 
 })
 
@@ -91,7 +118,7 @@ const loginValidationSchema = yup.object().shape({
     .required('Email Address is Required'),
   password: yup
     .string()
-    .min(8, ({ min }) => `Password must be at least ${min} characters`)
+    .min(1, ({ min }) => `Password must be at least ${min} characters`)
     .required('Password is required'),
 })
 
@@ -108,7 +135,7 @@ export default function LoginUser(props) {
       });
 
       if (result.type === 'success') {
-        //console.log(result);
+        console.log(result);
         return result;
       } else {
         return { cancelled: true };
@@ -118,6 +145,68 @@ export default function LoginUser(props) {
     }
   }
 
+
+  async function fetchdataFromFacebook() {
+    try{
+    const { type, token } = await Facebook.logInWithReadPermissionsAsync("2582654205369524", {
+      permissions: ["public_profile"],
+    });
+
+    if (type === "success") {
+      // Get the user's name using Facebook's Graph API
+      const response = await fetch(
+        `https://graph.facebook.com/me?fields=id,name,email,picture.type(large)&access_token=${token}`
+      );
+      const userInfo = await response.json();
+      console.log(userInfo)
+      //add async and db
+      // email = userInfo.email;
+      // password = userInfo.id;
+      checkUserLogin();
+    } else {
+      alert(`Facebook Login cancel`);
+      type === "cancel";
+    }
+  } catch ({ message }) {
+    alert(`Facebook Login Error: ${message}`);
+  }
+
+}
+//   try {
+//     await Facebook.initializeAsync({
+//       options: {
+//         appId: "2582654205369524",
+//         appName: "FootHood",
+//       },
+//     });
+//     const {
+//       type,
+//       token,
+//       expires,
+//       permissions,
+//       declinedPermissions,
+//     } = await Facebook.logInWithReadPermissionsAsync({
+//       permissions: ["public_profile", "email"],
+//     });
+//     if (type === "success") {
+//       // Get the user's name using Facebook's Graph API
+//       const response = await fetch(
+//         `https://graph.facebook.com/me?fields=id,name,email,picture.type(large)&access_token=${token}`
+//       );
+//       const userInfo = await response.json();
+//       console.log(userInfo)
+//       //add async and db
+//       // email = userInfo.email;
+//       // password = userInfo.id;
+//       checkUserLogin();
+//     } else {
+//       alert(`Facebook Login cancel`);
+//       type === "cancel";
+//     }
+//   } catch ({ message }) {
+//     alert(`Facebook Login Error: ${message}`);
+//   }
+// }
 
   useEffect(() => {
     readStorage()
@@ -166,7 +255,7 @@ export default function LoginUser(props) {
   return (
     <View style={styles.container}>
       <View style={styles.title}>
-        <Text h3>Login</Text>
+        <Text style={styles.title}>Login</Text>
       </View>
       <Formik
         validationSchema={loginValidationSchema}
@@ -215,12 +304,14 @@ export default function LoginUser(props) {
             <View style={styles.remeberAndForgot}>
               <TouchableOpacity onPress={() => Forgot()}>
                 <View style={styles.forgotPass}>
-                  <Text>Forgot Password</Text>
+                  <Text style={styles.forgotPassText}>Forgot Password</Text>
                 </View>
               </TouchableOpacity>
 
               <View style={styles.check}>
                 <Checkbox
+                  uncheckedColor='white'
+                  color='white'
                   status={checked ? 'checked' : 'unchecked'}
                   onPress={() => {
                     setChecked(!checked);
@@ -231,7 +322,7 @@ export default function LoginUser(props) {
 
             </View>
 
-            <View style={styles.formGroup}>
+            {/* <View style={styles.formGroup}>
               <View style={styles.loginBtn}>
                 <Button
                   onPress={handleSubmit}
@@ -239,33 +330,32 @@ export default function LoginUser(props) {
                   disabled={!isValid}
                 />
               </View>
-            </View>
+            </View> */}
+            <TouchableOpacity activeOpacity={0.8} onPress={handleSubmit} style={styles.btnLogin}>
+              <Text style={styles.txtBtnTouch}>Login</Text>
+            </TouchableOpacity>
 
             <View style={styles.formGroup}>
               <TouchableOpacity onPress={() => Register()}>
                 <View style={styles.noAccount}>
-                  <Text>Dont have an account?    Click to register</Text>
+                  <Text style={styles.noAccountTxt}>Dont have an account?    Click to register</Text>
                 </View>
               </TouchableOpacity>
             </View>
-
-
             <View style={styles.formGroup}>
-              <View style={{flexDirection:'row', justifyContent:'center'}}>
-                <TouchableOpacity onPress={() => LogByFacebook()}>
-                  <View style={styles.loginBtn}>
-                    <Image source={require('../../assets/Facebook.png')} style={styles.faceAndGmail_btn} />
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => signInWithGoogleAsync()}>
-                  <View style={styles.loginBtn}>
-                    <Image source={require('../../assets/Gmail.png')} style={styles.faceAndGmail_btn} />
-                  </View>
-                </TouchableOpacity>
-              </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <TouchableOpacity onPress={() => fetchdataFromFacebook()}>
+                <View style={styles.loginBtn}>
+                  <Image source={require('../../assets/Facebook.png')} style={styles.faceAndGmail_btn} />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => signInWithGoogleAsync()}>
+                <View style={styles.loginBtn}>
+                  <Image source={require('../../assets/Gmail.png')} style={styles.faceAndGmail_btn} />
+                </View>
+              </TouchableOpacity>
             </View>
-
-
+          </View>
           </>
         )}
       </Formik>

@@ -10,7 +10,12 @@ import * as ImagePicker from 'expo-image-picker';
 const styles = StyleSheet.create({
   title: {
     alignItems: 'center',
-    padding: 40,
+    color: 'white',
+    fontSize: 32,
+    marginBottom: 10
+  },
+  imageButton: {
+    alignItems: 'center'
   },
   container: {
     flex: 1,
@@ -31,6 +36,9 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     alignItems: "flex-start",
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16
   },
   textInput: {
     padding: 2
@@ -67,6 +75,38 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     padding: 2
   },
+  btnLogin: {
+    backgroundColor: "#D9D9D9",
+    borderRadius: 10,
+    paddingVertical: 10,
+    marginTop: 30,
+    width: '60%',
+    alignSelf: 'center',
+    padding: 5,
+  },
+  txtBtnTouch: {
+    fontSize: 18,
+    color: "black",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase"
+  },
+  btnAdd: {
+    alignSelf: 'center',
+    elevation: 5,
+    backgroundColor: "#D9D9D9",
+    opacity: 0.8,
+    borderRadius: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 5,
+    marginTop: 10,
+    width: '40%',
+    alignItems: 'center',
+    marginBottom: 10
+  },
+  addPlayersBtns: {
+    flexDirection: "row-reverse",
+  },
 })
 
 
@@ -74,9 +114,6 @@ const newTeamValidationSchema = yup.object().shape({
   teamName: yup
     .string()
     .required('Team Name is Required'),
-  numberOfPlayers: yup
-    .number().positive().integer()
-    .required('Number Of Players is Required'),
 })
 
 export default function CreateNewTeam() {
@@ -106,13 +143,12 @@ export default function CreateNewTeam() {
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.title}>
-            <Text h4>Create A New Team</Text>
+            <Text style={styles.title}>Create A New Team</Text>
           </View>
           <Formik
             validationSchema={newTeamValidationSchema}
             initialValues={{
               teamName: '',
-              numberOfPlayers: '',
               isPrivate: '',
               rulesAndLaws: '',
               addPlayers: '',
@@ -123,6 +159,12 @@ export default function CreateNewTeam() {
           >
             {({ handleChange, handleSubmit, values, errors, isValid, touched }) => (
               <>
+                <View style={styles.formGroup}>
+                  <Text style={styles.inputLabel}>Team Picture:</Text>
+                  <TouchableOpacity onPress={() => btnOpenGalery()} style={styles.imageButton}>
+                    <Feather name="image" size={100} color="white" />
+                  </TouchableOpacity>
+                </View>
                 <View style={styles.formGroup}>
                   <Text style={styles.inputLabel}>Team Name:</Text>
                   <View style={styles.sectionStyle}>
@@ -139,33 +181,10 @@ export default function CreateNewTeam() {
                   }
                 </View>
                 <View style={styles.formGroup}>
-                  <Text style={styles.inputLabel}>Number Of Players:</Text>
-                  <View style={styles.sectionStyle}>
-                    <Image source={require('../../assets/soccerPlayer.png')} style={styles.ImageStyle} />
-                    <TextInput
-                      name="numberOfPlayers"
-                      placeholder="Number Of Players"
-                      onChangeText={handleChange('numberOfPlayers')}
-                      value={values.numberOfPlayers}
-                      keyboardType="phone-pad"
-                    />
-                  </View>
-
-                  {errors.numberOfPlayers &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.numberOfPlayers}</Text>
-                  }
-                </View>
-                <View style={styles.formGroup}>
-                  <Text style={styles.inputLabel}>Team Picture:</Text>
-                  <TouchableOpacity onPress={() => btnOpenGalery()}>
-                    <Feather name="image" size={50} color="black" />
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.formGroup}>
-                  <Text>Private Or Public?</Text>
+                  <Text style={styles.inputLabel}>Private Or Public?</Text>
                   <View style={styles.privateOrPublic}>
                     <TouchableOpacity>
-                      <Text>Public</Text>
+                      <Text style={styles.inputLabel}>Public</Text>
                       <RadioButton
                         label="First item"
                         value="public"
@@ -174,7 +193,7 @@ export default function CreateNewTeam() {
                       />
                     </TouchableOpacity>
                     <TouchableOpacity>
-                      <Text>Private</Text>
+                      <Text style={styles.inputLabel}>Private</Text>
                       <RadioButton
                         value="private"
                         status={privateOrPublic === 'private' ? 'checked' : 'unchecked'}
@@ -189,22 +208,28 @@ export default function CreateNewTeam() {
                     <TextInput
                       name="rulesAndLaws"
                       placeholder="Enter here the rules and laws of the team"
+                      multiline={true}
                       onChangeText={handleChange('rulesAndLaws')}
                       value={values.rulesAndLaws}
-                      style={styles.TextInput}
+                      style={[styles.textInput, { padding: 10 }]}
                     />
                   </View>
                 </View>
+
+                <TouchableOpacity activeOpacity={0.8} style={styles.btnAdd}>
+                  <View style={styles.addPlayersBtns}>
+                    <Feather name="user-plus" size={24} color="black" />
+                    <Text style={styles.txtBtnMdl}>Add Players</Text>
+                  </View>
+                </TouchableOpacity>
+
+
                 <View style={styles.formGroup}>
-                  <Text style={styles.inputLabel}>Need to add here to option to add player to the team by search</Text>
-                </View>
-                <View style={styles.formGroup}>
-                  <Button
-                    onPress={handleSubmit}
-                    title="Create New Team"
-                    disabled={!isValid}
-                    style={styles.createTeamButton}
-                  />
+
+                  <TouchableOpacity activeOpacity={0.8} disabled={!isValid} onPress={handleSubmit} style={styles.btnLogin}>
+                    <Text style={styles.txtBtnTouch}>Create New Team</Text>
+                  </TouchableOpacity>
+     
                 </View>
               </>
             )}
