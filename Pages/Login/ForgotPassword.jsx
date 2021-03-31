@@ -28,9 +28,8 @@ const RestorePassordSchema = yup.object().shape(
 const styles = StyleSheet.create({
     title: {
         alignItems: 'center',
-        color: 'white',
-        fontSize: 32,
-      },
+        padding: 40,
+    },
     container: {
         flex: 1,
         width: '100%',
@@ -107,8 +106,8 @@ export default function ForgotPassword() {
 
                 <View style={styles.container}>
                     <View style={styles.header}>
-                        <View>
-                            <Text  style={styles.title}>Restore Password</Text>
+                        <View style={styles.title}>
+                            <Text>Restore Password</Text>
                         </View>
                     </View>
 

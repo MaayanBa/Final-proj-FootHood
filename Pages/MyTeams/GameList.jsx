@@ -60,7 +60,7 @@ const game = [
     {
         teamName: "",
         gameName: "Game 1",
-        location: "Sammy Ofer",
+        location: "Sammy Ofer stadium",
         date: "4/4/21",
         time: "17:00",
         ageRange: "20-25",

@@ -28,7 +28,11 @@ const MyTheme = {
 export default function StackNav() {
     return (
         <NavigationContainer theme={MyTheme}>
+<<<<<<< HEAD
             <Stack.Navigator initialRouteName="LoginUser" screenOptions={{headerBackTitleVisible: false, headerShown: false}}>
+=======
+            <Stack.Navigator initialRouteName="TabNav" screenOptions={{headerBackTitleVisible: false, headerShown: false}}>
+>>>>>>> parent of 2ba5f9b (Merge pull request #2 from Danielgr7/Daniel_Branch)
                 <Stack.Screen name="LoginUser" component={LoginUser}/>
                 <Stack.Screen name="Register" component={Register} />
                 <Stack.Screen name="ForgotPassword" component={ForgotPassword} />

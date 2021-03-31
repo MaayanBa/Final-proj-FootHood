@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     safeArea: {
         //flex: 1,
         width: '100%',
-        height: 400,
+        height: 420,
     },
     //  scrollView:{
     //     backgroundColor: 'black',
@@ -202,8 +202,10 @@ export default function MyTeams(props) {
             </View>
             <View style={styles.mainContent}>
                 <SafeAreaView style={styles.safeArea}>
-                    <ScrollView style={styles.scrollView} >  
+                    <ScrollView style={styles.scrollView} >
+               
                             {teamCards}
+                           
                     </ScrollView>
                 </SafeAreaView>
 
