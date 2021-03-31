@@ -76,21 +76,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 7
   },
-<<<<<<< HEAD
-  remeberAndForgot: {
-    flexDirection: "row",
-    justifyContent: 'space-between'
-
-  },
-  faceAndGmail_btn:{
-    height:80,
-    width:80
-=======
   remeberAndForgot:{
     flexDirection:"row",
     justifyContent:'space-between'
 
->>>>>>> parent of 2ba5f9b (Merge pull request #2 from Danielgr7/Daniel_Branch)
   }
 
 })

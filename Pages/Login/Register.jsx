@@ -344,11 +344,7 @@ export default function Register(props) {
                 <View style={styles.formGroup,{flexDirection: "row-reverse",justifyContent:'space-between'}}>
                   <Text style={styles.inputLabel}>Player Picture:</Text>
                   <TouchableOpacity onPress={() => btnOpenGalery()}>
-<<<<<<< Updated upstream
-                    <Feather name="image" size={50} color="black" />
-=======
                     <Feather name="image" size={60} color="white" style={{margin: 6,}}/>
->>>>>>> Stashed changes
                   </TouchableOpacity>
                 </View>
 
