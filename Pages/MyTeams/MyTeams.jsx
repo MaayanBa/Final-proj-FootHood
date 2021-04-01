@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Button, Image, Image as ImageBall, TouchableOpacity, ScrollView, SafeAreaView, StatusBar } from 'react-native';
+import { Badge, Icon, withBadge } from 'react-native-elements'
 //import ScrollView from 'rn-faded-scrollview';
 
 import { Avatar } from 'react-native-paper';
@@ -10,13 +11,13 @@ const styles = StyleSheet.create({
     container: {
         height: "100%",
         paddingTop: 40,
-        paddingLeft:30,
-        paddingRight:30,
+        paddingLeft: 30,
+        paddingRight: 30,
     },
     safeArea: {
         //flex: 1,
         width: '100%',
-        height: 420,
+        height: 410,
     },
     //  scrollView:{
     //     backgroundColor: 'black',
@@ -191,33 +192,37 @@ export default function MyTeams(props) {
             <View style={styles.imgSide}>
                 <Avatar.Image size={64} source={{ uri: team.groupPhoto }} />
             </View>
+            <Badge
+                containerStyle={{ position: 'absolute', top: -4, right: 240 }}
+                value="99+"//Need to count length of messages from DB
+                status="error" />
         </TouchableOpacity>
     })
 
     return (
         <View style={styles.container}>
-            <Header/>
+            <Header />
             <View style={styles.header}>
                 <Text style={styles.title}>My Teams</Text>
             </View>
             <View style={styles.mainContent}>
                 <SafeAreaView style={styles.safeArea}>
                     <ScrollView style={styles.scrollView} >
-               
-                            {teamCards}
-                           
+
+                        {teamCards}
+
                     </ScrollView>
                 </SafeAreaView>
 
             </View>
-                <View style={styles.footer}>
-                    <ImageBall source={require('../../assets/ball.png')} style={styles.imageBallStyle} />
-                    <TouchableOpacity style={styles.btnCreateNewTeam} onPress={() => props.navigation.navigate('AddNewTeam')}>
-                        <Image source={require('../../assets/plus.png')} style={styles.plusStyle} />
-                        <Text style={styles.txtAddNewTeam}>Add New Team</Text>
-                    </TouchableOpacity>
-                </View>
+            <View style={styles.footer}>
+                <ImageBall source={require('../../assets/ball.png')} style={styles.imageBallStyle} />
+                <TouchableOpacity style={styles.btnCreateNewTeam} onPress={() => props.navigation.navigate('AddNewTeam')}>
+                    <Image source={require('../../assets/plus.png')} style={styles.plusStyle} />
+                    <Text style={styles.txtAddNewTeam}>Add New Team</Text>
+                </TouchableOpacity>
             </View>
+        </View>
 
     )
 }
