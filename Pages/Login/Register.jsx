@@ -231,7 +231,7 @@ export default function Register(props) {
             onSubmit={(values) => SignUp(values)
             }
           >
-            {({ handleChange, handleSubmit, values, errors, isValid }) => (
+            {({ handleChange, handleSubmit, values, errors, isValid, touched }) => (
               <>
                 <View style={styles.formGroup}>
                   <Text style={styles.inputLabel}>First Name:</Text>
@@ -270,10 +270,8 @@ export default function Register(props) {
                       keyboardType="email-address"
                     />
                   </View>
-                </View>
-                <View style={styles.formGroup}>
-                  {errors.email &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.email}</Text>
+                  {errors.email && touched.email ?
+                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.email}</Text> : null
                   }
                 </View>
                 <View style={styles.formGroup}>
@@ -288,13 +286,10 @@ export default function Register(props) {
                       keyboardType="phone-pad"
                     />
                   </View>
-                </View>
-                <View style={styles.formGroup}>
-                  {errors.phoneNumber &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.phoneNumber}</Text>
+                  {errors.phoneNumber && touched.phoneNumber ?
+                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.phoneNumber}</Text> : null
                   }
                 </View>
-
                 <View style={styles.formGroup}>
                   <Text style={styles.inputLabel}>Password:</Text>
                   <View style={styles.sectionStyle}>
@@ -307,14 +302,10 @@ export default function Register(props) {
                       secureTextEntry
                     />
                   </View>
-                </View>
-
-                <View style={styles.formGroup}>
-                  {errors.password &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
+                  {errors.password && touched.password ?
+                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text> : null
                   }
                 </View>
-
                 <View style={styles.formGroup}>
                   <Text style={styles.inputLabel}>Confirm Password:</Text>
                   <View style={styles.sectionStyle}>
@@ -327,14 +318,10 @@ export default function Register(props) {
                       secureTextEntry
                     />
                   </View>
-                </View>
-
-                <View style={styles.formGroup}>
-                  {errors.passwordConfirmation &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.passwordConfirmation}</Text>
+                  {errors.passwordConfirmation && touched.passwordConfirmation ?
+                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.passwordConfirmation}</Text> : null
                   }
                 </View>
-
                 <View style={styles.formGroup}>
                   <Text style={styles.inputLabel}>Gender: {gender} </Text>
                   <View style={styles.gender}>
@@ -383,7 +370,7 @@ export default function Register(props) {
                 <View style={styles.formGroup, { flexDirection: "row-reverse", justifyContent: 'space-between' }}>
                   <Text style={styles.inputLabel}>Player Picture:</Text>
                   <TouchableOpacity onPress={() => btnOpenGalery()}>
-                    <Feather name="image" size={60} color="white" style={{padding:7}}/>
+                    <Feather name="image" size={60} color="white" style={{ padding: 7 }} />
                   </TouchableOpacity>
                 </View>
 

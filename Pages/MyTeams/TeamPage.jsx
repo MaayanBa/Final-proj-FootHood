@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Text, Button, StyleSheet, ScrollView, SafeAreaView, Image, View, StatusBar, TouchableOpacity } from 'react-native';
-
 import { Card, Title, Paragraph } from 'react-native-paper';
 import { GiftedChat } from 'react-native-gifted-chat'
+import FireBase from '../FireBase';
 import TabNav from '../../Navigations/TabNav';
 import Header from '../Main/Header';
 import { Avatar } from 'react-native-paper';
@@ -98,6 +98,8 @@ const team =
     ]
 }
 
+
+
 export default function TeamPage(props) {
     const [messages, setMessages] = useState([]);
 
@@ -116,6 +118,8 @@ export default function TeamPage(props) {
         ])
     }, [])
 
+
+
     const onSend = useCallback((messages = []) => {
         setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
     }, [])
@@ -130,7 +134,7 @@ export default function TeamPage(props) {
         //   <SafeAreaView>
         // <ScrollView> 
         <View style={styles.container}>
-            <TouchableOpacity style={styles.TeamInformation} onPress={()=>props.navigation.navigate('TeamDetailsPage')}>
+            <TouchableOpacity style={styles.TeamInformation} onPress={() => props.navigation.navigate('TeamDetailsPage')}>
                 <View style={styles.TeamInformation_Up}>
                     <View style={styles.TeamInformation_Up_Title}>
                         <Text style={styles.txtTeam}> Team</Text>
@@ -149,7 +153,7 @@ export default function TeamPage(props) {
                 <Text style={styles.txtBtnTouch}>Create New Game</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity activeOpacity={0.8} onPress={() =>props.navigation.navigate('GameList')} style={styles.btnTouch}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList')} style={styles.btnTouch}>
                 <Text style={styles.txtBtnTouch}>View Games</Text>
             </TouchableOpacity>
 
