@@ -9,6 +9,8 @@ import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import StarRating from 'react-native-star-rating';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { Avatar } from 'react-native-paper';
+import { ListItem } from 'react-native-elements/dist/list/ListItem';
 
 
 const styles = StyleSheet.create({
@@ -130,6 +132,12 @@ const styles = StyleSheet.create({
 
 
 const loginValidationSchema = yup.object().shape({
+  firstName: yup
+    .string()
+    .required('First Name is Required'),
+  lastName: yup
+    .string()
+    .required('Last Name is Required'),
   email: yup
     .string()
     .email("Please enter valid email")
@@ -195,6 +203,30 @@ export default function Register(props) {
       setimageUri(result.uri);
     }
   };
+
+  const displayPicture = () => {
+    if (imageUri == null) {
+      return (
+        <TouchableOpacity onPress={() => btnOpenGalery()}>
+          <Feather name="image" size={60} color="white" style={{ padding: 7 }} />
+        </TouchableOpacity>
+      );
+    }
+    else {
+      return (
+        <TouchableOpacity onPress={() => btnOpenGalery()}>
+          <Avatar.Image size={64} source={{ uri: imageUri }} />
+        </TouchableOpacity>
+      );
+    }
+
+  }
+
+  const printDate = () => {
+    return `${date.getDate()}/${date.getMonth() +
+      1}/${date.getFullYear()}`;
+  };
+
   const SignUp = (values) => {
     values.playerGender = gender;
     values.prefferedLeg = strongLeg;
@@ -244,6 +276,9 @@ export default function Register(props) {
                       value={values.firstName}
                     />
                   </View>
+                  {errors.firstName && touched.firstName ?
+                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.firstName}</Text> : null
+                  }
                 </View>
                 <View style={styles.formGroup}>
                   <Text style={styles.inputLabel}>Last Name:</Text>
@@ -256,8 +291,10 @@ export default function Register(props) {
                       value={values.lastName}
                     />
                   </View>
+                  {errors.lastName && touched.lastName ?
+                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.lastName}</Text> : null
+                  }
                 </View>
-
                 <View style={styles.formGroup}>
                   <Text style={styles.inputLabel}>Email:</Text>
                   <View style={styles.sectionStyle}>
@@ -347,7 +384,7 @@ export default function Register(props) {
                   </View>
                 </View>
                 <View style={styles.formGroup, { flexDirection: "row-reverse", justifyContent: 'space-between' }}>
-                  <Text style={styles.inputLabel}>Date Of Birth:</Text>
+                  <Text style={styles.inputLabel}>Date Of Birth: {printDate()}</Text>
                   <View style={styles.datePicker}>
                     <TouchableOpacity onPress={() => showDatepicker()}>
                       <Image source={require("../../assets/Calander.png")} style={styles.calanderStyle} />
@@ -369,9 +406,7 @@ export default function Register(props) {
 
                 <View style={styles.formGroup, { flexDirection: "row-reverse", justifyContent: 'space-between' }}>
                   <Text style={styles.inputLabel}>Player Picture:</Text>
-                  <TouchableOpacity onPress={() => btnOpenGalery()}>
-                    <Feather name="image" size={60} color="white" style={{ padding: 7 }} />
-                  </TouchableOpacity>
+                  {displayPicture()}
                 </View>
 
                 <View style={styles.formGroup}>
@@ -417,6 +452,7 @@ export default function Register(props) {
                     <StarRating
                       disabled={false}
                       maxStars={5}
+                      reversed={true}
                       rating={staminaStars}
                       selectedStar={(rating) => setStaminaStars(rating)}
                       fullStarColor={'gold'}
