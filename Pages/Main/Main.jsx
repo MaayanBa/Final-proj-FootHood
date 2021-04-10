@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native';
 import Header from './Header';
-import { useLogin, useLoginUpdate } from '../../Contexts/LoginContext'
+
 
 const styles = StyleSheet.create({
     container: {
@@ -29,13 +29,12 @@ const styles = StyleSheet.create({
 });
 
 export default function Main() {
-    const loginData = useLogin();
-    const setLoginData = useLoginUpdate();
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Header />
-                <Text style={styles.title}>{loginData.email}</Text>
+                <Text style={styles.title}>"Main page"</Text>
             </View>
             <View style={styles.mainContent}></View>
             <View style={styles.footer}></View>

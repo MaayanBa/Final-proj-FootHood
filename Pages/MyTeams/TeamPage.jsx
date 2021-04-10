@@ -3,7 +3,6 @@ import { Text, Button, StyleSheet, ScrollView, SafeAreaView, Image, View, Status
 
 import { Card, Title, Paragraph } from 'react-native-paper';
 import { GiftedChat } from 'react-native-gifted-chat'
-import TabNav from '../../Navigations/TabNav';
 import Header from '../Main/Header';
 import { Avatar } from 'react-native-paper';
 

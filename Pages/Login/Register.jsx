@@ -202,6 +202,21 @@ export default function Register(props) {
     values.dateOfBirth = date;
     values.stamina = staminaStars;
     values.role = prefferedRole;
+    let player = {
+      firstName: values.firstName,
+      lastName: values.lastName,
+      emailPlayer: values.email,
+      phoneNumber: values.phoneNumber,
+      PassCose: values.password,
+      playerGender: gender,
+      city: ,
+      dateOfBirth: '',
+      image: '',
+      height: '',
+      prefferedLeg: '',
+      stamina: '',
+      role: ''
+    }
     console.log(values)
   }
   return (
@@ -383,7 +398,7 @@ export default function Register(props) {
                 <View style={styles.formGroup, { flexDirection: "row-reverse", justifyContent: 'space-between' }}>
                   <Text style={styles.inputLabel}>Player Picture:</Text>
                   <TouchableOpacity onPress={() => btnOpenGalery()}>
-                    <Feather name="image" size={60} color="white" style={{padding:7}}/>
+                    <Feather name="image" size={60} color="white" style={{ padding: 7 }} />
                   </TouchableOpacity>
                 </View>
 

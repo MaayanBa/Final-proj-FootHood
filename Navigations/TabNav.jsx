@@ -11,9 +11,7 @@ import Main from '../Pages/Main/Main';
 import Timer from '../Pages/Timer/Timer';
 import Players from '../Pages/Players/Players';
 import FindGame from '../Pages/FindGame/FindGame';
-import MyTeams from '../Pages/MyTeams/MyTeams';
-import AddNewTeam from '../Pages/MyTeams/AddNewTeam';
-
+import StackNav_MyTeams from './StackNav_MyTeams'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -70,7 +68,7 @@ export default function TabNav() {
                     tabBarLabel: 'Find Game',
                     tabBarIcon: () => (<ImgTimer source={require('../assets/FindGame.png')} resizeMode='contain' style={{ width: 50, height: 50 }} />)
                 }} />
-            <Tab.Screen name="MyTeams" component={MyTeams}
+            <Tab.Screen name="StackNav_MyTeams" component={StackNav_MyTeams}
                 //tabBarOptions={showIcon = true}
                 options={{
                     tabBarLabel: 'My Teams',
