@@ -11,13 +11,16 @@
     "@react-native-async-storage/async-storage": "^1.14.1",
     "@react-native-community/datetimepicker": "^3.2.0",
     "@react-native-community/masked-view": "0.1.10",
+    "@react-native-firebase/app": "^11.2.0",
     "@react-navigation/bottom-tabs": "^5.11.8",
     "@react-navigation/native": "^5.9.3",
     "@react-navigation/stack": "^5.14.3",
     "expo": "~40.0.0",
+    "expo-facebook": "~9.1.0",
     "expo-google-app-auth": "^8.1.4",
     "expo-image-picker": "~9.2.0",
     "expo-status-bar": "~1.0.3",
+    "firebase": "^8.3.2",
     "formik": "^2.2.6",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -38,8 +41,7 @@
     "react-native-web": "^0.15.0",
     "react-native-wheel-scroll-picker": "^0.2.4",
     "rn-faded-scrollview": "^1.0.10",
-    "yup": "^0.32.9",
-    "expo-facebook": "~9.1.0"
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

@@ -1,8 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Text, Button, StyleSheet, ScrollView, SafeAreaView, Image, View, StatusBar, TouchableOpacity } from 'react-native';
-
+import {
+    Text,
+    Button,
+    StyleSheet,
+    ScrollView,
+    SafeAreaView,
+    Image,
+    View,
+    StatusBar,
+    TouchableOpacity
+} from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
-import { GiftedChat } from 'react-native-gifted-chat'
+import { GiftedChat } from 'react-native-gifted-chat';
+import { firebase } from '../../FireBase';
 import Header from '../Main/Header';
 import { Avatar } from 'react-native-paper';
 
@@ -15,7 +25,6 @@ const styles = StyleSheet.create({
     // },
     container: {
         flex: 1,
-        paddingTop: StatusBar.currentHeight,
         width: '100%',
         paddingTop: 70,
         alignItems: 'center'
@@ -34,9 +43,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
 
     },
-    TeamInformation_players: {
-
-    },
+    TeamInformation_players: {},
     TeamInformation_Up_imgView: {
         width: 10,
         height: 140
@@ -97,39 +104,98 @@ const team =
     ]
 }
 
+
+
+const convertToArray = (data) => {
+    let res = []
+    Object.keys(data).map((key) => {
+        let val = data[key]
+        res.push({ ...val, createdAt: new Date(val.createdAt) })
+    })
+    return res
+}
+
+
 export default function TeamPage(props) {
     const [messages, setMessages] = useState([]);
 
     useEffect(() => {
-        setMessages([
-            {
-                _id: 1,
-                text: 'Hello Daniel! I am CR7 and I would like to welcome you to my app!',
-                createdAt: new Date(),
-                user: {
-                    _id: 2,
-                    name: 'CR7',
-                    avatar: 'https://site-cdn.givemesport.com/images/21/02/05/354cc6f5366bb99d3eca6bc92f8d2165/1201.jpg',
-                },
-            },
-        ])
+        fetchMessages().catch(e => console.log(e))
+        // setMessages([
+        //     {
+        //         _id: 1,
+        //         text: 'Hello Daniel! I am CR7 and I would like to welcome you to my app!',
+        //         createdAt: new Date(),
+        //         user: {
+        //             _id: 2,
+        //             name: 'CR7',
+        //             avatar: 'https://site-cdn.givemesport.com/images/21/02/05/354cc6f5366bb99d3eca6bc92f8d2165/1201.jpg',
+        //         },
+        //     },
+        // ])
     }, [])
 
-    const onSend = useCallback((messages = []) => {
-        setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+
+    const fetchMessages = async () => {
+        try {
+            let data = await firebase.database().ref("/teamsid").get()
+            if (data.exists()) {
+                data = data.exportVal()
+                data = convertToArray(data)
+                setMessages(data)
+            }
+        } catch (e) {
+            console.log(e)
+            return Promise.reject("Failed fetching data")
+        }
+    }
+
+    useEffect(() => {
+        if (!messages || messages.length === 0) return
+        updateMessages()
+    }, [messages])
+
+
+    const updateMessages = async () => {
+        try {
+            let messagesToSave = messages.map((val) => {
+                return {
+                    ...val,
+                    createdAt: val.createdAt.getTime()
+                }
+            })
+            await firebase.database().ref("/teamsid").set(messagesToSave)
+            console.log("Updating messages")
+        } catch (e) {
+            console.log(e)
+            return Promise.reject(e + " Failed fetching data")
+        }
+    }
+
+    const onSend = useCallback((message = []) => {
+        console.log("On send")
+        setMessages((prev) => {
+            let newMessages = [...prev, ...message]
+            GiftedChat.append(prev, message)
+            return newMessages
+        })
     }, [])
 
-    const TeamInformation = () => { }
+    const TeamInformation = () => {
+    }
 
-    const ViewGames = () => { }
-
+    const ViewGames = () => {
+    }
 
 
     return (
         //   <SafeAreaView>
-        // <ScrollView> 
+        // <ScrollView>
+        <SafeAreaView>
+        <ScrollView>
         <View style={styles.container}>
-            <TouchableOpacity style={styles.TeamInformation} onPress={()=>props.navigation.navigate('TeamDetailsPage')}>
+            <TouchableOpacity style={styles.TeamInformation}
+                onPress={() => props.navigation.navigate('TeamDetailsPage')}>
                 <View style={styles.TeamInformation_Up}>
                     <View style={styles.TeamInformation_Up_Title}>
                         <Text style={styles.txtTeam}> Team</Text>
@@ -144,24 +210,29 @@ export default function TeamPage(props) {
                 </View>
             </TouchableOpacity>
 
-            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame')} style={styles.btnTouch}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame')}
+                style={styles.btnTouch}>
                 <Text style={styles.txtBtnTouch}>Create New Game</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity activeOpacity={0.8} onPress={() =>props.navigation.navigate('GameList')} style={styles.btnTouch}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList')}
+                style={styles.btnTouch}>
                 <Text style={styles.txtBtnTouch}>View Games</Text>
             </TouchableOpacity>
+                <View style={styles.chatContainer}>
+                    <GiftedChat
+                        messages={messages}
+                        onSend={messages => onSend(messages)}
+                        user={{
+                            _id: 1,
+                        }}
+                        inverted={false}
+                    />
+                </View>
 
-            <View style={styles.chatContainer}>
-                <GiftedChat
-                    messages={messages}
-                    onSend={messages => onSend(messages)}
-                    user={{
-                        _id: 1,
-                    }}
-                />
-            </View>
         </View>
+        </ScrollView>
+            </SafeAreaView>
     );
 }
 

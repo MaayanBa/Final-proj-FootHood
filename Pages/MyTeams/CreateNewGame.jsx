@@ -18,6 +18,7 @@ import MapView, { Marker } from 'react-native-maps';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Checkbox } from 'react-native-paper';
 import DateAndTime from './Components/DateAndTime';
+import { set } from 'react-native-reanimated';
 //import { CheckBox } from 'react-native-elements'
 
 const equipmentList = [
@@ -172,6 +173,7 @@ export default function CreateNewGame() {
     latitudeDelta: 0.0122,
     longitudeDelta: 0.0121,
   });
+  const [destination, setDestination] = useState(null)
   const [equipmentList_state, setEquipmentList_state] = useState([...equipmentList])
   const [renderCB, setRenderCB] = useState(true);
 
@@ -194,7 +196,7 @@ export default function CreateNewGame() {
         >
           <Marker draggable
             coordinate={region}
-            onDragEnd={(e) => this.setRegion({ region: e.nativeEvent.coordinate })}
+            onDragEnd={(e) => setDestination({ destination: e.nativeEvent.coordinate })}
           />
         </MapView>
       </View>
