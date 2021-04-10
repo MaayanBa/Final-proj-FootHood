@@ -37,11 +37,12 @@ const register = dispatch => {
         try {
             console.log(player)
             const response = await AuthApi.post('/Register', player);
-            let jsonValue = JSON.stringify(response);
+            let jsonValue = JSON.stringify(response.data);
+            console.log("json value === " + jsonValue)
             await AsyncStorage.setItem('token', jsonValue)
             dispatch({ type: 'register', payload: response.data.token });
-            //console.log(response.data)
             
+            navigate('NewLoginUser')
             //setNavigate('NewLoginUser','')
             // const navigation = useNavigation();
             // navigation.navigate('NewLoginUser')

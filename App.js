@@ -5,7 +5,7 @@ import AppCss from './CSS/AppCss';
 import StackNav from './Navigations/StackNav';
 //import {Context as AuthContext} from './Contexts/AuthContext'
 import { Provider as AuthProvider } from './Contexts/AuthContext';
-
+import { setNavigator } from './Navigations/navigationRef';
 
 
 
@@ -17,7 +17,7 @@ export default function App() {
     <AuthProvider>
       <ImageBackground source={require('./assets/WallPaper.png')} style={AppCss.imageBackGround}>
         <StatusBar backgroundColor="transparent" />
-        <StackNav />
+        <StackNav ref={(navigator) => setNavigator(navigator)}/>
       </ImageBackground >
     </AuthProvider>
   );
