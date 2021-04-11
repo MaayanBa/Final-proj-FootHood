@@ -15,7 +15,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { Checkbox } from 'react-native-paper';
 import * as Google from 'expo-google-app-auth';
 import * as Facebook from 'expo-facebook';
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
 
 
 export default function NewLoginUser({ navigation }) {
-    const { state, signIn ,tryLocalSignin } = useContext(AuthContext);
+    const { state, signIn, tryLocalSignin, clearErrorMessage } = useContext(AuthContext);
     const [userData, setUserData] = useState('');
     // const [data, setData] = useState({
     //     username: '',
@@ -173,7 +173,10 @@ export default function NewLoginUser({ navigation }) {
     }
 
     useEffect(() => {
+        clearErrorMessage();
         tryLocalSignin()
+        // { console.log("The From storage is : ===> " + state.token) }
+
     }, []);
 
     async function fetchdataFromFacebook() {
@@ -232,8 +235,9 @@ export default function NewLoginUser({ navigation }) {
     }
 
     const textInputChange = (val) => {
-        if (val.trim().length >= 4) {
+        if (val.trim().length >= 1) {            
             setEmail(val);
+            clearErrorMessage()
             setCheck_textInputChange(true);
             setIsValidUser(true);
         }
@@ -245,7 +249,7 @@ export default function NewLoginUser({ navigation }) {
     }
 
     const handlePasswordChange = (val) => {
-        if (val.trim().length >= 8) {
+        if (val.trim().length >= 1) {
             setPassCode(val);
             setIsValidPassCode(true);
         } else {
@@ -266,17 +270,17 @@ export default function NewLoginUser({ navigation }) {
         }
     }
 
-    const loginHandle = (email, passCode, callBack) => {
-        console.log(email + " and  the password : " + passCode);
-// let player = {
-//     EmailPlayer: email, passCode 
-// }
-    //    signIn(player)
+    const loginHandle = (email, passcode) => {
+        let player = {
+            email,
+            passcode
+        }
+        clearErrorMessage();
+        signIn(player, checked);
     }
 
     return (
         <View style={styles.container}>
-            
             <StatusBar backgroundColor='transparent' barStyle="light-content" />
             <View style={styles.header}>
                 <Animatable.Image
@@ -351,13 +355,15 @@ export default function NewLoginUser({ navigation }) {
                     </TouchableOpacity>
                 </View>
 
-
-                {/* {state.errorMessage ? alert(state.errorMessage) : null} */}
                 <View style={styles.loginBtns}>
                     <TouchableOpacity style={[styles.button, { alignSelf: 'center', }]} onPress={() => { loginHandle(email, passCode, () => navigation.navigate('TabNav')) }}                >
                         <Text style={[styles.textSign, { color: '#fff' }]}>Sign In</Text>
                     </TouchableOpacity>
-
+                    {
+                    state.errorMessage != ''  ?
+                        <Text style={{ color: 'red', fontSize: 15, alignSelf: 'center' , paddingTop:4}}>{state.errorMessage}</Text>
+                        : null
+                    }
                     <View style={styles.check}>
                         <Checkbox
                             uncheckedColor='#009387'

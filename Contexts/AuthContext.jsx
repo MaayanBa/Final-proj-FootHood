@@ -1,19 +1,33 @@
-//import React, { useContext, useState } from 'react';
 import CreateDataContext from './createDataContext';
 import AuthApi from '../api/Auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-//import { navigate } from '../Navigations/navigationRef';
-//import { useNavigation } from '@react-navigation/native';
+
 
 
 
 const authReducer = (state, action) => {
     switch (action.type) {
+        case 'resetRestore_PassCode_values': {
+            return { ...state, emailVerified: false, passCodeHasChanged: false }
+        }
+        case 'verifyEmail': {
+            return { ...state, emailVerified: action.payload }
+        }
+        case 'changePasscode': {
+            return { ...state, emailVerified: false, passCodeHasChanged: action.payload }
+        }
+        case 'signOut': {
+            return { token: null, errorMessage: '' }
+        }
+        case 'signin': {
+            return { token: action.payload, errorMessage: '' }
+        }
         case 'clear_error_message': {
             return { ...state, errorMessage: '' }
         }
         case 'add_error': {
-            return { ...state, errorMessage: /*action.payload*/'' }
+            console.log("and after i went to authReduce toAdd error")
+            return { ...state, errorMessage: action.payload }
         }
         case 'register': {
             return { token: action.payload, errorMessage: '' }
@@ -24,31 +38,29 @@ const authReducer = (state, action) => {
 };
 const tryLocalSignin = dispatch => async () => {
     const token = await AsyncStorage.getItem('token');
-    console.log(JSON.parse(token))
+    //console.log("this is the token after get async storage = " + token)
+    if (token) {
+        dispatch({ type: 'signin', payload: token })
+    }
 }
+
 const clearErrorMessage = dispatch => () => {
     dispatch({ type: 'clear_error_message' })
 }
 
 const register = dispatch => {
-    return async (player) => {
+    return async (player, callBack) => {
 
         //api request
         try {
-            console.log(player)
             const response = await AuthApi.post('/Register', player);
             let jsonValue = JSON.stringify(response.data);
-            console.log("json value === " + jsonValue)
+            //console.log("json value === " + jsonValue)
             await AsyncStorage.setItem('token', jsonValue)
+            //console.log("response . data === " + response.data);
             dispatch({ type: 'register', payload: response.data.token });
-            
-            navigate('NewLoginUser')
-            //setNavigate('NewLoginUser','')
-            // const navigation = useNavigation();
-            // navigation.navigate('NewLoginUser')
-
         } catch (err) {
-            console.log(err.response.data)
+            //console.log(err.response.data)
             dispatch({ type: 'add_error', payload: 'Somthing went wrong with registration' })
         }
         //if sign up, modify our state, and say ok
@@ -58,30 +70,121 @@ const register = dispatch => {
 }
 
 const signIn = dispatch => {
-    return async ({ EmailPlayer, PassCode }) => {
-
+    return async (player, checked) => {
         //api request
         try {
-            const response = await AuthApi.get('/LoginUser', { EmailPlayer, PassCode });
-            await AsyncStorage.setItem('token', response.data.token)
-            dispatch({ type: 'signin', payload: response.data.token });
-            console.log(response.data)
-            //setNavigate('NewLoginUser','')
-            // const navigation = useNavigation();
-            // navigation.navigate('NewLoginUser')
+            const data = {
+                email: player.email,
+                passcode: player.passcode
+            }
+            const options = {
+                //method: "Post",
+                headers: new Headers({
+                    'Content-type': 'application/json; charset=UTF-8',
+                    'Accept': 'application/json',
+                }),
+                //body: JSON.stringify(data)
+            }
+            let playerDetails = await AuthApi.post('/LoginUser', data, options);
+            {
+                //console.log("From Axios L ___: " + playerDetails.status);
+                //console.log( response.data);
+
+                // let playerDetails;
+                // var res = await fetch('https://proj.ruppin.ac.il/bgroup13/prod/api/player/LoginUser', options)
+                //     .then((res) => { 
+                //         console.log(res.status)
+                //         res.status < 400 || res.status >= 500 ?
+                //            res = res.json() : res = null
+                //     }).then((result) =>{ playerDetails = res},
+                //         (error) => console.log("err post=", error));
+
+                // console.log("this is the obj from DB  => ");
+                // console.log(res);
+            }
+            console.log(playerDetails.status)
+            if (playerDetails.status < 400 || playerDetails.status >= 500) {
+                if (checked) {
+                    let jsonValue = JSON.stringify(playerDetails.data);
+                    await AsyncStorage.setItem('token', jsonValue);
+                }
+                dispatch({ type: 'signin', payload: playerDetails.data });
+            }
+            else {
+                dispatch({
+                    type: 'add_error',
+                    payload: 'Somthing went wrong with the SignIn'
+                })
+            }
+
+
+
 
         } catch (err) {
-            console.log(err.response.data)
+            //if fail error massege
+            console.log("im in catch of sign in")
+            //console.log(err.response.data)
             dispatch({
                 type: 'add_error',
                 payload: 'Somthing went wrong with the SignIn'
             })
         }
-        //if sign up, modify our state, and say ok
 
-        //if fail error massege
+
+
     }
 }
+const signOut = dispatch => async () => {
+    await AsyncStorage.removeItem('token');
+    console.log("The local storge has cleaned")
+    dispatch({ type: 'signOut' })
+}
+
+const restorePassCode = dispatch => async (email) => {
+    //console.log("Email -----> " + email);
+    try {
+        const options = {
+            //method: "Post",
+            headers: new Headers({
+                'Content-type': 'application/json; charset=UTF-8',
+                'Accept': 'application/json',
+            }),
+            //body: JSON.stringify(data)
+        }
+        let emailVerify = await AuthApi.post('/RequestOTP', { email });
+        //console.log("Email -----> " + emailVerify.data + "----- ststus----->" + emailVerify.status);
+        if (emailVerify.data == true && emailVerify.status === 200) {
+            dispatch({ type: 'verifyEmail', payload: emailVerify.data })
+        }
+    } catch (error) {
+        //console.log("im in catch in restore psscode  ===== > " + error.response)
+        //console.log(error.response.data)
+        alert("The email you have entered is wrong. Please try again")
+    }
+}
+
+const updatPassCode = dispatch => async (player) => {
+    // console.log("changes -----> " + player);
+    // console.log(player);
+    try {
+        let passCodeChanged = await AuthApi.put('/ChangePassCode', player);
+        //console.log(" newPassCode-----> " + passCodeChanged.data + "----- status----->" + passCodeChanged.status);
+
+        if (passCodeChanged.status < 400 || passCodeChanged.status >= 500) {
+            dispatch({ type: 'changePasscode', payload: true })
+        }
+    } catch (error) {
+        // console.log("im in catch in reset passcode  ===== > " + error.response)
+        // console.log(error.response.data)
+        alert("The otp you have entered is wrong. Please try again")
+    }
+}
+const resetRestore_PassCode_values = dispatch => async (player) => {
+    dispatch({ type: 'resetRestore_PassCode_values' })
+}
+
+
+
 
 export const { Context, Provider } = CreateDataContext(
     //Reducer
@@ -90,35 +193,22 @@ export const { Context, Provider } = CreateDataContext(
         register,
         signIn,
         clearErrorMessage,
-        tryLocalSignin
+        tryLocalSignin,
+        signOut,
+        restorePassCode,
+        updatPassCode,
+        resetRestore_PassCode_values
     },
     {
         token: null,
         errorMessage: '',
+        emailVerified: false,
+        passCodeHasChanged: false,
+
     }
 );
 
 
-
-// const forgotPassCode = (dispatch) => {
-//     return ({ email }) => {
-//         //api request
-
-//         //if exist, and say ok
-
-//         //if fail error massege
-//     }
-// }
-
-// const checkOTP = (dispatch) => {
-//     return ({ otp, passCode }) => {
-//         //api request
-
-//         //if succes, say ok
-
-//         //if fail error massege
-//     }
-// }
 
 
 

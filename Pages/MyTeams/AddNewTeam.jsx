@@ -1,10 +1,12 @@
-import React, { useState, useEffect, Component } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, Button, TextInput, View, Text, TouchableOpacity, ScrollView, SafeAreaView, StatusBar, Platform, Image, TouchableNativeFeedbackBase, TouchableOpacityBase } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import { Formik, Field, Form } from "formik";
 import * as yup from 'yup';
 import { Feather, Foundation } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { Context as AuthContext } from '../../Contexts/AuthContext';
+import { Context as TeamContext } from '../../Contexts/TeamContext';
 
 
 const styles = StyleSheet.create({
@@ -117,6 +119,9 @@ const newTeamValidationSchema = yup.object().shape({
 })
 
 export default function CreateNewTeam() {
+  const { state } = useContext(AuthContext);
+  const { CreateNewTeam } = useContext(TeamContext);
+  const [emailManager, setEmailManager] = useState(JSON.parse(state.token).Email)
   const [privateOrPublic, setPrivateOrPublic] = React.useState('public');
   const [TeamImageUri, setimageUri] = useState(null);
 
@@ -134,8 +139,18 @@ export default function CreateNewTeam() {
 
   const CreateTeam = (values) => {
     values.isPrivate = privateOrPublic;
-    values.groupPhoto = TeamImageUri;
-    console.log(values)
+    values.teamPicture = TeamImageUri;
+    let newTeam = {
+      teamName: values.teamName,
+      TeamPicture: values.teamPicture,
+      isPrivate: values.isPrivate,
+      rulesAndLaws: values.rulesAndLaws,
+      EmailManager: emailManager,
+      addPlayers: values.addPlayers,
+    }
+    console.log("new tem  ===="  + newTeam)
+    //console.log("email manager ==== " +emailManager)
+    CreateNewTeam(newTeam)
   }
 
   return (
@@ -152,7 +167,7 @@ export default function CreateNewTeam() {
               isPrivate: '',
               rulesAndLaws: '',
               addPlayers: '',
-              groupPhoto: '',
+              TeamPicture: '',
             }}
             onSubmit={(values) => CreateTeam(values)
             }
@@ -229,7 +244,7 @@ export default function CreateNewTeam() {
                   <TouchableOpacity activeOpacity={0.8} disabled={!isValid} onPress={handleSubmit} style={styles.btnLogin}>
                     <Text style={styles.txtBtnTouch}>Create New Team</Text>
                   </TouchableOpacity>
-     
+
                 </View>
               </>
             )}

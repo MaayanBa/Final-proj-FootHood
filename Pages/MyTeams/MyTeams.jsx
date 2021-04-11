@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
     },
 
     teamCard: {
-
         backgroundColor: '#D9D9D9',
         justifyContent: 'space-around',
         alignItems: 'center',
@@ -193,7 +192,7 @@ export default function MyTeams(props) {
                 <Avatar.Image size={64} source={{ uri: team.groupPhoto }} />
             </View>
             <Badge
-                containerStyle={{ position: 'absolute', top: -4, right: 240 }}
+                containerStyle={{ position: 'absolute', top: 0, left: 0 }}
                 value="99+"//Need to count length of messages from DB
                 status="error" />
         </TouchableOpacity>

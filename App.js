@@ -1,11 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Text, View, ImageBackground, Image } from 'react-native';
 import AppCss from './CSS/AppCss';
 import StackNav from './Navigations/StackNav';
-//import {Context as AuthContext} from './Contexts/AuthContext'
 import { Provider as AuthProvider } from './Contexts/AuthContext';
-import { setNavigator } from './Navigations/navigationRef';
+import { Provider as TeamProvider } from './Contexts/TeamContext';
 
 
 
@@ -14,11 +13,13 @@ import { setNavigator } from './Navigations/navigationRef';
 export default function App() {
 
   return (
-    <AuthProvider>
-      <ImageBackground source={require('./assets/WallPaper.png')} style={AppCss.imageBackGround}>
-        <StatusBar backgroundColor="transparent" />
-        <StackNav ref={(navigator) => setNavigator(navigator)}/>
-      </ImageBackground >
-    </AuthProvider>
+    <TeamProvider>
+      <AuthProvider>
+        <ImageBackground source={require('./assets/WallPaper.png')} style={AppCss.imageBackGround}>
+          <StatusBar backgroundColor="transparent" />
+          <StackNav />
+        </ImageBackground >
+      </AuthProvider>
+    </TeamProvider>
   );
 }

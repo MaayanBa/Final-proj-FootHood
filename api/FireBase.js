@@ -11,7 +11,7 @@ const firebaseConfig = {
 
 // console.dir(firebase)
 // console.log(firebase.apps)
-console.log(firebase.apps.length)
+//console.log(firebase.apps.length)
 if(!firebase.apps.length){
         firebase.initializeApp(firebaseConfig);
 }
