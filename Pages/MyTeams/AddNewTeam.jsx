@@ -1,5 +1,8 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, Button, TextInput, View, Text, TouchableOpacity, ScrollView, SafeAreaView, StatusBar, Platform, Image, TouchableNativeFeedbackBase, TouchableOpacityBase } from 'react-native';
+import { StyleSheet, TextInput, 
+  View, Text, TouchableOpacity, 
+  ScrollView, SafeAreaView, StatusBar, 
+  Image, LogBox } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import { Formik, Field, Form } from "formik";
 import * as yup from 'yup';
@@ -111,6 +114,8 @@ const styles = StyleSheet.create({
   },
 })
 
+//Fix YellowBox Error
+LogBox.ignoreLogs([  'Setting a timer for a long period of time, i.e. multiple minutes, is a performance and correctness issue on Android as it keeps the   timer module awake, and timers can only be called when the app is in the foreground.']);
 
 const newTeamValidationSchema = yup.object().shape({
   teamName: yup
@@ -122,7 +127,7 @@ export default function CreateNewTeam() {
   const { state } = useContext(AuthContext);
   const { CreateNewTeam } = useContext(TeamContext);
   const [emailManager, setEmailManager] = useState(JSON.parse(state.token).Email)
-  const [privateOrPublic, setPrivateOrPublic] = React.useState('public');
+  const [privateOrPublic, setPrivateOrPublic] = useState('public');
   const [TeamImageUri, setimageUri] = useState(null);
 
   const btnOpenGalery = async () => {
@@ -138,12 +143,15 @@ export default function CreateNewTeam() {
   };
 
   const CreateTeam = (values) => {
-    values.isPrivate = privateOrPublic;
-    values.teamPicture = TeamImageUri;
+    let priOpub = false; //private or public 
+    privateOrPublic === 'public'? priOpub= true: null;
+    // values.isPrivate = priOpub;
+    // values.teamPicture = TeamImageUri;
+    
     let newTeam = {
       teamName: values.teamName,
       TeamPicture: values.teamPicture,
-      isPrivate: values.isPrivate,
+      isPrivate: priOpub,
       rulesAndLaws: values.rulesAndLaws,
       EmailManager: emailManager,
       addPlayers: values.addPlayers,
