@@ -5,6 +5,7 @@ import { Formik, Field, Form } from "formik";
 import * as yup from 'yup';
 import { Feather, Foundation } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { Avatar } from 'react-native-paper';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
 
@@ -148,8 +149,8 @@ export default function CreateNewTeam() {
       EmailManager: emailManager,
       addPlayers: values.addPlayers,
     }
-    console.log("new tem  ===="  + newTeam)
-    //console.log("email manager ==== " +emailManager)
+    console.log("new tem  ====" )
+    console.log(newTeam.EmailManager)
     CreateNewTeam(newTeam)
   }
 
@@ -176,9 +177,14 @@ export default function CreateNewTeam() {
               <>
                 <View style={styles.formGroup}>
                   <Text style={styles.inputLabel}>Team Picture:</Text>
+                  {TeamImageUri==null?
                   <TouchableOpacity onPress={() => btnOpenGalery()} style={styles.imageButton}>
                     <Feather name="image" size={100} color="white" />
-                  </TouchableOpacity>
+                  </TouchableOpacity>:
+                  <TouchableOpacity onPress={() => btnOpenGalery()} style={styles.imageButton}>
+                  <Avatar.Image size={100} source={{ uri: TeamImageUri }} />
+                </TouchableOpacity>
+                  }
                 </View>
                 <View style={styles.formGroup}>
                   <Text style={styles.inputLabel}>Team Name:</Text>

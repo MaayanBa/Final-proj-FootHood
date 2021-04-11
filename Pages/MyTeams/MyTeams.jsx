@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import { StyleSheet, View, Text, Button, Image, Image as ImageBall, TouchableOpacity, ScrollView, SafeAreaView, StatusBar } from 'react-native';
 import { Badge, Icon, withBadge } from 'react-native-elements'
 //import ScrollView from 'rn-faded-scrollview';
-
 import { Avatar } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import Header from '../Main/Header';
+import { Context as AuthContext } from '../../Contexts/AuthContext';
+import { Context as TeamContext } from '../../Contexts/TeamContext';
 
 const styles = StyleSheet.create({
     container: {
@@ -173,7 +174,13 @@ export default function MyTeams(props) {
     //save -----------------------
     //props.navigation.navigate('MyTeamsNav' , {screen: 'AddNewTeam'});
     //props.navigation.navigate('LoginUser');
+    const { state } = useContext(AuthContext);
+    const { GetTeamDetails } = useContext(TeamContext);
+    const [playerEmail, setPlayerEmail] = useState(JSON.parse(state.token).Email)
 
+    // useEffect(() => {
+    //     GetTeamDetails(playerEmail)
+    // }, [])
 
 
 

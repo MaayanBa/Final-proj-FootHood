@@ -298,7 +298,7 @@ export default function NewLoginUser({ navigation }) {
                 <View style={styles.action}>
                     <FontAwesome name="user-o" color={colors.text} size={20} style={{ bottom: 5 }} />
                     <TextInput
-                        placeholder="Username"
+                        placeholder="Email"
                         placeholderTextColor="#666666"
                         style={[styles.textInput, {
                             color: colors.text
