@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
 
     chatContainer: {
         width: '90%',
-        height: '60%',
+        height: '55%',
         paddingBottom: 10
     },
 
