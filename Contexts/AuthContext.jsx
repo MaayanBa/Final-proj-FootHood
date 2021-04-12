@@ -59,7 +59,7 @@ const register = dispatch => {
             //console.log("json value === " + jsonValue)
             await AsyncStorage.setItem('token', jsonValue)
             //console.log("response . data === " + response.data);
-            dispatch({ type: 'register', payload: response.data.token });
+            dispatch({ type: 'register', payload: response.data });
         } catch (err) {
             //console.log(err.response.data)
             dispatch({ type: 'add_error', payload: 'Somthing went wrong with registration' })
