@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     //padding: 40,
     color: 'white',
-    fontSize: 40,
+    fontSize: 32,
   },
   pickerView: {
     flexDirection: 'row',
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     alignItems: 'center',
-    fontSize: 30,
+    fontSize: 16,
   },
   txtView: {
     alignSelf: 'center',
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     alignItems: 'center',
-    fontSize: 25,
+    fontSize: 16,
   },
   locationView: {
     flexDirection: 'row',

@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     container: {
         height: "100%",
         paddingTop: 40,
-        paddingLeft: 30,
+        paddingLeft: 10,
         paddingRight: 30,
     },
     safeArea: {

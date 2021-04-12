@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     },
     txtTeam_Name: {
         alignSelf: 'center',
-        fontSize: 40,
+        fontSize: 32,
         fontWeight: "bold",
 
     },

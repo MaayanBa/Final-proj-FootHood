@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: "bold",
         alignItems: 'center',
-        fontSize: 25,
+        fontSize: 16,
     },
     textStyle: {
         color: "white",
@@ -57,7 +57,7 @@ export default function DateAndTime() {
 
     useEffect(() => {
         dateGame !== new Date() ?
-            dateGame < new Date() ? alert('The date you have choosen has passed') : setShowDateTimePicker_Game(true) // to show the picker again in time mode 
+            dateGame < new Date() ? null : setShowDateTimePicker_Game(true) // to show the picker again in time mode 
             : null
     }, [dateGame])
 
@@ -81,15 +81,21 @@ export default function DateAndTime() {
             setShowDateTimePicker_Regi(false);
 
             if (mode == 'date') {
-                const currentDate = selectedValue || new Date();
-                setDateRegistration(currentDate);
-                setMode('time');
-                setShowDateTimePicker_Regi(true); // to show the picker again in time mode
+                const lastDate = selectedValue || new Date();
+                if ((lastDate.getDate() < dateGame.getDate() && lastDate.getMonth() == dateGame.getMonth()) || (lastDate.getMonth() < dateGame.getMonth())) {
+                    setDateRegistration(lastDate);
+                    setMode('time');
+                    setShowDateTimePicker_Regi(true); // to show the picker again in time mode
+                }
+                else
+                    alert("The date you have choosen is after the game date.Please choose another date.")
+
 
             } else if (mode === 'time') {
-                const selectedTime = selectedValue || new Date();
-                setRegistretionTime(selectedTime);
+                const selectedlastTime = selectedValue || new Date();
+                setRegistretionTime(selectedlastTime);
                 setShowLastRegistration(true);
+
             }
         }
     };
@@ -116,7 +122,7 @@ export default function DateAndTime() {
                 <TouchableOpacity onPress={() => showMode('date', 'game')}>
                     <Image style={styles.imgCalander} source={require('../../../assets/Calander.png')} />
                 </TouchableOpacity>
-                <Text style={styles.txtLabel}> Game Date {'&'} Time:</Text>
+                <Text style={styles.txtLabel}>Game Date {'&'} Time:</Text>
             </View>
 
 
