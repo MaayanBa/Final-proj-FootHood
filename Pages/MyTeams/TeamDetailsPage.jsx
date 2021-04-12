@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   StyleSheet, View,
   SafeAreaView, ScrollView, TouchableOpacity,
@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { Text, ListItem, Avatar } from 'react-native-elements';
 import { Feather } from '@expo/vector-icons';
-
+import {Context as TeamContext} from '../../Contexts/TeamContext';
 
 const styles = StyleSheet.create({
   container: {
@@ -118,11 +118,11 @@ const styles = StyleSheet.create({
   }
 })
 
-
 export default function TeamDetailsPage({route}) {
   const {team} = route.params;
   const [rulesModalVisible, setRuleModalVisible] = useState(false);
   const [addPlayerModalVisible, setAddPlayerModalVisible] = useState(false);
+  const { LeaveTeam } = useContext(TeamContext);
 
 
   // const team =
@@ -146,6 +146,7 @@ export default function TeamDetailsPage({route}) {
   //   ],
   //   rulesAndLaws: "Hello And welcome to FootHood First Game. The rules are- Each team has 5 players and the team who wins is the team who reaches 2 goals. The game time is 8 min. If needed there is a 2 min extra time."
   // }
+
   const playerList = team.PlayersList.map((p, i) => (
     <ListItem key={i} bottomDivider>
       <TouchableOpacity activeOpacity={0.8} onPress={() => console.log("player Card")} >
@@ -204,7 +205,15 @@ export default function TeamDetailsPage({route}) {
     </View>
   </ModalAddNewPlayer>
 
-  const ExitTeam = () => { console.log('Leave Team') }
+  const ExitTeam = () => { 
+    console.log('Leave Team')
+    let playerInTeam = {
+      TeamSerialNum: team.TeamSerialNum,
+      EmailPlayer: team.EmailManager 
+    }
+    //LeaveTeam(playerInTeam);
+   }
+
   return (
     <SafeAreaView style={styles.container} >
 

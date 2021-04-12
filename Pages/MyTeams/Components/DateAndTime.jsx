@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, Image, StyleSheet, LogBox } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-
-
 const styles = StyleSheet.create({
     txtLabel: {
         color: "white",
@@ -28,8 +26,6 @@ const styles = StyleSheet.create({
     },
 })
 
-
-
 export default function DateAndTime() {
     const [mode, setMode] = useState(null);
 
@@ -49,7 +45,6 @@ export default function DateAndTime() {
     LogBox.ignoreLogs([
         'TypeError: _reactNative.NativeModules.RNDatePickerAndroid.dismiss is not a function',
     ]);
-
 
     // useEffect(() => {
     //   dateRegistration > dateGame ? alert('You must choose a date before the game date' ) : setShowDateTimePicker_Regi(true); // to show the picker again in time mode
@@ -90,17 +85,13 @@ export default function DateAndTime() {
                 else
                     alert("The date you have choosen is after the game date.Please choose another date.")
 
-
             } else if (mode === 'time') {
                 const selectedlastTime = selectedValue || new Date();
                 setRegistretionTime(selectedlastTime);
                 setShowLastRegistration(true);
-
             }
         }
     };
-
-
 
     const showMode = (currentMode, belongTo) => {
         //console.log(belongTo);     console.log(currentMode);
@@ -124,7 +115,6 @@ export default function DateAndTime() {
                 </TouchableOpacity>
                 <Text style={styles.txtLabel}>Game Date {'&'} Time:</Text>
             </View>
-
 
             {showshowDateTimePicker_Game && (
                 <DateTimePicker

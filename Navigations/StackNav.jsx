@@ -1,5 +1,4 @@
-import React, { useEffect, useContext } from 'react';
-import { View, Text } from 'react-native';
+import React, { useContext } from 'react';
 import NewLoginUser from '../Pages/Login/NewLoginUser';
 
 import Register from '../Pages/Login/Register';
@@ -17,14 +16,11 @@ const MyTheme = {
         ...DefaultTheme.colors,
         //primary: 'rgb(255, 45, 85)',
         background: 'transparent',
-
     },
-
 };
-
 export default function StackNav() {
     const { state } = useContext(AuthContext);
-    
+
     return (
         <NavigationContainer theme={MyTheme}>
             <Stack.Navigator initialRouteName="NewLoginUser" screenOptions={{ headerBackTitleVisible: false, headerShown: false }}>
@@ -39,8 +35,6 @@ export default function StackNav() {
                             <Stack.Screen name="TabNav" component={TabNav} />
                         </>
                 }
-
-
             </Stack.Navigator>
         </NavigationContainer>
 

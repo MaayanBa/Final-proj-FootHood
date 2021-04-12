@@ -6,20 +6,21 @@ import TeamDetailsPage from '../Pages/MyTeams/TeamDetailsPage';
 import GameList from '../Pages/MyTeams/GameList';
 import MyTeams from '../Pages/MyTeams/MyTeams';
 
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+//import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+
 import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
-const MyTheme = {
-    ...DefaultTheme,
-    colors: {
-        ...DefaultTheme.colors,
-        //primary: 'rgb(255, 45, 85)',
-        background: 'transparent',
+// const MyTheme = {
+//     ...DefaultTheme,
+//     colors: {
+//         ...DefaultTheme.colors,
+//         //primary: 'rgb(255, 45, 85)',
+//         background: 'transparent',
 
-    },
+//     },
 
-};
+// };
 
 export default function StackNav_MyTeams() {
     return (

@@ -10,8 +10,8 @@ import {
     Image
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import { LinearGradient } from 'react-native-linear-gradient';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+// import { LinearGradient } from 'react-native-linear-gradient';
+// import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
@@ -143,27 +143,14 @@ const styles = StyleSheet.create({
 
 export default function NewLoginUser({ navigation }) {
     const { state, signIn, tryLocalSignin, clearErrorMessage } = useContext(AuthContext);
-    const [userData, setUserData] = useState('');
-    // const [data, setData] = useState({
-    //     username: '',
-    //     password: '',
-    //     check_textInputChange: false,
-    //     secureTextEntry: true,
-    //     isValidUser: true,
-    //     isValidPassword: true,
-    // });
     const [email, setEmail] = useState('');
     const [passCode, setPassCode] = useState('');
     const [check_textInputChange, setCheck_textInputChange] = useState(false);
     const [secureTextEntry, setSecureTextEntry] = useState(true);
     const [isValidUser, setIsValidUser] = useState(true);
     const [isValidPassCode, setIsValidPassCode] = useState(true);
-
     const [checked, setChecked] = React.useState(false);
-
     const { colors } = useTheme();
-
-
 
     useEffect(() => {
         clearErrorMessage();
@@ -282,12 +269,10 @@ export default function NewLoginUser({ navigation }) {
                     source={require('../../assets/FootHoodLogo.png')}
                     style={styles.logo}
                     resizeMode="stretch"
-
                 />
             </View>
             <Text style={[styles.title, { marginBottom: 20, }]}>Welcome!</Text>
             <Animatable.View style={styles.footer} animation="fadeInUpBig">
-
 
                 <View style={styles.action}>
                     <FontAwesome name="user-o" color={colors.text} size={20} style={{ bottom: 5 }} />
@@ -312,8 +297,6 @@ export default function NewLoginUser({ navigation }) {
                         <Text style={styles.errorMsg}>Username must be 4 characters long.</Text>
                     </Animatable.View>
                 }
-
-
 
                 <View style={styles.action}>
                     <Feather name="lock" color={colors.text} size={20} style={{ bottom: 5 }} />

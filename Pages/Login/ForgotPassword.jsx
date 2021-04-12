@@ -1,7 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { View, TextInput, Text, Button, StyleSheet, Image } from 'react-native';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as yup from "yup";
+import React, { useContext } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import EmailVerification from './Components/EmailVerification';
 import ResetPassCode from './Components/ResetPassCode';
@@ -29,7 +27,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export default function ForgotPassword(props) {
+export default function ForgotPassword() {
   const { state } = useContext(AuthContext);
   return (
     <View style={styles.container}>

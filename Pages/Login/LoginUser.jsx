@@ -6,10 +6,8 @@ import { Checkbox } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Google from 'expo-google-app-auth';
 import * as Facebook from 'expo-facebook';
-import AppCss from '../../CSS/AppCss';
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
     paddingTop: StatusBar.currentHeight,

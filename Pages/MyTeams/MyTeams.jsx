@@ -1,9 +1,9 @@
-import React, { useEffect, useState,useContext } from 'react';
-import { StyleSheet, View, Text, Button, Image, Image as ImageBall, TouchableOpacity, ScrollView, SafeAreaView, StatusBar } from 'react-native';
-import { Badge, Icon, withBadge } from 'react-native-elements'
+import React, { useContext } from 'react';
+import { StyleSheet, View, Text, Image, Image as ImageBall, TouchableOpacity, ScrollView, SafeAreaView, StatusBar } from 'react-native';
+import { Badge } from 'react-native-elements'
 //import ScrollView from 'rn-faded-scrollview';
 import { Avatar } from 'react-native-paper';
-import { LinearGradient } from 'expo-linear-gradient';
+//import { LinearGradient } from 'expo-linear-gradient';
 import Header from '../Main/Header';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
 
@@ -170,15 +170,7 @@ const teams = [
     },
 ]
 export default function MyTeams(props) {
-    //save -----------------------
-    //props.navigation.navigate('MyTeamsNav' , {screen: 'AddNewTeam'});
-    //props.navigation.navigate('LoginUser');
-
     const { state:{ myTeams} } = useContext(TeamContext);
-    //const [teams, setTeams] = useState(JSON.stringify(state.MyTeams))
-
-
-
 
     let teamCards = myTeams.map((team, key) => {
         
@@ -197,14 +189,14 @@ export default function MyTeams(props) {
             </View>
             <Badge
                 containerStyle={{ position: 'absolute', top: 0, left: 0 }}
-                value="99+"//Need to count length of messages from DB
+                value="99+" //Need to count length of messages from DB
                 status="error" />
         </TouchableOpacity>
     })
 
     return (
         <View style={styles.container}>
-            <Header />{console.log(myTeams)}
+            <Header />
             <View style={styles.header}>
                 <Text style={styles.title}>My Teams</Text>
             </View>

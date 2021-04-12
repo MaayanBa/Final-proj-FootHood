@@ -5,7 +5,9 @@ import TeamApi from '../api/Team';
 
 const teamReducer = (state, action) => {
     switch (action.type) {
-
+        case 'LeaveTeam': {
+            return { ...state, myTeams: action.payload }
+        }
         case 'clearState': {
             return { ...state, myTeams: [] }
         }
@@ -63,6 +65,23 @@ const GetPlayers4Team = dispatch => async (playersList) => {
         dispatch({ type: 'add_error', payload: 'Somthing went wrong when getting players for team' })
     }
 }
+
+// const LeaveTeam = dispatch => async (playerInTeam) => {
+//     try {
+
+//         console.log(playerInTeam);
+//         const response = await TeamApi.post('/LeaveTeam', { playerInTeam });
+//         console.log("response . data === " + response.data);
+//         console.log( response.data);
+//         //dispatch({ type: 'LeaveTeam', payload: response.data })
+//     } catch (err) {
+//         console.log("in error" +err.response.data)
+//         console.log(err.response.data)
+
+//         // dispatch({ type: 'add_error', payload: 'Somthing went wrong when getting players for team' })
+//     }
+// }
+
 export const { Context, Provider } = CreateDataContext(
     //Reducer
     teamReducer,
@@ -70,7 +89,8 @@ export const { Context, Provider } = CreateDataContext(
         CreateNewTeam,
         GetTeamDetails,
         clearState,
-        GetPlayers4Team
+        GetPlayers4Team,
+        //LeaveTeam
     },
     {
         myTeams: [],

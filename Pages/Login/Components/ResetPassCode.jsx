@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     },
 })
 
-export default function ResetPassCode({ navigation }) {
+export default function ResetPassCode() {
     const { state, updatPassCode } = useContext(AuthContext);
 
     const changePassCode = async (values) => {
@@ -79,7 +79,9 @@ export default function ResetPassCode({ navigation }) {
         await updatPassCode(changes)
         // state.passCodeHasChanged ? resetRestore_PassCode_values() : null
         //navigation.navigate("NewLoginUser")
+        alert("Password updated")
         console.log("Success Reset");
+        
     }
     return (
         <Formik initialValues={{ otp: '', newPassCode: '', passCodeConfirmation: '' }}

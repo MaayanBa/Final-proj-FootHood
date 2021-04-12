@@ -1,8 +1,8 @@
-import React, { useState, useEffect, Component, useContext } from 'react';
-import { StyleSheet, Button, TextInput, View, TouchableOpacity, ScrollView, SafeAreaView, StatusBar, Platform, Image, Text } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { StyleSheet, TextInput, View, TouchableOpacity, ScrollView, SafeAreaView, StatusBar, Platform, Image, Text } from 'react-native';
 //import { Text } from 'react-native-elements';
 import { RadioButton } from 'react-native-paper';
-import { Formik, Field, Form, useField, FieldAttributes, FieldArray } from "formik";
+import { Formik } from "formik";
 import * as yup from 'yup';
 import { Foundation, Feather } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
@@ -10,7 +10,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import StarRating from 'react-native-star-rating';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Avatar } from 'react-native-paper';
-import { ListItem } from 'react-native-elements/dist/list/ListItem';
+// import { ListItem } from 'react-native-elements/dist/list/ListItem';
 import {Context as AuthContext } from '../../Contexts/AuthContext';
 
 

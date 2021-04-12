@@ -1,6 +1,6 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { View, TextInput, Text, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React, { useContext, useEffect } from 'react';
+import { View, TextInput, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Formik } from 'formik';
 import * as yup from "yup";
 import { Context as AuthContext } from '../../../Contexts/AuthContext'
 
@@ -63,16 +63,16 @@ const styles = StyleSheet.create({
 
 export default function EmailVerification() {
    const {  restorePassCode, resetRestore_PassCode_values } = useContext(AuthContext);
-   const [email, setEmail] = useState(null);
 
    useEffect(() => {
       resetRestore_PassCode_values()
    }, [])
 
    const verifyEmail = async (values) => {
+      console.log(values.email)
+      await restorePassCode(values.email)
       alert("Email has been sended")
-      await restorePassCode(email)
-      console.log("Success Restore");
+      //console.log("Success Restore");
    }
    return (
       <Formik initialValues={{ email: '' }}

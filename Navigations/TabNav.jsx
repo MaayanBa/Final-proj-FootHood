@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    View, Text, ImageBackground,
     Image as ImgTimer,
     Image as ImgPlayers,
     Image as ImgHomePage,
@@ -12,19 +11,11 @@ import Timer from '../Pages/Timer/Timer';
 import Players from '../Pages/Players/Players';
 import FindGame from '../Pages/FindGame/FindGame';
 import StackNav_MyTeams from './StackNav_MyTeams'
-
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-const Tab = createBottomTabNavigator();
-
-
 import { createStackNavigator } from '@react-navigation/stack';
 
-const Stack = createStackNavigator();
-
-
-
-
+const Tab = createBottomTabNavigator();
+//const Stack = createStackNavigator();
 
 export default function TabNav() {
     return (
@@ -54,28 +45,26 @@ export default function TabNav() {
                 //tabBarOptions={showIcon = true}
                 options={{
                     tabBarLabel: 'Players',
-                    tabBarIcon: () => (<ImgTimer source={require('../assets/Players.png')} resizeMode='contain' style={{ width: 50, height: 50 }} />)
+                    tabBarIcon: () => (<ImgPlayers source={require('../assets/Players.png')} resizeMode='contain' style={{ width: 50, height: 50 }} />)
                 }} />
             <Tab.Screen name="Main" component={Main}
                 //tabBarOptions={showIcon = true}
                 options={{
                     tabBarLabel: 'Home Page',
-                    tabBarIcon: () => (<ImgTimer source={require('../assets/HomePage.png')} resizeMode='contain' style={{ width: 48, height: 48 }} />)
+                    tabBarIcon: () => (<ImgHomePage source={require('../assets/HomePage.png')} resizeMode='contain' style={{ width: 48, height: 48 }} />)
                 }} />
             <Tab.Screen name="FindGame" component={FindGame}
                 //tabBarOptions={showIcon = true}
                 options={{
                     tabBarLabel: 'Find Game',
-                    tabBarIcon: () => (<ImgTimer source={require('../assets/FindGame.png')} resizeMode='contain' style={{ width: 50, height: 50 }} />)
+                    tabBarIcon: () => (<ImgFindGame source={require('../assets/FindGame.png')} resizeMode='contain' style={{ width: 50, height: 50 }} />)
                 }} />
             <Tab.Screen name="StackNav_MyTeams" component={StackNav_MyTeams}
                 //tabBarOptions={showIcon = true}
                 options={{
                     tabBarLabel: 'My Teams',
-                    tabBarIcon: () => (<ImgTimer source={require('../assets/MyTeams.png')} resizeMode='contain' style={{ width: 60, height: 60 }} />)
-                }} />
-                {/* <Stack.Screen name="AddNewTeam" component={AddNewTeam}/> */}
-     
+                    tabBarIcon: () => (<ImgMyTeams source={require('../assets/MyTeams.png')} resizeMode='contain' style={{ width: 60, height: 60 }} />)
+                }} />   
         </Tab.Navigator>
     )
 }

@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function Timer({navigation}) {
+export default function Timer() {
     const {state,signOut } = useContext(AuthContext);
     const {clearState } = useContext(TeamContext);
 

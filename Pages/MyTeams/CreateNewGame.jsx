@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react'
 import {
   StyleSheet, TouchableOpacity, SafeAreaView,
   ScrollView, View, Text,
-  StatusBar, Modal, Dimensions,
-  Pressable, Image, LogBox
+  StatusBar, Modal, Dimensions, Pressable
 } from 'react-native';
 // import { Formik } from "formik";
 // import * as yup from 'yup';
@@ -15,10 +14,9 @@ import {
   Feather as EmptySquare,
 } from '@expo/vector-icons';
 import MapView, { Marker } from 'react-native-maps';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { Checkbox } from 'react-native-paper';
+//import DateTimePicker from '@react-native-community/datetimepicker';
+//import { Checkbox } from 'react-native-paper';
 import DateAndTime from './Components/DateAndTime';
-import { set } from 'react-native-reanimated';
 //import { CheckBox } from 'react-native-elements'
 
 const equipmentList = [

@@ -146,7 +146,7 @@ export default function TeamPage(props) {
 
     const fetchMessages = async () => {
         try {
-            let data = await firebase.database().ref("/teamsid").get()
+            let data = await firebase.database().ref(`${team.TeamSerialNum}`).get()
             if (data.exists()) {
                 data = data.exportVal()
                 data = convertToArray(data)
@@ -172,7 +172,7 @@ export default function TeamPage(props) {
                     createdAt: val.createdAt.getTime()
                 }
             })
-            await firebase.database().ref("/teamsid").set(messagesToSave)
+            await firebase.database().ref(`${team.TeamSerialNum}`).set(messagesToSave)
             console.log("Updating messages")
         } catch (e) {
             console.log(e)

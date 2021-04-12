@@ -4,9 +4,9 @@ import { StyleSheet, TextInput,
   ScrollView, SafeAreaView, StatusBar, 
   Image, LogBox } from 'react-native';
 import { RadioButton } from 'react-native-paper';
-import { Formik, Field, Form } from "formik";
+import { Formik } from "formik";
 import * as yup from 'yup';
-import { Feather, Foundation } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { Avatar } from 'react-native-paper';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
