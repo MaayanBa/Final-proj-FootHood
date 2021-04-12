@@ -124,9 +124,11 @@ export default function TeamPage(props) {
 
     useEffect(() => {
         fetchMessages().catch(e => console.log(e))
-        console.log("this is the player list = " + team.PlayersList)
-        console.log(team)
-        GetPlayers4Team(team.PlayersList)
+        // console.log("this is the player list = " + team.PlayersList)
+        // console.log(team)
+        //GetPlayers4Team(team.PlayersList) -- to check
+
+        
         // setMessages([
         //     {
         //         _id: 1,

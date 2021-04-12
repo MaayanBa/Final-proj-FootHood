@@ -53,8 +53,8 @@ const GetTeamDetails = dispatch => async (playerEmail) => {
 const GetPlayers4Team = dispatch => async (playersList) => {
     try {
         const response = await TeamApi.post('/GetPlayers4Team', { playersList });
-        console.log("response . data === " + response.data);
-        console.log( response.data);
+        // console.log("response . data === " + response.data);
+        // console.log( response.data);
         //dispatch({ type: 'GetTeamDetails', payload: response.data })
     } catch (err) {
         console.log("in error" +err.response.data)

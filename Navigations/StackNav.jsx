@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { View, Text } from 'react-native';
 import NewLoginUser from '../Pages/Login/NewLoginUser';
 
@@ -24,6 +24,7 @@ const MyTheme = {
 
 export default function StackNav() {
     const { state } = useContext(AuthContext);
+    
     return (
         <NavigationContainer theme={MyTheme}>
             <Stack.Navigator initialRouteName="NewLoginUser" screenOptions={{ headerBackTitleVisible: false, headerShown: false }}>

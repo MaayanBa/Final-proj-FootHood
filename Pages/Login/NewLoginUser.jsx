@@ -23,7 +23,7 @@ import { Context as AuthContext } from '../../Contexts/AuthContext';
 
 
 const { height } = Dimensions.get("screen");
-const height_logo = height * 0.25;
+const height_logo = height * 0.4;
 
 const styles = StyleSheet.create({
     container: {
@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     },
     header: {
         flex: 1,
+        paddingTop:20,
         justifyContent: 'flex-end',
         alignItems: 'center',
     },
@@ -49,8 +50,9 @@ const styles = StyleSheet.create({
 
     },
     logo: {
+        top:50,
         width: height_logo,
-        height: height_logo
+        height: height_logo,
     },
     title: {
         color: 'white',
@@ -161,16 +163,7 @@ export default function NewLoginUser({ navigation }) {
 
     const { colors } = useTheme();
 
-    const readStorage = async () => {
-        // try {
-        //     let res = await AsyncStorage.getItem('UserData')
-        //     if (res !== null) {
-        //         setUserData(JSON.parse(res));
-        //     }
-        // } catch (e) {
-        //     return () => console.log('Error!');
-        // }
-    }
+
 
     useEffect(() => {
         clearErrorMessage();
@@ -285,10 +278,11 @@ export default function NewLoginUser({ navigation }) {
             <View style={styles.header}>
                 <Animatable.Image
                     animation="bounceIn"
-                    duraton="1500"
+                    duration={3500}
                     source={require('../../assets/FootHoodLogo.png')}
                     style={styles.logo}
                     resizeMode="stretch"
+
                 />
             </View>
             <Text style={[styles.title, { marginBottom: 20, }]}>Welcome!</Text>

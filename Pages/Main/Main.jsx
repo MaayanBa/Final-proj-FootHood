@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { View, Text, StyleSheet } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import Header from './Header';
 import { Context as AuthContext } from '../../Contexts/AuthContext'
 import { Context as TeamContext } from '../../Contexts/TeamContext'
@@ -30,14 +31,19 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function Main() {
+export default function Main({navigation}) {
 
-    const { state:{token} } = useContext(AuthContext)
+    const { state: { token }, tryLocalSignin } = useContext(AuthContext)
     const { GetTeamDetails } = useContext(TeamContext);
-    const [emailUser, setEmailUser] = useState(JSON.parse(token).Email)
+    const [user, setUser] = useState(token)
+    //const [emailUser, setEmailUser] = useState(token.Email)
+    
     useEffect(() => {
-        console.log(emailUser)
-        GetTeamDetails(emailUser)
+       //console.log(navigation)
+       //tryLocalSignin()
+        console.log("th user email ---> "+user.Email)
+        //console.log("th user email ---> "+emailUser)
+        GetTeamDetails(user.Email)
     }, [])
     return (
         <View style={styles.container}>

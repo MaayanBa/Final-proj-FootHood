@@ -204,7 +204,7 @@ export default function MyTeams(props) {
 
     return (
         <View style={styles.container}>
-            <Header />
+            <Header />{console.log(myTeams)}
             <View style={styles.header}>
                 <Text style={styles.title}>My Teams</Text>
             </View>

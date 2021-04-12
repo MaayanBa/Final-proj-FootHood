@@ -164,7 +164,7 @@ export default function TeamDetailsPage({route}) {
   >
     <View style={styles.centeredView}>
       <View style={styles.modalView}>
-        <Text style={styles.modalTxt}>{team.rulesAndLaws}</Text>
+        <Text style={styles.modalTxt}>{team.RulesAndLaws}</Text>
         <Pressable style={styles.btnClose} onPress={() => setRuleModalVisible(!rulesModalVisible)} >
           <Text style={styles.textStyle}>Close</Text>
         </Pressable>

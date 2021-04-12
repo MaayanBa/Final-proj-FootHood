@@ -125,9 +125,9 @@ const newTeamValidationSchema = yup.object().shape({
 })
 
 export default function CreateNewTeam({navigation}) {
-  const { state } = useContext(AuthContext);
+  const { state:{token} } = useContext(AuthContext);
   const { teamState,CreateNewTeam } = useContext(TeamContext);
-  const [emailManager, setEmailManager] = useState(JSON.parse(state.token).Email)
+  const [emailManager, setEmailManager] = useState(token.Email)
   const [privateOrPublic, setPrivateOrPublic] = useState('public');
   const [TeamImageUri, setimageUri] = useState(null);
 

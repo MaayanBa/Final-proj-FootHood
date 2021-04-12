@@ -39,8 +39,9 @@ const authReducer = (state, action) => {
 const tryLocalSignin = dispatch => async () => {
     const token = await AsyncStorage.getItem('token');
     //console.log("this is the token after get async storage = " + token)
+    //console.log("im tring to get async storage", JSON.parse(token) )
     if (token) {
-        dispatch({ type: 'signin', payload: token })
+        dispatch({ type: 'signin', payload: JSON.parse(token) })
     }
 }
 
@@ -102,11 +103,11 @@ const signIn = dispatch => {
                 // console.log("this is the obj from DB  => ");
                 // console.log(res);
             }
-            console.log(playerDetails.status)
+            //console.log(playerDetails.data)
             if (playerDetails.status < 400 || playerDetails.status >= 500) {
                 if (checked) {
                     let jsonValue = JSON.stringify(playerDetails.data);
-                    await AsyncStorage.setItem('token', jsonValue);
+                     await AsyncStorage.setItem('token', jsonValue);                     
                 }
                 dispatch({ type: 'signin', payload: playerDetails.data });
             }
