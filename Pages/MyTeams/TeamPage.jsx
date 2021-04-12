@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import {
     Text,
     Button,
@@ -10,11 +10,12 @@ import {
     StatusBar,
     TouchableOpacity
 } from 'react-native';
-import {Card, Title, Paragraph} from 'react-native-paper';
-import {GiftedChat} from 'react-native-gifted-chat'
-import {firebase} from '../../api/FireBase';
+import { Card, Title, Paragraph } from 'react-native-paper';
+import { GiftedChat } from 'react-native-gifted-chat'
+import { firebase } from '../../api/FireBase';
 import Header from '../Main/Header';
-import {Avatar} from 'react-native-paper';
+import { Avatar } from 'react-native-paper';
+import { Context as TeamContext } from '../../Contexts/TeamContext'
 
 
 const styles = StyleSheet.create({
@@ -93,16 +94,16 @@ const styles = StyleSheet.create({
 
 })
 
-const team =
-    {
-        teamName: "Barca",
-        groupPhoto: 'https://static.nike.com/a/images/f_auto/dpr_3.0/w_371,c_limit/a76a7bba-36d1-4637-97ec-1ecfbfcfc547/official-fc-barcelona-store.png',
-        teamManager: "Benel",
-        numberOfPlayers: 10,
-        playersInTeam: [
-            {Name: "Maayan"}, {Name: "Benel"}, {Name: "Guy"}, {Name: "Yossi"}, {Name: "Avi"}
-        ]
-    }
+// const team =
+//     {
+//         teamName: "Barca",
+//         groupPhoto: 'https://static.nike.com/a/images/f_auto/dpr_3.0/w_371,c_limit/a76a7bba-36d1-4637-97ec-1ecfbfcfc547/official-fc-barcelona-store.png',
+//         teamManager: "Benel",
+//         numberOfPlayers: 10,
+//         playersInTeam: [
+//             {Name: "Maayan"}, {Name: "Benel"}, {Name: "Guy"}, {Name: "Yossi"}, {Name: "Avi"}
+//         ]
+//     }
 
 
 
@@ -110,17 +111,22 @@ const convertToArray = (data) => {
     let res = []
     Object.keys(data).map((key) => {
         let val = data[key]
-        res.push({...val,createdAt:new Date(val.createdAt)})
+        res.push({ ...val, createdAt: new Date(val.createdAt) })
     })
     return res
 }
 
 
 export default function TeamPage(props) {
+    const { team } = props.route.params;
+    const { GetPlayers4Team } = useContext(TeamContext)
     const [messages, setMessages] = useState([]);
 
     useEffect(() => {
         fetchMessages().catch(e => console.log(e))
+        console.log("this is the player list = " + team.PlayersList)
+        console.log(team)
+        GetPlayers4Team(team.PlayersList)
         // setMessages([
         //     {
         //         _id: 1,
@@ -139,7 +145,7 @@ export default function TeamPage(props) {
     const fetchMessages = async () => {
         try {
             let data = await firebase.database().ref("/teamsid").get()
-            if(data.exists()){
+            if (data.exists()) {
                 data = data.exportVal()
                 data = convertToArray(data)
                 setMessages(data)
@@ -151,14 +157,14 @@ export default function TeamPage(props) {
     }
 
     useEffect(() => {
-        if(!messages || messages.length === 0) return
+        if (!messages || messages.length === 0) return
         updateMessages()
     }, [messages])
 
 
     const updateMessages = async () => {
         try {
-            let messagesToSave = messages.map((val) =>{
+            let messagesToSave = messages.map((val) => {
                 return {
                     ...val,
                     createdAt: val.createdAt.getTime()
@@ -175,7 +181,7 @@ export default function TeamPage(props) {
     const onSend = useCallback((message = []) => {
         console.log("On send")
         setMessages((prev) => {
-            let newMessages = [...prev,...message]
+            let newMessages = [...prev, ...message]
             GiftedChat.append(prev, message)
             return newMessages
         })
@@ -193,28 +199,28 @@ export default function TeamPage(props) {
         // <ScrollView>
         <View style={styles.container}>
             <TouchableOpacity style={styles.TeamInformation}
-                              onPress={() => props.navigation.navigate('TeamDetailsPage')}>
+                onPress={() => props.navigation.navigate('TeamDetailsPage', { team })}>
                 <View style={styles.TeamInformation_Up}>
                     <View style={styles.TeamInformation_Up_Title}>
                         <Text style={styles.txtTeam}> Team</Text>
-                        <Text style={styles.txtTeam_Name}>{team.teamName}</Text>
+                        <Text style={styles.txtTeam_Name}>{team.TeamName}</Text>
                     </View>
                     <View style={styles.TeamInformation_Up_imgView}>
-                        <Avatar.Image size={100} source={{uri: team.groupPhoto}}/>
+                        <Avatar.Image size={100} source={{ uri: team.TeamPicture }} />
                     </View>
                 </View>
                 <View style={styles.TeamInformation_players}>
-                    <Text>Players:</Text>
+                    <Text>Players: {team.PlayersList.length}</Text>
                 </View>
             </TouchableOpacity>
 
             <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame')}
-                              style={styles.btnTouch}>
+                style={styles.btnTouch}>
                 <Text style={styles.txtBtnTouch}>Create New Game</Text>
             </TouchableOpacity>
 
             <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList')}
-                              style={styles.btnTouch}>
+                style={styles.btnTouch}>
                 <Text style={styles.txtBtnTouch}>View Games</Text>
             </TouchableOpacity>
 

@@ -5,7 +5,8 @@ import AppCss from './CSS/AppCss';
 import StackNav from './Navigations/StackNav';
 import { Provider as AuthProvider } from './Contexts/AuthContext';
 import { Provider as TeamProvider } from './Contexts/TeamContext';
-
+//import {setNavigator} from './Navigations/navigationRef'
+//inside the stack nav ===>   ref={(navigator) => setNavigator(navigator)}
 
 
 //The End.......

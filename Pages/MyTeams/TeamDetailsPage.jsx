@@ -119,39 +119,40 @@ const styles = StyleSheet.create({
 })
 
 
-export default function TeamDetailsPage(props) {
+export default function TeamDetailsPage({route}) {
+  const {team} = route.params;
   const [rulesModalVisible, setRuleModalVisible] = useState(false);
   const [addPlayerModalVisible, setAddPlayerModalVisible] = useState(false);
 
 
-  const team =
-  {
-    teamName: "Barca",
-    groupPhoto: 'https://static.nike.com/a/images/f_auto/dpr_3.0/w_371,c_limit/a76a7bba-36d1-4637-97ec-1ecfbfcfc547/official-fc-barcelona-store.png',
-    teamManager: "Benel",
-    numberOfPlayers: 10,
-    playersInTeam: [
-      { Name: "Lionel Messi", PlayerImg: "https://assets.laliga.com/squad/2020/t178/p19054/2048x2048/p19054_t178_2020_1_002_000.jpg" },
-      { Name: "Cristiano Ronaldo", PlayerImg: "https://site-cdn.givemesport.com/images/21/02/05/354cc6f5366bb99d3eca6bc92f8d2165/1201.jpg" },
-      { Name: "Neymar Jr.", PlayerImg: "https://sportshub.cbsistatic.com/i/r/2020/12/13/2106d28e-ef9a-4813-9c9e-ba468026d2e3/thumbnail/640x360/3cfd012b2f428aa2f4cf7ef9cd4b5d64/neymar-1.png" },
-      { Name: "Bruno Fernandes", PlayerImg: "http://therepublikofmancunia.com/wp-content/uploads/2020/06/NINTCHDBPICT000565411429-1440x684.jpg" },
-      { Name: "Eran Levi", PlayerImg: "https://www.israelhayom.co.il/sites/default/files/styles/566x349/public/images/articles/2018/10/09/15390673413277_b.jpg" },
-      { Name: "Lionel Messi", PlayerImg: "https://assets.laliga.com/squad/2020/t178/p19054/2048x2048/p19054_t178_2020_1_002_000.jpg" },
-      { Name: "Cristiano Ronaldo", PlayerImg: "https://site-cdn.givemesport.com/images/21/02/05/354cc6f5366bb99d3eca6bc92f8d2165/1201.jpg" },
-      { Name: "Neymar Jr.", PlayerImg: "https://sportshub.cbsistatic.com/i/r/2020/12/13/2106d28e-ef9a-4813-9c9e-ba468026d2e3/thumbnail/640x360/3cfd012b2f428aa2f4cf7ef9cd4b5d64/neymar-1.png" },
-      { Name: "Bruno Fernandes", PlayerImg: "http://therepublikofmancunia.com/wp-content/uploads/2020/06/NINTCHDBPICT000565411429-1440x684.jpg" },
-      { Name: "Eran Levi", PlayerImg: "https://www.israelhayom.co.il/sites/default/files/styles/566x349/public/images/articles/2018/10/09/15390673413277_b.jpg" }
+  // const team =
+  // {
+  //   TeamName: "Barca",
+  //   TeamPicture: 'https://static.nike.com/a/images/f_auto/dpr_3.0/w_371,c_limit/a76a7bba-36d1-4637-97ec-1ecfbfcfc547/official-fc-barcelona-store.png',
+  //   teamManager: "Benel",
+  //   numberOfPlayers: 10,
+  //   PlayersList: [
+  //     { EmailPlayer: "Lionel Messi", PlayerImg: "https://assets.laliga.com/squad/2020/t178/p19054/2048x2048/p19054_t178_2020_1_002_000.jpg" },
+  //     { EmailPlayer: "Cristiano Ronaldo", PlayerImg: "https://site-cdn.givemesport.com/images/21/02/05/354cc6f5366bb99d3eca6bc92f8d2165/1201.jpg" },
+  //     { EmailPlayer: "Neymar Jr.", PlayerImg: "https://sportshub.cbsistatic.com/i/r/2020/12/13/2106d28e-ef9a-4813-9c9e-ba468026d2e3/thumbnail/640x360/3cfd012b2f428aa2f4cf7ef9cd4b5d64/neymar-1.png" },
+  //     { EmailPlayer: "Bruno Fernandes", PlayerImg: "http://therepublikofmancunia.com/wp-content/uploads/2020/06/NINTCHDBPICT000565411429-1440x684.jpg" },
+  //     { EmailPlayer: "Eran Levi", PlayerImg: "https://www.israelhayom.co.il/sites/default/files/styles/566x349/public/images/articles/2018/10/09/15390673413277_b.jpg" },
+  //     { EmailPlayer: "Lionel Messi", PlayerImg: "https://assets.laliga.com/squad/2020/t178/p19054/2048x2048/p19054_t178_2020_1_002_000.jpg" },
+  //     { EmailPlayer: "Cristiano Ronaldo", PlayerImg: "https://site-cdn.givemesport.com/images/21/02/05/354cc6f5366bb99d3eca6bc92f8d2165/1201.jpg" },
+  //     { EmailPlayer: "Neymar Jr.", PlayerImg: "https://sportshub.cbsistatic.com/i/r/2020/12/13/2106d28e-ef9a-4813-9c9e-ba468026d2e3/thumbnail/640x360/3cfd012b2f428aa2f4cf7ef9cd4b5d64/neymar-1.png" },
+  //     { EmailPlayer: "Bruno Fernandes", PlayerImg: "http://therepublikofmancunia.com/wp-content/uploads/2020/06/NINTCHDBPICT000565411429-1440x684.jpg" },
+  //     { EmailPlayer: "Eran Levi", PlayerImg: "https://www.israelhayom.co.il/sites/default/files/styles/566x349/public/images/articles/2018/10/09/15390673413277_b.jpg" }
 
-    ],
-    rulesAndLaws: "Hello And welcome to FootHood First Game. The rules are- Each team has 5 players and the team who wins is the team who reaches 2 goals. The game time is 8 min. If needed there is a 2 min extra time."
-  }
-  const playerList = team.playersInTeam.map((p, i) => (
+  //   ],
+  //   rulesAndLaws: "Hello And welcome to FootHood First Game. The rules are- Each team has 5 players and the team who wins is the team who reaches 2 goals. The game time is 8 min. If needed there is a 2 min extra time."
+  // }
+  const playerList = team.PlayersList.map((p, i) => (
     <ListItem key={i} bottomDivider>
       <TouchableOpacity activeOpacity={0.8} onPress={() => console.log("player Card")} >
         <Image style={styles.btn_PlayerCardIcon} source={require('../../assets/PlayerCardIcon.png')} />
       </TouchableOpacity>
       <ListItem.Content style={{ alignItems: 'flex-end' }} >
-        <ListItem.Title>{p.Name}</ListItem.Title>
+        <ListItem.Title>{p.EmailPlayer}</ListItem.Title>
       </ListItem.Content>
       <Avatar rounded source={{ uri: p.PlayerImg }} />
     </ListItem>
@@ -208,7 +209,7 @@ export default function TeamDetailsPage(props) {
     <SafeAreaView style={styles.container} >
 
       {/* ImageBackGround With Bottuns */}
-      <ImageBackground style={styles.imgBG} source={{ uri: team.groupPhoto }}>
+      <ImageBackground style={styles.imgBG} source={{ uri: team.TeamPicture }}>
         <Text style={styles.teamHeader}>{team.teamName}</Text>
         <View style={styles.btnsView}>
           <TouchableOpacity activeOpacity={0.8} onPress={() => setRuleModalVisible(true)} style={styles.btnModal}>

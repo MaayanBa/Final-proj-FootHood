@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { View, Text, StyleSheet } from 'react-native';
 import Header from './Header';
+import { Context as AuthContext } from '../../Contexts/AuthContext'
+import { Context as TeamContext } from '../../Contexts/TeamContext'
 
 
 const styles = StyleSheet.create({
@@ -30,6 +32,13 @@ const styles = StyleSheet.create({
 
 export default function Main() {
 
+    const { state:{token} } = useContext(AuthContext)
+    const { GetTeamDetails } = useContext(TeamContext);
+    const [emailUser, setEmailUser] = useState(JSON.parse(token).Email)
+    useEffect(() => {
+        console.log(emailUser)
+        GetTeamDetails(emailUser)
+    }, [])
     return (
         <View style={styles.container}>
             <View style={styles.header}>

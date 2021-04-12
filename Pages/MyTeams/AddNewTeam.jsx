@@ -11,7 +11,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Avatar } from 'react-native-paper';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
-
+//import {navigate} from '../../Navigations/navigationRef'
 
 const styles = StyleSheet.create({
   title: {
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
 })
 
 //Fix YellowBox Error
-LogBox.ignoreLogs([  'Setting a timer for a long period of time, i.e. multiple minutes, is a performance and correctness issue on Android as it keeps the   timer module awake, and timers can only be called when the app is in the foreground.']);
+LogBox.ignoreLogs([  'Setting a timer for a long period of time, i.e.']);
 
 const newTeamValidationSchema = yup.object().shape({
   teamName: yup
@@ -124,9 +124,9 @@ const newTeamValidationSchema = yup.object().shape({
     .required('Team Name is Required'),
 })
 
-export default function CreateNewTeam() {
+export default function CreateNewTeam({navigation}) {
   const { state } = useContext(AuthContext);
-  const { CreateNewTeam } = useContext(TeamContext);
+  const { teamState,CreateNewTeam } = useContext(TeamContext);
   const [emailManager, setEmailManager] = useState(JSON.parse(state.token).Email)
   const [privateOrPublic, setPrivateOrPublic] = useState('public');
   const [TeamImageUri, setimageUri] = useState(null);
@@ -143,25 +143,23 @@ export default function CreateNewTeam() {
     }
   };
 
-  const CreateTeam = (values) => {
+  const CreateTeam = async (values) => {
     let priOpub = false; //private or public 
     privateOrPublic === 'public'? priOpub= true: null;
-    // values.isPrivate = priOpub;
-    // values.teamPicture = TeamImageUri;
-    
     let newTeam = {
       teamName: values.teamName,
-      TeamPicture: values.teamPicture,
+      TeamPicture: TeamImageUri,
       isPrivate: priOpub,
       rulesAndLaws: values.rulesAndLaws,
       EmailManager: emailManager,
-      addPlayers: values.addPlayers,
+      addPlayers: []/*values.addPlayers*/,
     }
-    console.log("new tem  ====" )
-    console.log(newTeam.EmailManager)
-    CreateNewTeam(newTeam)
-  }
+    await CreateNewTeam(newTeam);
+    alert("The Team has Added")
+    navigation.navigate('MyTeams')
 
+    
+  }
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>

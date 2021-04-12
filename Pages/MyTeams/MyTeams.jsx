@@ -5,7 +5,6 @@ import { Badge, Icon, withBadge } from 'react-native-elements'
 import { Avatar } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import Header from '../Main/Header';
-import { Context as AuthContext } from '../../Contexts/AuthContext';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
 
 const styles = StyleSheet.create({
@@ -174,29 +173,27 @@ export default function MyTeams(props) {
     //save -----------------------
     //props.navigation.navigate('MyTeamsNav' , {screen: 'AddNewTeam'});
     //props.navigation.navigate('LoginUser');
-    const { state } = useContext(AuthContext);
-    const { GetTeamDetails } = useContext(TeamContext);
-    const [playerEmail, setPlayerEmail] = useState(JSON.parse(state.token).Email)
 
-    // useEffect(() => {
-    //     GetTeamDetails(playerEmail)
-    // }, [])
+    const { state:{ myTeams} } = useContext(TeamContext);
+    //const [teams, setTeams] = useState(JSON.stringify(state.MyTeams))
 
 
 
-    let teamCards = teams.map((team, key) => {
-        return <TouchableOpacity style={styles.teamCard} key={key} onPress={() => props.navigation.navigate('TeamPage')}>
+
+    let teamCards = myTeams.map((team, key) => {
+        
+        return <TouchableOpacity style={styles.teamCard} key={key} onPress={() => props.navigation.navigate('TeamPage',{team})}>
             <View style={styles.contextSide}>
                 <View style={styles.txtHeaderCard}>
-                    <Text style={{ fontSize: 25 }}>{team.teamName}</Text>
+                    <Text style={{ fontSize: 25 }}>{team.TeamName}</Text>
                 </View>
                 <View style={styles.descripitionCard}>
-                    <Text >Manager: {team.teamManager} </Text>
-                    <Text> Players: {team.numberOfPlayers} </Text>
+                    <Text >Manager: {team.EmailManager} </Text>
+                    <Text> Players: {team.PlayersList.length} </Text>
                 </View>
             </View>
             <View style={styles.imgSide}>
-                <Avatar.Image size={64} source={{ uri: team.groupPhoto }} />
+                <Avatar.Image size={64} source={{ uri: team.TeamPicture }} />
             </View>
             <Badge
                 containerStyle={{ position: 'absolute', top: 0, left: 0 }}
