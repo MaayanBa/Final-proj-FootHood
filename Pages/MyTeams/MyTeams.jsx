@@ -6,43 +6,20 @@ import { Avatar } from 'react-native-paper';
 //import { LinearGradient } from 'expo-linear-gradient';
 import Header from '../Main/Header';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
+import AppCss from '../../CSS/AppCss';
 
+const appCss = AppCss;
 const styles = StyleSheet.create({
-    container: {
-        height: "100%",
-        paddingTop: 40,
-        paddingLeft: 10,
-        paddingRight: 30,
-    },
     safeArea: {
         //flex: 1,
         width: '100%',
         height: 410,
     },
-    //  scrollView:{
-    //     backgroundColor: 'black',
-    //     marginHorizontal: 20,
-    //  },
-    header: {
-        alignItems: 'center',
-        //height:'25%'
-        //padding: 
-    },
-    title: {
-        alignItems: 'center',
-        //padding: 40,
-        color: 'white',
-        fontSize: 40,
-    },
     mainContent: {
         flex: 1,
         justifyContent: 'space-between',
-
-        //alignItems: 'center',
-        //alignSelf:'stretch'
-
     },
-    imageBallStyle: {
+    ball_img: {
         margin: 100,
         height: 110,
         width: 100,
@@ -51,22 +28,17 @@ const styles = StyleSheet.create({
     },
     footer: {
         justifyContent: 'flex-end',
-        flex: 1,
-        //height:'15%'
+        //flex: 1,
     },
     plusStyle: {
         margin: 5,
         height: 30,
         width: 30,
     },
-    btnCreateNewTeam: {
+    createNewTeam_btn: {
         flexDirection: "row-reverse",
         alignItems: 'center',
     },
-    txtAddNewTeam: {
-        color: 'white'
-    },
-
     teamCard: {
         backgroundColor: '#D9D9D9',
         justifyContent: 'space-around',
@@ -75,22 +47,18 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         width: '90%',
         height: 80,
-        // padding:10,
         margin: 20,
     },
     contextSide: {
         justifyContent: 'space-between'
     },
-    txtHeaderCard: {
+    headerCard_View: {
         alignSelf: 'center'
-
     },
     descripitionCard: {
         flexDirection: 'row-reverse',
         justifyContent: 'space-between',
-
     },
-
 });
 
 const teams = [
@@ -170,21 +138,21 @@ const teams = [
     },
 ]
 export default function MyTeams(props) {
-    const { state:{ myTeams} } = useContext(TeamContext);
+    const { state: { myTeams } } = useContext(TeamContext);
 
     let teamCards = myTeams.map((team, key) => {
-        
-        return <TouchableOpacity style={styles.teamCard} key={key} onPress={() => props.navigation.navigate('TeamPage',{team})}>
+
+        return <TouchableOpacity style={styles.teamCard} key={key} onPress={() => props.navigation.navigate('TeamPage', { team })}>
             <View style={styles.contextSide}>
-                <View style={styles.txtHeaderCard}>
-                    <Text style={{ fontSize: 25 }}>{team.TeamName}</Text>
+                <View style={styles.headerCard_View}>
+                    <Text style={[appCss.inputLabel,{fontSize:25, color:'black'}]}>{team.TeamName}</Text>
                 </View>
                 <View style={styles.descripitionCard}>
                     <Text >Manager: {team.EmailManager} </Text>
                     <Text> Players: {team.PlayersList.length} </Text>
                 </View>
             </View>
-            <View style={styles.imgSide}>
+            <View style={styles.side_img}>
                 <Avatar.Image size={64} source={{ uri: team.TeamPicture }} />
             </View>
             <Badge
@@ -195,11 +163,9 @@ export default function MyTeams(props) {
     })
 
     return (
-        <View style={styles.container}>
-            <Header />
-            <View style={styles.header}>
-                <Text style={styles.title}>My Teams</Text>
-            </View>
+        <View style={appCss.container}>
+            {/* <Header /> */}
+            <Text style={[appCss.title, appCss.space]}>My Teams</Text>
             <View style={styles.mainContent}>
                 <SafeAreaView style={styles.safeArea}>
                     <ScrollView style={styles.scrollView} >
@@ -211,10 +177,10 @@ export default function MyTeams(props) {
 
             </View>
             <View style={styles.footer}>
-                <ImageBall source={require('../../assets/ball.png')} style={styles.imageBallStyle} />
-                <TouchableOpacity style={styles.btnCreateNewTeam} onPress={() => props.navigation.navigate('AddNewTeam')}>
+                <ImageBall source={require('../../assets/ball.png')} style={styles.ball_img} />
+                <TouchableOpacity style={styles.createNewTeam_btn} onPress={() => props.navigation.navigate('AddNewTeam')}>
                     <Image source={require('../../assets/plus.png')} style={styles.plusStyle} />
-                    <Text style={styles.txtAddNewTeam}>Add New Team</Text>
+                    <Text style={appCss.inputLabel}>Add New Team</Text>
                 </TouchableOpacity>
             </View>
         </View>

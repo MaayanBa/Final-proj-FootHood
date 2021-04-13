@@ -3,7 +3,9 @@ import { View, TextInput, Text, StyleSheet, Image, TouchableOpacity } from 'reac
 import { Formik } from 'formik';
 import * as yup from "yup";
 import { Context as AuthContext } from '../../../Contexts/AuthContext'
+import AppCss from '../../../CSS/AppCss';
 
+const appCss = AppCss;
 
 const RestorePassordSchema = yup.object().shape(
    {
@@ -13,53 +15,6 @@ const RestorePassordSchema = yup.object().shape(
          .required('Email Address is Required')
    }
 )
-const styles = StyleSheet.create({
-   verifyContainer: {
-   },
-   explanationText: {
-      paddingBottom: 50,
-      color: 'orange',
-      fontSize: 30,
-   },
-   inputLabel: {
-      alignItems: "flex-start",
-      color: "white",
-      fontWeight: "bold",
-      fontSize: 16
-   },
-   sectionStyle: {
-      flexDirection: 'row-reverse',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      backgroundColor: '#fff',
-      borderWidth: 0.5,
-      borderColor: '#000',
-      height: 40,
-      borderRadius: 5,
-      margin: 10,
-   },
-   imageStyle: {
-      margin: 5,
-      height: 25,
-      width: 25,
-   },
-   btnSendOTP: {
-      backgroundColor: "#D9D9D9",
-      borderRadius: 10,
-      paddingVertical: 10,
-      marginTop: 30,
-      width: '60%',
-      alignSelf: 'center',
-      padding: 5,
-   },
-   txtBtnTouch: {
-      fontSize: 18,
-      color: "black",
-      fontWeight: "bold",
-      alignSelf: "center",
-      textTransform: "uppercase"
-   },
-})
 
 export default function EmailVerification() {
    const {  restorePassCode, resetRestore_PassCode_values } = useContext(AuthContext);
@@ -81,13 +36,13 @@ export default function EmailVerification() {
          {({ handleChange, handleSubmit, values, errors, isValid, touched }) => (
             <View style={styles.verifyContainer}>
                <View style={styles.formGroup}>
-                  <Text style={styles.explanationText}>Please enter your email to send an OTP code</Text>
+                  <Text style={appCss.explanationText}>Please enter your email to send an OTP code</Text>
                </View>
 
                <View style={styles.formGroup}>
-                  <Text style={styles.inputLabel}>Email:</Text>
-                  <View style={styles.sectionStyle}>
-                     <Image source={require('../../../assets/soccerPlayer.png')} style={styles.imageStyle} />
+                  <Text style={appCss.inputLabel}>Email:</Text>
+                  <View style={appCss.sectionStyle}>
+                     <Image source={require('../../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                      <TextInput
                         name="email"
                         placeholder="Email Address"
@@ -103,8 +58,8 @@ export default function EmailVerification() {
                </View>
 
                <View style={styles.formgruop}>
-                  <TouchableOpacity activeOpacity={0.8} onPress={handleSubmit} style={styles.btnSendOTP}>
-                     <Text style={styles.txtBtnTouch}>Send OTP Code</Text>
+                  <TouchableOpacity activeOpacity={0.8} onPress={handleSubmit} style={[appCss.btnTouch,{width:'60%'}]}>
+                     <Text style={appCss.txtBtnTouch}>Send OTP Code</Text>
                   </TouchableOpacity>
                </View>
             </View>

@@ -12,45 +12,19 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { Avatar } from 'react-native-paper';
 // import { ListItem } from 'react-native-elements/dist/list/ListItem';
 import {Context as AuthContext } from '../../Contexts/AuthContext';
+import AppCss from '../../CSS/AppCss'
 
-
+const appCss = AppCss;
 const styles = StyleSheet.create({
-  title: {
+  title_View: {
     alignItems: 'center',
-    padding: 20,
+    padding: 30,
+    marginBottom: 10
   },
-  titletxt: {
-    alignItems: 'center',
-    color: 'white',
-    fontSize: 32,
-    marginBottom: 30
-  },
-  // signUpContainer: {
-  //     width: '80%',
-  //     backgroundColor: 'white',
-  //     padding: 10,
-  // },
-  container: {
-    flex: 1,
-    paddingTop: StatusBar.currentHeight,
-    width: '100%',
-    padding: 20
-
-  },
-  // textInput: {
-  //     height: 40,
-  //     width: '100%',
-  //     margin: 10,
-  //     backgroundColor: 'white',
-  //     borderColor: 'gray',
-  //     borderWidth: StyleSheet.hairlineWidth,
-  //     borderRadius: 10,
-  // },
   gender: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     padding: 10
-
   },
   signupButton: {
     alignItems: 'center',
@@ -60,48 +34,17 @@ const styles = StyleSheet.create({
   textboxes: {
     alignItems: 'center',
   },
-  inputLabel: {
-    alignItems: "flex-start",
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 16
-  },
   role: {
     padding: 20,
     alignItems: 'center'
   },
-  datePicker: {
-    //alignItems: "flex-start",
-    //padding: 5
-  },
   starStamina: {
     padding: 20,
     justifyContent: 'flex-start',
-    // flexDirection: 'row-reverse'
-
   },
   radioButtonStyle: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-  },
-  ImageStyle: {
-    //padding: 10,
-    margin: 5,
-    height: 25,
-    width: 25,
-    //resizeMode: 'stretch',
-    //alignItems: 'center',
-  },
-  sectionStyle: {
-    flexDirection: 'row-reverse',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderWidth: 0.5,
-    borderColor: '#000',
-    height: 40,
-    borderRadius: 5,
-    margin: 10,
   },
   calanderStyle: {
     margin: 5,
@@ -113,22 +56,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     padding: 8,
   },
-  btnRegister: {
-    backgroundColor: "#D9D9D9",
-    borderRadius: 10,
-    paddingVertical: 10,
-    marginTop: 30,
-    width: '40%',
-    alignSelf: 'center',
-    padding: 5,
-  },
-  txtBtnTouch: {
-    fontSize: 18,
-    color: "black",
-    fontWeight: "bold",
-    alignSelf: "center",
-    textTransform: "uppercase"
-  },
+
 })
 
 
@@ -251,11 +179,11 @@ export default function Register(props) {
     //console.log(values)
   }
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
       <ScrollView>
-        <View style={styles.container}>
-          <View style={styles.title}>
-            <Text style={styles.titletxt}>Register</Text>
+        <View style={appCss.container,{padding:40}}>
+          <View style={styles.title_View}>
+            <Text style={appCss.title}>Register</Text>
           </View>
           <Formik
             validationSchema={loginValidationSchema}
@@ -280,9 +208,9 @@ export default function Register(props) {
             {({ handleChange, handleSubmit, values, errors, isValid, touched }) => (
               <>
                 <View style={styles.formGroup}>
-                  <Text style={styles.inputLabel}>First Name:</Text>
+                  <Text style={appCss.inputLabel}>First Name:</Text>
                   <View style={styles.sectionStyle}>
-                    <Image source={require('../../assets/soccerPlayer.png')} style={styles.ImageStyle} />
+                    <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="firstName"
                       placeholder="First Name"
@@ -295,9 +223,9 @@ export default function Register(props) {
                   }
                 </View>
                 <View style={styles.formGroup}>
-                  <Text style={styles.inputLabel}>Last Name:</Text>
+                  <Text style={appCss.inputLabel}>Last Name:</Text>
                   <View style={styles.sectionStyle}>
-                    <Image source={require('../../assets/soccerPlayer.png')} style={styles.ImageStyle} />
+                    <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="lastName"
                       placeholder="Last Name"
@@ -310,9 +238,9 @@ export default function Register(props) {
                   }
                 </View>
                 <View style={styles.formGroup}>
-                  <Text style={styles.inputLabel}>Email:</Text>
+                  <Text style={appCss.inputLabel}>Email:</Text>
                   <View style={styles.sectionStyle}>
-                    <Image source={require('../../assets/soccerPlayer.png')} style={styles.ImageStyle} />
+                    <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="email"
                       placeholder="Email Address"
@@ -326,9 +254,9 @@ export default function Register(props) {
                   }
                 </View>
                 <View style={styles.formGroup}>
-                  <Text style={styles.inputLabel}>Phone Number:</Text>
+                  <Text style={appCss.inputLabel}>Phone Number:</Text>
                   <View style={styles.sectionStyle}>
-                    <Image source={require('../../assets/soccerPlayer.png')} style={styles.ImageStyle} />
+                    <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="phoneNumber"
                       placeholder="Phone Number"
@@ -342,9 +270,9 @@ export default function Register(props) {
                   }
                 </View>
                 <View style={styles.formGroup}>
-                  <Text style={styles.inputLabel}>Password:</Text>
+                  <Text style={appCss.inputLabel}>Password:</Text>
                   <View style={styles.sectionStyle}>
-                    <Image source={require('../../assets/soccerPlayer.png')} style={styles.ImageStyle} />
+                    <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="password"
                       placeholder="Password"
@@ -358,9 +286,9 @@ export default function Register(props) {
                   }
                 </View>
                 <View style={styles.formGroup}>
-                  <Text style={styles.inputLabel}>Confirm Password:</Text>
+                  <Text style={appCss.inputLabel}>Confirm Password:</Text>
                   <View style={styles.sectionStyle}>
-                    <Image source={require('../../assets/soccerPlayer.png')} style={styles.ImageStyle} />
+                    <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="passwordConfirmation"
                       placeholder="Password Confirmation"
@@ -374,7 +302,7 @@ export default function Register(props) {
                   }
                 </View>
                 <View style={styles.formGroup}>
-                  <Text style={styles.inputLabel}>Gender: {gender} </Text>
+                  <Text style={appCss.inputLabel}>Gender: {gender} </Text>
                   <View style={styles.gender}>
                     <TouchableOpacity onPress={() => checkGender('male')}>
                       <Foundation name="male-symbol" size={40} color="#32CD32" />
@@ -386,9 +314,9 @@ export default function Register(props) {
                 </View>
 
                 <View style={styles.formGroup}>
-                  <Text style={styles.inputLabel}>City:</Text>
+                  <Text style={appCss.inputLabel}>City:</Text>
                   <View style={styles.sectionStyle}>
-                    <Image source={require('../../assets/soccerPlayer.png')} style={styles.ImageStyle} />
+                    <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="city"
                       placeholder="City"
@@ -419,14 +347,14 @@ export default function Register(props) {
                 </View>
 
                 <View style={styles.formGroup, { flexDirection: "row-reverse", justifyContent: 'space-between' }}>
-                  <Text style={styles.inputLabel}>Player Picture:</Text>
+                  <Text style={appCss.inputLabel}>Player Picture:</Text>
                   {displayPicture()}
                 </View>
 
                 <View style={styles.formGroup}>
-                  <Text style={styles.inputLabel}>Height:</Text>
+                  <Text style={appCss.inputLabel}>Height:</Text>
                   <View style={styles.sectionStyle}>
-                    <Image source={require('../../assets/soccerPlayer.png')} style={styles.ImageStyle} />
+                    <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="height"
                       placeholder="Height"
@@ -438,7 +366,7 @@ export default function Register(props) {
                 </View>
 
                 <View style={styles.formGroup}>
-                  <Text style={styles.inputLabel}>Preffered Role:</Text>
+                  <Text style={appCss.inputLabel}>Preffered Role:</Text>
                   <View style={styles.role}>
                     <DropDownPicker
                       items={[
@@ -461,7 +389,7 @@ export default function Register(props) {
                 </View>
 
                 <View style={styles.formGroup}>
-                  <Text style={styles.inputLabel}>Current Fitness:</Text>
+                  <Text style={appCss.inputLabel}>Current Fitness:</Text>
                   <View style={styles.starStamina}>
                     <StarRating
                       disabled={false}
@@ -475,10 +403,10 @@ export default function Register(props) {
                 </View>
 
                 <View style={styles.formGroup}>
-                  <Text style={styles.inputLabel}>Strong Leg:</Text>
+                  <Text style={appCss.inputLabel}>Strong Leg:</Text>
                   <View style={styles.prefferedLeg}>
                     <TouchableOpacity>
-                      <Text style={styles.inputLabel}>Right</Text>
+                      <Text style={appCss.inputLabel}>Right</Text>
                       <RadioButton
                         value="right"
                         status={strongLeg === 'right' ? 'checked' : 'unchecked'}
@@ -497,7 +425,7 @@ export default function Register(props) {
                 </View>
 
                 <TouchableOpacity activeOpacity={0.8} onPress={handleSubmit} style={styles.btnRegister}>
-                  <Text style={styles.txtBtnTouch}>Sign Up</Text>
+                  <Text style={appCss.txtBtnTouch}>Sign Up</Text>
                 </TouchableOpacity>
               </>
             )}

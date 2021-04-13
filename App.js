@@ -8,7 +8,7 @@ import { Provider as TeamProvider } from './Contexts/TeamContext';
 //import {setNavigator} from './Navigations/navigationRef'
 //inside the stack nav ===>   ref={(navigator) => setNavigator(navigator)}
 
-
+const cssApp = AppCss;
 //The End.......
 // "homepage": "http://proj.ruppin.ac.il/bgroup13/Mobile"
 export default function App() {
@@ -16,8 +16,8 @@ export default function App() {
   return (
     <TeamProvider>
       <AuthProvider>
-        <ImageBackground source={require('./assets/WallPaper.png')} style={AppCss.imageBackGround}>
-          <StatusBar backgroundColor="transparent" />
+        <ImageBackground source={require('./assets/WallPaper.png')} style={cssApp.imageBackGround}>
+          <StatusBar />
           <StackNav />
         </ImageBackground >
       </AuthProvider>

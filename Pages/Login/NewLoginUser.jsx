@@ -20,17 +20,14 @@ import { Checkbox } from 'react-native-paper';
 import * as Google from 'expo-google-app-auth';
 import * as Facebook from 'expo-facebook';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
-
+import AppCss from '../../CSS/AppCss'
 
 const { height } = Dimensions.get("screen");
 const height_logo = height * 0.4;
 
+const appCss = AppCss;
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        //backgroundColor: '#009387'
-    },
-    header: {
+    headerPart: {
         flex: 1,
         paddingTop:20,
         justifyContent: 'flex-end',
@@ -47,25 +44,17 @@ const styles = StyleSheet.create({
         marginBottom: 30,
         width: "90%",
         alignSelf: 'center',
-
     },
     logo: {
         top:50,
         width: height_logo,
         height: height_logo,
     },
-    title: {
-        color: 'white',
-        fontSize: 30,
-        fontWeight: 'bold',
-        alignSelf: 'center'
-    },
     text: {
         color: 'grey',
         marginTop: 5
     },
-    button: {
-        //alignItems: 'flex-end',
+    buttonSignIn: {
         marginTop: 10,
         backgroundColor: "#08d4c4",
         width: 160,
@@ -74,8 +63,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 50,
         flexDirection: 'row',
-
-
     },
     action: {
         flexDirection: 'row-reverse',
@@ -85,8 +72,6 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         marginBottom: 20,
         padding: 5,
-
-
     },
     actionError: {
         flexDirection: 'row',
@@ -94,7 +79,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#FF0000',
         paddingBottom: 5,
-
     },
     textInput: {
         flex: 1,
@@ -110,7 +94,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row-reverse',
         justifyContent: 'space-between'
     },
-
     textSign: {
         color: 'white',
         fontWeight: 'bold'
@@ -260,9 +243,9 @@ export default function NewLoginUser({ navigation }) {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={appCss.container}>
             <StatusBar backgroundColor='transparent' barStyle="light-content" />
-            <View style={styles.header}>
+            <View style={styles.headerPart}>
                 <Animatable.Image
                     animation="bounceIn"
                     duration={3500}
@@ -271,7 +254,7 @@ export default function NewLoginUser({ navigation }) {
                     resizeMode="stretch"
                 />
             </View>
-            <Text style={[styles.title, { marginBottom: 20, }]}>Welcome!</Text>
+            <Text style={[appCss.title, { marginBottom: 20, }]}>Welcome!</Text>
             <Animatable.View style={styles.footer} animation="fadeInUpBig">
 
                 <View style={styles.action}>
@@ -333,7 +316,7 @@ export default function NewLoginUser({ navigation }) {
                 </View>
 
                 <View style={styles.loginBtns}>
-                    <TouchableOpacity style={[styles.button, { alignSelf: 'center', }]} onPress={() => { loginHandle(email, passCode, () => navigation.navigate('TabNav')) }}                >
+                    <TouchableOpacity style={[styles.buttonSignIn, { alignSelf: 'center', }]} onPress={() => { loginHandle(email, passCode, () => navigation.navigate('TabNav')) }}                >
                         <Text style={[styles.textSign, { color: '#fff' }]}>Sign In</Text>
                     </TouchableOpacity>
                     {
