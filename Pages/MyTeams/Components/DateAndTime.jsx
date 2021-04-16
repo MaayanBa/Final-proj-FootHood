@@ -1,26 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, Image, StyleSheet, LogBox } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
+import AppCss from '../../../CSS/AppCss';
+
+const appCss = AppCss;
 
 const styles = StyleSheet.create({
-    txtLabel: {
-        color: "white",
-        fontWeight: "bold",
-        alignItems: 'center',
-        fontSize: 16,
-    },
-    textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center"
-    },
     dateTime_View: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginTop: 25
     },
-    imgCalander: {
+    calander_img: {
         width: 60,
         height: 60
     },
@@ -111,9 +103,9 @@ export default function DateAndTime() {
             {/* Date and Time */}
             <View style={styles.dateTime_View}>
                 <TouchableOpacity onPress={() => showMode('date', 'game')}>
-                    <Image style={styles.imgCalander} source={require('../../../assets/Calander.png')} />
+                    <Image style={styles.calander_img} source={require('../../../assets/Calander.png')} />
                 </TouchableOpacity>
-                <Text style={styles.txtLabel}>Game Date {'&'} Time:</Text>
+                <Text style={appCss.inputLabel}>Game Date {'&'} Time:</Text>
             </View>
 
             {showshowDateTimePicker_Game && (
@@ -129,16 +121,16 @@ export default function DateAndTime() {
             )}
 
             {showChoosenDateGame &&
-                <Text style={[styles.textStyle, { color: 'orange', fontSize: 15, marginTop: 5 }]}>
+                <Text style={[appCss.inputLabel, { color: 'orange', fontSize: 15, marginTop: 5 , alignSelf:'center' }]}>
                     {dateAndTime(dateGame, gameTime)}
                 </Text>}
 
             {/* Last date for registration */}
             <View style={styles.dateTime_View}>
                 <TouchableOpacity onPress={() => showMode('date', 'registration')}>
-                    <Image style={styles.imgCalander} source={require('../../../assets/Calander.png')} />
+                    <Image style={styles.calander_img} source={require('../../../assets/Calander.png')} />
                 </TouchableOpacity>
-                <Text style={styles.txtLabel}>Final Registration Date:</Text>
+                <Text style={appCss.inputLabel}>Final Registration Date:</Text>
             </View>
             {showDateTimePicker_Regi && (
                 <DateTimePicker
@@ -153,7 +145,7 @@ export default function DateAndTime() {
             )}
 
             {showLastRegistration &&
-                <Text style={[styles.textStyle, { color: 'orange', fontSize: 15, marginTop: 5 }]}>
+                <Text style={[appCss.inputLabel, { color: 'orange', fontSize: 15, marginTop: 5 , alignSelf:'center' }]}>
                     {dateAndTime(dateRegistration, registrationTime)}
                 </Text>}
         </View>

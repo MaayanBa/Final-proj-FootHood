@@ -18,11 +18,9 @@ import AppCss from '../../CSS/AppCss';
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
-
   imageButton: {
     alignItems: 'center'
   },
-
   formGroup: {
     padding: 5,
   },
@@ -34,7 +32,6 @@ const styles = StyleSheet.create({
   textboxes: {
     alignItems: 'center',
   },
-
   textInput: {
     padding: 2
   },

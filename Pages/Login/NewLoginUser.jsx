@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     loginBtns: {
         top: 20
     },
-    socialBtn: {
+    social_btn: {
         alignItems: 'center',
         padding: 30
         , paddingTop: 10
@@ -338,12 +338,12 @@ export default function NewLoginUser({ navigation }) {
 
                     <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop: 20 }}>
                         <TouchableOpacity onPress={() => fetchdataFromFacebook()}>
-                            <View style={styles.socialBtn}>
+                            <View style={styles.social_btn}>
                                 <Image source={require('../../assets/Facebook.png')} style={styles.faceAndGmail_btn} />
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => signInWithGoogleAsync()}>
-                            <View style={styles.socialBtn}>
+                            <View style={styles.social_btn}>
                                 <Image source={require('../../assets/Gmail.png')} style={styles.faceAndGmail_btn} />
                             </View>
                         </TouchableOpacity>
