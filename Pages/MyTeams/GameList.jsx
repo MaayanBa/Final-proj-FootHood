@@ -1,12 +1,10 @@
 import React from 'react'
 import { Text, StyleSheet, Image, View, StatusBar, TouchableOpacity } from 'react-native';
+import AppCss from '../../CSS/AppCss';
+
+const appCss = AppCss;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: StatusBar.currentHeight,
-        alignItems: 'center',
-    },
     GameInformation_Touch: {
         backgroundColor: '#D9D9D9',
         width: '90%',
@@ -46,13 +44,6 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center'
     },
-    enter_btnTouch: {
-        borderRadius: 30,
-        backgroundColor: '#0078D7',
-        alignItems:'center',
-        paddingTop: 15,
-        alignSelf:'stretch'
-    },
 
 })
 
@@ -91,7 +82,7 @@ export default function GameList(props) {
                             <Text style={styles.txtStyle}>Age range: {g.ageRange}</Text>
                         </View>
                         <View style={styles.gameInformation_View_R_Down}>
-                            <TouchableOpacity style={styles.enter_btnTouch} onPress={()=> console.log("btn enter game")}>
+                            <TouchableOpacity style={appCss.blue_btn} onPress={()=> console.log("btn enter game")}>
                                 <Text style={[styles.txtStyle,{color: 'white', alignItems:'center'}]}>ENTER</Text>
                             </TouchableOpacity>
                         </View>
@@ -111,7 +102,7 @@ export default function GameList(props) {
         </TouchableOpacity>
     });
     return (
-        <View style={styles.container}>
+        <View style={[appCss.container,{alignItems: 'center',paddingTop:30}]}>
             {gameCards}
         </View>
 

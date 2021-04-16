@@ -10,14 +10,9 @@ import AppCss from '../../CSS/AppCss';
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
-    safeArea: {
-        //flex: 1,
-        width: '100%',
-        height: 410,
-    },
     mainContent: {
         flex: 1,
-        justifyContent: 'space-between',
+        //: 'space-between',
     },
     ball_img: {
         margin: 100,
@@ -61,82 +56,6 @@ const styles = StyleSheet.create({
     },
 });
 
-const teams = [
-    {
-        teamName: "Manchester United",
-        groupPhoto: 'https://assets.manutd.com/AssetPicker/images/0/0/12/55/800532/hercules-red-icon-1024x10241562734953094.png',
-        teamManager: "Dana",
-        numberOfPlayers: 10,
-        playersInTeam: [
-            {
-                Name: "Maayan"
-            },
-            {
-                Name: "Benel"
-            },
-            {
-                Name: "Liam"
-            }
-
-        ]
-    },
-    {
-        teamName: "Baraaaca",
-        groupPhoto: 'https://static.nike.com/a/images/f_auto/dpr_3.0/w_371,c_limit/a76a7bba-36d1-4637-97ec-1ecfbfcfc547/official-fc-barcelona-store.png',
-        teamManager: "Benel",
-        numberOfPlayers: 10,
-        playersInTeam: [
-            { Name: "Maayan" }, { Name: "Benel" }, { Name: "Guy" }, { Name: "Yossi" }, { Name: "Avi" }
-
-        ]
-    },
-    {
-        teamName: "Manchester United",
-        groupPhoto: 'https://assets.manutd.com/AssetPicker/images/0/0/12/55/800532/hercules-red-icon-1024x10241562734953094.png',
-        teamManager: "Dana",
-        numberOfPlayers: 10,
-        playersInTeam: [
-            {
-                Name: "Maayan"
-            },
-            {
-                Name: "Benel"
-            },
-            {
-                Name: "Liam"
-            }
-
-        ]
-    },
-    {
-        teamName: "Manchester United",
-        groupPhoto: 'https://assets.manutd.com/AssetPicker/images/0/0/12/55/800532/hercules-red-icon-1024x10241562734953094.png',
-        teamManager: "Dana",
-        numberOfPlayers: 10,
-        playersInTeam: [
-            {
-                Name: "Maayan"
-            },
-            {
-                Name: "Benel"
-            },
-            {
-                Name: "Liam"
-            }
-
-        ]
-    },
-    {
-        teamName: "Baraaaca",
-        groupPhoto: 'https://static.nike.com/a/images/f_auto/dpr_3.0/w_371,c_limit/a76a7bba-36d1-4637-97ec-1ecfbfcfc547/official-fc-barcelona-store.png',
-        teamManager: "Benel",
-        numberOfPlayers: 10,
-        playersInTeam: [
-            { Name: "Maayan" }, { Name: "Benel" }, { Name: "Guy" }, { Name: "Yossi" }, { Name: "Avi" }
-
-        ]
-    },
-]
 export default function MyTeams(props) {
     const { state: { myTeams } } = useContext(TeamContext);
 
@@ -167,8 +86,8 @@ export default function MyTeams(props) {
             {/* <Header /> */}
             <Text style={[appCss.title, appCss.space]}>My Teams</Text>
             <View style={styles.mainContent}>
-                <SafeAreaView style={styles.safeArea}>
-                    <ScrollView style={styles.scrollView} >
+                <SafeAreaView >
+                    <ScrollView >
 
                         {teamCards}
 
