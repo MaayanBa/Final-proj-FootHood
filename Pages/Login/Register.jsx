@@ -11,7 +11,7 @@ import StarRating from 'react-native-star-rating';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Avatar } from 'react-native-paper';
 // import { ListItem } from 'react-native-elements/dist/list/ListItem';
-import {Context as AuthContext } from '../../Contexts/AuthContext';
+import { Context as AuthContext } from '../../Contexts/AuthContext';
 import AppCss from '../../CSS/AppCss'
 
 const appCss = AppCss;
@@ -86,10 +86,12 @@ const loginValidationSchema = yup.object().shape({
 
 
 export default function Register(props) {
-  const {state, register} = useContext(AuthContext);
+  const { state, register } = useContext(AuthContext);
   const [imageUri, setimageUri] = useState(null);
   const [gender, setGender] = useState(null);
-  const [date, setDate] = useState(new Date(1598051730000));
+  const [date, setDate] = useState(new Date());
+  //const [dateBigger, setDateBigger] = useState(false);
+
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [staminaStars, setStaminaStars] = useState(4);
@@ -99,6 +101,7 @@ export default function Register(props) {
 
 
   const onChange = (event, selectedDate) => {
+    //setDateBigger(false)
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
@@ -153,8 +156,17 @@ export default function Register(props) {
   }
 
   const printDate = () => {
-    return `${date.getDate()}/${date.getMonth() +
-      1}/${date.getFullYear()}`;
+    let today = new Date()
+    if (`${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}` === `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
+      return null;
+    else if (today.setHours(0, 0, 0, 0) < date.setHours(0, 0, 0, 0)) {
+      alert("Please enter valid date of birth");
+      setDate(new Date());
+    }
+    else
+      return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+
   };
 
   const SignUp = (values) => {
@@ -168,12 +180,12 @@ export default function Register(props) {
       PlayerCity: "tzur moshe", //need to complte ----> values.city
       DateOfBirth: date,
       PlayerPicture: 'pic',
-      Height:180,  //need to complte-----> values.height,
+      Height: 180,  //need to complte-----> values.height,
       StrongLeg: strongLeg,
       Stamina: staminaStars,
       PreferredRole: prefferedRole
     }
-    register(player,()=>{
+    register(player, () => {
       props.navigation.navigate('TabNav')
     });
     //console.log(values)
@@ -181,7 +193,8 @@ export default function Register(props) {
   return (
     <SafeAreaView>
       <ScrollView>
-        <View style={appCss.container,{padding:40}}>
+        <StatusBar backgroundColor='transparent' barStyle="light-content" />
+        <View style={appCss.container, { padding: 40 }}>
           <View style={styles.title_View}>
             <Text style={appCss.title}>Register</Text>
           </View>
@@ -209,7 +222,7 @@ export default function Register(props) {
               <>
                 <View style={styles.formGroup}>
                   <Text style={appCss.inputLabel}>First Name:</Text>
-                  <View style={styles.sectionStyle}>
+                  <View style={appCss.sectionStyle}>
                     <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="firstName"
@@ -224,7 +237,7 @@ export default function Register(props) {
                 </View>
                 <View style={styles.formGroup}>
                   <Text style={appCss.inputLabel}>Last Name:</Text>
-                  <View style={styles.sectionStyle}>
+                  <View style={appCss.sectionStyle}>
                     <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="lastName"
@@ -239,7 +252,7 @@ export default function Register(props) {
                 </View>
                 <View style={styles.formGroup}>
                   <Text style={appCss.inputLabel}>Email:</Text>
-                  <View style={styles.sectionStyle}>
+                  <View style={appCss.sectionStyle}>
                     <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="email"
@@ -255,7 +268,7 @@ export default function Register(props) {
                 </View>
                 <View style={styles.formGroup}>
                   <Text style={appCss.inputLabel}>Phone Number:</Text>
-                  <View style={styles.sectionStyle}>
+                  <View style={appCss.sectionStyle}>
                     <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="phoneNumber"
@@ -271,7 +284,7 @@ export default function Register(props) {
                 </View>
                 <View style={styles.formGroup}>
                   <Text style={appCss.inputLabel}>Password:</Text>
-                  <View style={styles.sectionStyle}>
+                  <View style={appCss.sectionStyle}>
                     <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="password"
@@ -287,7 +300,7 @@ export default function Register(props) {
                 </View>
                 <View style={styles.formGroup}>
                   <Text style={appCss.inputLabel}>Confirm Password:</Text>
-                  <View style={styles.sectionStyle}>
+                  <View style={appCss.sectionStyle}>
                     <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="passwordConfirmation"
@@ -315,7 +328,7 @@ export default function Register(props) {
 
                 <View style={styles.formGroup}>
                   <Text style={appCss.inputLabel}>City:</Text>
-                  <View style={styles.sectionStyle}>
+                  <View style={appCss.sectionStyle}>
                     <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="city"
@@ -325,13 +338,13 @@ export default function Register(props) {
                     />
                   </View>
                 </View>
-                <View style={styles.formGroup, { flexDirection: "row-reverse", justifyContent: 'space-between' }}>
-                  <Text style={styles.inputLabel}>Date Of Birth: {printDate()}</Text>
+                <View style={[styles.formGroup, { flexDirection: "row-reverse", justifyContent: 'space-between' }]}>
+                  <Text style={appCss.inputLabel}>Date Of Birth: {printDate()}</Text>
                   <View style={styles.datePicker}>
                     <TouchableOpacity onPress={() => showDatepicker()}>
                       <Image source={require("../../assets/Calander.png")} style={styles.calanderStyle} />
                     </TouchableOpacity>
-                    {/* <Button onPress={showDatepicker} title="Date of Birth" /> */}
+
                   </View>
 
                   {show && (
@@ -353,7 +366,7 @@ export default function Register(props) {
 
                 <View style={styles.formGroup}>
                   <Text style={appCss.inputLabel}>Height:</Text>
-                  <View style={styles.sectionStyle}>
+                  <View style={appCss.sectionStyle}>
                     <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="height"
@@ -424,7 +437,7 @@ export default function Register(props) {
                   </View>
                 </View>
 
-                <TouchableOpacity activeOpacity={0.8} onPress={handleSubmit} style={styles.btnRegister}>
+                <TouchableOpacity activeOpacity={0.8} onPress={handleSubmit} style={appCss.btnTouch}>
                   <Text style={appCss.txtBtnTouch}>Sign Up</Text>
                 </TouchableOpacity>
               </>

@@ -23,6 +23,7 @@ export default function StackNav() {
 
     return (
         <NavigationContainer theme={MyTheme}>
+            
             <Stack.Navigator initialRouteName="NewLoginUser" screenOptions={{ headerBackTitleVisible: false, headerShown: false }}>
                 {
                     state.token === null ?

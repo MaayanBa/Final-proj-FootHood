@@ -27,6 +27,10 @@ export default styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16
   },
+  errorMsg: {
+    color: '#FF0000',
+    fontSize: 14,
+},
   soccerPlayer_img: {
     margin: 5,
     height: 25,

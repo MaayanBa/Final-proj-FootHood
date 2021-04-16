@@ -4,10 +4,7 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    Dimensions,
-    StyleSheet,
-    StatusBar,
-    Image
+    StatusBar
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 // import { LinearGradient } from 'react-native-linear-gradient';
@@ -21,101 +18,14 @@ import * as Google from 'expo-google-app-auth';
 import * as Facebook from 'expo-facebook';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import AppCss from '../../CSS/AppCss';
+import LoginCss from '../../CSS/LoginCss';
 import FaceBookLogin from './Components/FaceBookLogin';
 import GmailLogin from './Components/GmailLogin';
 
-const { height } = Dimensions.get("screen");
-const height_logo = height * 0.4;
+
 
 const appCss = AppCss;
-const styles = StyleSheet.create({
-    headerPart: {
-        flex: 1,
-        paddingTop:20,
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-    },
-    footer: {
-        flex: 1.5,
-        backgroundColor: "white",
-        // borderTopLeftRadius: 30,
-        // borderTopRightRadius: 30,
-        borderRadius: 30,
-        paddingVertical: 20,
-        paddingHorizontal: 30,
-        marginBottom: 30,
-        width: "90%",
-        alignSelf: 'center',
-    },
-    logo: {
-        top:50,
-        width: height_logo,
-        height: height_logo,
-    },
-    text: {
-        color: 'grey',
-        marginTop: 5
-    },
-    buttonSignIn: {
-        marginTop: 10,
-        backgroundColor: "#08d4c4",
-        width: 160,
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 50,
-        flexDirection: 'row',
-    },
-    action: {
-        flexDirection: 'row-reverse',
-        marginTop: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#f2f2f2',
-        paddingBottom: 5,
-        marginBottom: 20,
-        padding: 5,
-    },
-    actionError: {
-        flexDirection: 'row',
-        marginTop: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#FF0000',
-        paddingBottom: 5,
-    },
-    textInput: {
-        flex: 1,
-        marginTop: Platform.OS === 'ios' ? 0 : -12,
-        paddingRight: 10,
-        color: '#05375a',
-    },
-    errorMsg: {
-        color: '#FF0000',
-        fontSize: 14,
-    },
-    forgot_Register: {
-        flexDirection: 'row-reverse',
-        justifyContent: 'space-between'
-    },
-    textSign: {
-        color: 'white',
-        fontWeight: 'bold'
-    },
-    check: {
-        flexDirection: "row-reverse",
-        justifyContent: 'center',
-        paddingTop: 20
-    },
-    rememberMe: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        padding: 7,
-        color: '#009387'
-    },
-    loginBtns: {
-        top: 20
-    },
-
-});
+const loginCss = LoginCss;
 
 
 export default function NewLoginUser({ navigation }) {
@@ -136,11 +46,8 @@ export default function NewLoginUser({ navigation }) {
 
     }, []);
 
- 
-
-
     const textInputChange = (val) => {
-        if (val.trim().length >= 1) {            
+        if (val.trim().length >= 1) {
             setEmail(val);
             clearErrorMessage()
             setCheck_textInputChange(true);
@@ -187,24 +94,24 @@ export default function NewLoginUser({ navigation }) {
     return (
         <View style={appCss.container}>
             <StatusBar backgroundColor='transparent' barStyle="light-content" />
-            <View style={styles.headerPart}>
+            <View style={loginCss.headerPart}>
                 <Animatable.Image
                     animation="bounceIn"
                     duration={3500}
                     source={require('../../assets/FootHoodLogo.png')}
-                    style={styles.logo}
+                    style={loginCss.logo}
                     resizeMode="stretch"
                 />
             </View>
             <Text style={[appCss.title, { marginBottom: 20, }]}>Welcome!</Text>
-            <Animatable.View style={styles.footer} animation="fadeInUpBig">
+            <Animatable.View style={loginCss.footer} animation="fadeInUpBig">
 
-                <View style={styles.action}>
+                <View style={loginCss.login_field}>
                     <FontAwesome name="user-o" color={colors.text} size={20} style={{ bottom: 5 }} />
                     <TextInput
                         placeholder="Email"
                         placeholderTextColor="#666666"
-                        style={[styles.textInput, {
+                        style={[loginCss.textInput, {
                             color: colors.text
                         }]}
                         autoCapitalize="none"
@@ -219,17 +126,17 @@ export default function NewLoginUser({ navigation }) {
                 </View>
                 {isValidUser ? null :
                     <Animatable.View animation="fadeInLeft" duration={500}>
-                        <Text style={styles.errorMsg}>Username must be 4 characters long.</Text>
+                        <Text style={appCss.errorMsg}>Username must be 4 characters long.</Text>
                     </Animatable.View>
                 }
 
-                <View style={styles.action}>
+                <View style={loginCss.login_field}>
                     <Feather name="lock" color={colors.text} size={20} style={{ bottom: 5 }} />
                     <TextInput
                         placeholder="Password"
                         placeholderTextColor="#666666"
                         secureTextEntry={secureTextEntry}
-                        style={[styles.textInput, {
+                        style={[loginCss.textInput, {
                             color: colors.text
                         }]}
                         autoCapitalize="none"
@@ -244,29 +151,12 @@ export default function NewLoginUser({ navigation }) {
                 </View>
                 {isValidPassCode ? null :
                     <Animatable.View animation="fadeInLeft" duration={500}>
-                        <Text style={styles.errorMsg}>Password must be 8 characters long.</Text>
+                        <Text style={appCss.errorMsg}>Password must be 8 characters long.</Text>
                     </Animatable.View>
                 }
 
-                <View style={styles.forgot_Register}>
-                    <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')} >
-                        <Text style={{ color: '#009387', marginTop: 15 }}>Forgot password?</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                        <Text style={{ color: '#009387', marginTop: 15 }}>Register Here !</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={styles.loginBtns}>
-                    <TouchableOpacity style={[styles.buttonSignIn, { alignSelf: 'center', }]} onPress={() => { loginHandle(email, passCode, () => navigation.navigate('TabNav')) }}                >
-                        <Text style={[styles.textSign, { color: '#fff' }]}>Sign In</Text>
-                    </TouchableOpacity>
-                    {
-                    state.errorMessage != ''  ?
-                        <Text style={{ color: 'red', fontSize: 15, alignSelf: 'center' , paddingTop:4}}>{state.errorMessage}</Text>
-                        : null
-                    }
-                    <View style={styles.check}>
+                <View style={loginCss.forgot_remember}>
+                    <View style={loginCss.check}>
                         <Checkbox
                             uncheckedColor='#009387'
                             color='#009387'
@@ -275,19 +165,35 @@ export default function NewLoginUser({ navigation }) {
                                 setChecked(!checked);
                             }}
                         />
-                        <Text style={styles.rememberMe}>Remember me</Text>
+                        <Text style={loginCss.rememberMe}>Remember me</Text>
                     </View>
-
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop: 20 }}>
-                        <FaceBookLogin/>
-                        <GmailLogin/>
-                    </View>
+                    <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')} >
+                        <Text style={{ color: '#009387', marginTop: 7 }}>Forgot password?</Text>
+                    </TouchableOpacity>
                 </View>
 
+                <View style={loginCss.loginBtns}>
+                    <TouchableOpacity style={[loginCss.buttonSignIn, { alignSelf: 'center', }]} onPress={() => { loginHandle(email, passCode, () => navigation.navigate('TabNav')) }}                >
+                        <Text style={[loginCss.textSign, { color: '#fff' }]}>Sign In</Text>
+                    </TouchableOpacity>
+                    {
+                        state.errorMessage != '' ?
+                            <Text style={{ color: 'red', fontSize: 15, alignSelf: 'center', paddingTop: 4 }}>{state.errorMessage}</Text>
+                            : null
+                    }
+
+                    <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+                        <Text style={{ color: '#009387', marginTop: 15, alignSelf: 'center' }}>Dont have an account? Register here !</Text>
+                    </TouchableOpacity>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop: 20 }}>
+                        <FaceBookLogin />
+                        <GmailLogin />
+                    </View>
+                </View>
             </Animatable.View>
 
         </View>
-
     )
 }
 
