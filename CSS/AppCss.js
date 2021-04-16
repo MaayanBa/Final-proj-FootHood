@@ -42,6 +42,13 @@ export default styles = StyleSheet.create({
     padding: 5,
     elevation: 10,
   },
+  blue_btn:{
+    borderRadius: 30,
+    backgroundColor: '#0078D7',
+    alignItems:'center',
+    paddingTop: 15,
+    alignSelf:'stretch'
+  },
   txtBtnTouch: {
     fontSize: 18,
     color: "black",
