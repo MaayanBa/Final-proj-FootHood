@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native';
 export default styles = StyleSheet.create({
   container: {
     flex: 1,
+    //paddingTop: StatusBar.currentHeight
   },
   imageBackGround: {
     flex: 1,
@@ -39,6 +40,7 @@ export default styles = StyleSheet.create({
     width: '40%',
     alignSelf: 'center',
     padding: 5,
+    elevation: 10,
   },
   txtBtnTouch: {
     fontSize: 18,
