@@ -18,7 +18,9 @@ import MapView, { Marker } from 'react-native-maps';
 //import { Checkbox } from 'react-native-paper';
 import DateAndTime from './Components/DateAndTime';
 //import { CheckBox } from 'react-native-elements'
+import AppCss from '../../CSS/AppCss';
 
+const appCss = AppCss;
 const equipmentList = [
   { id: 0, title: 'Water', checked: true },
   { id: 1, title: 'Ball', checked: true },
@@ -36,61 +38,44 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     paddingBottom: 20,
   },
-  // safeArea: {
-  //   //flex: 1,
-  //   width: '100%',
-  //   height: 420,
-  // },
-
   headerView: {
     paddingTop: 40,
     alignItems: 'center',
-    //height:'25%'
-    //padding: 
   },
-  txtHeader: {
-    fontSize: 18,
-    color: "black",
-    fontWeight: "bold",
-    alignItems: 'center',
-    //padding: 40,
-    color: 'white',
-    fontSize: 32,
-  },
-  pickerView: {
+  plusAndMinus_View: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop: 35
   },
-  btns_PlusAndMinus_View: {
+  plusAndMinus_Btns: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: 150,
     alignSelf: 'center'
 
   },
-  txt_NumOfTeamsState: {
+  plusAndMinus_Numbers: {
     color: "white",
     fontWeight: "bold",
     alignItems: 'center',
-    fontSize: 16,
+    fontSize: 24,
   },
-  txtView: {
+  txt_View: {
     alignSelf: 'center',
     justifyContent: 'flex-end',
   },
-  txtLabel: {
+  txt_Label: {
     color: "white",
     fontWeight: "bold",
     alignItems: 'center',
     fontSize: 16,
   },
-  locationView: {
+  location_View: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop: 35
   },
-  modalView: {
+  modal_View: {
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
@@ -111,13 +96,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: 'black'
   },
-  mapContainer: {
+  map_Container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  btnClose: {
+  map_BtnClose: {
     backgroundColor: "#2196F3",
     marginTop: 20,
     borderRadius: 20,
@@ -125,12 +110,6 @@ const styles = StyleSheet.create({
     elevation: 2,
 
   },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center"
-  },
-
   checkBox_View: {
     paddingTop: 30
   },
@@ -139,25 +118,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     marginLeft: 50
   },
-
-  btnCreateGame: {
-    //elevation: 8,
-    backgroundColor: "#D9D9D9",
-    borderRadius: 10,
-    paddingVertical: 10,
-    //paddingHorizontal: 12,
-    marginTop: 30,
-    width: '80%',
-    alignSelf: 'center'
-  },
-  txtBtnTouch: {
-    fontSize: 18,
-    color: "black",
-    fontWeight: "bold",
-    alignSelf: "center",
-    textTransform: "uppercase"
-  },
-
 
 })
 
@@ -183,9 +143,9 @@ export default function CreateNewGame() {
     }}
   >
     {/* <View style={styles.centeredView}> */}
-    <View style={styles.modalView}>
+    <View style={styles.modal_View}>
       <Text style={styles.modal_Txt}>Choose Location:</Text>
-      <View style={styles.mapContainer}>
+      <View style={styles.map_Container}>
         <MapView
           onPress={(pos) => { console.log(pos.nativeEvent.coordinate); }}
           style={{ flex: 1, width: Dimensions.get('window').width - 70, height: '70%' }}
@@ -200,10 +160,10 @@ export default function CreateNewGame() {
       </View>
       {/* <Text style={styles.modalText}>Map Here</Text> */}
       <Pressable
-        style={styles.btnClose}
+        style={styles.map_BtnClose}
         onPress={() => setModalVisible(!modalVisible)}
       >
-        <Text style={styles.textStyle}>Close Map</Text>
+        <Text style={appCss.inputLabel}>Close Map</Text>
       </Pressable>
     </View>
     {/* </View> */}
@@ -257,7 +217,7 @@ export default function CreateNewGame() {
           {item.checked ?
             <CheckSquare size={30} name="check-square" /> :
             <EmptySquare size={30} name="square" />}
-          <Text style={[styles.textStyle, { alignSelf: 'center' }]}>{item.title}</Text>
+          <Text style={[appCss.inputLabel, { alignSelf: 'center' }]}>{item.title}</Text>
         </TouchableOpacity>
       )
     })
@@ -270,48 +230,48 @@ export default function CreateNewGame() {
         <View style={styles.container}>
           {/* Header */}
           <View style={styles.headerView}>
-            <Text style={styles.txtHeader}>Create New Game</Text>
+            <Text style={appCss.title}>Create New Game</Text>
           </View>
 
           {/* number of teams */}
-          <View style={styles.pickerView}>
-            <View style={styles.btns_PlusAndMinus_View}>
+          <View style={styles.plusAndMinus_View}>
+            <View style={styles.plusAndMinus_Btns}>
               <TouchableOpacity onPress={() => ChangeNum_state('plus', 'numOfTeamsState')}>
                 <Plus name="plus" size={35} color="white" />
               </TouchableOpacity>
-              <Text style={styles.txt_NumOfTeamsState}>{numOfTeamsState}</Text>
+              <Text style={styles.plusAndMinus_Numbers}>{numOfTeamsState}</Text>
               <TouchableOpacity onPress={() => ChangeNum_state('minus', 'numOfTeamsState')}>
                 <Minus name="minus" size={35} color="white" />
               </TouchableOpacity>
             </View>
-            <View style={styles.txtView}>
-              <Text style={styles.txtLabel}>Number Of Teams:</Text>
+            <View style={styles.txt_View}>
+              <Text style={styles.txt_Label}>Number Of Teams:</Text>
             </View>
           </View>
 
           {/* number of player each team */}
-          <View style={styles.pickerView}>
-            <View style={styles.btns_PlusAndMinus_View}>
+          <View style={styles.plusAndMinus_View}>
+            <View style={styles.plusAndMinus_Btns}>
               <TouchableOpacity onPress={() => ChangeNum_state('plus', 'numOfPlayersInTeam')}>
                 <Plus name="plus" size={35} color="white" />
               </TouchableOpacity>
-              <Text style={styles.txt_NumOfTeamsState}>{numOfPlayersInTeam}</Text>
+              <Text style={styles.plusAndMinus_Numbers}>{numOfPlayersInTeam}</Text>
 
               <TouchableOpacity onPress={() => ChangeNum_state('minus', 'numOfPlayersInTeam')}>
                 <Minus name="minus" size={35} color="white" />
               </TouchableOpacity>
             </View>
-            <View style={styles.txtView}>
-              <Text style={styles.txtLabel}>Players In Teams:</Text>
+            <View style={styles.txt_View}>
+              <Text style={styles.txt_Label}>Players In Teams:</Text>
             </View>
           </View>
 
           {/* Location */}
-          <View style={styles.locationView}>
+          <View style={styles.location_View}>
             <TouchableOpacity onPress={() => setModalVisible(true)} >
               <LocationFeather name="map-pin" size={40} color="white" style={{ marginLeft: 10 }} />
             </TouchableOpacity>
-            <Text style={styles.txtLabel}>Game Location:</Text>
+            <Text style={styles.txt_Label}>Game Location:</Text>
             {modalLocationMap}
           </View>
 
@@ -320,7 +280,7 @@ export default function CreateNewGame() {
 
           {/* Equipment required */}
           <View style={styles.checkBox_View}>
-            <Text style={styles.txtLabel}>Equipment List:</Text>
+            <Text style={styles.txt_Label}>Equipment List:</Text>
             {/* {itemBoxesOld} */}
             {renderCB && itemBoxes()}
           </View>
@@ -328,8 +288,8 @@ export default function CreateNewGame() {
 
 
           {/* btn Create Game */}
-          {renderCB && <TouchableOpacity activeOpacity={0.8} onPress={() => console.log("Btn Create New Game")} style={styles.btnCreateGame}>
-            <Text style={styles.txtBtnTouch}>Create New Game</Text>
+          {renderCB && <TouchableOpacity activeOpacity={0.8} onPress={() => console.log("Btn Create New Game")} style={[appCss.btnTouch,{width:"80%"}]}>
+            <Text style={appCss.txtBtnTouch}>Create New Game</Text>
           </TouchableOpacity>}
         </View>
       </ScrollView>

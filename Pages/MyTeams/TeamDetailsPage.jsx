@@ -8,7 +8,9 @@ import {
 import { Text, ListItem, Avatar } from 'react-native-elements';
 import { Feather } from '@expo/vector-icons';
 import {Context as TeamContext} from '../../Contexts/TeamContext';
+import AppCss from '../../CSS/AppCss';
 
+const appCss = AppCss;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -24,18 +26,12 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     justifyContent: 'space-between'
   },
-  teamHeader: {
-    alignSelf: 'center',
-    color: 'white',
-    fontSize: 30,
-    fontWeight: "bold",
-  },
-  btnsView: {
+  options_View: {
     alignSelf: 'center',
     marginBottom: 10,
     width: 250
   },
-  btnModal: {
+  options_Btn: {
     alignSelf: 'center',
     elevation: 5,
     backgroundColor: "#D9D9D9",
@@ -47,21 +43,12 @@ const styles = StyleSheet.create({
     width: '90%',
 
   },
-  txtBtnMdl: {
-    fontSize: 15,
-    color: "black",
-    fontWeight: "bold",
-    alignSelf: "center",
-    textAlign: 'center',
-    textTransform: "uppercase",
-  },
   centeredView: {
     flex: 1,
     justifyContent: "center",
-    //alignItems: "center",
     marginBottom: 70
   },
-  modalView: {
+  modal_View: {
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
@@ -74,13 +61,12 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
 
-
   },
-  modalTxt: {
+  modal_Txt: {
     marginBottom: 15,
     textAlign: "center"
   },
-  btnClose: {
+  modal_Closebtn: {
     backgroundColor: "#2196F3",
     marginTop: 20,
     borderRadius: 20,
@@ -89,21 +75,18 @@ const styles = StyleSheet.create({
   },
   addPlayersBtns: {
     flexDirection: "row-reverse",
-    //alignSelf:'center' 
-    //justifyContent:'space-between',
-
   },
   playerList_View: {
     marginTop: 10,
     height: '60%',
   },
-  teamPlayersText: {
+  teamPlayers_Text: {
     fontSize: 16,
     padding: 5,
     fontWeight: "bold",
     color: 'white'
   },
-  leaveTeam: {
+  leaveTeam_Btn: {
     flexDirection: "row-reverse",
     margin: 15,
     justifyContent: 'flex-end',
@@ -112,7 +95,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white'
   },
-  btn_PlayerCardIcon: {
+  playerCardIcon_Btn: {
     width: 35,
     height: 35
   }
@@ -150,7 +133,7 @@ export default function TeamDetailsPage({route}) {
   const playerList = team.PlayersList.map((p, i) => (
     <ListItem key={i} bottomDivider>
       <TouchableOpacity activeOpacity={0.8} onPress={() => console.log("player Card")} >
-        <Image style={styles.btn_PlayerCardIcon} source={require('../../assets/PlayerCardIcon.png')} />
+        <Image style={styles.playerCardIcon_Btn} source={require('../../assets/PlayerCardIcon.png')} />
       </TouchableOpacity>
       <ListItem.Content style={{ alignItems: 'flex-end' }} >
         <ListItem.Title>{p.EmailPlayer}</ListItem.Title>
@@ -164,10 +147,10 @@ export default function TeamDetailsPage({route}) {
     onRequestClose={() => setRuleModalVisible(!rulesModalVisible)}
   >
     <View style={styles.centeredView}>
-      <View style={styles.modalView}>
-        <Text style={styles.modalTxt}>{team.RulesAndLaws}</Text>
-        <Pressable style={styles.btnClose} onPress={() => setRuleModalVisible(!rulesModalVisible)} >
-          <Text style={styles.textStyle}>Close</Text>
+      <View style={styles.modal_View}>
+        <Text style={styles.modal_Txt}>{team.RulesAndLaws}</Text>
+        <Pressable style={styles.modal_Closebtn} onPress={() => setRuleModalVisible(!rulesModalVisible)} >
+          <Text style={appCss.inputLabel}>Close</Text>
         </Pressable>
       </View>
     </View>
@@ -179,27 +162,27 @@ export default function TeamDetailsPage({route}) {
     onRequestClose={() => setAddPlayerModalVisible(!addPlayerModalVisible)}
   >
     <View style={styles.centeredView}>
-      <View style={styles.modalView}>
-        <TouchableOpacity activeOpacity={0.8} style={styles.btnModal}>
+      <View style={styles.modal_View}>
+        <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch,{width:"90%"}]}>
           <View style={styles.addPlayersBtns}>
             <Feather name="link" size={24} color="black" />
-            <Text style={styles.txtBtnMdl}>&nbsp; Via Link</Text>
+            <Text style={[appCss.txtBtnTouch,{fontSize:16}]}>&nbsp; Via Link</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.8} style={styles.btnModal}>
+        <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch,{width:"90%"}]}>
           <View style={styles.addPlayersBtns}>
             <Feather name="user-plus" size={24} color="black" />
-            <Text style={styles.txtBtnMdl}>&nbsp; Contact List</Text>
+            <Text style={[appCss.txtBtnTouch,{fontSize:16}]}>&nbsp; Contact List</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.8} style={styles.btnModal}>
+        <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch,{width:"90%"}]}>
           <View style={styles.addPlayersBtns}>
             <Feather name="search" size={24} color="black" />
-            <Text style={styles.txtBtnMdl}>&nbsp; Search In App</Text>
+            <Text style={[appCss.txtBtnTouch,{fontSize:16}]}>&nbsp; Search In App</Text>
           </View>
         </TouchableOpacity>
-        <Pressable style={styles.btnClose} onPress={() => setAddPlayerModalVisible(!addPlayerModalVisible)} >
-          <Text style={styles.textStyle}>Close</Text>
+        <Pressable style={styles.modal_Closebtn} onPress={() => setAddPlayerModalVisible(!addPlayerModalVisible)} >
+          <Text style={appCss.inputLabel}>Close</Text>
         </Pressable>
       </View>
     </View>
@@ -219,14 +202,14 @@ export default function TeamDetailsPage({route}) {
 
       {/* ImageBackGround With Bottuns */}
       <ImageBackground style={styles.imgBG} source={{ uri: team.TeamPicture }}>
-        <Text style={styles.teamHeader}>{team.teamName}</Text>
-        <View style={styles.btnsView}>
-          <TouchableOpacity activeOpacity={0.8} onPress={() => setRuleModalVisible(true)} style={styles.btnModal}>
-            <Text style={styles.txtBtnMdl}>Rules And Laws</Text>
+        <Text style={appCss.title}>{team.TeamName}</Text>
+        <View style={styles.options_View}>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => setRuleModalVisible(true)} style={styles.options_Btn}>
+            <Text style={[appCss.txtBtnTouch,{fontSize:16}]}>Rules And Laws</Text>
           </TouchableOpacity>
           {modal_RulsAndLaws}
-          <TouchableOpacity activeOpacity={0.8} onPress={() => setAddPlayerModalVisible(true)} style={styles.btnModal}>
-            <Text style={styles.txtBtnMdl}>Add New Players</Text>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => setAddPlayerModalVisible(true)} style={styles.options_Btn}>
+            <Text style={[appCss.txtBtnTouch,{fontSize:16}]}>Add New Players</Text>
           </TouchableOpacity>
           {modal_AddNewPlayer}
         </View>
@@ -235,7 +218,7 @@ export default function TeamDetailsPage({route}) {
 
       {/* Player List */}
       <View style={styles.playerList_View}>
-        <Text style={styles.teamPlayersText}>Team Players:</Text>
+        <Text style={styles.teamPlayers_Text}>Team Players:</Text>
         <ScrollView>
           {playerList}
         </ScrollView>
@@ -243,7 +226,7 @@ export default function TeamDetailsPage({route}) {
 
 
       {/* Leave Team */}
-      <TouchableOpacity style={styles.leaveTeam} onPress={() => ExitTeam()}>
+      <TouchableOpacity style={styles.leaveTeam_Btn} onPress={() => ExitTeam()}>
         <Text style={styles.leaveTeam_txt}>Leave Team </Text>
         <Feather name="log-out" size={24} color="white" />
       </TouchableOpacity>
