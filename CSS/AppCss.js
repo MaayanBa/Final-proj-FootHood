@@ -72,4 +72,13 @@ export default styles = StyleSheet.create({
     color: 'orange',
     fontSize: 30,
   },
+  social_btn: {
+    alignItems: 'center',
+    padding: 30
+    , paddingTop: 10
+},
+faceAndGmail_btn: {
+    height: 85,
+    width: 85
+},
 });

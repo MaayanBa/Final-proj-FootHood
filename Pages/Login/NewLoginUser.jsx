@@ -20,7 +20,9 @@ import { Checkbox } from 'react-native-paper';
 import * as Google from 'expo-google-app-auth';
 import * as Facebook from 'expo-facebook';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
-import AppCss from '../../CSS/AppCss'
+import AppCss from '../../CSS/AppCss';
+import FaceBookLogin from './Components/FaceBookLogin';
+import GmailLogin from './Components/GmailLogin';
 
 const { height } = Dimensions.get("screen");
 const height_logo = height * 0.4;
@@ -112,15 +114,7 @@ const styles = StyleSheet.create({
     loginBtns: {
         top: 20
     },
-    social_btn: {
-        alignItems: 'center',
-        padding: 30
-        , paddingTop: 10
-    },
-    faceAndGmail_btn: {
-        height: 85,
-        width: 85
-    },
+
 });
 
 
@@ -142,60 +136,8 @@ export default function NewLoginUser({ navigation }) {
 
     }, []);
 
-    async function fetchdataFromFacebook() {
-        try {
-            await Facebook.initializeAsync({
-                options: {
-                    appId: "2582654205369524",
-                    appName: "FootHood",
-                },
-            });
-            const {
-                type,
-                token,
-                expires,
-                permissions,
-                declinedPermissions,
-            } = await Facebook.logInWithReadPermissionsAsync({
-                permissions: ["public_profile", "email"],
-            });
-            if (type === "success") {
-                // Get the user's name using Facebook's Graph API
-                const response = await fetch(
-                    `https://graph.facebook.com/me?fields=id,name,email,picture.type(large)&access_token=${token}`
-                );
-                const userInfo = await response.json();
-                console.log(userInfo)
-                //add async and db
-                // email = userInfo.email;
-                // password = userInfo.id;
-                checkUserLogin();
-            } else {
-                alert(`Facebook Login cancel`);
-                type === "cancel";
-            }
-        } catch ({ message }) {
-            alert(`Facebook Login Error: ${message}`);
-        }
-    }
-    async function signInWithGoogleAsync() {
-        try {
-            const result = await Google.logInAsync({
-                androidClientId: '24351265915-ljcsflkkpbm3vi3n16ug5d2ud6k51ujn.apps.googleusercontent.com',
-                iosClientId: '24351265915-9skrp62884dhu2eo38qp879o2j0ihehp.apps.googleusercontent.com',
-                scopes: ['profile', 'email'],
-            });
+ 
 
-            if (result.type === 'success') {
-                console.log(result);
-                return result;
-            } else {
-                return { cancelled: true };
-            }
-        } catch (e) {
-            return { error: true };
-        }
-    }
 
     const textInputChange = (val) => {
         if (val.trim().length >= 1) {            
@@ -337,16 +279,8 @@ export default function NewLoginUser({ navigation }) {
                     </View>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop: 20 }}>
-                        <TouchableOpacity onPress={() => fetchdataFromFacebook()}>
-                            <View style={styles.social_btn}>
-                                <Image source={require('../../assets/Facebook.png')} style={styles.faceAndGmail_btn} />
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => signInWithGoogleAsync()}>
-                            <View style={styles.social_btn}>
-                                <Image source={require('../../assets/Gmail.png')} style={styles.faceAndGmail_btn} />
-                            </View>
-                        </TouchableOpacity>
+                        <FaceBookLogin/>
+                        <GmailLogin/>
                     </View>
                 </View>
 
