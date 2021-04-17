@@ -1,21 +1,12 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import {
-    Text,
-    StyleSheet,
-    View,
-    TouchableOpacity
-} from 'react-native';
-import { Card, Title, Paragraph } from 'react-native-paper';
+import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat'
 import { firebase } from '../../api/FireBase';
-import Header from '../Main/Header';
 import { Avatar } from 'react-native-paper';
 import { Context as TeamContext } from '../../Contexts/TeamContext'
 import AppCss from '../../CSS/AppCss';
-
-const appCss= AppCss;
-
-
+import { Context as PlayerContext } from '../../Contexts/PlayerContext'
+const appCss = AppCss;
 const styles = StyleSheet.create({
     container_extra: {
         paddingTop: 70,
@@ -34,7 +25,7 @@ const styles = StyleSheet.create({
     TeamInformation_players: {},
     TeamInformation_Up_imgView: {
         width: 10,
-        height: 140
+        height: 100
     },
     teamImg: {
         borderRadius: 30
@@ -58,8 +49,9 @@ const styles = StyleSheet.create({
         width: '90%'
     },
     chatContainer: {
+        flex: 1,
         width: '90%',
-        height: '55%',
+        //height: '61%',
         paddingBottom: 10
     },
 })
@@ -75,16 +67,25 @@ const convertToArray = (data) => {
 
 export default function TeamPage(props) {
     const { team } = props.route.params;
-    const { GetPlayers4Team } = useContext(TeamContext)
+    //const { GetPlayers4Team } = useContext(TeamContext)
+    const { state: { players } } = useContext(PlayerContext);
     const [messages, setMessages] = useState([]);
+    const [teamPlayers, setTeamPlayers] = useState([])
 
     useEffect(() => {
+        let tempArr = [];
+        team.PlayersList.forEach(p => {
+            let player = players.find(x => x.Email === p.EmailPlayer)
+            if (player !== null)
+                tempArr.push(player);
+        });
+        setTeamPlayers(tempArr);
         fetchMessages().catch(e => console.log(e))
         // console.log("this is the player list = " + team.PlayersList)
         // console.log(team)
         //GetPlayers4Team(team.PlayersList) -- to check
 
-        
+
         // setMessages([
         //     {
         //         _id: 1,
@@ -128,7 +129,7 @@ export default function TeamPage(props) {
                 }
             })
             await firebase.database().ref(`${team.TeamSerialNum}`).set(messagesToSave)
-            console.log("Updating messages")
+            //console.log("Updating messages")
         } catch (e) {
             console.log(e)
             return Promise.reject(e + " Failed fetching data")
@@ -144,6 +145,18 @@ export default function TeamPage(props) {
         })
     }, [])
 
+    const PrintNameOfPlayers = () => {
+        let names = '';
+        let counter = 0;
+        teamPlayers.forEach(p => {
+            if (counter < 5)
+                names += p.FirstName + ", "
+            else if (counter === 5)
+                names += p.FirstName + "... "
+            counter++;
+        });
+        return names;
+    }
     const TeamInformation = () => {
     }
 
@@ -164,17 +177,17 @@ export default function TeamPage(props) {
                     </View>
                 </View>
                 <View style={styles.TeamInformation_players}>
-                    <Text>Players: {team.PlayersList.length}</Text>
+                    <Text>Players: {PrintNameOfPlayers()}</Text>
                 </View>
             </TouchableOpacity>
 
             <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame')}
-                style={[appCss.btnTouch,styles.btnTouch_extra]}>
+                style={[appCss.btnTouch, styles.btnTouch_extra]}>
                 <Text style={appCss.txtBtnTouch}>Create New Game</Text>
             </TouchableOpacity>
 
             <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList')}
-                style={[appCss.btnTouch,styles.btnTouch_extra]}>
+                style={[appCss.btnTouch, styles.btnTouch_extra]}>
                 <Text style={appCss.txtBtnTouch}>View Games</Text>
             </TouchableOpacity>
 

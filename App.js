@@ -5,6 +5,7 @@ import AppCss from './CSS/AppCss';
 import StackNav from './Navigations/StackNav';
 import { Provider as AuthProvider } from './Contexts/AuthContext';
 import { Provider as TeamProvider } from './Contexts/TeamContext';
+import { Provider as PlayerProvider } from './Contexts/PlayerContext';
 //import {setNavigator} from './Navigations/navigationRef'
 //inside the stack nav ===>   ref={(navigator) => setNavigator(navigator)}
 
@@ -14,13 +15,16 @@ const cssApp = AppCss;
 export default function App() {
 
   return (
-    <TeamProvider>
-      <AuthProvider>
-        <ImageBackground source={require('./assets/WallPaper.png')} style={cssApp.imageBackGround}>
-          <StatusBar />
-          <StackNav />
-        </ImageBackground >
-      </AuthProvider>
-    </TeamProvider>
+    <PlayerProvider>
+      <TeamProvider>
+        <AuthProvider>
+          <ImageBackground source={require('./assets/WallPaper.png')} style={cssApp.imageBackGround}>
+            <StatusBar />
+            <StackNav />
+          </ImageBackground >
+        </AuthProvider>
+      </TeamProvider>
+    </PlayerProvider>
+
   );
 }

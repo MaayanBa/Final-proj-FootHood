@@ -3,7 +3,8 @@ import { View, Text, StyleSheet } from 'react-native';
 import Header from './Header';
 import { Context as AuthContext } from '../../Contexts/AuthContext'
 import { Context as TeamContext } from '../../Contexts/TeamContext'
-
+import { Context as PlayerContext } from '../../Contexts/PlayerContext'
+// import { firebase } from '../../api/FireBase'
 
 const styles = StyleSheet.create({
     container: {
@@ -30,19 +31,45 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function Main() {
+export default function Main({ navigation }) {
 
     const { state: { token }, tryLocalSignin } = useContext(AuthContext)
-    const { GetTeamDetails } = useContext(TeamContext);
+    const { state: { myTeams }, GetTeamDetails } = useContext(TeamContext);
+    const { GetPlayers } = useContext(PlayerContext);
+
     const [user, setUser] = useState(token)
     //const [emailUser, setEmailUser] = useState(token.Email)
-    
+
     useEffect(() => {
-       //console.log(navigation)
-       //tryLocalSignin()
+        //console.log(navigation)
+        //tryLocalSignin()
         //console.log("th user email ---> "+user.Email)
         //console.log("th user email ---> "+emailUser)
         GetTeamDetails(user.Email)
+        GetPlayers();
+
+//         let teamMessagesCount;
+//         try {
+//             myTeams.map(x =>  {
+//                 let data = firebase.database().ref(`${x.TeamSerialNum}`).get()
+//                 if (data.exists()) {
+//                     data = data.exportVal()
+//                     data = convertToArray(data)
+//                     teamMessagesCount.push(
+//                         {
+//                             numOfMessages: data.length,
+//                             teamSerialNumber: x.TeamSerialNum
+//                         })
+//                 }
+//             })
+
+//         }
+//         catch (e) {
+//             console.log(e)
+//             return Promise.reject("Failed fetching data")
+//         }
+// console.log(teamMessagesCount)
+
     }, [])
     return (
         <View style={styles.container}>

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState,useContext } from 'react';
 import { StyleSheet, View, Text, Image, Image as ImageBall, TouchableOpacity, ScrollView, SafeAreaView, StatusBar } from 'react-native';
 import { Badge } from 'react-native-elements'
 //import ScrollView from 'rn-faded-scrollview';
@@ -6,6 +6,7 @@ import { Avatar } from 'react-native-paper';
 //import { LinearGradient } from 'expo-linear-gradient';
 import Header from '../Main/Header';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
+import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 import AppCss from '../../CSS/AppCss';
 
 const appCss = AppCss;
@@ -35,16 +36,18 @@ const styles = StyleSheet.create({
     },
     teamCard: {
         backgroundColor: '#D9D9D9',
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
         borderRadius: 30,
         width: '90%',
         height: 80,
         margin: 20,
+        padding: 5,
     },
     contextSide: {
-        justifyContent: 'space-between'
+        flex: 1,
+        padding: 10
     },
     headerCard_View: {
         alignSelf: 'center'
@@ -53,21 +56,36 @@ const styles = StyleSheet.create({
         flexDirection: 'row-reverse',
         justifyContent: 'space-between',
     },
+    side_img: {
+
+    },
 });
 
 export default function MyTeams(props) {
     const { state: { myTeams } } = useContext(TeamContext);
+    const { state: { players } } = useContext(PlayerContext);
+    const [messages, setMessages] = useState([]);
 
     let teamCards = myTeams.map((team, key) => {
-
+        //console.log(players)
+        let manager = players.find(x => x.Email === team.EmailManager);
+        console.log(manager)
         return <TouchableOpacity style={styles.teamCard} key={key} onPress={() => props.navigation.navigate('TeamPage', { team })}>
+            {/* {FireBaseMessages(team,messages,setMessages)} */}
             <View style={styles.contextSide}>
                 <View style={styles.headerCard_View}>
-                    <Text style={[appCss.inputLabel,{fontSize:25, color:'black'}]}>{team.TeamName}</Text>
+                    <Text style={[appCss.inputLabel, { fontSize: 25, color: 'black' }]}>{team.TeamName}</Text>
                 </View>
                 <View style={styles.descripitionCard}>
-                    <Text >Manager: {team.EmailManager} </Text>
-                    <Text> Players: {team.PlayersList.length} </Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text> {manager.FirstName + " " + manager.LastName} </Text>
+                        <Text style={{ fontWeight: 'bold' }}> Manager:  </Text>
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text> {team.PlayersList.length} </Text>
+                        <Text style={{ fontWeight: 'bold' }}> Players:  </Text>
+                    </View>
+
                 </View>
             </View>
             <View style={styles.side_img}>
