@@ -20,19 +20,15 @@ const styles = StyleSheet.create({
 
 export default function DateAndTime() {
     const [mode, setMode] = useState(null);
-
     const [showshowDateTimePicker_Game, setShowDateTimePicker_Game] = useState(false);
     const [dateGame, setDateGame] = useState(new Date());
     const [gameTime, setGameTime] = useState(new Date());
     const [showChoosenDateGame, setShowChoosenDateGame] = useState(false);
-
     const [gameOrRegistration, setGameOrRegistration] = useState(false)
-
     const [showDateTimePicker_Regi, setShowDateTimePicker_Regi] = useState(false);
     const [dateRegistration, setDateRegistration] = useState(new Date());
     const [registrationTime, setRegistretionTime] = useState(new Date());
     const [showLastRegistration, setShowLastRegistration] = useState(false);
-
 
     LogBox.ignoreLogs([
         'TypeError: _reactNative.NativeModules.RNDatePickerAndroid.dismiss is not a function',

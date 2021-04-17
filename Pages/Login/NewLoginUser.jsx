@@ -7,15 +7,10 @@ import {
     StatusBar
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-// import { LinearGradient } from 'react-native-linear-gradient';
-// import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-
 import { Checkbox } from 'react-native-paper';
-import * as Google from 'expo-google-app-auth';
-import * as Facebook from 'expo-facebook';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import AppCss from '../../CSS/AppCss';
 import LoginCss from '../../CSS/LoginCss';

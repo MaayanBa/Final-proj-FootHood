@@ -1,13 +1,8 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import {
     Text,
-    Button,
     StyleSheet,
-    ScrollView,
-    SafeAreaView,
-    Image,
     View,
-    StatusBar,
     TouchableOpacity
 } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
@@ -69,10 +64,6 @@ const styles = StyleSheet.create({
     },
 })
 
-
-
-
-
 const convertToArray = (data) => {
     let res = []
     Object.keys(data).map((key) => {
@@ -81,7 +72,6 @@ const convertToArray = (data) => {
     })
     return res
 }
-
 
 export default function TeamPage(props) {
     const { team } = props.route.params;
@@ -108,7 +98,6 @@ export default function TeamPage(props) {
         //     },
         // ])
     }, [])
-
 
     const fetchMessages = async () => {
         try {
@@ -160,7 +149,6 @@ export default function TeamPage(props) {
 
     const ViewGames = () => {
     }
-
 
     return (
         <View style={[appCss.container, styles.container_extra]}>

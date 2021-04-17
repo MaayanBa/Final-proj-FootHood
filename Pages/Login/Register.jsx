@@ -14,6 +14,7 @@ import { Avatar } from 'react-native-paper';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import AppCss from '../../CSS/AppCss'
 
+
 const appCss = AppCss;
 const styles = StyleSheet.create({
   title_View: {
@@ -59,7 +60,6 @@ const styles = StyleSheet.create({
 
 })
 
-
 const loginValidationSchema = yup.object().shape({
   firstName: yup
     .string()
@@ -83,7 +83,6 @@ const loginValidationSchema = yup.object().shape({
     .string()
     .oneOf([yup.ref('password'), null], 'Passwords must match'),
 })
-
 
 export default function Register(props) {
   const { state, register } = useContext(AuthContext);
@@ -165,8 +164,6 @@ export default function Register(props) {
     }
     else
       return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-
-
   };
 
   const SignUp = (values) => {

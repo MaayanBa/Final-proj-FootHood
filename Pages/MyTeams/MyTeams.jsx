@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
     },
     footer: {
         justifyContent: 'flex-end',
-        //flex: 1,
     },
     plusStyle: {
         margin: 5,
