@@ -1,14 +1,13 @@
 import React, { useState, useContext } from 'react';
-import {
-  StyleSheet, View,
-  SafeAreaView, ScrollView, TouchableOpacity,
-  StatusBar, ImageBackground, Modal as ModalRulsAndLaws,
-  Modal as ModalAddNewPlayer, Pressable, Image
+import {StyleSheet, View,SafeAreaView, ScrollView, TouchableOpacity,
+  StatusBar, ImageBackground,Image
 } from 'react-native';
 import { Text, ListItem, Avatar } from 'react-native-elements';
 import { Feather } from '@expo/vector-icons';
 import {Context as TeamContext} from '../../Contexts/TeamContext';
 import AppCss from '../../CSS/AppCss';
+import Modal_RulesAndLaws from './Components/Modal_RulesAndLaws';
+import Modal_AddPlayers from './Components/Modal_AddPlayers';
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
@@ -17,7 +16,6 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 20,
     marginTop: 10,
-    //justifyContent:'center',
   },
   imgBG: {
     height: 240,
@@ -30,50 +28,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     width: 250
   },
-  options_Btn: {
-    alignSelf: 'center',
-    elevation: 5,
-    backgroundColor: "#D9D9D9",
-    opacity: 0.8,
-    borderRadius: 10,
-    paddingVertical: 5,
-    paddingHorizontal: 5,
-    marginTop: 10,
-    width: '90%',
-
-  },
   centeredView: {
     flex: 1,
     justifyContent: "center",
     marginBottom: 70
-  },
-  modal_View: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    paddingBottom: 20,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-
-  },
-  modal_Txt: {
-    marginBottom: 15,
-    textAlign: "center"
-  },
-  modal_Closebtn: {
-    backgroundColor: "#2196F3",
-    marginTop: 20,
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2
-  },
-  addPlayersBtns: {
-    flexDirection: "row-reverse",
   },
   playerList_View: {
     marginTop: 10,
@@ -102,10 +60,7 @@ const styles = StyleSheet.create({
 
 export default function TeamDetailsPage({route}) {
   const {team} = route.params;
-  const [rulesModalVisible, setRuleModalVisible] = useState(false);
-  const [addPlayerModalVisible, setAddPlayerModalVisible] = useState(false);
   const { LeaveTeam } = useContext(TeamContext);
-
 
   // const team =
   // {
@@ -141,52 +96,6 @@ export default function TeamDetailsPage({route}) {
     </ListItem>
   ))
 
-  const modal_RulsAndLaws = <ModalRulsAndLaws animationType="slide"
-    transparent={true} visible={rulesModalVisible}
-    onRequestClose={() => setRuleModalVisible(!rulesModalVisible)}
-  >
-    <View style={styles.centeredView}>
-      <View style={styles.modal_View}>
-        <Text style={styles.modal_Txt}>{team.RulesAndLaws}</Text>
-        <Pressable style={styles.modal_Closebtn} onPress={() => setRuleModalVisible(!rulesModalVisible)} >
-          <Text style={appCss.inputLabel}>Close</Text>
-        </Pressable>
-      </View>
-    </View>
-  </ModalRulsAndLaws>
-
-
-  const modal_AddNewPlayer = <ModalAddNewPlayer animationType="slide"
-    transparent={true} visible={addPlayerModalVisible}
-    onRequestClose={() => setAddPlayerModalVisible(!addPlayerModalVisible)}
-  >
-    <View style={styles.centeredView}>
-      <View style={styles.modal_View}>
-        <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch,{width:"90%"}]}>
-          <View style={styles.addPlayersBtns}>
-            <Feather name="link" size={24} color="black" />
-            <Text style={[appCss.txtBtnTouch,{fontSize:16}]}>&nbsp; Via Link</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch,{width:"90%"}]}>
-          <View style={styles.addPlayersBtns}>
-            <Feather name="user-plus" size={24} color="black" />
-            <Text style={[appCss.txtBtnTouch,{fontSize:16}]}>&nbsp; Contact List</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch,{width:"90%"}]}>
-          <View style={styles.addPlayersBtns}>
-            <Feather name="search" size={24} color="black" />
-            <Text style={[appCss.txtBtnTouch,{fontSize:16}]}>&nbsp; Search In App</Text>
-          </View>
-        </TouchableOpacity>
-        <Pressable style={styles.modal_Closebtn} onPress={() => setAddPlayerModalVisible(!addPlayerModalVisible)} >
-          <Text style={appCss.inputLabel}>Close</Text>
-        </Pressable>
-      </View>
-    </View>
-  </ModalAddNewPlayer>
-
   const ExitTeam = () => { 
     console.log('Leave Team')
     let playerInTeam = {
@@ -199,18 +108,12 @@ export default function TeamDetailsPage({route}) {
   return (
     <SafeAreaView style={[appCss.container, styles.container_extra]} >
 
-      {/* ImageBackGround With Bottuns */}
+      {/* ImageBackGround With Buttons */}
       <ImageBackground style={styles.imgBG} source={{ uri: team.TeamPicture }}>
         <Text style={appCss.title}>{team.TeamName}</Text>
         <View style={styles.options_View}>
-          <TouchableOpacity activeOpacity={0.8} onPress={() => setRuleModalVisible(true)} style={styles.options_Btn}>
-            <Text style={[appCss.txtBtnTouch,{fontSize:16}]}>Rules And Laws</Text>
-          </TouchableOpacity>
-          {modal_RulsAndLaws}
-          <TouchableOpacity activeOpacity={0.8} onPress={() => setAddPlayerModalVisible(true)} style={styles.options_Btn}>
-            <Text style={[appCss.txtBtnTouch,{fontSize:16}]}>Add New Players</Text>
-          </TouchableOpacity>
-          {modal_AddNewPlayer}
+          <Modal_RulesAndLaws team={team}/>
+          <Modal_AddPlayers team={team}/>
         </View>
       </ImageBackground>
 
