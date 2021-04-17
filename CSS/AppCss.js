@@ -30,7 +30,7 @@ export default styles = StyleSheet.create({
   errorMsg: {
     color: '#FF0000',
     fontSize: 14,
-},
+  },
   soccerPlayer_img: {
     margin: 5,
     height: 25,
@@ -46,12 +46,12 @@ export default styles = StyleSheet.create({
     padding: 5,
     elevation: 10,
   },
-  blue_btn:{
+  blue_btn: {
     borderRadius: 30,
     backgroundColor: '#0078D7',
-    alignItems:'center',
+    alignItems: 'center',
     paddingTop: 15,
-    alignSelf:'stretch'
+    alignSelf: 'stretch'
   },
   txtBtnTouch: {
     fontSize: 18,
@@ -80,9 +80,9 @@ export default styles = StyleSheet.create({
     alignItems: 'center',
     padding: 30
     , paddingTop: 10
-},
-faceAndGmail_btn: {
+  },
+  faceAndGmail_btn: {
     height: 85,
     width: 85
-},
+  },
 });

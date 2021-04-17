@@ -11,8 +11,7 @@ import Modal_AddPlayers from './Components/Modal_AddPlayers';
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  container_extra: {
     paddingTop: StatusBar.currentHeight,
     width: '100%',
     padding: 20,
@@ -107,7 +106,7 @@ export default function TeamDetailsPage({route}) {
    }
 
   return (
-    <SafeAreaView style={styles.container} >
+    <SafeAreaView style={[appCss.container, styles.container_extra]} >
 
       {/* ImageBackGround With Buttons */}
       <ImageBackground style={styles.imgBG} source={{ uri: team.TeamPicture }}>
