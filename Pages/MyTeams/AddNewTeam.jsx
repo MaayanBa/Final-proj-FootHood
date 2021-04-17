@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
     padding: 2
-    },
+  },
   addPlayersBtns: {
     flexDirection: "row-reverse",
   },
@@ -104,8 +104,6 @@ export default function CreateNewTeam({ navigation }) {
     await CreateNewTeam(newTeam);
     alert("The Team has Added")
     navigation.navigate('MyTeams')
-
-
   }
   return (
     <SafeAreaView>
@@ -121,88 +119,77 @@ export default function CreateNewTeam({ navigation }) {
               addPlayers: '',
               TeamPicture: '',
             }}
-            onSubmit={(values) => CreateTeam(values)
-            }
+            onSubmit={(values) => CreateTeam(values)}
           >
             {({ handleChange, handleSubmit, values, errors, isValid, touched }) => (
               <>
-                <View style={styles.formGroup}>
-                  <Text style={appCss.inputLabel}>Team Picture:</Text>
-                  {TeamImageUri == null ?
-                    <TouchableOpacity onPress={() => btnOpenGalery()} style={styles.imageButton}>
-                      <Feather name="image" size={100} color="white" />
-                    </TouchableOpacity> :
-                    <TouchableOpacity onPress={() => btnOpenGalery()} style={styles.imageButton}>
-                      <Avatar.Image size={100} source={{ uri: TeamImageUri }} />
-                    </TouchableOpacity>
-                  }
-                </View>
-                <View style={styles.formGroup}>
-                  <Text style={appCss.inputLabel}>Team Name:</Text>
-                  <View style={appCss.sectionStyle}>
-                    <Image source={require('../../assets/soccerPlayer.png')} style={styles.ImageStyle} />
-                    <TextInput
-                      name="teamName"
-                      placeholder="Team Name"
-                      onChangeText={handleChange('teamName')}
-                      value={values.teamName}
-                    />
-                  </View>
+                <Text style={appCss.inputLabel}>Team Picture:</Text>
+                {TeamImageUri == null ?
+                  <TouchableOpacity onPress={() => btnOpenGalery()} style={styles.imageButton}>
+                    <Feather name="image" size={100} color="white" />
+                  </TouchableOpacity> :
+                  <TouchableOpacity onPress={() => btnOpenGalery()} style={styles.imageButton}>
+                    <Avatar.Image size={100} source={{ uri: TeamImageUri }} />
+                  </TouchableOpacity>
+                }
+
+                <Text style={appCss.inputLabel}>Team Name:</Text>
+                <View style={appCss.sectionStyle}>
+                  <Image source={require('../../assets/soccerPlayer.png')} style={styles.ImageStyle} />
+                  <TextInput
+                    name="teamName"
+                    placeholder="Team Name"
+                    onChangeText={handleChange('teamName')}
+                    value={values.teamName}
+                  />
                   {errors.teamName &&
                     <Text style={{ fontSize: 10, color: 'red' }}>{errors.teamName}</Text>
                   }
                 </View>
-                <View style={styles.formGroup}>
-                  <Text style={appCss.inputLabel}>Private Or Public?</Text>
-                  <View style={styles.privateOrPublic}>
-                    <TouchableOpacity>
-                      <Text style={appCss.inputLabel}>Public</Text>
-                      <RadioButton
-                        label="First item"
-                        value="public"
-                        status={privateOrPublic === 'public' ? 'checked' : 'unchecked'}
-                        onPress={() => setPrivateOrPublic('public')}
-                      />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                      <Text style={appCss.inputLabel}>Private</Text>
-                      <RadioButton
-                        value="private"
-                        status={privateOrPublic === 'private' ? 'checked' : 'unchecked'}
-                        onPress={() => setPrivateOrPublic('private')}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <View style={styles.formGroup}>
-                  <Text style={appCss.inputLabel}>Teams Rules And Laws: {"\n"}</Text>
-                  <View style={styles.rulesSectionStyle}>
-                    <TextInput
-                      name="rulesAndLaws"
-                      placeholder="Enter here the rules and laws of the team"
-                      multiline={true}
-                      onChangeText={handleChange('rulesAndLaws')}
-                      value={values.rulesAndLaws}
-                      style={[styles.textInput, { padding: 10 }]}
+
+                <Text style={appCss.inputLabel}>Private Or Public?</Text>
+                <View style={styles.privateOrPublic}>
+                  <TouchableOpacity>
+                    <Text style={appCss.inputLabel}>Public</Text>
+                    <RadioButton
+                      label="First item"
+                      value="public"
+                      status={privateOrPublic === 'public' ? 'checked' : 'unchecked'}
+                      onPress={() => setPrivateOrPublic('public')}
                     />
-                  </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <Text style={appCss.inputLabel}>Private</Text>
+                    <RadioButton
+                      value="private"
+                      status={privateOrPublic === 'private' ? 'checked' : 'unchecked'}
+                      onPress={() => setPrivateOrPublic('private')}
+                    />
+                  </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch,{alignItems:'center',backgroundColor:'#A9A9A9'}]}>
+                <Text style={appCss.inputLabel}>Teams Rules And Laws: {"\n"}</Text>
+                <View style={styles.rulesSectionStyle}>
+                  <TextInput
+                    name="rulesAndLaws"
+                    placeholder="Enter here the rules and laws of the team"
+                    multiline={true}
+                    onChangeText={handleChange('rulesAndLaws')}
+                    value={values.rulesAndLaws}
+                    style={[styles.textInput, { padding: 10 }]}
+                  />
+                </View>
+
+                <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch, { alignItems: 'center', backgroundColor: '#A9A9A9' }]}>
                   <View style={styles.addPlayersBtns}>
                     <Feather name="user-plus" size={24} color="black" />
                     <Text style={styles.txtBtnMdl}>Add Players</Text>
                   </View>
                 </TouchableOpacity>
 
-
-                <View style={styles.formGroup}>
-
-                  <TouchableOpacity activeOpacity={0.8} disabled={!isValid} onPress={handleSubmit} style={[appCss.btnTouch,{width: '60%'}]}>
-                    <Text style={appCss.txtBtnTouch}>Create New Team</Text>
-                  </TouchableOpacity>
-
-                </View>
+                <TouchableOpacity activeOpacity={0.8} disabled={!isValid} onPress={handleSubmit} style={[appCss.btnTouch, { width: '60%' }]}>
+                  <Text style={appCss.txtBtnTouch}>Create New Team</Text>
+                </TouchableOpacity>
               </>
             )}
           </Formik>
