@@ -70,7 +70,7 @@ const game = [
 
 export default function GameList(props) {
     let gameCards = game.map((g, key) => {
-        return <TouchableOpacity key={key} style={styles.GameInformation_Touch} onPress={() => console.log(game.groupPhoto)}>
+        return <TouchableOpacity key={key} style={styles.GameInformation_Touch} onPress={() =>  props.navigation.navigate('GamePage')}>
             <View style={styles.card}>
                 <View style={styles.gameTitle_View}>
                     <Text style={styles.header_txt}>{g.gameName}</Text>

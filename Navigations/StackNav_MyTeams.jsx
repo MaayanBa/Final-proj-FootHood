@@ -5,6 +5,8 @@ import CreateNewGame from '../Pages/MyTeams/CreateNewGame';
 import TeamDetailsPage from '../Pages/MyTeams/TeamDetailsPage';
 import GameList from '../Pages/MyTeams/GameList';
 import MyTeams from '../Pages/MyTeams/MyTeams';
+import GamePage from '../Pages/MyTeams/GamePage';
+
 
 //import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 
@@ -32,6 +34,7 @@ export default function StackNav_MyTeams() {
                 <Stack.Screen name="CreateNewGame" component={CreateNewGame} />
                 <Stack.Screen name="TeamDetailsPage" component={TeamDetailsPage} />
                 <Stack.Screen name="GameList" component={GameList} />
+                <Stack.Screen name="GamePage" component={GamePage} />
             </Stack.Navigator>
        
 

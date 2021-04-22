@@ -8,6 +8,8 @@ import Header from '../Main/Header';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
 import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 import AppCss from '../../CSS/AppCss';
+import { firebase } from '../../api/FireBase';
+
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
@@ -64,12 +66,34 @@ const styles = StyleSheet.create({
 export default function MyTeams(props) {
     const { state: { myTeams } } = useContext(TeamContext);
     const { state: { players } } = useContext(PlayerContext);
-    const [messages, setMessages] = useState([]);
+
+    // const fetchMessages = async (team) => {
+    //     try {
+    //         let data = await firebase.database().ref(`${team.TeamSerialNum}`).get()
+    //         if (data.exists()) {
+    //             data = data.exportVal()
+    //             data = convertToArray(data)
+    //             console.log("messages:"+ data.length);
+    //         }
+    //     } catch (e) {
+    //         console.log(e)
+    //         return Promise.reject("Failed fetching data")
+    //     }
+    // }
+    // const convertToArray = (data) => {
+    //     let res = []
+    //     Object.keys(data).map((key) => {
+    //         let val = data[key]
+    //         res.push({ ...val, createdAt: new Date(val.createdAt) })
+    //     })
+    //     return res
+    // }
 
     let teamCards = myTeams.map((team, key) => {
         //console.log(players)
         let manager = players.find(x => x.Email === team.EmailManager);
         console.log(manager)
+        // fetchMessages(team)
         return <TouchableOpacity style={styles.teamCard} key={key} onPress={() => props.navigation.navigate('TeamPage', { team })}>
             {/* {FireBaseMessages(team,messages,setMessages)} */}
             <View style={styles.contextSide}>
@@ -93,7 +117,7 @@ export default function MyTeams(props) {
             </View>
             <Badge
                 containerStyle={{ position: 'absolute', top: 0, left: 0 }}
-                value="99+" //Need to count length of messages from DB
+                value="99" //Need to count length of messages from DB
                 status="error" />
         </TouchableOpacity>
     })
