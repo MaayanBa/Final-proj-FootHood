@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 export default function ForgotPassword() {
   const { state } = useContext(AuthContext);
   return (
-    <View style={appCss.container,{padding:40}}>
+    <View style={[appCss.container,{padding:40}]}>
       <View style={styles.title_View}>
         <Text style={appCss.title}>Restore Password</Text>
       </View>

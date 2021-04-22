@@ -1,14 +1,26 @@
-import React, { useState,useContext } from 'react';
-import { StyleSheet, View, Text, Image, Image as ImageBall, TouchableOpacity, ScrollView, SafeAreaView, StatusBar } from 'react-native';
-import { Badge } from 'react-native-elements'
+import React, {useState, useContext, useEffect} from 'react';
+import {
+    StyleSheet,
+    View,
+    Text,
+    Image,
+    Image as ImageBall,
+    TouchableOpacity,
+    ScrollView,
+    SafeAreaView,
+    StatusBar
+} from 'react-native';
+import {Badge} from 'react-native-elements'
 //import ScrollView from 'rn-faded-scrollview';
-import { Avatar } from 'react-native-paper';
+import {Avatar} from 'react-native-paper';
 //import { LinearGradient } from 'expo-linear-gradient';
 import Header from '../Main/Header';
-import { Context as TeamContext } from '../../Contexts/TeamContext';
-import { Context as PlayerContext } from '../../Contexts/PlayerContext';
+import {Context as TeamContext} from '../../Contexts/TeamContext';
+import {Context as PlayerContext} from '../../Contexts/PlayerContext';
 import AppCss from '../../CSS/AppCss';
-import { firebase } from '../../api/FireBase';
+import {firebase} from '../../api/FireBase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useFocusEffect} from "@react-navigation/core";
 
 
 const appCss = AppCss;
@@ -58,88 +70,108 @@ const styles = StyleSheet.create({
         flexDirection: 'row-reverse',
         justifyContent: 'space-between',
     },
-    side_img: {
-
-    },
+    side_img: {},
 });
 
 export default function MyTeams(props) {
-    const { state: { myTeams } } = useContext(TeamContext);
-    const { state: { players } } = useContext(PlayerContext);
+    const {state: {myTeams}} = useContext(TeamContext);
+    const {state: {players}} = useContext(PlayerContext);
+    const [teamCards, setTeamCards] = useState(null);
 
-    // const fetchMessages = async (team) => {
-    //     try {
-    //         let data = await firebase.database().ref(`${team.TeamSerialNum}`).get()
-    //         if (data.exists()) {
-    //             data = data.exportVal()
-    //             data = convertToArray(data)
-    //             console.log("messages:"+ data.length);
-    //         }
-    //     } catch (e) {
-    //         console.log(e)
-    //         return Promise.reject("Failed fetching data")
-    //     }
-    // }
-    // const convertToArray = (data) => {
-    //     let res = []
-    //     Object.keys(data).map((key) => {
-    //         let val = data[key]
-    //         res.push({ ...val, createdAt: new Date(val.createdAt) })
-    //     })
-    //     return res
-    // }
+    const convertToArray = (data) => {
+        let res = []
+        Object.keys(data).map((key) => {
+            let val = data[key]
+            res.push({...val, createdAt: new Date(val.createdAt)})
+        })
+        return res
+    }
+    const calcBadge = async (team) => {
+        let lastCount = parseInt(await AsyncStorage.getItem(`messages_count_${team.TeamSerialNum}`));
+        console.log(`lastCount=${lastCount}`)
+        let totalInDb = await firebase.database().ref(`${team.TeamSerialNum}`).get();
+        if (totalInDb.exists()) {
+            totalInDb = totalInDb.exportVal()
+            totalInDb = convertToArray(totalInDb).length
+        } else {
+            return 0
+        }
+        if (!lastCount) {
+            lastCount = 0;
+        }
+        return totalInDb - lastCount;
+    }
 
-    let teamCards = myTeams.map((team, key) => {
-        //console.log(players)
-        let manager = players.find(x => x.Email === team.EmailManager);
-        console.log(manager)
-        // fetchMessages(team)
-        return <TouchableOpacity style={styles.teamCard} key={key} onPress={() => props.navigation.navigate('TeamPage', { team })}>
-            {/* {FireBaseMessages(team,messages,setMessages)} */}
-            <View style={styles.contextSide}>
-                <View style={styles.headerCard_View}>
-                    <Text style={[appCss.inputLabel, { fontSize: 25, color: 'black' }]}>{team.TeamName}</Text>
-                </View>
-                <View style={styles.descripitionCard}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Text> {manager.FirstName + " " + manager.LastName} </Text>
-                        <Text style={{ fontWeight: 'bold' }}> Manager:  </Text>
+    const calcTeamCards = async () => {
+        const teamCards = await Promise.all(myTeams.map(async (team, key) => {
+            //console.log(players)
+            let manager = players.find(x => x.Email === team.EmailManager);
+            // fetchMessages(team)
+            const badge = await calcBadge(team);
+            return <TouchableOpacity style={styles.teamCard} key={key}
+                                     onPress={() => props.navigation.navigate('TeamPage', {team})}>
+                {/* {FireBaseMessages(team,messages,setMessages)} */}
+                <View style={styles.contextSide}>
+                    <View style={styles.headerCard_View}>
+                        <Text style={[appCss.inputLabel, {fontSize: 25, color: 'black'}]}>{team.TeamName}</Text>
                     </View>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Text> {team.PlayersList.length} </Text>
-                        <Text style={{ fontWeight: 'bold' }}> Players:  </Text>
-                    </View>
+                    <View style={styles.descripitionCard}>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text> {manager.FirstName + " " + manager.LastName} </Text>
+                            <Text style={{fontWeight: 'bold'}}> Manager: </Text>
+                        </View>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text> {team.PlayersList.length} </Text>
+                            <Text style={{fontWeight: 'bold'}}> Players: </Text>
+                        </View>
 
+                    </View>
                 </View>
-            </View>
-            <View style={styles.side_img}>
-                <Avatar.Image size={64} source={{ uri: team.TeamPicture }} />
-            </View>
-            <Badge
-                containerStyle={{ position: 'absolute', top: 0, left: 0 }}
-                value="99" //Need to count length of messages from DB
-                status="error" />
-        </TouchableOpacity>
-    })
+                <View style={styles.side_img}>
+                    <Avatar.Image size={64} source={{uri: team.TeamPicture}}/>
+                </View>
+                {badge === 0 ? null :
+                    <Badge
+                        containerStyle={{position: 'absolute', top: 0, left: 0}}
+                        value={badge} //Need to count length of messages from DB
+                        status="error"/>
+                }
+            </TouchableOpacity>
+        }))
+        setTeamCards(teamCards);
+    }
+
+    // useFocusEffect(() => {
+    //     console.log("Called")
+    //     calcTeamCards();
+    // }, [])
+
+    useEffect(() => {
+        const unsubscribe = props.navigation.addListener('focus', () => {
+            calcTeamCards();
+        });
+
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return () => unsubscribe();
+    }, [props.navigation]);
+
 
     return (
         <View style={appCss.container}>
             {/* <Header /> */}
             <Text style={[appCss.title, appCss.space]}>My Teams</Text>
             <View style={styles.mainContent}>
-                <SafeAreaView >
-                    <ScrollView >
-
+                <SafeAreaView>
+                    <ScrollView>
                         {teamCards}
-
                     </ScrollView>
                 </SafeAreaView>
-
             </View>
             <View style={styles.footer}>
-                <ImageBall source={require('../../assets/ball.png')} style={styles.ball_img} />
-                <TouchableOpacity style={styles.createNewTeam_btn} onPress={() => props.navigation.navigate('AddNewTeam')}>
-                    <Image source={require('../../assets/plus.png')} style={styles.plusStyle} />
+                <ImageBall source={require('../../assets/ball.png')} style={styles.ball_img}/>
+                <TouchableOpacity style={styles.createNewTeam_btn}
+                                  onPress={() => props.navigation.navigate('AddNewTeam')}>
+                    <Image source={require('../../assets/plus.png')} style={styles.plusStyle}/>
                     <Text style={appCss.inputLabel}>Add New Team</Text>
                 </TouchableOpacity>
             </View>

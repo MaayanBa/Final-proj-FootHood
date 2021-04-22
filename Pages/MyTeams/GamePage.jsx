@@ -114,14 +114,14 @@ export default function GamePage() {
     ];
 
   let registeredPlayers = players.map((p, key) => {
-    return <View>
-      <Text key={key}>{p.playerName + ","}</Text>
+    return <View key={key}>
+      <Text>{p.playerName + ","}</Text>
     </View>
   })
 
   let equipmentList = players.map((p, key) => {
-    return <View>
-      <Text key={key}>{p.equipment + "-" + p.playerName}</Text>
+    return <View key={key}>
+      <Text>{p.equipment + "-" + p.playerName}</Text>
     </View>
   })
 

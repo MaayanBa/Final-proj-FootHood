@@ -1,18 +1,19 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
-import { GiftedChat } from 'react-native-gifted-chat'
-import { firebase } from '../../api/FireBase';
-import { Avatar } from 'react-native-paper';
-import { Context as TeamContext } from '../../Contexts/TeamContext'
+import React, {useState, useEffect, useCallback, useContext} from 'react';
+import {Text, StyleSheet, View, TouchableOpacity, SafeAreaView, ScrollView} from 'react-native';
+import {GiftedChat} from 'react-native-gifted-chat'
+import {firebase} from '../../api/FireBase';
+import {Avatar} from 'react-native-paper';
+import {Context as TeamContext} from '../../Contexts/TeamContext'
 import AppCss from '../../CSS/AppCss';
-import { Context as PlayerContext } from '../../Contexts/PlayerContext'
+import {Context as PlayerContext} from '../../Contexts/PlayerContext'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
     container_extra: {
         paddingTop: 70,
         alignItems: 'center',
-        flex:1
+        flex: 1
     },
     TeamInformation: {
         backgroundColor: '#D9D9D9',
@@ -62,15 +63,15 @@ const convertToArray = (data) => {
     let res = []
     Object.keys(data).map((key) => {
         let val = data[key]
-        res.push({ ...val, createdAt: new Date(val.createdAt) })
+        res.push({...val, createdAt: new Date(val.createdAt)})
     })
     return res
 }
 
 export default function TeamPage(props) {
-    const { team } = props.route.params;
+    const {team} = props.route.params;
     //const { GetPlayers4Team } = useContext(TeamContext)
-    const { state: { players } } = useContext(PlayerContext);
+    const {state: {players}} = useContext(PlayerContext);
     const [messages, setMessages] = useState([]);
     const [teamPlayers, setTeamPlayers] = useState([])
 
@@ -83,24 +84,12 @@ export default function TeamPage(props) {
         });
         setTeamPlayers(tempArr);
         fetchMessages().catch(e => console.log(e))
-        {// console.log("this is the player list = " + team.PlayersList)
-            // console.log(team)
-            //GetPlayers4Team(team.PlayersList) -- to check
-
-
-            // setMessages([
-            //     {
-            //         _id: 1,
-            //         text: 'Hello Daniel! I am CR7 and I would like to welcome you to my app!',
-            //         createdAt: new Date(),
-            //         user: {
-            //             _id: 2,
-            //             name: 'CR7',
-            //             avatar: 'https://site-cdn.givemesport.com/images/21/02/05/354cc6f5366bb99d3eca6bc92f8d2165/1201.jpg',
-            //         },
-            //     },
-            // ])
-        }
+        // return () => {
+        //     console.log("update last count")
+        //     console.log(messages)
+        //     const lenMessages = messages.length
+        //     AsyncStorage.setItem(`messages_count_${team.TeamSerialNum}`, `${lenMessages}`)
+        // }
     }, [])
 
     const fetchMessages = async () => {
@@ -132,6 +121,7 @@ export default function TeamPage(props) {
                 }
             })
             await firebase.database().ref(`${team.TeamSerialNum}`).set(messagesToSave)
+            await AsyncStorage.setItem(`messages_count_${team.TeamSerialNum}`, `${messagesToSave.length}`)
             //console.log("Updating messages")
         } catch (e) {
             console.log(e)
@@ -169,16 +159,16 @@ export default function TeamPage(props) {
     return (
         <SafeAreaView>
             <ScrollView>
-                <View  style={[styles.container_extra]}>
+                <View style={[styles.container_extra]}>
                     <TouchableOpacity style={styles.TeamInformation}
-                        onPress={() => props.navigation.navigate('TeamDetailsPage', { team })}>
+                                      onPress={() => props.navigation.navigate('TeamDetailsPage', {team})}>
                         <View style={styles.TeamInformation_Up}>
                             <View style={styles.TeamInformation_Up_Title}>
                                 <Text style={styles.txtTeam}> Team</Text>
                                 <Text style={styles.teamName_txt}>{team.TeamName}</Text>
                             </View>
                             <View style={styles.TeamInformation_Up_imgView}>
-                                <Avatar.Image size={100} source={{ uri: team.TeamPicture }} />
+                                <Avatar.Image size={100} source={{uri: team.TeamPicture}}/>
                             </View>
                         </View>
                         <View style={styles.TeamInformation_players}>
@@ -187,12 +177,12 @@ export default function TeamPage(props) {
                     </TouchableOpacity>
 
                     <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame')}
-                        style={[appCss.btnTouch, styles.btnTouch_extra]}>
+                                      style={[appCss.btnTouch, styles.btnTouch_extra]}>
                         <Text style={appCss.txtBtnTouch}>Create New Game</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList')}
-                        style={[appCss.btnTouch, styles.btnTouch_extra]}>
+                                      style={[appCss.btnTouch, styles.btnTouch_extra]}>
                         <Text style={appCss.txtBtnTouch}>View Games</Text>
                     </TouchableOpacity>
                     <View style={styles.chatContainer}>
