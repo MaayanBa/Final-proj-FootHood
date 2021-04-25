@@ -1,36 +1,27 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
-    StyleSheet,
-    View,
-    Text,
-    Image,
-    Image as ImageBall,
-    TouchableOpacity,
-    ScrollView,
-    SafeAreaView,
-    StatusBar
+    StyleSheet, View, Text, Image, Image as ImageBall, TouchableOpacity, ScrollView, SafeAreaView, StatusBar
 } from 'react-native';
-import {Badge} from 'react-native-elements'
+import { Badge } from 'react-native-elements'
 //import ScrollView from 'rn-faded-scrollview';
-import {Avatar} from 'react-native-paper';
+import { Avatar } from 'react-native-paper';
 //import { LinearGradient } from 'expo-linear-gradient';
 import Header from '../Main/Header';
-import {Context as TeamContext} from '../../Contexts/TeamContext';
-import {Context as PlayerContext} from '../../Contexts/PlayerContext';
+import { Context as TeamContext } from '../../Contexts/TeamContext';
+import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 import AppCss from '../../CSS/AppCss';
-import {firebase} from '../../api/FireBase';
+import { firebase } from '../../api/FireBase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useFocusEffect} from "@react-navigation/core";
+// import {useFocusEffect} from "@react-navigation/core";
 
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
     mainContent: {
         flex: 1,
-        //: 'space-between',
     },
     ball_img: {
-        margin: 100,
+        marginBottom: 90,
         height: 110,
         width: 100,
         alignSelf: 'center',
@@ -74,15 +65,15 @@ const styles = StyleSheet.create({
 });
 
 export default function MyTeams(props) {
-    const {state: {myTeams}} = useContext(TeamContext);
-    const {state: {players}} = useContext(PlayerContext);
+    const { state: { myTeams } } = useContext(TeamContext);
+    const { state: { players } } = useContext(PlayerContext);
     const [teamCards, setTeamCards] = useState(null);
 
     const convertToArray = (data) => {
         let res = []
         Object.keys(data).map((key) => {
             let val = data[key]
-            res.push({...val, createdAt: new Date(val.createdAt)})
+            res.push({ ...val, createdAt: new Date(val.createdAt) })
         })
         return res
     }
@@ -109,48 +100,41 @@ export default function MyTeams(props) {
             // fetchMessages(team)
             const badge = await calcBadge(team);
             return <TouchableOpacity style={styles.teamCard} key={key}
-                                     onPress={() => props.navigation.navigate('TeamPage', {team})}>
-                {/* {FireBaseMessages(team,messages,setMessages)} */}
+                onPress={() => props.navigation.navigate('TeamPage', { team })}>
                 <View style={styles.contextSide}>
                     <View style={styles.headerCard_View}>
-                        <Text style={[appCss.inputLabel, {fontSize: 25, color: 'black'}]}>{team.TeamName}</Text>
+                        <Text style={[appCss.inputLabel, { fontSize: 25, color: 'black' }]}>{team.TeamName}</Text>
                     </View>
                     <View style={styles.descripitionCard}>
-                        <View style={{flexDirection: 'row'}}>
+                        <View style={{ flexDirection: 'row' }}>
                             <Text> {manager.FirstName + " " + manager.LastName} </Text>
-                            <Text style={{fontWeight: 'bold'}}> Manager: </Text>
+                            <Text style={{ fontWeight: 'bold' }}> Manager: </Text>
                         </View>
-                        <View style={{flexDirection: 'row'}}>
+                        <View style={{ flexDirection: 'row' }}>
                             <Text> {team.PlayersList.length} </Text>
-                            <Text style={{fontWeight: 'bold'}}> Players: </Text>
+                            <Text style={{ fontWeight: 'bold' }}> Players: </Text>
                         </View>
 
                     </View>
                 </View>
                 <View style={styles.side_img}>
-                    <Avatar.Image size={64} source={{uri: team.TeamPicture}}/>
+                    <Avatar.Image size={64} source={{ uri: team.TeamPicture }} />
                 </View>
                 {badge === 0 ? null :
                     <Badge
-                        containerStyle={{position: 'absolute', top: 0, left: 0}}
+                        containerStyle={{ position: 'absolute', top: 0, left: 0 }}
                         value={badge} //Need to count length of messages from DB
-                        status="error"/>
+                        status="error" />
                 }
             </TouchableOpacity>
         }))
         setTeamCards(teamCards);
     }
 
-    // useFocusEffect(() => {
-    //     console.log("Called")
-    //     calcTeamCards();
-    // }, [])
-
     useEffect(() => {
         const unsubscribe = props.navigation.addListener('focus', () => {
             calcTeamCards();
         });
-
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return () => unsubscribe();
     }, [props.navigation]);
@@ -168,10 +152,10 @@ export default function MyTeams(props) {
                 </SafeAreaView>
             </View>
             <View style={styles.footer}>
-                <ImageBall source={require('../../assets/ball.png')} style={styles.ball_img}/>
+                <ImageBall source={require('../../assets/ball.png')} style={styles.ball_img} />
                 <TouchableOpacity style={styles.createNewTeam_btn}
-                                  onPress={() => props.navigation.navigate('AddNewTeam')}>
-                    <Image source={require('../../assets/plus.png')} style={styles.plusStyle}/>
+                    onPress={() => props.navigation.navigate('AddNewTeam')}>
+                    <Image source={require('../../assets/plus.png')} style={styles.plusStyle} />
                     <Text style={appCss.inputLabel}>Add New Team</Text>
                 </TouchableOpacity>
             </View>

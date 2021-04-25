@@ -7,7 +7,6 @@ import GameList from '../Pages/MyTeams/GameList';
 import MyTeams from '../Pages/MyTeams/MyTeams';
 import GamePage from '../Pages/MyTeams/GamePage';
 
-
 //import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 
 import { createStackNavigator } from '@react-navigation/stack';

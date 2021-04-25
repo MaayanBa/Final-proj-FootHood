@@ -17,6 +17,9 @@ const teamReducer = (state, action) => {
         case 'CreateNewTeam': {
             return { ...state, myTeams: action.payload }
         }
+        // case 'GetJoinRequests': {
+        //     return { ...state, joinRequests: action.payload }
+        // }
         default:
             return state
     }
@@ -82,6 +85,21 @@ const GetPlayers4Team = dispatch => async (playersList) => {
 //     }
 // }
 
+// const GetJoinRequests = dispatch => async (GameSerialNum) => {
+//     try {
+//         const response = await TeamApi.post('/JoinRequests', { GameSerialNum });
+//         console.log("response . data === " + response.data);
+//         console.log( response.data);
+//         dispatch({ type: 'GetJoinRequests', payload: response.data })
+//     } catch (err) {
+//         console.log("in error" +err.response.data)
+//         console.log(err.response.data)
+
+//         dispatch({ type: 'add_error', payload: 'Somthing went wrong when getting the join requests for the game' })
+//     }
+// }
+
+
 export const { Context, Provider } = CreateDataContext(
     //Reducer
     teamReducer,
@@ -90,10 +108,12 @@ export const { Context, Provider } = CreateDataContext(
         GetTeamDetails,
         clearState,
         GetPlayers4Team,
-        //LeaveTeam
+        //LeaveTeam,
+        // GetJoinRequests,
     },
     {
         myTeams: [],
-        players:[]
+        players:[],
+        joinRequests:[],
     }
 );

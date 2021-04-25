@@ -105,7 +105,5 @@ export default function GameList(props) {
         <View style={[appCss.container,{alignItems: 'center',paddingTop:30}]}>
             {gameCards}
         </View>
-
-
     );
 }
