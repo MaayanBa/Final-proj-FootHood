@@ -13,19 +13,19 @@ const styles = StyleSheet.create({
     container_extra: {
         paddingTop: 70,
         alignItems: 'center',
-        flex: 1
+        flex: 1,
     },
     TeamInformation: {
         backgroundColor: '#D9D9D9',
         padding: 15,
         width: '90%',
         borderRadius: 30,
-    },
+},
     TeamInformation_Up: {
         flexDirection: 'row-reverse',
         justifyContent: 'space-between',
     },
-    TeamInformation_players: {},
+    TeamInformation_players: {flexDirection: 'row-reverse'},
     TeamInformation_Up_imgView: {
         width: 10,
         height: 100
@@ -157,47 +157,45 @@ export default function TeamPage(props) {
     }
 
     return (
-        <SafeAreaView>
-            <ScrollView>
-                <View style={[styles.container_extra]}>
-                    <TouchableOpacity style={styles.TeamInformation}
-                                      onPress={() => props.navigation.navigate('TeamDetailsPage', {team})}>
-                        <View style={styles.TeamInformation_Up}>
-                            <View style={styles.TeamInformation_Up_Title}>
-                                <Text style={styles.txtTeam}> Team</Text>
-                                <Text style={styles.teamName_txt}>{team.TeamName}</Text>
-                            </View>
-                            <View style={styles.TeamInformation_Up_imgView}>
-                                <Avatar.Image size={100} source={{uri: team.TeamPicture}}/>
-                            </View>
-                        </View>
-                        <View style={styles.TeamInformation_players}>
-                            <Text>Players: {PrintNameOfPlayers()}</Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame')}
-                                      style={[appCss.btnTouch, styles.btnTouch_extra]}>
-                        <Text style={appCss.txtBtnTouch}>Create New Game</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList', {team})}
-                                      style={[appCss.btnTouch, styles.btnTouch_extra]}>
-                        <Text style={appCss.txtBtnTouch}>View Games</Text>
-                    </TouchableOpacity>
-                    <View style={styles.chatContainer}>
-                        <GiftedChat
-                            messages={messages}
-                            onSend={messages => onSend(messages)}
-                            user={{
-                                _id: 1,
-                                avatar: 'https://site-cdn.givemesport.com/images/21/02/05/354cc6f5366bb99d3eca6bc92f8d2165/1201.jpg'
-                            }}
-                            inverted={false}
-                        />
+        <View style={[appCss.container, styles.container_extra]}>
+            <TouchableOpacity style={styles.TeamInformation}
+                onPress={() => props.navigation.navigate('TeamDetailsPage', { team, teamPlayers })}>
+                <View style={styles.TeamInformation_Up}>
+                    <View style={styles.TeamInformation_Up_Title}>
+                        <Text style={styles.txtTeam}> Team</Text>
+                        <Text style={styles.teamName_txt}>{team.TeamName}</Text>
+                    </View>
+                    <View style={styles.TeamInformation_Up_imgView}>
+                        <Avatar.Image size={100} source={{ uri: team.TeamPicture }} />
                     </View>
                 </View>
-            </ScrollView>
-        </SafeAreaView>
+                <View style={styles.TeamInformation_players}>
+                    <Text style={{ fontWeight: 'bold' }}>Players: </Text>
+                    <Text>{PrintNameOfPlayers()}</Text>
+                </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame')}
+                style={[appCss.btnTouch, styles.btnTouch_extra]}>
+                <Text style={appCss.txtBtnTouch}>Create New Game</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList', {team})}
+                style={[appCss.btnTouch, styles.btnTouch_extra]}>
+                <Text style={appCss.txtBtnTouch}>View Games</Text>
+            </TouchableOpacity>
+
+            <View style={styles.chatContainer}>
+                <GiftedChat
+                    messages={messages}
+                    onSend={messages => onSend(messages)}
+                    user={{
+                        _id: 1,
+                        avatar: 'https://site-cdn.givemesport.com/images/21/02/05/354cc6f5366bb99d3eca6bc92f8d2165/1201.jpg'
+                    }}
+                    inverted={false}
+                />
+            </View>
+        </View>
     );
 }
