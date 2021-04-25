@@ -55,11 +55,11 @@ const styles = StyleSheet.create({
   playerCardIcon_Btn: {
     width: 35,
     height: 35
-  }
+  },
 })
 
-export default function TeamDetailsPage({route}) {
-  const {team} = route.params;
+export default function TeamDetailsPage(props) {
+  const {team, teamPlayers} = props.route.params;
   const { LeaveTeam } = useContext(TeamContext);
 
   // const team =
@@ -84,15 +84,15 @@ export default function TeamDetailsPage({route}) {
   //   rulesAndLaws: "Hello And welcome to FootHood First Game. The rules are- Each team has 5 players and the team who wins is the team who reaches 2 goals. The game time is 8 min. If needed there is a 2 min extra time."
   // }
 
-  const playerList = team.PlayersList.map((p, i) => (
-    <ListItem key={i} bottomDivider>
-      <TouchableOpacity activeOpacity={0.8} onPress={() => console.log("player Card")} >
+  const playerList = teamPlayers.map((p, i) => (
+    <ListItem key={i} bottomDivider style={styles.rowPlayer_ItemList}>
+      <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CardPlayer', { p })} >
         <Image style={styles.playerCardIcon_Btn} source={require('../../assets/PlayerCardIcon.png')} />
       </TouchableOpacity>
       <ListItem.Content style={{ alignItems: 'flex-end' }} >
-        <ListItem.Title>{p.EmailPlayer}</ListItem.Title>
+        <ListItem.Title>{p.FirstName + " "+ p.LastName}</ListItem.Title>
       </ListItem.Content>
-      <Avatar rounded source={{ uri: p.PlayerImg }} />
+      <Avatar rounded source={{ uri: p.PlayerPicture }} />
     </ListItem>
   ))
 
