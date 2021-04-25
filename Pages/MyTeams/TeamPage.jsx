@@ -181,7 +181,7 @@ export default function TeamPage(props) {
                         <Text style={appCss.txtBtnTouch}>Create New Game</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList')}
+                    <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList', {team})}
                                       style={[appCss.btnTouch, styles.btnTouch_extra]}>
                         <Text style={appCss.txtBtnTouch}>View Games</Text>
                     </TouchableOpacity>

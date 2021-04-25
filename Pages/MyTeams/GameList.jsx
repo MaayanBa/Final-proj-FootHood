@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState, useContext, useEffect } from 'react';
 import { Text, StyleSheet, Image, View, StatusBar, TouchableOpacity } from 'react-native';
 import AppCss from '../../CSS/AppCss';
+import { Context as GameContext } from '../../Contexts/GameContext';
+
 
 const appCss = AppCss;
 
@@ -68,13 +70,22 @@ const game = [
     }
 ]
 
-export default function GameList(props) {
+export default function GameList({route}) {
+    const { state: { gamesList }, GetGamesList } = useContext(GameContext);
+    const {team} = route.params;
+
+    useEffect(() => {
+        GetGamesList(team.TeamSerialNum)
+    }, [])
+
+
+
     let gameCards = game.map((g, key) => {
         return <TouchableOpacity key={key} style={styles.GameInformation_Touch} onPress={() =>  props.navigation.navigate('GamePage')}>
             <View style={styles.card}>
-                <View style={styles.gameTitle_View}>
+                {/* <View style={styles.gameTitle_View}>
                     <Text style={styles.header_txt}>{g.gameName}</Text>
-                </View>
+                </View> */}
                 <View style={styles.gameInformation_View}>
                     <View style={styles.gameInformation_View_R}>
                         <View>

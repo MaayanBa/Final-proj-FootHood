@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import {
-  StyleSheet, TouchableOpacity, SafeAreaView,
-  ScrollView, View, Text,
-} from 'react-native';
-import {
-  Feather as CheckSquare,
-  Feather as EmptySquare,
-} from '@expo/vector-icons';
+import {StyleSheet, TouchableOpacity, SafeAreaView,ScrollView, View, Text,} from 'react-native';
+import {Feather as CheckSquare,Feather as EmptySquare,} from '@expo/vector-icons';
 //import DateTimePicker from '@react-native-community/datetimepicker';
 //import { Checkbox } from 'react-native-paper';
 import DateAndTime from './Components/DateAndTime';
