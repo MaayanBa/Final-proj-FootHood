@@ -8,15 +8,8 @@ import DateAndTime from './Components/DateAndTime';
 import AppCss from '../../CSS/AppCss';
 import NumOfTeamsAndPlayers from './Components/NumOfTeamsAndPlayers';
 import Modal_LocationMap from './Components/Modal_LocationMap';
-const appCss = AppCss;
-const equipmentList = [
-  { id: 0, title: 'Water', checked: true },
-  { id: 1, title: 'Ball', checked: true },
-  { id: 2, title: 'First Aid Kit', checked: false },
-  { id: 3, title: 'Snacks', checked: false },
-  { id: 4, title: 'Air Pump', checked: false },
-];
 
+const appCss = AppCss;
 const styles = StyleSheet.create({
   container_extra: {
     paddingTop: 40,
@@ -41,6 +34,13 @@ const styles = StyleSheet.create({
     marginLeft: 50
   },
 })
+const equipmentList = [
+  { id: 0, title: 'Water', checked: true },
+  { id: 1, title: 'Ball', checked: true },
+  { id: 2, title: 'First Aid Kit', checked: false },
+  { id: 3, title: 'Snacks', checked: false },
+  { id: 4, title: 'Air Pump', checked: false },
+];
 
 export default function CreateNewGame() {
   const [equipmentList_state, setEquipmentList_state] = useState([...equipmentList])
