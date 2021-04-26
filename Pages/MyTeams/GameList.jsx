@@ -78,9 +78,13 @@ export default function GameList({route}) {
         GetGamesList(team.TeamSerialNum)
     }, [])
 
+// const GetGameDate=(date)=>{
+//     console.log(date.getFullYear())
+//     var gameDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+//     return gameDate;
+// }
 
-
-    let gameCards = game.map((g, key) => {
+    let gameCards = gamesList.map((game, key) => {
         return <TouchableOpacity key={key} style={styles.GameInformation_Touch} onPress={() =>  props.navigation.navigate('GamePage')}>
             <View style={styles.card}>
                 {/* <View style={styles.gameTitle_View}>
@@ -89,8 +93,8 @@ export default function GameList({route}) {
                 <View style={styles.gameInformation_View}>
                     <View style={styles.gameInformation_View_R}>
                         <View>
-                            <Text style={styles.txtStyle}>Time: {g.time}</Text>
-                            <Text style={styles.txtStyle}>Age range: {g.ageRange}</Text>
+                            <Text style={styles.txtStyle}>Time: {game.GameTime}</Text>
+                            <Text style={styles.txtStyle}>Age range: {game.AvgPlayerAge}</Text>
                         </View>
                         <View style={styles.gameInformation_View_R_Down}>
                             <TouchableOpacity style={appCss.blue_btn} onPress={()=> console.log("btn enter game")}>
@@ -99,9 +103,9 @@ export default function GameList({route}) {
                         </View>
                     </View>
                     <View style={styles.gameInformation_View_L}>
-                        <Text style={styles.txtStyle}>Date: {g.date}</Text>
-                        <Text style={styles.txtStyle}>Number of Players: {g.numberOfPlayers}</Text>
-                        <Text style={styles.txtStyle}>Location: {g.location}</Text>
+                        <Text style={styles.txtStyle}>Date: {game.GameDate}</Text>
+                        <Text style={styles.txtStyle}>Number of Players: {game.NumOfPlayersInTeam}</Text>
+                        <Text style={styles.txtStyle}>Location: {game.GameLocation}</Text>
                         <TouchableOpacity >
                             <Text style={styles.txtStyle}>Take me there
                             <Image source={require('../../assets/Waze.png')} resizeMode="contain" style={styles.waze_Icon} />

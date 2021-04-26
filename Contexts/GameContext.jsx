@@ -17,12 +17,12 @@ const GetGamesList = dispatch => async (teamSerialNum) => {
     try {
         console.log("IM HERE!")
         console.log(teamSerialNum)
-        // const response = await GameApi.post('/GamesList', { TeamSerialNum: teamSerialNum });
-        // console.log("response . data === " + response.data);
-        // console.log( response.data);
-        // dispatch({ type: 'GetGamesList', payload: response.data })
+        const response = await GameApi.post('/GamesList', { TeamSerialNum: teamSerialNum });
+        console.log("response . data === " + response.data);
+        console.log( response.data);
+        dispatch({ type: 'GetGamesList', payload: response.data })
     } catch (err) {
-        // console.log("in error" +err.response.data)
+        console.log("in error" +err.response.data)
         // console.log(err.response.data)
         dispatch({ type: 'add_error', payload: 'Somthing went wrong when getting games list' })
     }
