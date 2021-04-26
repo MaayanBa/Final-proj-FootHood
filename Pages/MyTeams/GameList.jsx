@@ -71,12 +71,10 @@ const game = [
 ]
 
 export default function GameList(props) {
-    const { state: { gamesList }, GetGamesList } = useContext(GameContext);
-    const {team} = props.route.params;
-
-    useEffect(() => {
-        GetGamesList(team.TeamSerialNum)
-    }, [])
+    // const { state: { gamesList }, GetGamesList } = useContext(GameContext);
+    // const {team} = props.route.params;
+    // const {gamesList} = props.route.params;
+    const { state: { gamesList } } = useContext(GameContext);
 
 // const GetGameDate=(date)=>{
 //     console.log(date.getFullYear())

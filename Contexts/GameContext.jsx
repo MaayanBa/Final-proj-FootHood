@@ -22,8 +22,8 @@ const GetGamesList = dispatch => async (teamSerialNum) => {
         console.log( response.data);
         dispatch({ type: 'GetGamesList', payload: response.data })
     } catch (err) {
-        console.log("in error" +err.response.data)
-        // console.log(err.response.data)
+        console.log("in error" +err.data)
+        console.log(err.message)
         dispatch({ type: 'add_error', payload: 'Somthing went wrong when getting games list' })
     }
 }
@@ -39,5 +39,6 @@ export const { Context, Provider } = CreateDataContext(
     },
     {
         gamesList: [],
+        playersPerGame:[],
     }
 );
