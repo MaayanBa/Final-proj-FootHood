@@ -1,12 +1,15 @@
-import React, {useState, useEffect, useCallback, useContext} from 'react';
-import {Text, StyleSheet, View, TouchableOpacity, SafeAreaView, ScrollView} from 'react-native';
-import {GiftedChat} from 'react-native-gifted-chat'
-import {firebase} from '../../api/FireBase';
-import {Avatar} from 'react-native-paper';
-import {Context as TeamContext} from '../../Contexts/TeamContext'
+import React, { useState, useEffect, useCallback, useContext } from 'react';
+import { Text, StyleSheet, View, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import { GiftedChat } from 'react-native-gifted-chat'
+import { firebase } from '../../api/FireBase';
+import { Avatar } from 'react-native-paper';
+import { Context as TeamContext } from '../../Contexts/TeamContext'
 import AppCss from '../../CSS/AppCss';
-import {Context as PlayerContext} from '../../Contexts/PlayerContext'
+import { Context as PlayerContext } from '../../Contexts/PlayerContext'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Context as GameContext } from '../../Contexts/GameContext';
+import { NativeViewGestureHandler } from 'react-native-gesture-handler';
+
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
@@ -20,12 +23,12 @@ const styles = StyleSheet.create({
         padding: 15,
         width: '90%',
         borderRadius: 30,
-},
+    },
     TeamInformation_Up: {
         flexDirection: 'row-reverse',
         justifyContent: 'space-between',
     },
-    TeamInformation_players: {flexDirection: 'row-reverse'},
+    TeamInformation_players: { flexDirection: 'row-reverse' },
     TeamInformation_Up_imgView: {
         width: 10,
         height: 100
@@ -63,17 +66,18 @@ const convertToArray = (data) => {
     let res = []
     Object.keys(data).map((key) => {
         let val = data[key]
-        res.push({...val, createdAt: new Date(val.createdAt)})
+        res.push({ ...val, createdAt: new Date(val.createdAt) })
     })
     return res
 }
 
 export default function TeamPage(props) {
-    const {team} = props.route.params;
+    const { team } = props.route.params;
     //const { GetPlayers4Team } = useContext(TeamContext)
-    const {state: {players}} = useContext(PlayerContext);
+    const { state: { players } } = useContext(PlayerContext);
     const [messages, setMessages] = useState([]);
     const [teamPlayers, setTeamPlayers] = useState([])
+    const { state: { gamesList }, GetGamesList } = useContext(GameContext);
 
     useEffect(() => {
         let tempArr = [];
@@ -83,6 +87,8 @@ export default function TeamPage(props) {
                 tempArr.push(player);
         });
         setTeamPlayers(tempArr);
+        GetGamesList(team.TeamSerialNum)
+        console.log(team.TeamSerialNum)
         fetchMessages().catch(e => console.log(e))
         // return () => {
         //     console.log("update last count")
@@ -180,7 +186,7 @@ export default function TeamPage(props) {
                 <Text style={appCss.txtBtnTouch}>Create New Game</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList', {team})}
+            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList', { gamesList})}
                 style={[appCss.btnTouch, styles.btnTouch_extra]}>
                 <Text style={appCss.txtBtnTouch}>View Games</Text>
             </TouchableOpacity>
