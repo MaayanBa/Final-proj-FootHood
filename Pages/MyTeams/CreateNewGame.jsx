@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import {StyleSheet, TouchableOpacity, SafeAreaView,ScrollView, View, Text,} from 'react-native';
-import {Feather as CheckSquare,Feather as EmptySquare,} from '@expo/vector-icons';
+import { StyleSheet, TouchableOpacity, SafeAreaView, ScrollView, View, Text } from 'react-native';
+import { Feather as CheckSquare, Feather as EmptySquare, } from '@expo/vector-icons';
 //import DateTimePicker from '@react-native-community/datetimepicker';
 //import { Checkbox } from 'react-native-paper';
 import DateAndTime from './Components/DateAndTime';
-//import { CheckBox } from 'react-native-elements'
+import { CheckBox } from 'react-native-elements'
 import AppCss from '../../CSS/AppCss';
 import NumOfTeamsAndPlayers from './Components/NumOfTeamsAndPlayers';
 import Modal_LocationMap from './Components/Modal_LocationMap';
@@ -59,27 +59,29 @@ export default function CreateNewGame() {
     //setRenderCB(true);
   }
 
-  // let itemBoxesOld = equipmentList_state.map((item) => {
-  //   return (
-  //     <TouchableOpacity key={item.id} style={styles.checkBoxes} >
-  //       <Checkbox status={item.checked} onPress={() => onChecked(item.id)} />
-  //       <Text style={[styles.textStyle, { alignSelf: 'center' }]}>{item.title}</Text>
-  //     </TouchableOpacity>
-  //   );
-  // });
+  let itemBoxes = equipmentList_state.map((item) => {
+    return (<View>
+      <CheckBox checked={item.checked} title={item.title} onPress={() => onChecked(item.id)} />
+      <TouchableOpacity key={item.id} style={styles.checkBoxes} >
+        <Text style={[styles.textStyle, { alignSelf: 'center' }]}>{item.title}</Text>
+      </TouchableOpacity>
+      
+    </View>
+    );
+  });
 
-  const itemBoxes = () => {
-    return equipmentList_state.map((item) => {
-      return (
-        <TouchableOpacity key={item.id} style={styles.checkBoxes} onPress={() => onChecked(item.id)} >
-          {item.checked ?
-            <CheckSquare size={30} name="check-square" /> :
-            <EmptySquare size={30} name="square" />}
-          <Text style={[appCss.inputLabel, { alignSelf: 'center' }]}>{item.title}</Text>
-        </TouchableOpacity>
-      )
-    })
-  }
+  // const itemBoxes = () => {
+  //   return equipmentList_state.map((item) => {
+  //     return (
+  //       <TouchableOpacity key={item.id} style={styles.checkBoxes} onPress={() => onChecked(item.id)} >
+  //         {item.checked ?
+  //           <CheckSquare size={30} name="check-square" /> :
+  //           <EmptySquare size={30} name="square" />}
+  //         <Text style={[appCss.inputLabel, { alignSelf: 'center' }]}>{item.title}</Text>
+  //       </TouchableOpacity>
+  //     )
+  //   })
+  // }
 
   return (
     <SafeAreaView>
@@ -103,7 +105,7 @@ export default function CreateNewGame() {
           <View style={styles.checkBox_View}>
             <Text style={appCss.inputLabel}>Equipment List:</Text>
             {/* {itemBoxesOld} */}
-            {renderCB && itemBoxes()}
+            {itemBoxes}
           </View>
 
           {/* btn Create Game */}

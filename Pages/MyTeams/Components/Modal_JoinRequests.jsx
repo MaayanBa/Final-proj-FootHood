@@ -105,7 +105,7 @@ export default function Modal_JoinRequests() {
     </ModalJoinRequests>
 
     return (
-        <View >
+        <View style={{padding:10}}>
             <TouchableOpacity onPress={() => setRequestsModalVisible(true)} style={styles.PlayerRequest}>
                 <Text style={styles.btnText}>Players requests</Text>
                 <MailIcon name="mail" size={24} color="black" />

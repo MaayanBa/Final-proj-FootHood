@@ -70,9 +70,9 @@ const game = [
     }
 ]
 
-export default function GameList({route}) {
+export default function GameList(props) {
     const { state: { gamesList }, GetGamesList } = useContext(GameContext);
-    const {team} = route.params;
+    const {team} = props.route.params;
 
     useEffect(() => {
         GetGamesList(team.TeamSerialNum)
@@ -85,7 +85,7 @@ export default function GameList({route}) {
 // }
 
     let gameCards = gamesList.map((game, key) => {
-        return <TouchableOpacity key={key} style={styles.GameInformation_Touch} onPress={() =>  props.navigation.navigate('GamePage')}>
+        return <TouchableOpacity key={key} style={styles.GameInformation_Touch} onPress={() =>  props.navigation.navigate('GamePage', { game })}>
             <View style={styles.card}>
                 {/* <View style={styles.gameTitle_View}>
                     <Text style={styles.header_txt}>{g.gameName}</Text>
