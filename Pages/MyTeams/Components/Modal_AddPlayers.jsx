@@ -51,6 +51,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5,
         marginTop: 10,
         width: '90%', 
+        flexDirection:'row',
+        justifyContent:'center',
       },
 })
 
@@ -92,6 +94,7 @@ export default function Modal_AddPlayers() {
         <View>
            <TouchableOpacity activeOpacity={0.8} onPress={() => setAddPlayerModalVisible(true)} style={styles.options_Btn}>
             <Text style={[appCss.txtBtnTouch,{fontSize:16}]}>Add New Players</Text>
+            <Feather name="user-plus" size={24} color="black"/>
           </TouchableOpacity>
           {modal_AddNewPlayer}
         </View>

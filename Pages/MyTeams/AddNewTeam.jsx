@@ -182,15 +182,14 @@ export default function CreateNewTeam({ navigation }) {
                   />
                 </View>
 
-                <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch, { alignItems: 'center', backgroundColor: '#A9A9A9' }]} onPress={setAddPlayer(true)}>
+                {/* <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch, { alignItems: 'center', backgroundColor: '#A9A9A9' }]}>
                   <View style={styles.addPlayersBtns}>
                     <Feather name="user-plus" size={24} color="black" />
                     <Text style={styles.txtBtnMdl}>Add Players</Text>
                   </View>
-                </TouchableOpacity>
-                {
-                  addPlayer && <Modal_AddPlayers/>
-                }
+                </TouchableOpacity> */}
+                <Modal_AddPlayers/>
+
 
                 <TouchableOpacity activeOpacity={0.8} disabled={!isValid} onPress={handleSubmit} style={[appCss.btnTouch, { width: '60%' }]}>
                   <Text style={appCss.txtBtnTouch}>Create New Team</Text>
