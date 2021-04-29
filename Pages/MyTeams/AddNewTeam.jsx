@@ -15,6 +15,7 @@ import { Context as AuthContext } from '../../Contexts/AuthContext';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
 //import {navigate} from '../../Navigations/navigationRef'
 import AppCss from '../../CSS/AppCss';
+import Modal_AddPlayers from './Components/Modal_AddPlayers';
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
@@ -77,6 +78,7 @@ export default function CreateNewTeam({ navigation }) {
   const [emailManager, setEmailManager] = useState(token.Email)
   const [privateOrPublic, setPrivateOrPublic] = useState('public');
   const [TeamImageUri, setimageUri] = useState(null);
+  const [addPlayer, setAddPlayer] = useState(false)
 
   const btnOpenGalery = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -180,12 +182,15 @@ export default function CreateNewTeam({ navigation }) {
                   />
                 </View>
 
-                <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch, { alignItems: 'center', backgroundColor: '#A9A9A9' }]}>
+                <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch, { alignItems: 'center', backgroundColor: '#A9A9A9' }]} onPress={setAddPlayer(true)}>
                   <View style={styles.addPlayersBtns}>
                     <Feather name="user-plus" size={24} color="black" />
                     <Text style={styles.txtBtnMdl}>Add Players</Text>
                   </View>
                 </TouchableOpacity>
+                {
+                  addPlayer && <Modal_AddPlayers/>
+                }
 
                 <TouchableOpacity activeOpacity={0.8} disabled={!isValid} onPress={handleSubmit} style={[appCss.btnTouch, { width: '60%' }]}>
                   <Text style={appCss.txtBtnTouch}>Create New Team</Text>

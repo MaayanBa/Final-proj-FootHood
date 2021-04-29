@@ -73,8 +73,8 @@ const game = [
 export default function GameList(props) {
     // const { state: { gamesList }, GetGamesList } = useContext(GameContext);
     // const {team} = props.route.params;
-    // const {gamesList} = props.route.params;
-    const { state: { gamesList } } = useContext(GameContext);
+    const {gamesList} = props.route.params;
+    //const { state: { gamesList } } = useContext(GameContext);
 
 // const GetGameDate=(date)=>{
 //     console.log(date.getFullYear())
@@ -116,6 +116,7 @@ export default function GameList(props) {
     });
     return (
         <View style={[appCss.container,{alignItems: 'center',paddingTop:30}]}>
+            {console.log(gamesList)}
             {gameCards}
         </View>
     );

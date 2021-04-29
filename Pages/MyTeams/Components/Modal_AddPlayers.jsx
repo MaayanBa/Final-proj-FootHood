@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
       },
 })
 
-export default function Modal_AddPlayers({team}) {
+export default function Modal_AddPlayers() {
     const [addPlayerModalVisible, setAddPlayerModalVisible] = useState(false);
 
     const modal_AddNewPlayer = <ModalAddNewPlayer animationType="slide"
