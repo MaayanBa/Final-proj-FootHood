@@ -164,10 +164,3 @@ export default function MyTeams(props) {
     )
 }
 
-
-
-
-
-
-
-

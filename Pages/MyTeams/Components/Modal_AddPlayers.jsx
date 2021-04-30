@@ -94,7 +94,7 @@ export default function Modal_AddPlayers() {
         <View>
            <TouchableOpacity activeOpacity={0.8} onPress={() => setAddPlayerModalVisible(true)} style={styles.options_Btn}>
             <Text style={[appCss.txtBtnTouch,{fontSize:16}]}>Add New Players</Text>
-            <Feather name="user-plus" size={24} color="black"/>
+            <Feather name="user-plus" size={24} color="black" style={{left:10}}/>
           </TouchableOpacity>
           {modal_AddNewPlayer}
         </View>

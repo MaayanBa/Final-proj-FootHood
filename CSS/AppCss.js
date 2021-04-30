@@ -85,4 +85,8 @@ export default styles = StyleSheet.create({
     height: 85,
     width: 85
   },
+  playerCardIcon_Btn: {
+    width: 35,
+    height: 35
+  },
 });

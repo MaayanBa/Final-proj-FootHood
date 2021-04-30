@@ -3,7 +3,6 @@ import {
     StyleSheet, TouchableOpacity, View, Text,
  Modal as ModalRulsAndLaws, Pressable
 } from 'react-native';
-import { Feather } from '@expo/vector-icons';
 
 
 import AppCss from '../../../CSS/AppCss';
@@ -74,6 +73,7 @@ export default function Modal_RulesAndLaws({team}) {
         <View>
             <TouchableOpacity activeOpacity={0.8} onPress={() => setRuleModalVisible(true)} style={styles.options_Btn}>
                 <Text style={[appCss.txtBtnTouch, { fontSize: 16 }]}>Rules And Laws</Text>
+                
             </TouchableOpacity>
             {modal_RulsAndLaws}
         </View>

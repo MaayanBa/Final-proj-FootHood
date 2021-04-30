@@ -8,6 +8,7 @@ import { CheckBox } from 'react-native-elements'
 import AppCss from '../../CSS/AppCss';
 import NumOfTeamsAndPlayers from './Components/NumOfTeamsAndPlayers';
 import Modal_LocationMap from './Components/Modal_LocationMap';
+import {Context as GameContext} from '../../Contexts/GameContext'
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
@@ -43,8 +44,17 @@ const equipmentList = [
 ];
 
 export default function CreateNewGame() {
+  const {CreatNewGame} = useContext(GameContext);
   const [equipmentList_state, setEquipmentList_state] = useState([...equipmentList])
   const [renderCB, setRenderCB] = useState(true);
+  
+  const [numOfTeamsState, setNumOfTeamsState] = useState(2);
+  const [numOfPlayersInTeam, setNumOfPlayersInTeam] = useState(2);
+  const [gameDate, setGameDate] = useState(null);
+  const [gameTime, setGameTime] = useState(null);
+  const [lastRegistrationDate, setLastRegistrationDate] = useState(null);
+  const [lastRegistrationTime, setLastRegistrationTime] = useState(null);
+  const [selectedEquipments, setSelectedEquipments] = useState(null);
 
   useEffect(() => {
     setRenderCB(true);
@@ -52,20 +62,29 @@ export default function CreateNewGame() {
 
   const onChecked = (id) => {
     setRenderCB(false);
-    let data = equipmentList_state;
+    let allEquipments = equipmentList_state;
+    let selected = [];
     //console.log(data[id].checked)
-    data[id].checked === true ? data[id].checked = false : data[id].checked = true;
-    setEquipmentList_state(data);
-    //setRenderCB(true);
+    allEquipments[id].checked === true ? allEquipments[id].checked = false : allEquipments[id].checked = true;
+
+    allEquipments.map(x => {
+      if (x.checked)
+        selected.push(x);
+    })
+    //setEquipmentList_state(allEquipments);
+    console.log(selected)
+    setSelectedEquipments(selected);
   }
 
-  let itemBoxes = equipmentList_state.map((item) => {
-    return (<View>
-      <CheckBox checked={item.checked} title={item.title} onPress={() => onChecked(item.id)} />
-      <TouchableOpacity key={item.id} style={styles.checkBoxes} >
-        <Text style={[styles.textStyle, { alignSelf: 'center' }]}>{item.title}</Text>
-      </TouchableOpacity>
-      
+  let itemBoxes = equipmentList_state.map((item, index) => {
+    return (<View key={index}>
+      <CheckBox
+        checked={item.checked}
+        containerStyle={{ backgroundColor: 'transparent', borderColor: 'transparent' }}
+        wrapperStyle={{ flexDirection: 'row-reverse' }}
+        textStyle={{ color: 'white' }}
+        title={item.title}
+        onPress={() => onChecked(item.id)} />
     </View>
     );
   });
@@ -83,6 +102,36 @@ export default function CreateNewGame() {
   //   })
   // }
 
+  const liftState = (dateGame, gameTime, dateRegistration, registrationTime) => {
+    setGameDate(dateGame);
+    setGameTime(gameTime);
+    setLastRegistrationDate(dateRegistration)
+    setLastRegistrationTime(registrationTime)
+    // console.log("dateGame=" + gameDate )
+    // console.log("gameTime= "+gameTime)
+    // console.log("dateRegistration = " + lastRegistrationDate )
+    // console.log("registrationTime = " +lastRegistrationTime)
+  }
+const send2Context=()=>{
+  let newGame={
+    game:{
+      NumOfTeams:numOfTeamsState,
+      NumOfPlayersInTeam:numOfPlayersInTeam,
+      GameLocation:"location",
+      GameDate:gameDate,
+      GameTime:gameTime,
+      LastRegistrationDate:lastRegistrationDate,
+      LastRegistrationTime:lastRegistrationTime
+    },
+    // equipments:{
+    //   EquipmentSerialNum:
+    //   EquipmentName:
+    // }
+      
+    
+  }
+  //CreatNewGame()
+}
   return (
     <SafeAreaView>
       <ScrollView>
@@ -93,13 +142,19 @@ export default function CreateNewGame() {
           </View>
 
           {/* number of teams and players each team */}
-          <NumOfTeamsAndPlayers />
+          <NumOfTeamsAndPlayers
+            numOfTeamsState={numOfTeamsState}
+            setTeams={setNumOfTeamsState}
+            numOfPlayersInTeam={numOfPlayersInTeam}
+            setPlayers={setNumOfPlayersInTeam}
+          />
 
           {/* Location */}
           <Modal_LocationMap />
 
           {/* Date and Time */}
-          <DateAndTime />
+          <DateAndTime liftState={liftState} />
+
 
           {/* Equipment required */}
           <View style={styles.checkBox_View}>
@@ -109,7 +164,7 @@ export default function CreateNewGame() {
           </View>
 
           {/* btn Create Game */}
-          {renderCB && <TouchableOpacity activeOpacity={0.8} onPress={() => console.log("Btn Create New Game")} style={[appCss.btnTouch, { width: "80%" }]}>
+          {renderCB && <TouchableOpacity activeOpacity={0.8} onPress={() => send2Context()} style={[appCss.btnTouch, { width: "80%" }]}>
             <Text style={appCss.txtBtnTouch}>Create New Game</Text>
           </TouchableOpacity>}
         </View>

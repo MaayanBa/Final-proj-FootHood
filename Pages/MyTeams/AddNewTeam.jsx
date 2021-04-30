@@ -144,10 +144,11 @@ export default function CreateNewTeam({ navigation }) {
                     onChangeText={handleChange('teamName')}
                     value={values.teamName}
                   />
-                  {errors.teamName &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.teamName}</Text>
-                  }
+                  
                 </View>
+                {errors.teamName &&
+                    <Text style={{ fontSize: 12, color: 'red',alignSelf:'center' }}>{errors.teamName}</Text>
+                  }
 
                 <Text style={appCss.inputLabel}>Private Or Public?</Text>
                 <View style={styles.privateOrPublic}>

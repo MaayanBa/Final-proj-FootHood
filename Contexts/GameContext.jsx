@@ -5,6 +5,9 @@ import GameApi from '../api/Game';
 
 const gameReducer = (state, action) => {
     switch (action.type) {
+        case 'CreateNewGame': {
+            return { ...state, gamesList: [...state.gamesList, action.payload]  }
+        }
         case 'GetGamesList': {
             return { ...state, gamesList: action.payload }
         }
@@ -28,6 +31,20 @@ const GetGamesList = dispatch => async (teamSerialNum) => {
         dispatch({ type: 'add_error', payload: 'Somthing went wrong when getting games list' })
     }
 }
+const CreatNewGame = dispatch => async (newGame)=>{
+    try {
+        const response = await GameApi.post('/CreateNewGame', { CNG: newGame });
+        console.log("response . data === " + response.data);
+        console.log( response.data);
+        dispatch({ type: 'GetGamesList', payload: response.data })
+
+        
+    } catch (err) {
+        console.log("in error" + err.data)
+        console.log(err.message)
+        dispatch({ type: 'add_error', payload: 'Somthing went wrong when post new games ' })
+    }
+}
 
 
 
@@ -37,6 +54,7 @@ export const { Context, Provider } = CreateDataContext(
     gameReducer,
     {
         GetGamesList,
+        CreatNewGame,
     },
     {
         gamesList: [],
