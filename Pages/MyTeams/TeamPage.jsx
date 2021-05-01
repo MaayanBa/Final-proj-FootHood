@@ -87,9 +87,10 @@ export default function TeamPage(props) {
                 tempArr.push(player);
         });
         setTeamPlayers(tempArr);
-        GetGamesList(team.TeamSerialNum)
+        
         console.log(team.TeamSerialNum)
         fetchMessages().catch(e => console.log(e))
+        GetGamesList(team.TeamSerialNum)
         // return () => {
         //     console.log("update last count")
         //     console.log(messages)

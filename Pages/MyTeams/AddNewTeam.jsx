@@ -17,7 +17,6 @@ import { Context as TeamContext } from '../../Contexts/TeamContext';
 import AppCss from '../../CSS/AppCss';
 import Modal_AddPlayers from './Components/Modal_AddPlayers';
 
-
 const appCss = AppCss;
 const styles = StyleSheet.create({
   imageButton: {
@@ -79,6 +78,7 @@ export default function CreateNewTeam({ navigation }) {
   const [emailManager, setEmailManager] = useState(token.Email)
   const [privateOrPublic, setPrivateOrPublic] = useState('public');
   const [TeamImageUri, setimageUri] = useState(null);
+  const [addPlayer, setAddPlayer] = useState(false)
 
   const btnOpenGalery = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -144,10 +144,11 @@ export default function CreateNewTeam({ navigation }) {
                     onChangeText={handleChange('teamName')}
                     value={values.teamName}
                   />
-                  {errors.teamName &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.teamName}</Text>
-                  }
+                  
                 </View>
+                {errors.teamName &&
+                    <Text style={{ fontSize: 12, color: 'red',alignSelf:'center' }}>{errors.teamName}</Text>
+                  }
 
                 <Text style={appCss.inputLabel}>Private Or Public?</Text>
                 <View style={styles.privateOrPublic}>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {
     StyleSheet, TouchableOpacity, View, Text,
-    Modal as ModalJoinRequests, Pressable
+    Modal as ModalJoinRequests, Pressable, Image
 } from 'react-native';
 import { AntDesign as MailIcon, AntDesign as PlusIcon, Feather as RequestAction } from '@expo/vector-icons';
 import AppCss from '../../../CSS/AppCss';
@@ -62,7 +62,7 @@ const team =
     teamManager: "Benel",
     numberOfPlayers: 10,
     PlayersList: [
-        { EmailPlayer: "Lionel Messi", PlayerImg: "https://assets.laliga.com/squad/2020/t178/p19054/2048x2048/p19054_t178_2020_1_002_000.jpg" },
+        { FirstName: "Lionel ",LastName: "Messi" , PlayerPicture: "https://assets.laliga.com/squad/2020/t178/p19054/2048x2048/p19054_t178_2020_1_002_000.jpg" , PlayerCity: "Tel-Aviv",Gender:0,},
         { EmailPlayer: "Cristiano Ronaldo", PlayerImg: "https://site-cdn.givemesport.com/images/21/02/05/354cc6f5366bb99d3eca6bc92f8d2165/1201.jpg" },
     ],
     rulesAndLaws: "Hello And welcome to FootHood First Game. The rules are- Each team has 5 players and the team who wins is the team who reaches 2 goals. The game time is 8 min. If needed there is a 2 min extra time."
@@ -71,21 +71,26 @@ export default function Modal_JoinRequests() {
     const [requestsModalVisible, setRequestsModalVisible] = useState(false);
 
     const joinRequestsList = team.PlayersList.map((p, i) => (
-        <ListItem key={i} bottomDivider>
-            {/* <TouchableOpacity activeOpacity={0.8} onPress={() => console.log("player Card")} >
+            <ListItem key={i} bottomDivider >
+                {/* <TouchableOpacity activeOpacity={0.8} onPress={() => console.log("player Card")} >
                 <Image style={styles.playerCardIcon_Btn} source={require('../../assets/PlayerCardIcon.png')} />
             </TouchableOpacity>  */}
-            <TouchableOpacity onPress={() => console.log("Delete Request")}>
-                <RequestAction name="x" size={24} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => console.log("Approve Request")}>
-                <RequestAction name="check" size={24} color="black" />
-            </TouchableOpacity>
-            <ListItem.Content style={{ alignItems: 'flex-end' }} >
-                <ListItem.Title>{p.EmailPlayer}</ListItem.Title>
-            </ListItem.Content>
-            <Avatar rounded source={{ uri: p.PlayerImg }} />
-        </ListItem>
+                <TouchableOpacity onPress={() => console.log("Delete Request")}>
+                    <RequestAction name="x" size={25} color="black" />
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => console.log("Approve Request")}>
+                    <RequestAction name="check" size={25} color="black" />
+                </TouchableOpacity>
+
+
+
+
+                <ListItem.Content style={{ alignItems: 'flex-end' }} >
+                    <ListItem.Title>{p.FirstName+ " "+p.LastName}</ListItem.Title>
+                </ListItem.Content>
+                <Avatar rounded source={{ uri: p.PlayerPicture }} />
+            </ListItem>
     ))
 
 
@@ -105,7 +110,7 @@ export default function Modal_JoinRequests() {
     </ModalJoinRequests>
 
     return (
-        <View style={{padding:10}}>
+        <View style={{ padding: 10 }}>
             <TouchableOpacity onPress={() => setRequestsModalVisible(true)} style={styles.PlayerRequest}>
                 <Text style={styles.btnText}>Players requests</Text>
                 <MailIcon name="mail" size={24} color="black" />

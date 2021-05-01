@@ -52,10 +52,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white'
   },
-  playerCardIcon_Btn: {
-    width: 35,
-    height: 35
-  },
 })
 
 export default function TeamDetailsPage(props) {
@@ -87,7 +83,7 @@ export default function TeamDetailsPage(props) {
   const playerList = teamPlayers.map((p, i) => (
     <ListItem key={i} bottomDivider style={styles.rowPlayer_ItemList}>
       <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CardPlayer', { p })} >
-        <Image style={styles.playerCardIcon_Btn} source={require('../../assets/PlayerCardIcon.png')} />
+        <Image style={appCss.playerCardIcon_Btn} source={require('../../assets/PlayerCardIcon.png')} />
       </TouchableOpacity>
       <ListItem.Content style={{ alignItems: 'flex-end' }} >
         <ListItem.Title>{p.FirstName + " "+ p.LastName}</ListItem.Title>
@@ -113,7 +109,7 @@ export default function TeamDetailsPage(props) {
         <Text style={appCss.title}>{team.TeamName}</Text>
         <View style={styles.options_View}>
           <Modal_RulesAndLaws team={team}/>
-          <Modal_AddPlayers team={team}/>
+          <Modal_AddPlayers />
         </View>
       </ImageBackground>
 

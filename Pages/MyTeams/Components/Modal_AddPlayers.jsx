@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
       },
 })
 
-export default function Modal_AddPlayers({team}) {
+export default function Modal_AddPlayers() {
     const [addPlayerModalVisible, setAddPlayerModalVisible] = useState(false);
     const [showSearchPlayer_Modal,setShowSearchPlayer_Modal]= useState(false);
 
@@ -102,7 +102,7 @@ export default function Modal_AddPlayers({team}) {
         <View>
            <TouchableOpacity activeOpacity={0.8} onPress={() => setAddPlayerModalVisible(true)} style={styles.options_Btn}>
             <Text style={[appCss.txtBtnTouch,{fontSize:16}]}>Add New Players</Text>
-            <Feather name="user-plus" size={24} color="black"/>
+            <Feather name="user-plus" size={24} color="black" style={{left:10}}/>
           </TouchableOpacity>
           {modal_AddNewPlayer}
           {showSearchPlayer_Modal &&<Modal_SearchInApp showSearchPlayer_Modal={showSearchPlayer_Modal} setShowSearchPlayer_Modal={setShowSearchPlayer_Modal} setAddPlayerModalVisible={setAddPlayerModalVisible}/>}

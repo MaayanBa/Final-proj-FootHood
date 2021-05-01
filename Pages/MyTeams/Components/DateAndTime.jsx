@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     },
 })
 
-export default function DateAndTime() {
+export default function DateAndTime(props) {
     const [mode, setMode] = useState(null);
     const [showshowDateTimePicker_Game, setShowDateTimePicker_Game] = useState(false);
     const [dateGame, setDateGame] = useState(new Date());
@@ -34,9 +34,9 @@ export default function DateAndTime() {
         'TypeError: _reactNative.NativeModules.RNDatePickerAndroid.dismiss is not a function',
     ]);
 
-    // useEffect(() => {
-    //   dateRegistration > dateGame ? alert('You must choose a date before the game date' ) : setShowDateTimePicker_Regi(true); // to show the picker again in time mode
-    // }, [dateRegistration])
+    useEffect(() => {
+      props.liftState(dateGame,gameTime,dateRegistration,registrationTime);
+    }, [registrationTime])
 
     useEffect(() => {
         dateGame !== new Date() ?
