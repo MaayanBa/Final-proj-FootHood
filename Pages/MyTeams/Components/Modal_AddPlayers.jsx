@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import AppCss from '../../../CSS/AppCss';
+import Modal_SearchInApp from './Modal_SearchInApp';
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
@@ -58,7 +59,13 @@ const styles = StyleSheet.create({
 
 export default function Modal_AddPlayers({team}) {
     const [addPlayerModalVisible, setAddPlayerModalVisible] = useState(false);
+    const [showSearchPlayer_Modal,setShowSearchPlayer_Modal]= useState(false);
 
+    const clickOnSearchPlayerInApp=()=>{
+        setAddPlayerModalVisible(!addPlayerModalVisible) 
+        setShowSearchPlayer_Modal(true)
+    }
+  
     const modal_AddNewPlayer = <ModalAddNewPlayer animationType="slide"
     transparent={true} visible={addPlayerModalVisible}
     onRequestClose={() => setAddPlayerModalVisible(!addPlayerModalVisible)}
@@ -77,12 +84,13 @@ export default function Modal_AddPlayers({team}) {
             <Text style={[appCss.txtBtnTouch,{fontSize:16}]}>&nbsp; Contact List</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch,{width:"90%"}]}>
+        <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch,{width:"90%"}]} onPress={() => clickOnSearchPlayerInApp()}>
           <View style={styles.addPlayersBtns}>
             <Feather name="search" size={24} color="black" />
             <Text style={[appCss.txtBtnTouch,{fontSize:16}]}>&nbsp; Search In App</Text>
           </View>
         </TouchableOpacity>
+        
         <Pressable style={styles.modal_Closebtn} onPress={() => setAddPlayerModalVisible(!addPlayerModalVisible)} >
           <Text style={appCss.inputLabel}>Close</Text>
         </Pressable>
@@ -97,6 +105,7 @@ export default function Modal_AddPlayers({team}) {
             <Feather name="user-plus" size={24} color="black"/>
           </TouchableOpacity>
           {modal_AddNewPlayer}
+          {showSearchPlayer_Modal &&<Modal_SearchInApp showSearchPlayer_Modal={showSearchPlayer_Modal} setShowSearchPlayer_Modal={setShowSearchPlayer_Modal} setAddPlayerModalVisible={setAddPlayerModalVisible}/>}
         </View>
     )
 
