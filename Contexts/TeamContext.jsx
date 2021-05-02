@@ -15,6 +15,9 @@ const teamReducer = (state, action) => {
         case 'CreateNewTeam': {
             return { ...state, myTeams: action.payload }
         }
+        case 'SearchPlayer': {
+            return { ...state, myTeams: action.payload }
+        }
         // case 'GetJoinRequests': {
         //     return { ...state, joinRequests: action.payload }
         // }
@@ -96,6 +99,20 @@ const GetPlayers4Team = dispatch => async (playersList) => {
 //     }
 // }
 
+const SearchPlayer = dispatch => async (player) => {
+    try {
+        console.log("Plsyer =====> "+player)
+        console.log(player)
+        const response = await TeamApi.post('/SearchPlayer',player);
+        console.log("response . data === " + response.data);
+        console.log(response.data);
+        // dispatch({ type: 'SearchPlayer', payload: response.data })
+    } catch (err) {
+        console.log("in error" +err)
+        console.log(err.data)
+        // dispatch({ type: 'add_error', payload: 'Somthing went wrong when searching for players' })
+    }
+}
 
 export const { Context, Provider } = CreateDataContext(
     //Reducer
@@ -107,6 +124,7 @@ export const { Context, Provider } = CreateDataContext(
         GetPlayers4Team,
         //LeaveTeam,
         // GetJoinRequests,
+        SearchPlayer,
     },
     {
         myTeams: [],
