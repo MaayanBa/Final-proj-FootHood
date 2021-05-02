@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, Image, StyleSheet, LogBox } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AppCss from '../../../CSS/AppCss';
+import { date } from 'yup';
 
 const appCss = AppCss;
-
 const styles = StyleSheet.create({
     dateTime_View: {
         flexDirection: 'row',
@@ -35,63 +35,87 @@ export default function DateAndTime(props) {
     ]);
 
     useEffect(() => {
-      props.liftState(dateGame,gameTime,dateRegistration,registrationTime);
+        props.liftState(dateGame, gameTime, dateRegistration, registrationTime);
     }, [registrationTime])
 
-    useEffect(() => {
-        dateGame !== new Date() ?
-            dateGame < new Date() ? null : setShowDateTimePicker_Game(true) // to show the picker again in time mode 
-            : null
-    }, [dateGame])
-
     const onChange = (event, selectedValue) => {
-
+        console.log(selectedValue)
+        let now = new Date();
         if (gameOrRegistration === 'game') {
             setShowDateTimePicker_Game(false);
 
             if (mode === 'date') {
-                const currentDate = selectedValue || new Date();
-                setDateGame(currentDate);
-                setMode('time');
+                const currentDate = selectedValue || now;
 
+                if (currentDate.setHours(0, 0, 0, 0) >= now.setHours(0, 0, 0, 0)) {
+                    setDateGame(currentDate);
+                    setMode('time');
+                    setShowDateTimePicker_Game(true)
+                }
+                else {
+                    alert("You must choose date in feature")
+                    setShowChoosenDateGame(false)
+                }
             } else if (mode === 'time') {
-                const selectedTime = selectedValue || new Date();
-                setGameTime(selectedTime);
-                setShowChoosenDateGame(true);
+                const selectedTime = selectedValue || now;
+
+                if (dateGame.setHours(0, 0, 0, 0) > now.setHours(0, 0, 0, 0)) {
+                    setGameTime(selectedTime);
+                    setShowChoosenDateGame(true);
+                }
+                else if (dateGame.setHours(0, 0, 0, 0) == now.setHours(0, 0, 0, 0)) {
+                    if (selectedTime > now.getTime()) {
+                        setGameTime(selectedTime);
+                        setShowChoosenDateGame(true);
+                    }
+                    else {
+                        alert("You must choose the time of the game in feature")
+                        setShowChoosenDateGame(false)
+                    }
+                }
             }
         }
         else if (gameOrRegistration === 'registration') {
             setShowDateTimePicker_Regi(false);
 
             if (mode == 'date') {
-                const lastDate = selectedValue || new Date();
-                if ((lastDate.getDate() < dateGame.getDate() && lastDate.getMonth() == dateGame.getMonth()) || (lastDate.getMonth() < dateGame.getMonth())) {
-                    setDateRegistration(lastDate);
+                const lastDate2Reg = selectedValue || selectedValue.setDate(selectedValue.getDate()-1);
+
+                if (lastDate2Reg.setHours(0, 0, 0, 0) <= dateGame.setHours(0, 0, 0, 0)) {
+                    setDateRegistration(lastDate2Reg);
                     setMode('time');
                     setShowDateTimePicker_Regi(true); // to show the picker again in time mode
-                }
-                else
+                } else
                     alert("The date you have choosen is after the game date.Please choose another date.")
 
             } else if (mode === 'time') {
-                const selectedlastTime = selectedValue || new Date();
-                setRegistretionTime(selectedlastTime);
-                setShowLastRegistration(true);
+                const selectedlastTime = selectedValue;
+                if (dateRegistration.setHours(0, 0, 0, 0) < dateGame.setHours(0, 0, 0, 0)) {
+                    setRegistretionTime(selectedlastTime);
+                    setShowLastRegistration(true);
+                }
+                else if (dateRegistration.setHours(0, 0, 0, 0) == dateGame.setHours(0, 0, 0, 0)) {
+                    if (selectedlastTime < gameTime.getTime()) {
+                        setRegistretionTime(selectedlastTime);
+                        setShowLastRegistration(true);
+                    }
+                    else {
+                        alert("You must choose the time of last registration before the game")
+                        setShowLastRegistration(false)
+                    }
+                }
             }
         }
     };
 
     const showMode = (currentMode, belongTo) => {
-        //console.log(belongTo);     console.log(currentMode);
         setGameOrRegistration(belongTo);
         setMode(currentMode);
         belongTo === 'game' ? setShowDateTimePicker_Game(true) : setShowDateTimePicker_Regi(true);
     };
 
-
-    const dateAndTime = (date, time) => {
-        return `${date.getDate()}/${date.getMonth() +
-            1}/${date.getFullYear()}  At - ${time.getHours()}:${time.getMinutes()}`;//Builds up togther the date and time
+    const dateAndTime = (time) => {
+        return time.toLocaleString();
     };
 
     return (
@@ -113,12 +137,13 @@ export default function DateAndTime(props) {
                     is24Hour={true}
                     display="default"
                     onChange={onChange}
+                    minimumDate={new Date()}
                 />
             )}
 
             {showChoosenDateGame &&
-                <Text style={[appCss.inputLabel, { color: 'orange', fontSize: 15, marginTop: 5 , alignSelf:'center' }]}>
-                    {dateAndTime(dateGame, gameTime)}
+                <Text style={[appCss.inputLabel, { color: 'orange', fontSize: 15, marginTop: 5, alignSelf: 'center' }]}>
+                    {dateAndTime(gameTime)}
                 </Text>}
 
             {/* Last date for registration */}
@@ -137,20 +162,17 @@ export default function DateAndTime(props) {
                     is24Hour={true}
                     display="default"
                     onChange={onChange}
+                    minimumDate={new Date()}
                 />
             )}
 
             {showLastRegistration &&
-                <Text style={[appCss.inputLabel, { color: 'orange', fontSize: 15, marginTop: 5 , alignSelf:'center' }]}>
-                    {dateAndTime(dateRegistration, registrationTime)}
+                <Text style={[appCss.inputLabel, { color: 'orange', fontSize: 15, marginTop: 5, alignSelf: 'center' }]}>
+                    {dateAndTime(registrationTime)}
                 </Text>}
         </View>
     )
 }
-
-
-
-
 
 
 

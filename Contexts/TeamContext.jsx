@@ -1,8 +1,6 @@
 import CreateDataContext from './createDataContext';
 import TeamApi from '../api/Team';
 
-
-
 const teamReducer = (state, action) => {
     switch (action.type) {
         case 'LeaveTeam': {
@@ -32,9 +30,8 @@ const clearState = dispatch => () => {
 const CreateNewTeam = dispatch => async (newTeam) => {
     try {
         const response = await TeamApi.post('/CreateNewTeam', newTeam);
-        console.log("response . data === " + response.data);
-        console.log(response.data);
-
+        // console.log("response . data === " + response.data);
+        // console.log(response.data);
         await dispatch({ type: 'CreateNewTeam', payload: response.data });
     } catch (err) {
         console.log(err.response.data)

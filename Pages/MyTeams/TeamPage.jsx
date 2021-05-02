@@ -87,8 +87,6 @@ export default function TeamPage(props) {
                 tempArr.push(player);
         });
         setTeamPlayers(tempArr);
-        
-        console.log(team.TeamSerialNum)
         fetchMessages().catch(e => console.log(e))
         GetGamesList(team.TeamSerialNum)
         // return () => {
@@ -182,7 +180,7 @@ export default function TeamPage(props) {
                 </View>
             </TouchableOpacity>
 
-            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame')}
+            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame',{team})}
                 style={[appCss.btnTouch, styles.btnTouch_extra]}>
                 <Text style={appCss.txtBtnTouch}>Create New Game</Text>
             </TouchableOpacity>

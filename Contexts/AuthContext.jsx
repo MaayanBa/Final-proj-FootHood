@@ -2,9 +2,6 @@ import CreateDataContext from './createDataContext';
 import AuthApi from '../api/Auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-
-
 const authReducer = (state, action) => {
     switch (action.type) {
         case 'resetRestore_PassCode_values': {
