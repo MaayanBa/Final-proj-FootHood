@@ -96,18 +96,21 @@ export default function Modal_LocationMap(props) {
     }
 
     const getCoordsFromName = (loc) => {
+        console.log("Location: "+loc)
+        geocodeLocationByName(loc)
         loc.latitude !== undefined ?
-        geocodeLocationByName(loc).then(
-            (data) => {
-                console.log(data);
-                // setRegion({
-                //     latitude: data.latitude,
-                //     longitude: data.longitude,
-                //     latitudeDelta: 0.008,
-                //     longitudeDelta: 0.008
-                // });
-            }
-        ) : null
+        geocodeLocationByName(loc)
+        // .then(
+        //     (data) => {
+        //         console.log(data);
+        //         // setRegion({
+        //         //     latitude: data.latitude,
+        //         //     longitude: data.longitude,
+        //         //     latitudeDelta: 0.008,
+        //         //     longitudeDelta: 0.008
+        //         // });
+        //     }        )
+             : null
     }
 
 

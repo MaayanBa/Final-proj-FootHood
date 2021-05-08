@@ -38,11 +38,13 @@ const styles = StyleSheet.create({
 export default function GamePage(props) {
   const {game} = props.route.params;
 
-  const gameDate = new Date("2021-04-29T20:00:00Z"); //Need to enter here game date
+  const gameDate = new Date("2021-05-29T20:00:00Z"); //Need to enter here game date
   const oneDay = 60 * 60 * 24 * 1000 //This give us 24 hours parmeter
 
   const JoinGame = () => {
     console.log("Join Game Button")
+    console.log(new Date(game.GameDate))
+    console.log(new Date()-0)
   }
 
   const showDate = (date) => {
@@ -50,7 +52,7 @@ export default function GamePage(props) {
         1}/${date.getFullYear()}`;//Builds up togther the date and time
 };
 
-  return (
+return (
     <SafeAreaView>
       <ScrollView>
         <View style={styles.container}>
@@ -58,7 +60,7 @@ export default function GamePage(props) {
             <TouchableOpacity onPress={console.log("Edit")}>
               <Pencil name="pencil" size={24} color="black" />
             </TouchableOpacity>
-            <Text style={[appCss.inputLabel, { paddingBottom: 20 }]}>Game Date: {game.GameDate} </Text>
+            <Text style={[appCss.inputLabel, { paddingBottom: 20 }]}>Game Date: {showDate(new Date(game.GameDate))} </Text>
           </View>
 
           {/* Join Requests */}
@@ -72,7 +74,7 @@ export default function GamePage(props) {
 
           <View style={{ paddingTop: 20 }}>
             {(new Date() <= gameDate - oneDay) ? <Animatable.Text animation="pulse" easing="ease-out"
-              iterationCount="infinite" style={appCss.inputLabel}>Last Registration Date: {game.LastRegistrationDate}</Animatable.Text>
+              iterationCount="infinite" style={appCss.inputLabel}>Last Registration Date: {showDate(new Date(game.LastRegistrationDate))}</Animatable.Text>
               : null}
             <TouchableOpacity activeOpacity={0.8} onPress={JoinGame()} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
               <Image source={require('../../assets/ball.png')} resizeMode="contain" style={styles.imgBall} />
