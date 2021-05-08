@@ -1,9 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react';
-import {
-    StyleSheet, TouchableOpacity, View, Text,
-    Modal as ModalSearchInApp, Pressable, TextInput
-} from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import React, { useState, useContext } from 'react';
+import {StyleSheet, TouchableOpacity, View, Text,
+    Modal as ModalSearchInApp, Pressable, TextInput, Image, ScrollView} from 'react-native';
+import { Entypo as PlusIcon} from '@expo/vector-icons'; 
+import { ListItem, Avatar } from 'react-native-elements';
 import AppCss from '../../../CSS/AppCss';
 import { Context as TeamContext } from '../../../Contexts/TeamContext';
 
@@ -26,16 +25,6 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
     },
-    PlayerRequest: {
-        backgroundColor: '#D9D9D9',
-        padding: 20,
-        width: '50%',
-        borderRadius: 30,
-        opacity: 0.3,
-        alignItems: "center",
-        flexDirection: 'row',
-        justifyContent: 'space-evenly'
-    },
     modal_Txt: {
         marginBottom: 15,
         padding: 10,
@@ -44,17 +33,13 @@ const styles = StyleSheet.create({
     addPlayersBtns: {
         flexDirection: "row-reverse",
     },
-    btnText: {
-        alignSelf: 'center',
-        fontWeight: "bold",
-    },
     input: {
         height: 40,
         margin: 12,
         borderWidth: 1,
     },
     labels: {
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-end'
     },
     modal_Closebtn: {
         backgroundColor: "#2196F3",
@@ -63,17 +48,17 @@ const styles = StyleSheet.create({
         padding: 10,
         alignSelf: "center",
     },
+    teamPlayers_Text: {
+        padding: 10,
+        fontWeight: "bold",
+    },
 })
 
 export default function Modal_SearchInApp(props) {
 
     const [fullName, setFullName] = useState("");
-    const { state: { players }, SearchPlayer } = useContext(TeamContext);
+    const { state: { searchedPlayers }, SearchPlayer } = useContext(TeamContext);
 
-    // const closeOldModel=()=>{
-    //     props.setSearchInAppModalVisible(true)
-    //     // props.setAddPlayerModalVisible(false)
-    // }
     const SearchPlayers = () => {
 
         var firstName = "";
@@ -81,16 +66,6 @@ export default function Modal_SearchInApp(props) {
         console.log(fullName)
         var checkName = fullName.split(' ');
         console.log("Length:" + checkName.length)
-        // switch (checkName.length) {
-        //     case (checkName.length == 1):
-        //         firstName = fullName;
-        //         console.log("CASE 1!")
-
-        //     case (checkName.length >= 2):
-        //         firstName = fullName.split(' ').slice(0, -1).join(' ');
-        //         lastName = fullName.split(' ').slice(-1).join(' ');
-        //         console.log("XASE 2!")
-        // }
         if (checkName.length === 1) {
             firstName = fullName;
             lastName = null;
@@ -99,7 +74,7 @@ export default function Modal_SearchInApp(props) {
         else if (checkName.length >= 2) {
             firstName = fullName.split(' ').slice(0, -1).join(' ');
             lastName = fullName.split(' ').slice(-1).join(' ');
-            console.log("XASE 2!")
+            console.log("CASE 2!")
         }
 
         console.log("First: " + firstName + " Last: " + lastName)
@@ -108,17 +83,50 @@ export default function Modal_SearchInApp(props) {
             LastName: lastName
         }
         SearchPlayer(player)
-        props.setShowSearchPlayer_Modal(false);
-        
     }
+
+
+
+    const Close = () => {
+        const player = {
+            FirstName: null,
+            LastName: null
+        }
+        SearchPlayer(player)
+        props.setShowSearchPlayer_Modal(false)
+    }
+    
+
+    const searchedPlayerList = searchedPlayers.map((p, key) => {
+        return <View style={styles.playerList_View}>
+            <Text style={styles.teamPlayers_Text}>Search Results:</Text>
+            <ScrollView>
+                <ListItem key={key} bottomDivider style={styles.rowPlayer_ItemList}>
+                    <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CardPlayer', { p })} >
+                        <Image style={appCss.playerCardIcon_Btn} source={require('../../../assets/PlayerCardIcon.png')} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => console.log("Add player")}>
+                        <PlusIcon name="plus" size={25} color="black" />
+                    </TouchableOpacity>
+                    <ListItem.Content style={{ alignItems: 'flex-end' }} >
+                        <ListItem.Title>{p.FirstName + " " + p.LastName}</ListItem.Title>
+                    </ListItem.Content>
+                    <Avatar rounded source={{ uri: p.PlayerPicture }} />
+                </ListItem>
+            </ScrollView>
+            <Pressable style={styles.modal_Closebtn} onPress={() => Close()} >
+                <Text style={appCss.inputLabel}>Close</Text>
+            </Pressable>
+        </View >
+    })
     const modal_searchInApp = <ModalSearchInApp animationType="slide"
         transparent={true} visible={props.searchInAppModalVisible}
-        onRequestClose={() => props.setSearchInAppModalVisible(!props.searchInAppModalVisible)}
+        onRequestClose={() => props.setShowSearchPlayer_Modal(false)}
     >
         <View style={styles.centeredView}>
             <View style={styles.modal_View}>
                 <Text style={styles.modal_Txt}>Enter Player Details:</Text>
-                <Text style={styles.labels}>First Name:</Text>
+                <Text style={styles.labels}>Full Name:</Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={setFullName}
@@ -127,18 +135,13 @@ export default function Modal_SearchInApp(props) {
                 <Pressable style={styles.modal_Closebtn} onPress={() => SearchPlayers()} >
                     <Text style={appCss.inputLabel}>Search</Text>
                 </Pressable>
+                {searchedPlayers.length == 0 ? null : searchedPlayerList}
             </View>
         </View>
     </ModalSearchInApp>
 
     return (
         <View style={styles.addPlayersBtns}>
-            {/* <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch, { width: "90%" }]} onPress={() => closeOldModel()}>
-                <View style={styles.addPlayersBtns}>
-                    <Feather name="search" size={24} color="black" />
-                    <Text style={[appCss.txtBtnTouch, { fontSize: 16 }]}>&nbsp; Search In App</Text>
-                </View>
-            </TouchableOpacity> */}
             {modal_searchInApp}
         </View>
     )

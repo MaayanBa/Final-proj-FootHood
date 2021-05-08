@@ -83,9 +83,6 @@ export default function Modal_JoinRequests() {
                     <RequestAction name="check" size={25} color="black" />
                 </TouchableOpacity>
 
-
-
-
                 <ListItem.Content style={{ alignItems: 'flex-end' }} >
                     <ListItem.Title>{p.FirstName+ " "+p.LastName}</ListItem.Title>
                 </ListItem.Content>

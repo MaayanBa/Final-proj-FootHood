@@ -16,7 +16,10 @@ const teamReducer = (state, action) => {
             return { ...state, myTeams: action.payload }
         }
         case 'SearchPlayer': {
-            return { ...state, myTeams: action.payload }
+            return { ...state, searchedPlayers: action.payload }
+        }
+        case 'AddPlayer': {
+            return { ...state, teamPlayers: action.payload }
         }
         // case 'GetJoinRequests': {
         //     return { ...state, joinRequests: action.payload }
@@ -106,13 +109,29 @@ const SearchPlayer = dispatch => async (player) => {
         const response = await TeamApi.post('/SearchPlayer',player);
         console.log("response . data === " + response.data);
         console.log(response.data);
-        // dispatch({ type: 'SearchPlayer', payload: response.data })
+        dispatch({ type: 'SearchPlayer', payload: response.data })
     } catch (err) {
         console.log("in error" +err)
         console.log(err.data)
-        // dispatch({ type: 'add_error', payload: 'Somthing went wrong when searching for players' })
+        dispatch({ type: 'add_error', payload: 'Somthing went wrong when searching for players' })
     }
 }
+
+const AddPlayer = dispatch => async () => {
+    try {
+        console.log("Plsyer =====> "+player)
+        console.log(player)
+        const response = await TeamApi.post('/JoinTeam',player);
+        console.log("response . data === " + response.data);
+        console.log(response.data);
+        dispatch({ type: 'SearchPlayer', payload: response.data })
+    } catch (err) {
+        console.log("in error" +err)
+        console.log(err.data)
+        dispatch({ type: 'add_error', payload: 'Somthing went wrong when adding player' })
+    }
+}
+
 
 export const { Context, Provider } = CreateDataContext(
     //Reducer
@@ -125,10 +144,12 @@ export const { Context, Provider } = CreateDataContext(
         //LeaveTeam,
         // GetJoinRequests,
         SearchPlayer,
+        AddPlayer,
     },
     {
         myTeams: [],
-        players:[],
+        searchedPlayers:[],
         joinRequests:[],
+        teamPlayers:[],
     }
 );
