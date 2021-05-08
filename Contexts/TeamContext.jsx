@@ -117,14 +117,14 @@ const SearchPlayer = dispatch => async (player) => {
     }
 }
 
-const AddPlayer = dispatch => async () => {
+const AddPlayer = dispatch => async (player) => {
     try {
-        console.log("Plsyer =====> "+player)
+        console.log("PlayerToTeam =====> "+player)
         console.log(player)
         const response = await TeamApi.post('/JoinTeam',player);
         console.log("response . data === " + response.data);
         console.log(response.data);
-        dispatch({ type: 'SearchPlayer', payload: response.data })
+        dispatch({ type: 'AddPlayer', payload: response.data })
     } catch (err) {
         console.log("in error" +err)
         console.log(err.data)

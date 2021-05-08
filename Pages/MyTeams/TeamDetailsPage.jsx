@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext,useEffect } from 'react';
 import {StyleSheet, View,SafeAreaView, ScrollView, TouchableOpacity,
   StatusBar, ImageBackground,Image
 } from 'react-native';
@@ -58,6 +58,7 @@ export default function TeamDetailsPage(props) {
   const {team, teamPlayers} = props.route.params;
   const { LeaveTeam } = useContext(TeamContext);
 
+
   // const team =
   // {
   //   TeamName: "Barca",
@@ -109,7 +110,7 @@ export default function TeamDetailsPage(props) {
         <Text style={appCss.title}>{team.TeamName}</Text>
         <View style={styles.options_View}>
           <Modal_RulesAndLaws team={team}/>
-          <Modal_AddPlayers props={props}/>
+          <Modal_AddPlayers props={props} team={team}/>
         </View>
       </ImageBackground>
 

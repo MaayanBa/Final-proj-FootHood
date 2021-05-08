@@ -26,7 +26,7 @@ const GooglePlacesInput = (props) => {
                         // console.log("googlePlaceData========>")
                         // console.log(googlePlaceData)
                         // console.log("googlePlaceDetails======>")
-                        // console.log(googlePlaceDetails.structured_formatting.main_text+" " +googlePlaceDetails.structured_formatting.secondary_text)
+                        //console.log(googlePlaceDetails.structured_formatting.main_text+" " +googlePlaceDetails.structured_formatting.secondary_text)
                     }}
                     query={{
                         key: 'AIzaSyAY2M0Dj9jb5I6kU-_prhC3i0XLqdufOW8',

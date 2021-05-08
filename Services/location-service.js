@@ -1,8 +1,6 @@
-import { enableExpoCliLogging } from 'expo/build/logs/Logs';
 import Geocoder from 'react-native-geocoding';
 
 Geocoder.init('AIzaSyAY2M0Dj9jb5I6kU-_prhC3i0XLqdufOW8');
-
 
 export const getLocation = () => {
     return new Promise(
@@ -22,10 +20,7 @@ export const geocodeLocationByName = (locationName) => {
                 .then(json => {
                     // const addressComponent = json.results[0].address_components[0];
                     var addressComponent = json.results[0].geometry.location;
-
                     resolve(addressComponent);
-                    // console.log("loc===>"+addressComponent);
-                    // console.log(addressComponent);
                 })
                 .catch(error => reject(error));
         }
