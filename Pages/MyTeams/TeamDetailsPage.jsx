@@ -109,7 +109,7 @@ export default function TeamDetailsPage(props) {
         <Text style={appCss.title}>{team.TeamName}</Text>
         <View style={styles.options_View}>
           <Modal_RulesAndLaws team={team}/>
-          <Modal_AddPlayers />
+          <Modal_AddPlayers props={props}/>
         </View>
       </ImageBackground>
 
