@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import {
-    StyleSheet, TouchableOpacity, View, Text,
+    StyleSheet, TouchableOpacity, View, Text, Image, TextInput,
     Modal, Dimensions, Pressable
 } from 'react-native';
-import { Feather as LocationFeather } from '@expo/vector-icons';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import AppCss from '../../../CSS/AppCss';
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { getLocation, geocodeLocationByName } from '../../../Services/location-service';
+import { Context as CitiesContext } from '../../../Contexts/CitiesContext';
+import CitiesDropDown from './CitiesDropDown';
+import GooglePlacesInput from './GooglePlacesInput';
 
 const appCss = AppCss;
 
 const styles = StyleSheet.create({
-    location_View: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingTop: 35
-    },
     modal_View: {
         margin: 20,
         backgroundColor: "white",
@@ -39,9 +36,14 @@ const styles = StyleSheet.create({
     },
     map_Container: {
         flex: 1,
+        marginTop: 20,
         backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+    },
+    mapView_container: {
+        flex: 1,
+        zIndex: 0,
+        width: Dimensions.get('window').width - 70,
+        height: '70%'
     },
     map_BtnClose: {
         backgroundColor: "#2196F3",
@@ -51,196 +53,92 @@ const styles = StyleSheet.create({
         elevation: 2,
 
     },
-    addressText: {
-        color: "black",
-        margin: 3,
-        fontFamily: "Calibri",
-    },
-    panelFill: {
-        position: "absolute",
-        top: 0,
-        alignSelf: "stretch",
-        right: 0,
-        left: 0,
-    },
-    panel: {
-        position: "absolute",
-        top: 0,
-        alignSelf: "stretch",
-        right: 0,
-        left: 0,
-        flex: 1,
-    },
-    panelHeader: {
-        //add custom header
-    },
+    // addressText: {
+    //     color: "black",
+    //     margin: 3,
+    //     fontFamily: "Calibri",
+    // },
+
+  
 })
 
-export default function Modal_LocationMap() {
-    const [modalVisible, setModalVisible] = useState(false);
+export default function Modal_LocationMap(props) {
+    const { state: { cities } } = useContext(CitiesContext);
+
     const [region, setRegion] = useState({
-        latitude: 32.342668849189536,
-        longitude: 34.91228681110108,
-        latitudeDelta: 0.0122,
-        longitudeDelta: 0.0121,
+        latitude: 0,
+        longitude: 0,
+        latitudeDelta: 0,
+        longitudeDelta: 0,
     });
-    const [address, setAddress] = useState("");
-    const [listViewDisplayed, setListViewDisplayed] = useState(true);
-    const [showAddress, setShowAddress] = useState(false);
-    const [search, setSearch] = useState("");
-    const [currentLat, setCurrentLat] = useState("");
-    const [currentLng, setCurrentLng] = useState("");
-    const [forceRefresh, setForceRefresh] = useState(0);
-    const [searchText, setSearchText] = useState("");
+    const [cityGame, setCityGame] = useState(null);
 
-    const [destination, setDestination] = useState(null)
+    useEffect(() => {
+        getInitialState();
+    }, [])
 
-    let mapView = "";
-
-    const getAddress = () => {
-        //function to get address using current lat and lng
-        fetch("https://maps.googleapis.com/maps/api/geocode/json?address=" + region.latitude + "," + region.longitude + "&key=" + AIzaSyAY2M0Dj9jb5I6kU - _prhC3i0XLqdufOW8).then((response) => response.json()).then((responseJson) => {
-            console.log("ADDRESS GEOCODE is BACK!! => " + JSON.stringify(responseJson));
-            setRegion({
-                address: JSON.stringify(responseJson.results[0].formatted_address)
-                    .replace(/"/g, "")
-            });
-        });
+    const getInitialState = () => {
+        getLocation().then(
+            (data) => {
+                //console.log(data);
+                setRegion({
+                    latitude: data.latitude,
+                    longitude: data.longitude,
+                    latitudeDelta: 0.008,
+                    longitudeDelta: 0.008
+                });
+            }
+        );
     }
 
-    const goToInitialLocation = (region) => {
-        let initialRegion = Object.assign({}, region);
-        initialRegion["latitudeDelta"] = 0.005;
-        initialRegion["longitudeDelta"] = 0.005;
-        this.mapView.animateToRegion(initialRegion, 2000);
-    };
-    const onRegionChange = (region) => {
-        setRegion(region);
-        setForceRefresh(Math.floor(Math.random() * 100));
-        //this.getCurrentAddress//callback
+    const GetCityFromUser = (c) => {
+        setCityGame(c)
+    }
 
-    };
+    const getCoordsFromName = (loc) => {
+        loc.latitude !== undefined ?
+        geocodeLocationByName(loc).then(
+            (data) => {
+                console.log(data);
+                // setRegion({
+                //     latitude: data.latitude,
+                //     longitude: data.longitude,
+                //     latitudeDelta: 0.008,
+                //     longitudeDelta: 0.008
+                // });
+            }
+        ) : null
+    }
 
-
-
-
-
-    const modalLocationMap = <Modal animationType="slide"
-        transparent={true} visible={modalVisible}
-        onRequestClose={() => {
-            alert("You have closed the map.");
-            setModalVisible(!modalVisible);
-        }}
-    >
-        {/* <View style={styles.centeredView}> */}
-        <View style={styles.modal_View}>
-            <Text style={styles.modal_Txt}>Choose Location:</Text>
-            <View style={styles.map_Container}>
-
-                <MapView
-                    onPress={(pos) => { console.log(pos.nativeEvent.coordinate); }}
-                    style={{ flex: 1, width: Dimensions.get('window').width - 70, height: '70%' }}
-                    region={region}
-                    onRegionChangeComplete={region => setRegion(region)}
-                >
-                    <Marker draggable
-                        coordinate={region}
-                        onDragEnd={(e) => setDestination({ destination: e.nativeEvent.coordinate })}
-                    />
-                </MapView>
-
-                <View style={styles.panel}>
-                    <View style={[styles.panelHeader,styles.panelFill ]}>
-                        <GooglePlacesAutocomplete
-                            currentLocation={false}
-                            enableHighAccuracyLocation={true}
-                            ref={(c) => (setSearchText(c))}
-                            placeholder="Search for a location"
-                            minLength={2} // minimum length of text to search
-                            autoFocus={false}
-                            returnKeyType={"search"}
-                            listViewDisplayed={listViewDisplayed}
-                            fetchDetails={true}
-                            renderDescription={(row) => row.description}
-                            enablePoweredByContainer={false}
-                            listUnderlayColor="lightgrey"
-                            onPress={(data, details) => {
-                                setListViewDisplayed(false)
-                                setAddress(data.description)
-                                setCurrentLat(details.geometry.location.lat)
-                                setCurrentLng(details.geometry.location.lng)
-                                setRegion({
-                                    latitudeDelta,
-                                    longitudeDelta,
-                                    latitude: details.geometry.location.lat,
-                                    longitude: details.geometry.location.lng,
-                                });
-                                setSearchText("");
-                                goToInitialLocation(region);
-                            }}
-                            textInputProps={{
-                                onChangeText: (text) => {
-                                    console.log(text);
-                                    setListViewDisplayed(true);
-                                },
-                            }}
-                            getDefaultValue={() => {
-                                return ""; // text input default value
-                            }}
-                            query={{
-                                key: "AIzaSyAY2M0Dj9jb5I6kU - _prhC3i0XLqdufOW8",
-                                language: "en", // language of the results
-                                components: "country:ind",
-                            }}
-                            styles={{
-                                description: {
-                                    fontFamily: "Calibri",
-                                    color: "black",
-                                    fontSize: 12,
-                                },
-                                predefinedPlacesDescription: {
-                                    color: "black",
-                                },
-                                listView: {
-                                    position: "absolute",
-                                    marginTop: 44,
-                                    backgroundColor: "white",
-                                    borderBottomEndRadius: 15,
-                                    elevation: 2,
-                                },
-                            }}
-                            nearbyPlacesAPI="GooglePlacesSearch"
-                            GooglePlacesSearchQuery={{
-                                rankby: "distance",
-                                types: "building",
-                            }}
-                            filterReverseGeocodingByTypes={[
-                                "locality", "administrative_area_level_3",]}
-                            debounce={200} />
-                    </View>
-                </View>
-
-            </View>
-            {/* <Text style={styles.modalText}>Map Here</Text> */}
-            <Pressable
-                style={styles.map_BtnClose}
-                onPress={() => setModalVisible(!modalVisible)}
-            >
-                <Text style={appCss.inputLabel}>Close Map</Text>
-            </Pressable>
-        </View>
-        {/* </View> */}
-    </Modal>
 
     return (
-        <View style={styles.location_View}>
-            <TouchableOpacity onPress={() => setModalVisible(true)} >
-                <LocationFeather name="map-pin" size={40} color="white" style={{ marginLeft: 10 }} />
-            </TouchableOpacity>
-            <Text style={appCss.inputLabel}>Game Location:</Text>
-            {modalLocationMap}
-        </View>
+        <Modal animationType="slide"
+            transparent={true} visible={props.modalVisible} onRequestClose={() => props.setModalVisible()}>
+
+            <View style={styles.modal_View}>
+                <Text style={styles.modal_Txt}>Choose Location:</Text>
+                
+                <GooglePlacesInput notifyChange={(loc) => getCoordsFromName(loc)}/>
+                
+                {/* <CitiesDropDown ChoosenCity={(city) => GetCityFromUser(city)} city={cityGame} /> */}
+                <View style={styles.map_Container}>
+                     <MapView style={styles.mapView_container}
+                        onPress={(pos) => { console.log(pos.nativeEvent.coordinate); }}
+                        provider={PROVIDER_GOOGLE}
+                        region={region}
+                        onRegionChangeComplete={region => setRegion(region)}>
+
+                        <MapView.Marker draggable
+                            coordinate={region} title={'My Location'}
+                            onDragEnd={(e) => console.log(e.nativeEvent)/*setDestination({ destination: e.nativeEvent.coordinate })*/} />
+                    </MapView>
+                </View>
+
+                <Pressable style={styles.map_BtnClose} onPress={() => props.setModalVisible()}            >
+                    <Text style={appCss.inputLabel}>Close Map</Text>
+                </Pressable>
+            </View>
+        </Modal>
     )
 }
-
 

@@ -4,6 +4,7 @@ import Header from './Header';
 import { Context as AuthContext } from '../../Contexts/AuthContext'
 import { Context as TeamContext } from '../../Contexts/TeamContext'
 import { Context as PlayerContext } from '../../Contexts/PlayerContext'
+import { Context as CitiesContext } from '../../Contexts/CitiesContext';
 // import { firebase } from '../../api/FireBase'
 
 const styles = StyleSheet.create({
@@ -36,6 +37,7 @@ export default function Main({ navigation }) {
     const { state: { token }, tryLocalSignin } = useContext(AuthContext)
     const { state: { myTeams }, GetTeamDetails } = useContext(TeamContext);
     const { GetPlayers } = useContext(PlayerContext);
+    const { GetListCities } = useContext(CitiesContext);
 
     const [user, setUser] = useState(token)
     //const [emailUser, setEmailUser] = useState(token.Email)
@@ -47,6 +49,7 @@ export default function Main({ navigation }) {
         //console.log("th user email ---> "+emailUser)
         GetTeamDetails(user.Email)
         GetPlayers();
+        GetListCities();
 
 //         let teamMessagesCount;
 //         try {

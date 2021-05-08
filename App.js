@@ -7,6 +7,7 @@ import { Provider as AuthProvider } from './Contexts/AuthContext';
 import { Provider as TeamProvider } from './Contexts/TeamContext';
 import { Provider as PlayerProvider } from './Contexts/PlayerContext';
 import { Provider as GameProvider } from './Contexts/GameContext';
+import { Provider as CitiesProvider } from './Contexts/CitiesContext';
 
 //import {setNavigator} from './Navigations/navigationRef'
 //inside the stack nav ===>   ref={(navigator) => setNavigator(navigator)}
@@ -17,18 +18,20 @@ const cssApp = AppCss;
 export default function App() {
 
   return (
-    <PlayerProvider>
-      <GameProvider>
-        <TeamProvider>
-          <AuthProvider>
-            <ImageBackground source={require('./assets/WallPaper.png')} style={cssApp.imageBackGround}>
-              <StatusBar />
-              <StackNav />
-            </ImageBackground >
-          </AuthProvider>
-        </TeamProvider>
-      </GameProvider>
-    </PlayerProvider>
+    <CitiesProvider>
+      <PlayerProvider>
+        <GameProvider>
+          <TeamProvider>
+            <AuthProvider>
+              <ImageBackground source={require('./assets/WallPaper.png')} style={cssApp.imageBackGround}>
+                <StatusBar />
+                <StackNav />
+              </ImageBackground >
+            </AuthProvider>
+          </TeamProvider>
+        </GameProvider>
+      </PlayerProvider>
+    </CitiesProvider>
 
   );
 }

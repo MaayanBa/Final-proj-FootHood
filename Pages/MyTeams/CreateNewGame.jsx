@@ -9,6 +9,7 @@ import AppCss from '../../CSS/AppCss';
 import NumOfTeamsAndPlayers from './Components/NumOfTeamsAndPlayers';
 import Modal_LocationMap from './Components/Modal_LocationMap';
 import { Context as GameContext } from '../../Contexts/GameContext'
+import { Feather as LocationFeather } from '@expo/vector-icons';
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
@@ -34,6 +35,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     marginLeft: 50
   },
+  location_View: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: 35
+  },
 })
 const equipmentList = [
   { id: 0, title: 'Water', checked: false },
@@ -45,9 +51,10 @@ const equipmentList = [
 
 export default function CreateNewGame(props) {
   const { team } = props.route.params;
-  const { CreatNewGame,GetGamesList } = useContext(GameContext);
+  const { CreatNewGame, GetGamesList } = useContext(GameContext);
   const [equipmentList_state, setEquipmentList_state] = useState([...equipmentList])
   const [renderCB, setRenderCB] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const [numOfTeamsState, setNumOfTeamsState] = useState(2);
   const [numOfPlayersInTeam, setNumOfPlayersInTeam] = useState(2);
@@ -111,40 +118,40 @@ export default function CreateNewGame(props) {
   }
   const send2Context = async () => {
     //if (gameTime != null && lastRegistrationTime != null) {
-      let equipments = [];
-      if (selectedEquipments != null)
-        selectedEquipments.map(e => {
-          equipments.push({ EquipmentName: e.title })
-        })
-      console.log("numOfTeamsState: " + numOfTeamsState)
-      console.log("numOfPlayersInTeam: " + numOfPlayersInTeam)
-      console.log("TeamSerialNum: " + team.TeamSerialNum)
-      // console.log("GameDate: " +gameDate.toLocaleDateString())
-      // console.log("GameTime: " + gameTime.toLocaleTimeString())
-      // console.log("LastRegistrationDate: " + lastRegistrationDate.toLocaleDateString())
-      // console.log("LastRegistrationTime: " +  lastRegistrationTime.toLocaleTimeString())
-      console.log("GameDate: " +gameDate)
-      console.log("GameTime: " + gameTime)
-      console.log("LastRegistrationDate: " + lastRegistrationDate)
-      console.log("LastRegistrationTime: " +  lastRegistrationTime)
-      let game = {
+    let equipments = [];
+    if (selectedEquipments != null)
+      selectedEquipments.map(e => {
+        equipments.push({ EquipmentName: e.title })
+      })
+    console.log("numOfTeamsState: " + numOfTeamsState)
+    console.log("numOfPlayersInTeam: " + numOfPlayersInTeam)
+    console.log("TeamSerialNum: " + team.TeamSerialNum)
+    // console.log("GameDate: " +gameDate.toLocaleDateString())
+    // console.log("GameTime: " + gameTime.toLocaleTimeString())
+    // console.log("LastRegistrationDate: " + lastRegistrationDate.toLocaleDateString())
+    // console.log("LastRegistrationTime: " +  lastRegistrationTime.toLocaleTimeString())
+    console.log("GameDate: " + gameDate)
+    console.log("GameTime: " + gameTime)
+    console.log("LastRegistrationDate: " + lastRegistrationDate)
+    console.log("LastRegistrationTime: " + lastRegistrationTime)
+    let game = {
 
-        NumOfTeams: numOfTeamsState,
-        NumOfPlayersInTeam: numOfPlayersInTeam,
-        GameLocation: "location",
-        GameDate: gameTime.toLocaleDateString(),
-        GameTime: gameTime.toLocaleTimeString(),
-        LastRegistrationDate: lastRegistrationTime.toLocaleDateString(),
-        LastRegistrationTime: lastRegistrationTime.toLocaleTimeString(),
-        TeamSerialNum: team.TeamSerialNum,
-        equipmentsInGame: equipments
+      NumOfTeams: numOfTeamsState,
+      NumOfPlayersInTeam: numOfPlayersInTeam,
+      GameLocation: "location",
+      GameDate: gameTime.toLocaleDateString(),
+      GameTime: gameTime.toLocaleTimeString(),
+      LastRegistrationDate: lastRegistrationTime.toLocaleDateString(),
+      LastRegistrationTime: lastRegistrationTime.toLocaleTimeString(),
+      TeamSerialNum: team.TeamSerialNum,
+      equipmentsInGame: equipments
 
-      }
-      // console.log("newGame ===> " + newGame)
-      // console.log(newGame)
-      CreatNewGame(game,equipments);
-      //GetGamesList(team.TeamSerialNum)
-      props.navigation.goBack();
+    }
+    // console.log("newGame ===> " + newGame)
+    // console.log(newGame)
+    CreatNewGame(game, equipments);
+    //GetGamesList(team.TeamSerialNum)
+    props.navigation.goBack();
 
     //}
     // else {
@@ -155,7 +162,7 @@ export default function CreateNewGame(props) {
   }
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="handled">
         <View style={[appCss.container, styles.container_extra]}>
           {/* Header */}
           <View style={styles.headerView}>
@@ -171,11 +178,16 @@ export default function CreateNewGame(props) {
           />
 
           {/* Location */}
-          <Modal_LocationMap />
+          <View style={styles.location_View}>
+            <TouchableOpacity onPress={() => setModalVisible(true)} >
+              <LocationFeather name="map-pin" size={40} color="white" style={{ marginLeft: 10 }} />
+            </TouchableOpacity>
+            <Text style={appCss.inputLabel}>Game Location:</Text>
+          </View>
+          {modalVisible && <Modal_LocationMap modalVisible={modalVisible} setModalVisible={() => setModalVisible(!modalVisible)} />}
 
           {/* Date and Time */}
           <DateAndTime liftState={liftState} />
-
 
           {/* Equipment required */}
           <View style={styles.checkBox_View}>
