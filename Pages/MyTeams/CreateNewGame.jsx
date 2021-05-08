@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { StyleSheet, TouchableOpacity, SafeAreaView, ScrollView, View, Text } from 'react-native';
 import { Feather as CheckSquare, Feather as EmptySquare, } from '@expo/vector-icons';
 //import DateTimePicker from '@react-native-community/datetimepicker';
@@ -58,6 +58,7 @@ export default function CreateNewGame(props) {
 
   const [numOfTeamsState, setNumOfTeamsState] = useState(2);
   const [numOfPlayersInTeam, setNumOfPlayersInTeam] = useState(2);
+  const [gameLocation, setGameLocation] = useState(null);
   const [gameDate, setGameDate] = useState(null);
   const [gameTime, setGameTime] = useState(null);
   const [lastRegistrationDate, setLastRegistrationDate] = useState(null);
@@ -138,7 +139,7 @@ export default function CreateNewGame(props) {
 
       NumOfTeams: numOfTeamsState,
       NumOfPlayersInTeam: numOfPlayersInTeam,
-      GameLocation: "location",
+      GameLocation: gameLocation,
       GameDate: gameTime.toLocaleDateString(),
       GameTime: gameTime.toLocaleTimeString(),
       LastRegistrationDate: lastRegistrationTime.toLocaleDateString(),
@@ -159,6 +160,10 @@ export default function CreateNewGame(props) {
     // }
 
 
+  }
+  const getLocation = (loc) => {
+    console.log("LOCCCCCCCCCCCCCCCCCCCCCCC" + loc)
+    setGameLocation(loc);
   }
   return (
     <SafeAreaView>
@@ -184,7 +189,8 @@ export default function CreateNewGame(props) {
             </TouchableOpacity>
             <Text style={appCss.inputLabel}>Game Location:</Text>
           </View>
-          {modalVisible && <Modal_LocationMap modalVisible={modalVisible} setModalVisible={() => setModalVisible(!modalVisible)} />}
+          {modalVisible && <Modal_LocationMap modalVisible={modalVisible} setModalVisible={() => setModalVisible(!modalVisible)} location={(loc) => getLocation(loc)} />}
+          <Text style={[appCss.inputLabel,{textAlign:'center',color: 'orange'}]}> {gameLocation}</Text>
 
           {/* Date and Time */}
           <DateAndTime liftState={liftState} />

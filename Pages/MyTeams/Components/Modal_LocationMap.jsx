@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     //     fontFamily: "Calibri",
     // },
 
-  
+
 })
 
 export default function Modal_LocationMap(props) {
@@ -96,18 +96,22 @@ export default function Modal_LocationMap(props) {
     }
 
     const getCoordsFromName = (loc) => {
-        loc.latitude !== undefined ?
-        geocodeLocationByName(loc).then(
-            (data) => {
-                console.log(data);
-                // setRegion({
-                //     latitude: data.latitude,
-                //     longitude: data.longitude,
-                //     latitudeDelta: 0.008,
-                //     longitudeDelta: 0.008
-                // });
-            }
-        ) : null
+        props.location(loc)
+        // console.log("loc=====> "+loc)
+        //geocodeLocationByName(loc)
+        loc !== undefined ?
+            geocodeLocationByName(loc).then(
+                (data) => {
+                    console.log("Data====>" + data);
+                    console.log(data);
+                    setRegion({
+                        latitude: data.lat,
+                        longitude: data.lng,
+                        latitudeDelta: 0.008,
+                        longitudeDelta: 0.008
+                    });
+                }
+            ) : null
     }
 
 
@@ -117,18 +121,19 @@ export default function Modal_LocationMap(props) {
 
             <View style={styles.modal_View}>
                 <Text style={styles.modal_Txt}>Choose Location:</Text>
-                
-                <GooglePlacesInput notifyChange={(loc) => getCoordsFromName(loc)}/>
-                
+
+                <GooglePlacesInput notifyChange={(loc) => getCoordsFromName(loc)} />
+
                 {/* <CitiesDropDown ChoosenCity={(city) => GetCityFromUser(city)} city={cityGame} /> */}
                 <View style={styles.map_Container}>
-                     <MapView style={styles.mapView_container}
+                    <MapView style={styles.mapView_container}
                         onPress={(pos) => { console.log(pos.nativeEvent.coordinate); }}
                         provider={PROVIDER_GOOGLE}
                         region={region}
                         onRegionChangeComplete={region => setRegion(region)}>
 
-                        <MapView.Marker draggable
+                        <Marker
+                            draggable
                             coordinate={region} title={'My Location'}
                             onDragEnd={(e) => console.log(e.nativeEvent)/*setDestination({ destination: e.nativeEvent.coordinate })*/} />
                     </MapView>
