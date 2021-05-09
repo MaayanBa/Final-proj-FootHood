@@ -3,7 +3,6 @@ import { Text, StyleSheet, View, TouchableOpacity, SafeAreaView, ScrollView } fr
 import { GiftedChat } from 'react-native-gifted-chat'
 import { firebase } from '../../api/FireBase';
 import { Avatar } from 'react-native-paper';
-import { Context as TeamContext } from '../../Contexts/TeamContext'
 import AppCss from '../../CSS/AppCss';
 import { Context as PlayerContext } from '../../Contexts/PlayerContext'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -89,6 +88,7 @@ export default function TeamPage(props) {
         setTeamPlayers(tempArr);
         fetchMessages().catch(e => console.log(e))
         GetGamesList(team.TeamSerialNum)
+       
         // return () => {
         //     console.log("update last count")
         //     console.log(messages)

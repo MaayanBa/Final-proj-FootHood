@@ -58,8 +58,6 @@ const styles = StyleSheet.create({
     //     margin: 3,
     //     fontFamily: "Calibri",
     // },
-
-
 })
 
 export default function Modal_LocationMap(props) {
@@ -97,8 +95,6 @@ export default function Modal_LocationMap(props) {
 
     const getCoordsFromName = (loc) => {
         props.location(loc)
-        // console.log("loc=====> "+loc)
-        //geocodeLocationByName(loc)
         loc !== undefined ?
             geocodeLocationByName(loc).then(
                 (data) => {
@@ -113,7 +109,6 @@ export default function Modal_LocationMap(props) {
                 }
             ) : null
     }
-
 
     return (
         <Modal animationType="slide"

@@ -109,7 +109,7 @@ export default function CardPlayer({ route }) {
         try {
             const response = await PlayerApi.post('/GetWeightedRate', { EmailofRatingPlayer: player.Email })
             setRate(response.data)
-        } catch (err) { console.log("this is err ===> " + err.data) }
+        } catch (err) { console.log("this is err in player card===> " + err) }
     }
     return (
         <ImageBackground style={styles.card_bg} source={require('../../assets/BG_PlayerCard.png')} >

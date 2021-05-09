@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
       },
 })
 
-export default function Modal_AddPlayers({team}) {
+export default function Modal_AddPlayers(props,{team}) {
     const [addPlayerModalVisible, setAddPlayerModalVisible] = useState(false);
     const [showSearchPlayer_Modal,setShowSearchPlayer_Modal]= useState(false);
 

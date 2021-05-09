@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { StyleSheet, TouchableOpacity, SafeAreaView, ScrollView, View, Text } from 'react-native';
-import { Feather as CheckSquare, Feather as EmptySquare, } from '@expo/vector-icons';
-//import DateTimePicker from '@react-native-community/datetimepicker';
-//import { Checkbox } from 'react-native-paper';
 import DateAndTime from './Components/DateAndTime';
 import { CheckBox } from 'react-native-elements'
 import AppCss from '../../CSS/AppCss';
@@ -55,7 +52,6 @@ export default function CreateNewGame(props) {
   const [equipmentList_state, setEquipmentList_state] = useState([...equipmentList])
   const [renderCB, setRenderCB] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
-
   const [numOfTeamsState, setNumOfTeamsState] = useState(2);
   const [numOfPlayersInTeam, setNumOfPlayersInTeam] = useState(2);
   const [gameLocation, setGameLocation] = useState(null);
@@ -73,15 +69,12 @@ export default function CreateNewGame(props) {
     setRenderCB(false);
     let allEquipments = equipmentList_state;
     let selected = [];
-    //console.log(data[id].checked)
     allEquipments[id].checked === true ? allEquipments[id].checked = false : allEquipments[id].checked = true;
 
     allEquipments.map(x => {
       if (x.checked)
         selected.push(x);
     })
-    //setEquipmentList_state(allEquipments);
-    //console.log(selected)
     setSelectedEquipments(selected);
   }
 
@@ -98,19 +91,6 @@ export default function CreateNewGame(props) {
     );
   });
 
-  // const itemBoxes = () => {
-  //   return equipmentList_state.map((item) => {
-  //     return (
-  //       <TouchableOpacity key={item.id} style={styles.checkBoxes} onPress={() => onChecked(item.id)} >
-  //         {item.checked ?
-  //           <CheckSquare size={30} name="check-square" /> :
-  //           <EmptySquare size={30} name="square" />}
-  //         <Text style={[appCss.inputLabel, { alignSelf: 'center' }]}>{item.title}</Text>
-  //       </TouchableOpacity>
-  //     )
-  //   })
-  // }
-
   const liftState = (dateGame, gameTime, dateRegistration, registrationTime) => {
     setGameDate(dateGame);
     setGameTime(gameTime);
@@ -118,49 +98,33 @@ export default function CreateNewGame(props) {
     setLastRegistrationTime(registrationTime)
   }
   const send2Context = async () => {
-    //if (gameTime != null && lastRegistrationTime != null) {
-    let equipments = [];
-    if (selectedEquipments != null)
-      selectedEquipments.map(e => {
-        equipments.push({ EquipmentName: e.title })
-      })
-    console.log("numOfTeamsState: " + numOfTeamsState)
-    console.log("numOfPlayersInTeam: " + numOfPlayersInTeam)
-    console.log("TeamSerialNum: " + team.TeamSerialNum)
-    // console.log("GameDate: " +gameDate.toLocaleDateString())
-    // console.log("GameTime: " + gameTime.toLocaleTimeString())
-    // console.log("LastRegistrationDate: " + lastRegistrationDate.toLocaleDateString())
-    // console.log("LastRegistrationTime: " +  lastRegistrationTime.toLocaleTimeString())
-    console.log("GameDate: " + gameDate)
-    console.log("GameTime: " + gameTime)
-    console.log("LastRegistrationDate: " + lastRegistrationDate)
-    console.log("LastRegistrationTime: " + lastRegistrationTime)
-    let game = {
+    if (gameLocation != null) {
+      let equipments = [];
+      if (selectedEquipments != null)
+        selectedEquipments.map(e => {
+          equipments.push({ EquipmentName: e.title })
+        })
 
-      NumOfTeams: numOfTeamsState,
-      NumOfPlayersInTeam: numOfPlayersInTeam,
-      GameLocation: gameLocation,
-      GameDate: gameTime.toLocaleDateString(),
-      GameTime: gameTime.toLocaleTimeString(),
-      LastRegistrationDate: lastRegistrationTime.toLocaleDateString(),
-      LastRegistrationTime: lastRegistrationTime.toLocaleTimeString(),
-      TeamSerialNum: team.TeamSerialNum,
-      equipmentsInGame: equipments
-
+      let game = {
+        NumOfTeams: numOfTeamsState,
+        NumOfPlayersInTeam: numOfPlayersInTeam,
+        GameLocation: gameLocation,
+        GameDate: gameTime.toLocaleDateString(),
+        GameTime: gameTime.toLocaleTimeString(),
+        LastRegistrationDate: lastRegistrationTime.toLocaleDateString(),
+        LastRegistrationTime: lastRegistrationTime.toLocaleTimeString(),
+        TeamSerialNum: team.TeamSerialNum,
+        equipmentsInGame: equipments
+      }
+      await CreatNewGame(game, equipments);
+      await GetGamesList(team.TeamSerialNum)
+      props.navigation.goBack();
     }
-    // console.log("newGame ===> " + newGame)
-    // console.log(newGame)
-    CreatNewGame(game, equipments);
-    //GetGamesList(team.TeamSerialNum)
-    props.navigation.goBack();
-
-    //}
-    // else {
-    //   alert("one or more of the field is missing")
-    // }
-
-
+    else {
+      alert("one or more of the field is missing")
+    }
   }
+
   const getLocation = (loc) => {
     console.log("LOCCCCCCCCCCCCCCCCCCCCCCC" + loc)
     setGameLocation(loc);
@@ -190,7 +154,7 @@ export default function CreateNewGame(props) {
             <Text style={appCss.inputLabel}>Game Location:</Text>
           </View>
           {modalVisible && <Modal_LocationMap modalVisible={modalVisible} setModalVisible={() => setModalVisible(!modalVisible)} location={(loc) => getLocation(loc)} />}
-          <Text style={[appCss.inputLabel,{textAlign:'center',color: 'orange'}]}> {gameLocation}</Text>
+          <Text style={[appCss.inputLabel, { textAlign: 'center', color: 'orange' }]}> {gameLocation}</Text>
 
           {/* Date and Time */}
           <DateAndTime liftState={liftState} />

@@ -12,6 +12,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import { Checkbox } from 'react-native-paper';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
+import { Context as CitiesContext } from '../../Contexts/CitiesContext';
 import AppCss from '../../CSS/AppCss';
 import LoginCss from '../../CSS/LoginCss';
 import FaceBookLogin from './Components/FaceBookLogin';
@@ -25,6 +26,7 @@ const loginCss = LoginCss;
 
 export default function NewLoginUser({ navigation }) {
     const { state, signIn, tryLocalSignin, clearErrorMessage } = useContext(AuthContext);
+    const { GetListCities } = useContext(CitiesContext);
     const [email, setEmail] = useState('');
     const [passCode, setPassCode] = useState('');
     const [check_textInputChange, setCheck_textInputChange] = useState(false);
@@ -36,9 +38,9 @@ export default function NewLoginUser({ navigation }) {
 
     useEffect(() => {
         clearErrorMessage();
-        tryLocalSignin()
+        tryLocalSignin();
+        GetListCities();
         // { console.log("The From storage is : ===> " + state.token) }
-
     }, []);
 
     const textInputChange = (val) => {
@@ -191,7 +193,6 @@ export default function NewLoginUser({ navigation }) {
         </View>
     )
 }
-
 
 
 

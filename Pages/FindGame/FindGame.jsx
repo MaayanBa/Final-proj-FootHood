@@ -3,7 +3,6 @@ import { Touchable } from 'react-native';
 import { View, Text, StyleSheet, Animated } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import MapContainer from '../MyTeams/Components/MapContainer';
 import GooglePlacesInput from '../MyTeams/Components/GooglePlacesInput'
 
 const styles = StyleSheet.create({
