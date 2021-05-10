@@ -1,3 +1,4 @@
+  
 import React, { useState, useContext, useEffect } from 'react';
 import {
     StyleSheet, TouchableOpacity, View, Text,
@@ -7,6 +8,7 @@ import { Entypo as PlusIcon } from '@expo/vector-icons';
 import { ListItem, Avatar } from 'react-native-elements';
 import AppCss from '../../../CSS/AppCss';
 import { Context as TeamContext } from '../../../Contexts/TeamContext';
+// import { Context as AuthContext } from '../../../Contexts/AuthContext'
 
 
 const appCss = AppCss;
@@ -64,9 +66,11 @@ export default function Modal_SearchInApp(props) {
     
     const [fullName, setFullName] = useState("");
     const { state: { searchedPlayers, myTeams }, SearchPlayer, AddPlayer, SetSearchPlayer, GetPlayers4Team,GetTeamDetails } = useContext(TeamContext);
+    // const { state: { token } } = useContext(AuthContext)
+    // const [user, setUser] = useState(token)
 
     useEffect(() => {
-        //GetPlayers4Team(props.team.TeamSerialNum,myTeams);
+        // GetPlayers4Team(props.team.TeamSerialNum,myTeams);
     }, [])
 
     const SearchPlayers = () => {
@@ -97,7 +101,6 @@ export default function Modal_SearchInApp(props) {
             EmailPlayer: p.Email,
             TeamSerialNum: props.team.TeamSerialNum
         }
-        //console.log(selectedPlayer)
         await AddPlayer(selectedPlayer)
         GetTeamDetails(user.Email)
         await GetPlayers4Team(props.team.TeamSerialNum,myTeams);

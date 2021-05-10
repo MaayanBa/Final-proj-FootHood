@@ -52,8 +52,8 @@ const CreateNewTeam = dispatch => async (newTeam) => {
 const GetTeamDetails = dispatch => async (playerEmail) => {
     try {
         const response = await TeamApi.post('/TeamDetails', { EmailPlayer: playerEmail });
-        // console.log("response . data === " + response.data);
-        // console.log( response.data);
+        //console.log("response . data === " + response.data);
+        //console.log( response.data);
         dispatch({ type: 'GetTeamDetails', payload: response.data })
     } catch (err) {
         // console.log("in error" +err.response.data)
@@ -80,21 +80,21 @@ const GetPlayers4Team = dispatch => async (teamNum, myTeams) => {
     }
 }
 
-// const LeaveTeam = dispatch => async (playerInTeam) => {
-//     try {
+const LeaveTeam = dispatch => async (playerInTeam) => {
+    try {
 
-//         console.log(playerInTeam);
-//         const response = await TeamApi.post('/LeaveTeam', { playerInTeam });
-//         console.log("response . data === " + response.data);
-//         console.log( response.data);
-//         //dispatch({ type: 'LeaveTeam', payload: response.data })
-//     } catch (err) {
-//         console.log("in error" +err.response.data)
-//         console.log(err.response.data)
+        console.log(playerInTeam);
+        const response = await TeamApi.post('/LeaveTeam', playerInTeam);
+        //console.log("response . data === " + response.data);
+        //console.log( response.data);
+        dispatch({ type: 'LeaveTeam', payload: response.data })
+    } catch (err) {
+        console.log("in error" +err.response.data)
+        console.log(err.response.data)
 
-//         // dispatch({ type: 'add_error', payload: 'Somthing went wrong when getting players for team' })
-//     }
-// }
+        // dispatch({ type: 'add_error', payload: 'Somthing went wrong when getting players for team' })
+    }
+}
 
 // const GetJoinRequests = dispatch => async (GameSerialNum) => {
 //     try {
@@ -153,7 +153,7 @@ export const { Context, Provider } = CreateDataContext(
         GetTeamDetails,
         clearState,
         GetPlayers4Team,
-        //LeaveTeam,
+        LeaveTeam,
         // GetJoinRequests,
         SearchPlayer,
         AddPlayer,

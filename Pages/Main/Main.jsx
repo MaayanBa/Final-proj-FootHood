@@ -47,30 +47,20 @@ export default function Main({ navigation }) {
         //console.log("th user email ---> "+emailUser)
         GetTeamDetails(user.Email)
         GetPlayers();
-
-//         let teamMessagesCount;
-//         try {
-//             myTeams.map(x =>  {
-//                 let data = firebase.database().ref(`${x.TeamSerialNum}`).get()
-//                 if (data.exists()) {
-//                     data = data.exportVal()
-//                     data = convertToArray(data)
-//                     teamMessagesCount.push(
-//                         {
-//                             numOfMessages: data.length,
-//                             teamSerialNumber: x.TeamSerialNum
-//                         })
-//                 }
-//             })
-
-//         }
-//         catch (e) {
-//             console.log(e)
-//             return Promise.reject("Failed fetching data")
-//         }
-// console.log(teamMessagesCount)
-
     }, [])
+
+        useEffect(() => {
+            const unsubscribe = navigation.addListener('focus', () => {
+                GetTeamDetails(user.Email)
+                GetPlayers();
+            });
+            // Return the function to unsubscribe from the event so it gets removed on unmount
+            return () => unsubscribe();
+        }, [navigation]);
+
+
+
+  
     return (
         <View style={styles.container}>
             <View style={styles.header}>

@@ -1,11 +1,13 @@
-import React, { useState, useContext,useEffect } from 'react';
-import {StyleSheet, View,SafeAreaView, ScrollView, TouchableOpacity,
-  StatusBar, ImageBackground,Image
+import React, { useState, useContext, useEffect } from 'react';
+import {
+  StyleSheet, View, SafeAreaView, ScrollView, TouchableOpacity,
+  StatusBar, ImageBackground, Image
 } from 'react-native';
 import { Text, ListItem, Avatar } from 'react-native-elements';
 import { Feather } from '@expo/vector-icons';
-import {Context as TeamContext} from '../../Contexts/TeamContext';
+import { Context as TeamContext } from '../../Contexts/TeamContext';
 import AppCss from '../../CSS/AppCss';
+import { Context as AuthContext } from '../../Contexts/AuthContext'
 import Modal_RulesAndLaws from './Components/Modal_RulesAndLaws';
 import Modal_AddPlayers from './Components/Modal_AddPlayers';
 
@@ -55,8 +57,11 @@ const styles = StyleSheet.create({
 })
 
 export default function TeamDetailsPage(props) {
-  const {team, teamPlayers} = props.route.params;
+  const { state: { token } } = useContext(AuthContext)
+  const { team, teamPlayers } = props.route.params;
   const { LeaveTeam } = useContext(TeamContext);
+  const [user, setUser] = useState(token)
+
 
   const playerList = teamPlayers.map((p, i) => (
     <ListItem key={i} bottomDivider style={styles.rowPlayer_ItemList}>
@@ -64,20 +69,22 @@ export default function TeamDetailsPage(props) {
         <Image style={appCss.playerCardIcon_Btn} source={require('../../assets/PlayerCardIcon.png')} />
       </TouchableOpacity>
       <ListItem.Content style={{ alignItems: 'flex-end' }} >
-        <ListItem.Title>{p.FirstName + " "+ p.LastName}</ListItem.Title>
+        <ListItem.Title>{p.FirstName + " " + p.LastName}</ListItem.Title>
       </ListItem.Content>
       <Avatar rounded source={{ uri: p.PlayerPicture }} />
     </ListItem>
   ))
 
-  const ExitTeam = () => { 
+  const ExitTeam = () => {
     console.log('Leave Team')
     let playerInTeam = {
       TeamSerialNum: team.TeamSerialNum,
-      EmailPlayer: team.EmailManager 
+      EmailPlayer: user.Email
     }
-    //LeaveTeam(playerInTeam);
-   }
+    console.log(playerInTeam)
+    LeaveTeam(playerInTeam);
+    props.navigation.navigate('MyTeams')
+  }
 
   return (
     <SafeAreaView style={[appCss.container, styles.container_extra]} >
@@ -86,8 +93,10 @@ export default function TeamDetailsPage(props) {
       <ImageBackground style={styles.imgBG} source={{ uri: team.TeamPicture }}>
         <Text style={appCss.title}>{team.TeamName}</Text>
         <View style={styles.options_View}>
-          <Modal_RulesAndLaws team={team}/>
-          <Modal_AddPlayers props={props} team={team}/>
+          <Modal_RulesAndLaws team={team} />
+          {team.EmailManager !== user.Email ? null :
+            <Modal_AddPlayers props={props} team={team} />
+          }
         </View>
       </ImageBackground>
 

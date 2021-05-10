@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useContext } from 'react'
 import {
     StyleSheet, TouchableOpacity, View, Text,
     Modal as ModalAddNewPlayer, Pressable
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
       },
 })
 
-export default function Modal_AddPlayers(props,{team}) {
+export default function Modal_AddPlayers({team}) {
     const [addPlayerModalVisible, setAddPlayerModalVisible] = useState(false);
     const [showSearchPlayer_Modal,setShowSearchPlayer_Modal]= useState(false);
 

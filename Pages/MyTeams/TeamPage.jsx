@@ -8,6 +8,7 @@ import { Context as PlayerContext } from '../../Contexts/PlayerContext'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Context as GameContext } from '../../Contexts/GameContext';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
+import { Context as AuthContext } from '../../Contexts/AuthContext'
 
 
 const appCss = AppCss;
@@ -31,9 +32,6 @@ const styles = StyleSheet.create({
     TeamInformation_Up_imgView: {
         width: 10,
         height: 100
-    },
-    teamImg: {
-        borderRadius: 30
     },
     TeamInformation_Up_Title: {
         justifyContent: 'flex-start',
@@ -72,11 +70,12 @@ const convertToArray = (data) => {
 
 export default function TeamPage(props) {
     const { team } = props.route.params;
-    //const { GetPlayers4Team } = useContext(TeamContext)
     const { state: { players } } = useContext(PlayerContext);
     const [messages, setMessages] = useState([]);
     const [teamPlayers, setTeamPlayers] = useState([])
     const { state: { gamesList }, GetGamesList } = useContext(GameContext);
+    const { state: { token } } = useContext(AuthContext)
+    const [user, setUser] = useState(token)
 
     useEffect(() => {
         let tempArr = [];
@@ -88,13 +87,7 @@ export default function TeamPage(props) {
         setTeamPlayers(tempArr);
         fetchMessages().catch(e => console.log(e))
         GetGamesList(team.TeamSerialNum)
-       
-        // return () => {
-        //     console.log("update last count")
-        //     console.log(messages)
-        //     const lenMessages = messages.length
-        //     AsyncStorage.setItem(`messages_count_${team.TeamSerialNum}`, `${lenMessages}`)
-        // }
+
     }, [])
 
     const fetchMessages = async () => {
@@ -127,7 +120,6 @@ export default function TeamPage(props) {
             })
             await firebase.database().ref(`${team.TeamSerialNum}`).set(messagesToSave)
             await AsyncStorage.setItem(`messages_count_${team.TeamSerialNum}`, `${messagesToSave.length}`)
-            //console.log("Updating messages")
         } catch (e) {
             console.log(e)
             return Promise.reject(e + " Failed fetching data")
@@ -179,13 +171,13 @@ export default function TeamPage(props) {
                     <Text>{PrintNameOfPlayers()}</Text>
                 </View>
             </TouchableOpacity>
-
-            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame',{team})}
-                style={[appCss.btnTouch, styles.btnTouch_extra]}>
-                <Text style={appCss.txtBtnTouch}>Create New Game</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList', { gamesList})}
+            {team.EmailManager == user.Email ?
+                <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame', { team })}
+                    style={[appCss.btnTouch, styles.btnTouch_extra]}>
+                    <Text style={appCss.txtBtnTouch}>Create New Game</Text>
+                </TouchableOpacity>
+                : null}
+            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList', { gamesList })}
                 style={[appCss.btnTouch, styles.btnTouch_extra]}>
                 <Text style={appCss.txtBtnTouch}>View Games</Text>
             </TouchableOpacity>
@@ -195,8 +187,9 @@ export default function TeamPage(props) {
                     messages={messages}
                     onSend={messages => onSend(messages)}
                     user={{
-                        _id: 1,
-                        avatar: 'https://site-cdn.givemesport.com/images/21/02/05/354cc6f5366bb99d3eca6bc92f8d2165/1201.jpg'
+                        _id: user.Email,
+                        name:user.FirstName,
+                        avatar: user.PlayerPicture
                     }}
                     inverted={false}
                 />

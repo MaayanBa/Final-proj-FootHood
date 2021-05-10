@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Text, StyleSheet, Image, View, TouchableOpacity, ScrollView } from 'react-native';
-
 import AppCss from '../../CSS/AppCss';
 import { Context as GameContext } from '../../Contexts/GameContext';
 import DateAndTime from './Components/DateAndTime';
@@ -86,9 +85,9 @@ export default function GameList(props) {
         return (`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
     } //Builds up togther the date and time
     const sliceTime = (time) => {
-        return time.slice(0,-3);
+        return time.slice(0, -3);
         //return time.slice(11,-3);
-    } 
+    }
 
     let gameCards = gamesList.map((game, key) => {
         return <View key={key} style={styles.card}>
@@ -105,7 +104,6 @@ export default function GameList(props) {
                     </View>
                 </View>
                 <View style={styles.gameInformation_View_L}>
-                    {/* {console.log(new Date(game.GameDate).toLocaleDateString(undifind))} */}
                     <Text style={styles.txtStyle}>Date: {convertDate(new Date(game.GameDate))}</Text>
                     <Text style={styles.txtStyle}>Number of Players: {game.NumOfPlayersInTeam}</Text>
                     <Text style={styles.txtStyle}>Location: {game.GameLocation}</Text>
