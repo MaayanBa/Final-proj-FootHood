@@ -7,6 +7,7 @@ import { Text, ListItem, Avatar } from 'react-native-elements';
 import { Feather } from '@expo/vector-icons';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
 import AppCss from '../../CSS/AppCss';
+import { Context as AuthContext } from '../../Contexts/AuthContext'
 import Modal_RulesAndLaws from './Components/Modal_RulesAndLaws';
 import Modal_AddPlayers from './Components/Modal_AddPlayers';
 
@@ -130,6 +131,10 @@ export default function TeamDetailsPage(props) {
         <View style={styles.options_View}>
           <Modal_RulesAndLaws team={myTeams[key]} />
           <Modal_AddPlayers props={props} teamKey={key} setForceState={() => ForceState()} />
+          {/* <Modal_RulesAndLaws team={team} />
+          {team.EmailManager !== user.Email ? null :
+            <Modal_AddPlayers props={props} team={team} />
+          } */}
         </View>
       </ImageBackground>
 

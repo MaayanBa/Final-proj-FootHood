@@ -1,3 +1,4 @@
+  
 import React, { useState, useContext, useEffect } from 'react';
 import {
     StyleSheet, TouchableOpacity, View, Text,
@@ -7,6 +8,7 @@ import { Entypo as PlusIcon } from '@expo/vector-icons';
 import { ListItem, Avatar } from 'react-native-elements';
 import AppCss from '../../../CSS/AppCss';
 import { Context as TeamContext } from '../../../Contexts/TeamContext';
+// import { Context as AuthContext } from '../../../Contexts/AuthContext'
 
 
 const appCss = AppCss;
@@ -109,7 +111,6 @@ export default function Modal_SearchInApp(props) {
             EmailPlayer: p.Email,
             TeamSerialNum: myTeams[teamKey].TeamSerialNum
         }
-        //console.log(selectedPlayer)
         await AddPlayer(selectedPlayer)
         //GetTeamDetails(user.Email)
         await GetPlayers4Team(myTeams[teamKey].TeamSerialNum, myTeams);

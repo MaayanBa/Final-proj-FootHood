@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Context as GameContext } from '../../Contexts/GameContext';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
+import { Context as AuthContext } from '../../Contexts/AuthContext'
 
 
 const appCss = AppCss;
@@ -32,9 +33,6 @@ const styles = StyleSheet.create({
     TeamInformation_Up_imgView: {
         width: 10,
         height: 100
-    },
-    teamImg: {
-        borderRadius: 30
     },
     TeamInformation_Up_Title: {
         justifyContent: 'flex-start',
@@ -190,6 +188,12 @@ export default function TeamPage(props) {
                 <Text style={appCss.txtBtnTouch}>Create New Game</Text>
             </TouchableOpacity>
 
+            {/* {team.EmailManager == user.Email ?
+                <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame', { team })}
+                    style={[appCss.btnTouch, styles.btnTouch_extra]}>
+                    <Text style={appCss.txtBtnTouch}>Create New Game</Text>
+                </TouchableOpacity>
+                : null} */}
             <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList', { gamesList })}
                 style={[appCss.btnTouch, styles.btnTouch_extra]}>
                 <Text style={appCss.txtBtnTouch}>View Games</Text>
@@ -200,8 +204,9 @@ export default function TeamPage(props) {
                     messages={messages}
                     onSend={messages => onSend(messages)}
                     user={{
-                        _id: 1,
-                        avatar: 'https://site-cdn.givemesport.com/images/21/02/05/354cc6f5366bb99d3eca6bc92f8d2165/1201.jpg'
+                        _id: user.Email,
+                        name:user.FirstName,
+                        avatar: user.PlayerPicture
                     }}
                     inverted={false}
                 />

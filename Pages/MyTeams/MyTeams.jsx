@@ -137,7 +137,8 @@ export default function MyTeams(props) {
         });
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return () => unsubscribe();
-    }, [props.navigation]);
+    }, [props.navigation, myTeams]);
+
 
 
     return (
