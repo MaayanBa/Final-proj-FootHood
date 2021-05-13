@@ -30,7 +30,7 @@ const teamReducer = (state, action) => {
         case 'TeamPlayers': {
             return { ...state, teamPlayers: action.payload }
         }
-        
+
         default:
             return state
     }
@@ -93,7 +93,7 @@ const LeaveTeam = dispatch => async (playerInTeam) => {
         //console.log( response.data);
         dispatch({ type: 'LeaveTeam', payload: response.data })
     } catch (err) {
-        console.log("in error" +err.response.data)
+        console.log("in error" + err.response.data)
         console.log(err.response.data)
 
         // dispatch({ type: 'add_error', payload: 'Somthing went wrong when getting players for team' })
@@ -141,13 +141,12 @@ const SetSearchPlayer = dispatch => async () => {
 }
 
 
-const setTeamPlayers = dispatch => async (team,players) => {
+const setTeamPlayers = dispatch => async (team, players) => {
     try {
         //console.log(players)
-       
+        //console.log("PlayerListttttt======"+p)
         let tempArr = [];
         team.PlayersList.forEach(p => {
-            console.log("PlayerListttttt======"+p)
             let player = players.find(x => x.Email === p.EmailPlayer)
             if (player !== null)
                 tempArr.push(player);

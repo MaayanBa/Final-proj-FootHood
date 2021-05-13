@@ -81,7 +81,7 @@ export default function TeamPage(props) {
     const team = myTeams[key];
 
     useEffect(() => {
-        console.log(myTeams[key])
+        //console.log(myTeams[key])
         // let tempArr = [];
         // myTeams[key].PlayersList.forEach(p => {
         //     let player = players.find(x => x.Email === p.EmailPlayer)
@@ -200,7 +200,7 @@ export default function TeamPage(props) {
             </TouchableOpacity>
 
             <View style={styles.chatContainer}>
-                <GiftedChat
+                {/* <GiftedChat
                     messages={messages}
                     onSend={messages => onSend(messages)}
                     user={{
@@ -209,7 +209,7 @@ export default function TeamPage(props) {
                         avatar: user.PlayerPicture
                     }}
                     inverted={false}
-                />
+                /> */}
             </View>
         </View>
     );
