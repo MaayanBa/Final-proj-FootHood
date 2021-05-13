@@ -9,6 +9,9 @@ const gameReducer = (state, action) => {
         case 'GetGamesList': {
             return { ...state, gamesList: action.payload }
         }
+        case 'RegisterGame': {
+            return { ...state, playersPerGame: action.payload }
+        }
         default:
             return state
     }
@@ -47,12 +50,25 @@ const CreatNewGame = dispatch => async (game,equipments)=>{
 }
 
 
+const RegisterGame = dispatch => async (addPlayer2Game)=>{
+    try {
+        console.log(addPlayer2Game)
+        const response = await GameApi.post('/RegisterGame', addPlayer2Game );
+        dispatch({ type: 'RegisterGame', payload: response.data }) 
+        console.log("GOOD~!")
+    } catch (err) {
+        console.log(err)
+        dispatch({ type: 'add_error', payload: 'Somthing went wrong when joining a game' })
+    }
+}
+
 export const { Context, Provider } = CreateDataContext(
     //Reducer
     gameReducer,
     {
         GetGamesList,
         CreatNewGame,
+        RegisterGame,
     },
     {
         gamesList: [],

@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
 export default function GameList(props) {
     // const { state: { gamesList }, GetGamesList } = useContext(GameContext);
     // const {team} = props.route.params;
-    const { gamesList } = props.route.params;
+    const { gamesList,key } = props.route.params;
     //const { state: { gamesList } } = useContext(GameContext);
 
     // const GetGameDate=(date)=>{
@@ -91,8 +91,8 @@ export default function GameList(props) {
     //     });
     // }
 
-    let gameCards = gamesList.map((game, key) => {
-        return <View key={key} style={styles.card}>
+    let gameCards = gamesList.map((game, k) => {
+        return <View k={k} style={styles.card}>
             <View style={styles.gameInformation_View}>
                 <View style={styles.gameInformation_View_R}>
                     <View>
@@ -100,7 +100,7 @@ export default function GameList(props) {
                         <Text style={styles.txtStyle}>Avarege Age: {game.AvgPlayerAge}</Text>
                     </View>
                     <View style={styles.gameInformation_View_R_Down}>
-                        <TouchableOpacity style={appCss.blue_btn} onPress={() => props.navigation.navigate('GamePage', { game })}>
+                        <TouchableOpacity style={appCss.blue_btn} onPress={() => props.navigation.navigate('GamePage', { game,key })}>
                             <Text style={[styles.txtStyle, { color: 'white', alignItems: 'center' }]}>ENTER</Text>
                         </TouchableOpacity>
                     </View>

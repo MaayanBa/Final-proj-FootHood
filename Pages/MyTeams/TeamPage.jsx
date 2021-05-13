@@ -77,6 +77,8 @@ export default function TeamPage(props) {
     const { state: { gamesList }, GetGamesList } = useContext(GameContext);
     const { state: { players } } = useContext(PlayerContext);
     const [messages, setMessages] = useState([]);
+    const { state: { token } } = useContext(AuthContext)
+    const [user, setUser] = useState(token)
     //const [teamPlayers, setTeamPlayers] = useState([])
     const team = myTeams[key];
 
@@ -91,13 +93,6 @@ export default function TeamPage(props) {
         setTeamPlayers(myTeams[key],players);
         fetchMessages().catch(e => console.log(e))
         GetGamesList(myTeams[key].TeamSerialNum)
-
-        // return () => {
-        //     console.log("update last count")
-        //     console.log(messages)
-        //     const lenMessages = messages.length
-        //     AsyncStorage.setItem(`messages_count_${team.TeamSerialNum}`, `${lenMessages}`)
-        // }
     }, [])
 
     const fetchMessages = async () => {
@@ -183,18 +178,13 @@ export default function TeamPage(props) {
                 </View>
             </TouchableOpacity>
 
-            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame', { team })}
-                style={[appCss.btnTouch, styles.btnTouch_extra]}>
-                <Text style={appCss.txtBtnTouch}>Create New Game</Text>
-            </TouchableOpacity>
-
-            {/* {team.EmailManager == user.Email ?
+            {team.EmailManager == user.Email ?
                 <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame', { team })}
                     style={[appCss.btnTouch, styles.btnTouch_extra]}>
                     <Text style={appCss.txtBtnTouch}>Create New Game</Text>
                 </TouchableOpacity>
-                : null} */}
-            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList', { gamesList })}
+                : null}
+            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList', { gamesList,key })}
                 style={[appCss.btnTouch, styles.btnTouch_extra]}>
                 <Text style={appCss.txtBtnTouch}>View Games</Text>
             </TouchableOpacity>

@@ -60,6 +60,8 @@ const styles = StyleSheet.create({
 export default function TeamDetailsPage(props) {
   const { teamPlayers, key } = props.route.params;
   const { state: { myTeams }, LeaveTeam } = useContext(TeamContext);
+  const { state: { token } } = useContext(AuthContext)
+  const [user, setUser] = useState(token)
   const [forceState, setForceState] = useState(false);
 
   useEffect(() => {
@@ -117,9 +119,11 @@ export default function TeamDetailsPage(props) {
     console.log('Leave Team')
     let playerInTeam = {
       TeamSerialNum: myTeams[key].TeamSerialNum,
-      EmailPlayer: myTeams[key].EmailManager
+      EmailPlayer: user.Email
     }
-    //LeaveTeam(playerInTeam);
+    LeaveTeam(playerInTeam)
+    alert("You have left the team successfully")
+    props.navigation.navigate('MyTeams')
   }
 
   return (
@@ -130,11 +134,9 @@ export default function TeamDetailsPage(props) {
         <Text style={appCss.title}>{myTeams[key].TeamName}</Text>
         <View style={styles.options_View}>
           <Modal_RulesAndLaws team={myTeams[key]} />
+          {myTeams[key].EmailManager !== user.Email ? null :
           <Modal_AddPlayers props={props} teamKey={key} setForceState={() => ForceState()} />
-          {/* <Modal_RulesAndLaws team={team} />
-          {team.EmailManager !== user.Email ? null :
-            <Modal_AddPlayers props={props} team={team} />
-          } */}
+        }
         </View>
       </ImageBackground>
 

@@ -79,7 +79,6 @@ const GetPlayers4Team = dispatch => async (teamNum, myTeams) => {
     } catch (err) {
         console.log("in error GetPlayers4Team" + err)
         console.log(err)
-
         dispatch({ type: 'add_error', payload: 'Somthing went wrong when getting players for team' })
     }
 }
