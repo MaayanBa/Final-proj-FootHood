@@ -100,7 +100,7 @@ export default function MyTeams(props) {
             // fetchMessages(team)
             const badge = await calcBadge(team);
             return <TouchableOpacity style={styles.teamCard} key={key}
-                onPress={() => props.navigation.navigate('TeamPage', { team })}>
+                onPress={() => props.navigation.navigate('TeamPage', { key })}>
                 <View style={styles.contextSide}>
                     <View style={styles.headerCard_View}>
                         <Text style={[appCss.inputLabel, { fontSize: 25, color: 'black' }]}>{team.TeamName}</Text>

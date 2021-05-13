@@ -126,9 +126,9 @@ export default function CreateNewGame(props) {
   }
 
   const getLocation = (loc) => {
-    console.log("LOCCCCCCCCCCCCCCCCCCCCCCC" + loc)
     setGameLocation(loc);
   }
+  
   return (
     <SafeAreaView>
       <ScrollView keyboardShouldPersistTaps="handled">

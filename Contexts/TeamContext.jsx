@@ -27,6 +27,10 @@ const teamReducer = (state, action) => {
         // case 'GetJoinRequests': {
         //     return { ...state, joinRequests: action.payload }
         // }
+        case 'TeamPlayers': {
+            return { ...state, teamPlayers: action.payload }
+        }
+        
         default:
             return state
     }
@@ -112,8 +116,6 @@ const GetPlayers4Team = dispatch => async (teamNum, myTeams) => {
 
 const SearchPlayer = dispatch => async (player) => {
     try {
-        // console.log("Plsyer =====> "+player)
-        // console.log(player)
         const response = await TeamApi.post('/SearchPlayer', player);
         // console.log("response . data === " + response.data);
         // console.log(response.data);
@@ -127,13 +129,7 @@ const SearchPlayer = dispatch => async (player) => {
 
 const AddPlayer = dispatch => async (player) => {
     try {
-        // console.log("PlayerToTeam =====> "+player)
-        // console.log(player)
-        const response = await TeamApi.post('/JoinTeam', player);
-        // console.log("response . data === " + response.data);
-        // console.log(response.data);
-        dispatch({ type: 'AddPlayer', payload: response.data })
-
+        await TeamApi.post('/JoinTeam', player);
     } catch (err) {
         console.log("in error AddPlayer ==" + err)
         console.log(err)
@@ -142,6 +138,25 @@ const AddPlayer = dispatch => async (player) => {
 }
 const SetSearchPlayer = dispatch => async () => {
     dispatch({ type: 'SetSearchPlayer', payload: [] })
+}
+
+
+const setTeamPlayers = dispatch => async (team,players) => {
+    try {
+        //console.log(players)
+       
+        let tempArr = [];
+        team.PlayersList.forEach(p => {
+            console.log("PlayerListttttt======"+p)
+            let player = players.find(x => x.Email === p.EmailPlayer)
+            if (player !== null)
+                tempArr.push(player);
+        });
+        dispatch({ type: 'TeamPlayers', payload: tempArr })
+
+    } catch (error) {
+        console.log("Somtiong get wring with playerList")
+    }
 }
 
 
@@ -158,6 +173,7 @@ export const { Context, Provider } = CreateDataContext(
         SearchPlayer,
         AddPlayer,
         SetSearchPlayer,
+        setTeamPlayers,
     },
     {
         myTeams: [],

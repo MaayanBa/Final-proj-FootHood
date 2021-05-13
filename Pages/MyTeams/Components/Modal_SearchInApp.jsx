@@ -61,13 +61,25 @@ const styles = StyleSheet.create({
 })
 
 export default function Modal_SearchInApp(props) {
-    
     const [fullName, setFullName] = useState("");
-    const { state: { searchedPlayers, myTeams }, SearchPlayer, AddPlayer, SetSearchPlayer, GetPlayers4Team,GetTeamDetails } = useContext(TeamContext);
+    const { state: { searchedPlayers, myTeams }, SearchPlayer, AddPlayer, SetSearchPlayer, GetPlayers4Team, GetTeamDetails } = useContext(TeamContext);
+    const [forceState, setForceState] = useState(false)
+    const teamKey = props.teamKey;
 
     useEffect(() => {
+        
         //GetPlayers4Team(props.team.TeamSerialNum,myTeams);
+        //console.log(props.navigation)
+        // const unsubscribe = props.navigation.addListener('focus', () => {
+        //     console.log("FOCuS=======>")
+        //   });
+        //   return unsubscribe;
     }, [])
+
+    // const unsubscribe = props.navigation.addListener('tabPress', e => {
+    //     // Prevent default action
+    //     e.preventDefault();
+    //   })
 
     const SearchPlayers = () => {
         var firstName = "";
@@ -95,12 +107,12 @@ export default function Modal_SearchInApp(props) {
     const AddNewPlayerToTeam = async (p) => {
         const selectedPlayer = {
             EmailPlayer: p.Email,
-            TeamSerialNum: props.team.TeamSerialNum
+            TeamSerialNum: myTeams[teamKey].TeamSerialNum
         }
         //console.log(selectedPlayer)
         await AddPlayer(selectedPlayer)
-        GetTeamDetails(user.Email)
-        await GetPlayers4Team(props.team.TeamSerialNum,myTeams);
+        //GetTeamDetails(user.Email)
+        await GetPlayers4Team(myTeams[teamKey].TeamSerialNum, myTeams);
         SetSearchPlayer();
         Close();
     }
@@ -121,7 +133,10 @@ export default function Modal_SearchInApp(props) {
             <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CardPlayer', { p })} >
                 <Image style={appCss.playerCardIcon_Btn} source={require('../../../assets/PlayerCardIcon.png')} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => AddNewPlayerToTeam(p)}>
+            <TouchableOpacity onPress={async() => {
+                 await AddNewPlayerToTeam(p);
+                props.setForceState();
+            }}>
                 <PlusIcon name="plus" size={25} color="black" />
             </TouchableOpacity>
             <ListItem.Content style={{ alignItems: 'flex-end' }} >

@@ -7,6 +7,7 @@ import AppCss from '../../CSS/AppCss';
 import { Context as PlayerContext } from '../../Contexts/PlayerContext'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Context as GameContext } from '../../Contexts/GameContext';
+import { Context as TeamContext } from '../../Contexts/TeamContext';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 
 
@@ -71,24 +72,28 @@ const convertToArray = (data) => {
 }
 
 export default function TeamPage(props) {
-    const { team } = props.route.params;
+
+    const { key } = props.route.params;
+    const { state: { myTeams,teamPlayers },setTeamPlayers } = useContext(TeamContext);
     //const { GetPlayers4Team } = useContext(TeamContext)
+    const { state: { gamesList }, GetGamesList } = useContext(GameContext);
     const { state: { players } } = useContext(PlayerContext);
     const [messages, setMessages] = useState([]);
-    const [teamPlayers, setTeamPlayers] = useState([])
-    const { state: { gamesList }, GetGamesList } = useContext(GameContext);
+    //const [teamPlayers, setTeamPlayers] = useState([])
+    const team = myTeams[key];
 
     useEffect(() => {
-        let tempArr = [];
-        team.PlayersList.forEach(p => {
-            let player = players.find(x => x.Email === p.EmailPlayer)
-            if (player !== null)
-                tempArr.push(player);
-        });
-        setTeamPlayers(tempArr);
+        console.log(myTeams[key])
+        // let tempArr = [];
+        // myTeams[key].PlayersList.forEach(p => {
+        //     let player = players.find(x => x.Email === p.EmailPlayer)
+        //     if (player !== null)
+        //         tempArr.push(player);
+        // });
+        setTeamPlayers(myTeams[key],players);
         fetchMessages().catch(e => console.log(e))
-        GetGamesList(team.TeamSerialNum)
-       
+        GetGamesList(myTeams[key].TeamSerialNum)
+
         // return () => {
         //     console.log("update last count")
         //     console.log(messages)
@@ -125,8 +130,8 @@ export default function TeamPage(props) {
                     createdAt: val.createdAt.getTime()
                 }
             })
-            await firebase.database().ref(`${team.TeamSerialNum}`).set(messagesToSave)
-            await AsyncStorage.setItem(`messages_count_${team.TeamSerialNum}`, `${messagesToSave.length}`)
+            await firebase.database().ref(`${myTeams[key].TeamSerialNum}`).set(messagesToSave)
+            await AsyncStorage.setItem(`messages_count_${myTeams[key].TeamSerialNum}`, `${messagesToSave.length}`)
             //console.log("Updating messages")
         } catch (e) {
             console.log(e)
@@ -164,14 +169,14 @@ export default function TeamPage(props) {
     return (
         <View style={[appCss.container, styles.container_extra]}>
             <TouchableOpacity style={styles.TeamInformation}
-                onPress={() => props.navigation.navigate('TeamDetailsPage', { team, teamPlayers })}>
+                onPress={() => props.navigation.navigate('TeamDetailsPage', { teamPlayers, key })}>
                 <View style={styles.TeamInformation_Up}>
                     <View style={styles.TeamInformation_Up_Title}>
                         <Text style={styles.txtTeam}> Team</Text>
-                        <Text style={styles.teamName_txt}>{team.TeamName}</Text>
+                        <Text style={styles.teamName_txt}>{myTeams[key].TeamName}</Text>
                     </View>
                     <View style={styles.TeamInformation_Up_imgView}>
-                        <Avatar.Image size={100} source={{ uri: team.TeamPicture }} />
+                        <Avatar.Image size={100} source={{ uri: myTeams[key].TeamPicture }} />
                     </View>
                 </View>
                 <View style={styles.TeamInformation_players}>
@@ -180,12 +185,12 @@ export default function TeamPage(props) {
                 </View>
             </TouchableOpacity>
 
-            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame',{team})}
+            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame', { team })}
                 style={[appCss.btnTouch, styles.btnTouch_extra]}>
                 <Text style={appCss.txtBtnTouch}>Create New Game</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList', { gamesList})}
+            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList', { gamesList })}
                 style={[appCss.btnTouch, styles.btnTouch_extra]}>
                 <Text style={appCss.txtBtnTouch}>View Games</Text>
             </TouchableOpacity>

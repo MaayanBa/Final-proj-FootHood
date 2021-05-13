@@ -1,9 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Text, StyleSheet, Image, View, TouchableOpacity, ScrollView } from 'react-native';
-
+import Navigation from '../../Pages/MyTeams/Components/Navigation'
 import AppCss from '../../CSS/AppCss';
 import { Context as GameContext } from '../../Contexts/GameContext';
 import DateAndTime from './Components/DateAndTime';
+//import LaunchNavigator from 'react-native-launch-navigator';
 
 
 const appCss = AppCss;
@@ -50,26 +51,6 @@ const styles = StyleSheet.create({
 
 })
 
-// const game = [
-//     {
-//         teamName: "",
-//         gameName: "Game 1",
-//         location: "Sammy Ofer stadium",
-//         date: "4/4/21",
-//         time: "17:00",
-//         ageRange: "20-25",
-//         numberOfPlayers: 10,
-//     },
-//     {
-//         teamName: "",
-//         gameName: "Game 2",
-//         location: "Blumfield",
-//         date: "11/4/21",
-//         time: "17:07",
-//         ageRange: "17-27",
-//         numberOfPlayers: 17,
-//     }
-// ]
 
 export default function GameList(props) {
     // const { state: { gamesList }, GetGamesList } = useContext(GameContext);
@@ -82,13 +63,33 @@ export default function GameList(props) {
     //     var gameDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     //     return gameDate;
     // }
+
+
     const convertDate = (date) => {
         return (`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
-    } //Builds up togther the date and time
+    }
+
+    //Builds up togther the date and time
     const sliceTime = (time) => {
-        return time.slice(0,-3);
-        //return time.slice(11,-3);
-    } 
+        return time.slice(0, -3);
+    }
+
+    // const navInWaze = (loc) => {
+    //     let app = null;
+    //     LaunchNavigator.isAppAvailable(LaunchNavigator.APP.WAZE).then((isWazeAvailable) => {
+    //         if (isWazeAvailable) {
+    //             app = LaunchNavigator.APP.WAZE;
+    //         } else {
+    //             console.warn("Waze not available - falling back to default navigation app");
+    //         }
+
+    //         LaunchNavigator.navigate(`${loc}`, {
+    //             app: app
+    //         })
+    //             // .then(() => console.log("Launched navigator"))
+    //             // .catch((err) => console.error("Error launching navigator: " + err));
+    //     });
+    // }
 
     let gameCards = gamesList.map((game, key) => {
         return <View key={key} style={styles.card}>
@@ -105,15 +106,13 @@ export default function GameList(props) {
                     </View>
                 </View>
                 <View style={styles.gameInformation_View_L}>
-                    {/* {console.log(new Date(game.GameDate).toLocaleDateString(undifind))} */}
                     <Text style={styles.txtStyle}>Date: {convertDate(new Date(game.GameDate))}</Text>
                     <Text style={styles.txtStyle}>Number of Players: {game.NumOfPlayersInTeam}</Text>
+                    {/* <View style={{flexDirection:'row-reverse'}}> */}
                     <Text style={styles.txtStyle}>Location: {game.GameLocation}</Text>
-                    <TouchableOpacity >
-                        <Text style={styles.txtStyle}>Take me there
-                            <Image source={require('../../assets/Waze.png')} resizeMode="contain" style={styles.waze_Icon} />
-                        </Text>
-                    </TouchableOpacity>
+                    <Navigation location={game.GameLocation} />
+
+                    {/* </View> */}
                 </View>
             </View>
         </View>
@@ -128,3 +127,11 @@ export default function GameList(props) {
         </ScrollView>
     );
 }
+
+
+// <TouchableOpacity onPress={() => navInWaze(game.GameLocation)}>
+//                         <Text style={styles.txtStyle}>Take me there
+//                             <Image source={require('../../assets/Waze.png')} resizeMode="contain" style={styles.waze_Icon} />
+//                             {/* <Navigation location={game.GameLocation} /> */}
+//                         </Text>
+//                     </TouchableOpacity>
