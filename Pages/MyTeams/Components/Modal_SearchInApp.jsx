@@ -1,4 +1,4 @@
-  
+
 import React, { useState, useContext, useEffect } from 'react';
 import {
     StyleSheet, TouchableOpacity, View, Text,
@@ -64,31 +64,14 @@ const styles = StyleSheet.create({
 
 export default function Modal_SearchInApp(props) {
     const [fullName, setFullName] = useState("");
-    const { state: { searchedPlayers, myTeams }, SearchPlayer, AddPlayer, SetSearchPlayer, GetPlayers4Team, GetTeamDetails } = useContext(TeamContext);
-    const [forceState, setForceState] = useState(false)
+    const { state: { searchedPlayers, myTeams }, SearchPlayer, AddPlayer, SetSearchPlayer, GetPlayers4Team } = useContext(TeamContext);
     const teamKey = props.teamKey;
 
-    useEffect(() => {
-        
-        //GetPlayers4Team(props.team.TeamSerialNum,myTeams);
-        //console.log(props.navigation)
-        // const unsubscribe = props.navigation.addListener('focus', () => {
-        //     console.log("FOCuS=======>")
-        //   });
-        //   return unsubscribe;
-    }, [])
-
-    // const unsubscribe = props.navigation.addListener('tabPress', e => {
-    //     // Prevent default action
-    //     e.preventDefault();
-    //   })
 
     const SearchPlayers = () => {
         var firstName = "";
         var lastName = "";
-        //console.log(fullName)
         var checkName = fullName.split(' ');
-        //console.log("Length:" + checkName.length)
         if (checkName.length === 1) {
             firstName = fullName;
             lastName = null;
@@ -98,7 +81,6 @@ export default function Modal_SearchInApp(props) {
             lastName = fullName.split(' ').slice(-1).join(' ');
         }
 
-        //console.log("First: " + firstName + " Last: " + lastName)
         const player = {
             FirstName: firstName,
             LastName: lastName
@@ -112,19 +94,12 @@ export default function Modal_SearchInApp(props) {
             TeamSerialNum: myTeams[teamKey].TeamSerialNum
         }
         await AddPlayer(selectedPlayer)
-        //GetTeamDetails(user.Email)
         await GetPlayers4Team(myTeams[teamKey].TeamSerialNum, myTeams);
         SetSearchPlayer();
         Close();
     }
 
     const Close = () => {
-        const player = {
-            FirstName: null,
-            LastName: null
-        }
-        //SearchPlayer(player)
-        //SetSearchPlayer()
         props.setShowSearchPlayer_Modal(false)
     }
 
@@ -134,8 +109,8 @@ export default function Modal_SearchInApp(props) {
             <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CardPlayer', { p })} >
                 <Image style={appCss.playerCardIcon_Btn} source={require('../../../assets/PlayerCardIcon.png')} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={async() => {
-                 await AddNewPlayerToTeam(p);
+            <TouchableOpacity onPress={async () => {
+                await AddNewPlayerToTeam(p);
                 props.setForceState();
             }}>
                 <PlusIcon name="plus" size={25} color="black" />

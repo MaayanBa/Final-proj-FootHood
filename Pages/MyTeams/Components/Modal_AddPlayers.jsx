@@ -106,7 +106,6 @@ export default function Modal_AddPlayers(props) {
       </TouchableOpacity>
       {modal_AddNewPlayer}
       {
-        
         showSearchPlayer_Modal &&
         <Modal_SearchInApp showSearchPlayer_Modal={showSearchPlayer_Modal}
           setShowSearchPlayer_Modal={setShowSearchPlayer_Modal}
@@ -116,5 +115,4 @@ export default function Modal_AddPlayers(props) {
       }
     </View>
   )
-
 }

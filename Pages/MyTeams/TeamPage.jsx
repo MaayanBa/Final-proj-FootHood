@@ -72,25 +72,16 @@ const convertToArray = (data) => {
 export default function TeamPage(props) {
 
     const { key } = props.route.params;
-    const { state: { myTeams,teamPlayers },setTeamPlayers } = useContext(TeamContext);
-    //const { GetPlayers4Team } = useContext(TeamContext)
+    const { state: { myTeams, teamPlayers }, setTeamPlayers } = useContext(TeamContext);
     const { state: { gamesList }, GetGamesList } = useContext(GameContext);
     const { state: { players } } = useContext(PlayerContext);
     const [messages, setMessages] = useState([]);
     const { state: { token } } = useContext(AuthContext)
     const [user, setUser] = useState(token)
-    //const [teamPlayers, setTeamPlayers] = useState([])
     const team = myTeams[key];
 
     useEffect(() => {
-        //console.log(myTeams[key])
-        // let tempArr = [];
-        // myTeams[key].PlayersList.forEach(p => {
-        //     let player = players.find(x => x.Email === p.EmailPlayer)
-        //     if (player !== null)
-        //         tempArr.push(player);
-        // });
-        setTeamPlayers(myTeams[key],players);
+        setTeamPlayers(myTeams[key], players);
         fetchMessages().catch(e => console.log(e))
         GetGamesList(myTeams[key].TeamSerialNum)
     }, [])
@@ -162,7 +153,7 @@ export default function TeamPage(props) {
     return (
         <View style={[appCss.container, styles.container_extra]}>
             <TouchableOpacity style={styles.TeamInformation}
-                onPress={() => props.navigation.navigate('TeamDetailsPage', { teamPlayers, key })}>
+                onPress={() => props.navigation.navigate('TeamDetailsPage', { key })}>
                 <View style={styles.TeamInformation_Up}>
                     <View style={styles.TeamInformation_Up_Title}>
                         <Text style={styles.txtTeam}> Team</Text>
@@ -184,22 +175,22 @@ export default function TeamPage(props) {
                     <Text style={appCss.txtBtnTouch}>Create New Game</Text>
                 </TouchableOpacity>
                 : null}
-            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList', { gamesList,key })}
+            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList', { gamesList, key })}
                 style={[appCss.btnTouch, styles.btnTouch_extra]}>
                 <Text style={appCss.txtBtnTouch}>View Games</Text>
             </TouchableOpacity>
 
             <View style={styles.chatContainer}>
-                {/* <GiftedChat
+                <GiftedChat
                     messages={messages}
                     onSend={messages => onSend(messages)}
                     user={{
                         _id: user.Email,
-                        name:user.FirstName,
+                        name: user.FirstName,
                         avatar: user.PlayerPicture
                     }}
                     inverted={false}
-                /> */}
+                />
             </View>
         </View>
     );

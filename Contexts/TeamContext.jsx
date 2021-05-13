@@ -142,18 +142,18 @@ const SetSearchPlayer = dispatch => async () => {
 
 const setTeamPlayers = dispatch => async (team, players) => {
     try {
-        //console.log(players)
-        //console.log("PlayerListttttt======"+p)
         let tempArr = [];
         team.PlayersList.forEach(p => {
             let player = players.find(x => x.Email === p.EmailPlayer)
+            console.log("PlayerListttttt======"+p)
+            console.log(p)
             if (player !== null)
                 tempArr.push(player);
         });
         dispatch({ type: 'TeamPlayers', payload: tempArr })
 
     } catch (error) {
-        console.log("Somtiong get wring with playerList")
+        console.log(error)
     }
 }
 

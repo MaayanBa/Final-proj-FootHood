@@ -1,15 +1,17 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   StyleSheet, View, SafeAreaView, ScrollView, TouchableOpacity,
   StatusBar, ImageBackground, Image
 } from 'react-native';
+import AppCss from '../../CSS/AppCss';
+import { Context as TeamContext } from '../../Contexts/TeamContext';
+import { Context as AuthContext } from '../../Contexts/AuthContext';
+import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 import { Text, ListItem, Avatar } from 'react-native-elements';
 import { Feather } from '@expo/vector-icons';
-import { Context as TeamContext } from '../../Contexts/TeamContext';
-import AppCss from '../../CSS/AppCss';
-import { Context as AuthContext } from '../../Contexts/AuthContext'
 import Modal_RulesAndLaws from './Components/Modal_RulesAndLaws';
 import Modal_AddPlayers from './Components/Modal_AddPlayers';
+
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
@@ -58,27 +60,12 @@ const styles = StyleSheet.create({
 
 
 export default function TeamDetailsPage(props) {
-  const { teamPlayers, key } = props.route.params;
-  const { state: { myTeams }, LeaveTeam } = useContext(TeamContext);
+  const { key } = props.route.params;
+  const { state: { myTeams, teamPlayers }, setTeamPlayers, LeaveTeam } = useContext(TeamContext);
+  const { state: { players } } = useContext(PlayerContext);
   const { state: { token } } = useContext(AuthContext)
   const [user, setUser] = useState(token)
   const [forceState, setForceState] = useState(false);
-
-  useEffect(() => {
-    //GetPlayers4Team(props.team.TeamSerialNum,myTeams);
-    //console.log(props.navigation)
-    props.navigation.addListener('focus', () => {
-      console.log("FOCuS=======>")
-    });
-
-    //return unsubscribe;
-  }, [])
-
-  // const unsubscribe = props.navigation.addListener('tabPress', e => {
-  //     // Prevent default action
-  //     console.log("ndjksad")
-  //     e.preventDefault();
-  //   })
 
 
   const playerList = teamPlayers.map((p, i) => (
@@ -93,25 +80,8 @@ export default function TeamDetailsPage(props) {
     </ListItem>
   ))
 
-  const ForceState = () => {
-    // myTeams.map(x => {
-    //   if (x.TeamSerialNum === team.TeamSerialNum) {
-    //     team = x;
-    //   }
-    // });
-    // let tempArr = [];
-    // team.PlayersList.forEach(p => {
-    //     let player = players.find(x => x.Email === p.EmailPlayer)
-    //     if (player !== null)
-    //         tempArr.push(player);
-    // });
-    // teamPlayers = tempArr;
-
-    // console.log("teamss====>")
-    // console.log(team)
-    // console.log("MYTEMSSSSSSSSSS=====>")
-    // console.log(myTeams)
-
+  const ForceState = async () => {
+    await setTeamPlayers(myTeams[key], players);
     console.log("state has changed")
     setForceState(!forceState);
   }
@@ -135,8 +105,8 @@ export default function TeamDetailsPage(props) {
         <View style={styles.options_View}>
           <Modal_RulesAndLaws team={myTeams[key]} />
           {myTeams[key].EmailManager !== user.Email ? null :
-          <Modal_AddPlayers props={props} teamKey={key} setForceState={() => ForceState()} />
-        }
+            <Modal_AddPlayers props={props} teamKey={key} setForceState={() => ForceState()} />
+          }
         </View>
       </ImageBackground>
 
