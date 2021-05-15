@@ -61,11 +61,13 @@ const styles = StyleSheet.create({
 
 export default function TeamDetailsPage(props) {
   const { key } = props.route.params;
-  const { state: { myTeams, teamPlayers }, setTeamPlayers, LeaveTeam } = useContext(TeamContext);
+  const { state: { myTeams, teamPlayers }, setTeamPlayers, LeaveTeam, GetTeamDetails } = useContext(TeamContext);
   const { state: { players } } = useContext(PlayerContext);
   const { state: { token } } = useContext(AuthContext)
   const [user, setUser] = useState(token)
   const [forceState, setForceState] = useState(false);
+  const [newKey, setNewKey] = useState(key);
+  const [pushedLeave, setPushedLeave] = useState(false);
 
 
   const playerList = teamPlayers.map((p, i) => (
@@ -81,34 +83,44 @@ export default function TeamDetailsPage(props) {
   ))
 
   const ForceState = async () => {
-    await setTeamPlayers(myTeams[key], players);
+    await setTeamPlayers(myTeams[newKey], players);
     console.log("state has changed")
     setForceState(!forceState);
   }
-  const ExitTeam = () => {
-    console.log('Leave Team')
+
+  const ExitTeam = async () => {
+    myTeams.length-1==newKey? setNewKey(newKey-1):null
     let playerInTeam = {
-      TeamSerialNum: myTeams[key].TeamSerialNum,
+      TeamSerialNum: myTeams[newKey].TeamSerialNum,
       EmailPlayer: user.Email
     }
+    // props.navigation.navigate('MyTeams');
+    // props.navigation.goBack();
+    //props.navigation.navigate('MyTeams');
     LeaveTeam(playerInTeam)
-    alert("You have left the team successfully")
-    props.navigation.navigate('MyTeams')
+    alert("You have left the team successfully");
+
+    props.navigation.goBack();
+    props.navigation.goBack();
+    //GetTeamDetails(token.Email);
+    props.navigation.goBack();
   }
 
   return (
     <SafeAreaView style={[appCss.container, styles.container_extra]} >
 
       {/* ImageBackGround With Buttons */}
-      <ImageBackground style={styles.imgBG} source={{ uri: myTeams[key].TeamPicture }}>
-        <Text style={appCss.title}>{myTeams[key].TeamName}</Text>
+      <ImageBackground style={styles.imgBG} source={{ uri: myTeams[newKey].TeamPicture }}>
+        <Text style={appCss.title}>{myTeams[newKey].TeamName}</Text>
         <View style={styles.options_View}>
-          <Modal_RulesAndLaws team={myTeams[key]} />
-          {myTeams[key].EmailManager !== user.Email ? null :
-            <Modal_AddPlayers props={props} teamKey={key} setForceState={() => ForceState()} />
+          <Modal_RulesAndLaws team={myTeams[newKey]} />
+          {myTeams[newKey].EmailManager !== user.Email ? null :
+            <Modal_AddPlayers props={props} teamKey={newKey} setForceState={() => ForceState()} />
           }
         </View>
       </ImageBackground>
+
+
 
 
       {/* Player List */}

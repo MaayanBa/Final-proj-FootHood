@@ -92,7 +92,7 @@ export default function GameList(props) {
     // }
 
     let gameCards = gamesList.map((game, k) => {
-        return <View k={k} style={styles.card}>
+        return <View key={k} style={styles.card}>
             <View style={styles.gameInformation_View}>
                 <View style={styles.gameInformation_View_R}>
                     <View>

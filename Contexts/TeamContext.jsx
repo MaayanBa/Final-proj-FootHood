@@ -85,17 +85,11 @@ const GetPlayers4Team = dispatch => async (teamNum, myTeams) => {
 
 const LeaveTeam = dispatch => async (playerInTeam) => {
     try {
-
-        console.log(playerInTeam);
         const response = await TeamApi.post('/LeaveTeam', playerInTeam);
-        //console.log("response . data === " + response.data);
-        //console.log( response.data);
-        dispatch({ type: 'LeaveTeam', payload: response.data })
+        await dispatch({ type: 'LeaveTeam', payload: response.data })
     } catch (err) {
         console.log("in error" + err.response.data)
         console.log(err.response.data)
-
-        // dispatch({ type: 'add_error', payload: 'Somthing went wrong when getting players for team' })
     }
 }
 
@@ -139,14 +133,11 @@ const SetSearchPlayer = dispatch => async () => {
     dispatch({ type: 'SetSearchPlayer', payload: [] })
 }
 
-
 const setTeamPlayers = dispatch => async (team, players) => {
     try {
         let tempArr = [];
         team.PlayersList.forEach(p => {
             let player = players.find(x => x.Email === p.EmailPlayer)
-            console.log("PlayerListttttt======"+p)
-            console.log(p)
             if (player !== null)
                 tempArr.push(player);
         });

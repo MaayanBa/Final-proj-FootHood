@@ -144,11 +144,6 @@ export default function TeamPage(props) {
         });
         return names;
     }
-    const TeamInformation = () => {
-    }
-
-    const ViewGames = () => {
-    }
 
     return (
         <View style={[appCss.container, styles.container_extra]}>

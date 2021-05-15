@@ -38,29 +38,38 @@ export default function Main({ navigation }) {
     const { GetPlayers } = useContext(PlayerContext);
 
     const [user, setUser] = useState(token)
+    const [renderScreen, setRenderScreen] = useState(false)
     //const [emailUser, setEmailUser] = useState(token.Email)
 
     useEffect(() => {
+
         //console.log(navigation)
         //tryLocalSignin()
         //console.log("th user email ---> "+user.Email)
         //console.log("th user email ---> "+emailUser)
-        GetTeamDetails(user.Email)
+        //=================אולי צריך להחזיר את השורה למטה
+        //GetTeamDetails(user.Email)
         GetPlayers();
     }, [])
 
-        useEffect(() => {
-            const unsubscribe = navigation.addListener('focus', () => {
-                GetTeamDetails(user.Email)
-                GetPlayers();
-            });
-            // Return the function to unsubscribe from the event so it gets removed on unmount
-            return () => unsubscribe();
-        }, [navigation]);
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            //GetTeamDetails(user.Email)
+            console.log("FOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+            setRenderScreen(!renderScreen)
+            GetPlayers();
+        });
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return () => unsubscribe();
+    }, [navigation]);
+
+    useEffect(() => {
+        GetTeamDetails(user.Email)
+    }, [])
 
 
 
-  
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>

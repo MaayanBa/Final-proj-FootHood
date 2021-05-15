@@ -9,6 +9,7 @@ import { Avatar } from 'react-native-paper';
 import Header from '../Main/Header';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
 import { Context as PlayerContext } from '../../Contexts/PlayerContext';
+import { Context as AuthContext } from '../../Contexts/AuthContext';
 import AppCss from '../../CSS/AppCss';
 import { firebase } from '../../api/FireBase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -65,8 +66,9 @@ const styles = StyleSheet.create({
 });
 
 export default function MyTeams(props) {
-    const { state: { myTeams } } = useContext(TeamContext);
+    const { state: { myTeams },GetTeamDetails } = useContext(TeamContext);
     const { state: { players } } = useContext(PlayerContext);
+    const { state: { token } } = useContext(AuthContext)
     const [teamCards, setTeamCards] = useState(null);
 
     const convertToArray = (data) => {
@@ -134,6 +136,7 @@ export default function MyTeams(props) {
     useEffect(() => {
         const unsubscribe = props.navigation.addListener('focus', () => {
             calcTeamCards();
+            //GetTeamDetails(token.Email)
         });
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return () => unsubscribe();
