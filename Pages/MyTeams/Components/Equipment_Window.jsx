@@ -4,12 +4,12 @@ import { Entypo as Pencil } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
   playersAndEquipment_Window: {
-    backgroundColor: '#D9D9D9',
+    backgroundColor: 'white',
     padding: 25,
     width: '90%',
     borderRadius: 30,
     alignSelf: 'center',
-    marginTop: 15
+    marginTop: 25,
   },
   playersAndEquipment_Title: {
     alignSelf: 'center'

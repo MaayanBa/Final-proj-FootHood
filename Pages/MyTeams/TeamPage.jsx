@@ -53,11 +53,11 @@ const styles = StyleSheet.create({
         width: '90%'
     },
     chatContainer: {
-        //flex: 1,
         width: '90%',
         height: '65%',
         paddingBottom: 40
     },
+   
 })
 
 const convertToArray = (data) => {
@@ -146,47 +146,50 @@ export default function TeamPage(props) {
     }
 
     return (
-        <View style={[appCss.container, styles.container_extra]}>
-            <TouchableOpacity style={styles.TeamInformation}
-                onPress={() => props.navigation.navigate('TeamDetailsPage', { key })}>
-                <View style={styles.TeamInformation_Up}>
-                    <View style={styles.TeamInformation_Up_Title}>
-                        <Text style={styles.txtTeam}> Team</Text>
-                        <Text style={styles.teamName_txt}>{myTeams[key].TeamName}</Text>
-                    </View>
-                    <View style={styles.TeamInformation_Up_imgView}>
-                        <Avatar.Image size={100} source={{ uri: myTeams[key].TeamPicture }} />
+        // <SafeAreaView>
+        //     <ScrollView>
+                <View style={[appCss.container, styles.container_extra]}>
+                    <TouchableOpacity style={styles.TeamInformation}
+                        onPress={() => props.navigation.navigate('TeamDetailsPage', { key })}>
+                        <View style={styles.TeamInformation_Up}>
+                            <View style={styles.TeamInformation_Up_Title}>
+                                <Text style={styles.txtTeam}> Team</Text>
+                                <Text style={styles.teamName_txt}>{myTeams[key].TeamName}</Text>
+                            </View>
+                            <View style={styles.TeamInformation_Up_imgView}>
+                                <Avatar.Image size={100} source={{ uri: myTeams[key].TeamPicture }} />
+                            </View>
+                        </View>
+                        <View style={styles.TeamInformation_players}>
+                            <Text style={{ fontWeight: 'bold' }}>Players: </Text>
+                            <Text>{PrintNameOfPlayers()}</Text>
+                        </View>
+                    </TouchableOpacity>
+
+                    {team.EmailManager == user.Email ?
+                        <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame', { team })}
+                            style={[appCss.btnTouch, styles.btnTouch_extra]}>
+                            <Text style={appCss.txtBtnTouch}>Create New Game</Text>
+                        </TouchableOpacity>
+                        : null}
+                    <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList', { gamesList, key })}
+                        style={[appCss.btnTouch, styles.btnTouch_extra]}>
+                        <Text style={appCss.txtBtnTouch}>View Games</Text>
+                    </TouchableOpacity>
+                    <View style={styles.chatContainer}>
+                        <GiftedChat
+                            messages={messages}
+                            onSend={messages => onSend(messages)}
+                            user={{
+                                _id: user.Email,
+                                name: user.FirstName,
+                                avatar: user.PlayerPicture
+                            }}
+                            inverted={false}
+                        />
                     </View>
                 </View>
-                <View style={styles.TeamInformation_players}>
-                    <Text style={{ fontWeight: 'bold' }}>Players: </Text>
-                    <Text>{PrintNameOfPlayers()}</Text>
-                </View>
-            </TouchableOpacity>
-
-            {team.EmailManager == user.Email ?
-                <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame', { team })}
-                    style={[appCss.btnTouch, styles.btnTouch_extra]}>
-                    <Text style={appCss.txtBtnTouch}>Create New Game</Text>
-                </TouchableOpacity>
-                : null}
-            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList', { gamesList, key })}
-                style={[appCss.btnTouch, styles.btnTouch_extra]}>
-                <Text style={appCss.txtBtnTouch}>View Games</Text>
-            </TouchableOpacity>
-
-            <View style={styles.chatContainer}>
-                <GiftedChat
-                    messages={messages}
-                    onSend={messages => onSend(messages)}
-                    user={{
-                        _id: user.Email,
-                        name: user.FirstName,
-                        avatar: user.PlayerPicture
-                    }}
-                    inverted={false}
-                />
-            </View>
-        </View>
+        //     </ScrollView>
+        // </SafeAreaView >
     );
 }

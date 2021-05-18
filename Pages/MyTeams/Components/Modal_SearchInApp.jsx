@@ -2,7 +2,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
     StyleSheet, TouchableOpacity, View, Text,
-    Modal as ModalSearchInApp, Pressable, TextInput, Image, ScrollView
+    Modal as ModalSearchInApp, Pressable, TextInput, Image, ScrollView, SafeAreaView
 } from 'react-native';
 import { Entypo as PlusIcon } from '@expo/vector-icons';
 import { ListItem, Avatar } from 'react-native-elements';
@@ -29,16 +29,14 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
-        height: 500
+        height: 600
     },
     modal_Txt: {
         marginBottom: 15,
         padding: 10,
         textAlign: "center",
     },
-    addPlayersBtns: {
-        //flexDirection: "row-reverse",
-    },
+
     input: {
         height: 40,
         margin: 12,
@@ -51,7 +49,7 @@ const styles = StyleSheet.create({
     },
     modal_Closebtn: {
         backgroundColor: "#2196F3",
-        marginTop: 40,
+        marginTop: 50,
         borderRadius: 20,
         padding: 10,
         alignSelf: "center",
@@ -60,6 +58,9 @@ const styles = StyleSheet.create({
         padding: 10,
         fontWeight: "bold",
     },
+    playerList_scrollView: {
+        height: 200
+    }
 })
 
 export default function Modal_SearchInApp(props) {
@@ -100,6 +101,11 @@ export default function Modal_SearchInApp(props) {
     }
 
     const Close = () => {
+        const player = {
+            FirstName: null,
+            LastName: null
+        }
+        SearchPlayer(player)
         props.setShowSearchPlayer_Modal(false)
     }
 
@@ -124,34 +130,36 @@ export default function Modal_SearchInApp(props) {
     })
 
     return (
-        <View style={styles.addPlayersBtns}>
-            <ModalSearchInApp animationType="slide"
-                transparent={true} visible={props.searchInAppModalVisible}
-                onRequestClose={() => props.setShowSearchPlayer_Modal(false)}
-            >
-                <View style={styles.centeredView}>
-                    <View style={styles.modal_View}>
-                        <Text style={styles.modal_Txt}>Enter Player Details:</Text>
-                        <Text style={styles.labels}>Full Name:</Text>
-                        <TextInput style={styles.input} onChangeText={setFullName} value={fullName} />
-                        <Pressable style={styles.modal_Closebtn} onPress={() => SearchPlayers()} >
-                            <Text style={appCss.inputLabel}>Search</Text>
-                        </Pressable>
-                        {
-                            searchedPlayers.length == 0 ? null :
-                                <View style={styles.playerList_View}>
-                                    <Text style={styles.teamPlayers_Text}>Search Results:</Text>
-                                    <ScrollView>
-                                        {searchedPlayerList}
-                                    </ScrollView>
-                                    <Pressable style={styles.modal_Closebtn} onPress={() => Close()} >
-                                        <Text style={appCss.inputLabel}>Close</Text>
-                                    </Pressable>
-                                </View >
-                        }
+        <ModalSearchInApp animationType="slide"
+            transparent={true} visible={props.searchInAppModalVisible}
+            onRequestClose={() => props.setShowSearchPlayer_Modal(false)}
+        >
+            <SafeAreaView>
+                <ScrollView>
+                    <View style={styles.centeredView}>
+                        <View style={styles.modal_View}>
+                            <Text style={styles.modal_Txt}>Enter Player Details:</Text>
+                            <Text style={styles.labels}>Full Name:</Text>
+                            <TextInput style={styles.input} onChangeText={setFullName} value={fullName} />
+                            <Pressable style={styles.modal_Closebtn} onPress={() => SearchPlayers()} >
+                                <Text style={appCss.inputLabel}>Search</Text>
+                            </Pressable>
+                            {
+                                searchedPlayers.length == 0 ? null :
+                                    <View style={styles.playerList_View}>
+                                        <Text style={styles.teamPlayers_Text}>Search Results:</Text>
+                                        <ScrollView style={styles.playerList_scrollView}>
+                                            {searchedPlayerList}
+                                        </ScrollView>
+                                        <Pressable style={styles.modal_Closebtn} onPress={() => Close()} >
+                                            <Text style={appCss.inputLabel}>Close</Text>
+                                        </Pressable>
+                                    </View >
+                            }
+                        </View>
                     </View>
-                </View>
-            </ModalSearchInApp>
-        </View>
+                </ScrollView>
+            </SafeAreaView>
+        </ModalSearchInApp>
     )
 }

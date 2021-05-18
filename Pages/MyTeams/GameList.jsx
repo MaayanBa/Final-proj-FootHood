@@ -5,6 +5,8 @@ import AppCss from '../../CSS/AppCss';
 import { Context as GameContext } from '../../Contexts/GameContext';
 import DateAndTime from './Components/DateAndTime';
 //import LaunchNavigator from 'react-native-launch-navigator';
+import * as Linking from 'expo-linking';
+
 
 
 const appCss = AppCss;
@@ -74,22 +76,11 @@ export default function GameList(props) {
         return time.slice(0, -3);
     }
 
-    // const navInWaze = (loc) => {
-    //     let app = null;
-    //     LaunchNavigator.isAppAvailable(LaunchNavigator.APP.WAZE).then((isWazeAvailable) => {
-    //         if (isWazeAvailable) {
-    //             app = LaunchNavigator.APP.WAZE;
-    //         } else {
-    //             console.warn("Waze not available - falling back to default navigation app");
-    //         }
-
-    //         LaunchNavigator.navigate(`${loc}`, {
-    //             app: app
-    //         })
-    //             // .then(() => console.log("Launched navigator"))
-    //             // .catch((err) => console.error("Error launching navigator: " + err));
-    //     });
-    // }
+    const navInWaze = (loc) => {
+        console.log(loc)
+        Linking.openURL('https://www.google.com/maps/search/?api=1&query='+loc) //מנווט למקום ספציפי
+        // Linking.openURL('https://www.google.com/maps/search/?api=1&query=%D7%9E%D7%92%D7%A8%D7%A9+%D7%9B%D7%93%D7%95%D7%A8%D7%92%D7%9C'); //ניווט לכל המגרשי ספורט
+    }
 
     let gameCards = gamesList.map((game, k) => {
         return <View key={k} style={styles.card}>
@@ -110,8 +101,12 @@ export default function GameList(props) {
                     <Text style={styles.txtStyle}>Number of Players: {game.NumOfPlayersInTeam}</Text>
                     {/* <View style={{flexDirection:'row-reverse'}}> */}
                     <Text style={styles.txtStyle}>Location: {game.GameLocation}</Text>
-                    <Navigation location={game.GameLocation} />
-
+                    {/* <Navigation location={game.GameLocation} /> */}
+                    <TouchableOpacity onPress={() => navInWaze(game.GameLocation)}>
+                        <Text style={styles.txtStyle}>Take me there
+                            <Image source={require('../../assets/Waze.png')} resizeMode="contain" style={styles.waze_Icon} />
+                        </Text>
+                    </TouchableOpacity>
                     {/* </View> */}
                 </View>
             </View>
@@ -121,7 +116,7 @@ export default function GameList(props) {
         <ScrollView>
             <View style={[appCss.container, { alignItems: 'center', paddingTop: 30 }]}>
                 {/* {console.log(gamesList)} */}
-                <Text style={[appCss.title, { top: 15 }]}>Game List</Text>
+                <Text style={[appCss.title, { top: 5 }]}>Game List</Text>
                 {gameCards}
             </View>
         </ScrollView>
@@ -129,9 +124,6 @@ export default function GameList(props) {
 }
 
 
-// <TouchableOpacity onPress={() => navInWaze(game.GameLocation)}>
-//                         <Text style={styles.txtStyle}>Take me there
-//                             <Image source={require('../../assets/Waze.png')} resizeMode="contain" style={styles.waze_Icon} />
-//                             {/* <Navigation location={game.GameLocation} /> */}
-//                         </Text>
-//                     </TouchableOpacity>
+
+
+                    
