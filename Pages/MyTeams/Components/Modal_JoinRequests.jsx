@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import {
     StyleSheet, TouchableOpacity, View, Text,
     Modal as ModalJoinRequests, Pressable, Image
@@ -6,6 +6,11 @@ import {
 import { AntDesign as MailIcon, AntDesign as PlusIcon, Feather as RequestAction } from '@expo/vector-icons';
 import AppCss from '../../../CSS/AppCss';
 import { Avatar, ListItem } from 'react-native-elements';
+import { Context as TeamContext } from '../../../Contexts/TeamContext';
+import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
+import { Context as GameContext } from '../../../Contexts/GameContext';
+import { Context as AuthContext } from '../../../Contexts/AuthContext';
+
 
 
 const appCss = AppCss;
@@ -21,11 +26,12 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 5,
         paddingBottom: 20,
-        shadowColor: "#000",
+        shadowColor: "#D9D9D9",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 5,
+        elevation: 30,
+        height: '60%',
     },
     PlayerRequest: {
         backgroundColor: '#D9D9D9',
@@ -55,39 +61,48 @@ const styles = StyleSheet.create({
     },
 })
 
-const team =
-{
-    TeamName: "Barca",
-    TeamPicture: 'https://static.nike.com/a/images/f_auto/dpr_3.0/w_371,c_limit/a76a7bba-36d1-4637-97ec-1ecfbfcfc547/official-fc-barcelona-store.png',
-    teamManager: "Benel",
-    numberOfPlayers: 10,
-    PlayersList: [
-        { FirstName: "Lionel ",LastName: "Messi" , PlayerPicture: "https://assets.laliga.com/squad/2020/t178/p19054/2048x2048/p19054_t178_2020_1_002_000.jpg" , PlayerCity: "Tel-Aviv",Gender:0,},
-        { EmailPlayer: "Cristiano Ronaldo", PlayerImg: "https://site-cdn.givemesport.com/images/21/02/05/354cc6f5366bb99d3eca6bc92f8d2165/1201.jpg" },
-    ],
-    rulesAndLaws: "Hello And welcome to FootHood First Game. The rules are- Each team has 5 players and the team who wins is the team who reaches 2 goals. The game time is 8 min. If needed there is a 2 min extra time."
-}
-export default function Modal_JoinRequests() {
+export default function Modal_JoinRequests(props) {
     const [requestsModalVisible, setRequestsModalVisible] = useState(false);
+    const { state: { joinRequests }, GetJoinRequests ,GetTeamDetails} = useContext(TeamContext);
+    const { state: { players } } = useContext(PlayerContext);
+    const { DeleteRequest, ApproveRequest,GetPlayers4Game } = useContext(GameContext);
+    const { state: { token } } = useContext(AuthContext)
 
-    const joinRequestsList = team.PlayersList.map((p, i) => (
-            <ListItem key={i} bottomDivider >
-                {/* <TouchableOpacity activeOpacity={0.8} onPress={() => console.log("player Card")} >
+
+    useEffect(() => {
+        GetJoinRequests(props.game, players)
+    }, [])
+
+    const DeleteRequests =async (player) => {
+        await DeleteRequest(player.Email, props.game.GameSerialNum);
+        await GetJoinRequests(props.game, players);
+    }
+    const ApproveRequests =async (player) => {
+        await ApproveRequest(player.Email, props.game.GameSerialNum);
+        await GetJoinRequests(props.game, players);
+        await GetPlayers4Game(props.game.GameSerialNum,players);
+        GetTeamDetails(token.Email);
+    }
+    
+
+    const joinRequestsList = joinRequests.map((p, i) => (
+        <ListItem key={i} bottomDivider style={{ color: "#D9D9D9" }} >
+            {/* <TouchableOpacity activeOpacity={0.8} onPress={() => console.log("player Card")} >
                 <Image style={styles.playerCardIcon_Btn} source={require('../../assets/PlayerCardIcon.png')} />
             </TouchableOpacity>  */}
-                <TouchableOpacity onPress={() => console.log("Delete Request")}>
-                    <RequestAction name="x" size={25} color="black" />
-                </TouchableOpacity>
+            <TouchableOpacity onPress={() => DeleteRequests(p)}>
+                <RequestAction name="x" size={25} color="black" />
+            </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => console.log("Approve Request")}>
-                    <RequestAction name="check" size={25} color="black" />
-                </TouchableOpacity>
+            <TouchableOpacity onPress={() => ApproveRequests(p)}>
+                <RequestAction name="check" size={25} color="black" />
+            </TouchableOpacity>
 
-                <ListItem.Content style={{ alignItems: 'flex-end' }} >
-                    <ListItem.Title>{p.FirstName+ " "+p.LastName}</ListItem.Title>
-                </ListItem.Content>
-                <Avatar rounded source={{ uri: p.PlayerPicture }} />
-            </ListItem>
+            <ListItem.Content style={{ alignItems: 'flex-end' }} >
+                <ListItem.Title>{p.FirstName + " " + p.LastName}</ListItem.Title>
+            </ListItem.Content>
+            <Avatar rounded source={{ uri: p.PlayerPicture }} />
+        </ListItem>
     ))
 
 

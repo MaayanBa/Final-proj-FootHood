@@ -73,42 +73,36 @@ const game = [
 ]
 
 export default function GameList(props) {
-   
+
     const navToPitch = () => {
         Linking.openURL('https://www.google.com/maps/search/?api=1&query=%D7%9E%D7%92%D7%A8%D7%A9+%D7%9B%D7%93%D7%95%D7%A8%D7%92%D7%9C'); //ניווט לכל המגרשי ספורט
     }
 
     let gameCards = game.map((g, key) => {
-        return <TouchableOpacity key={key} style={styles.GameInformation_Touch} onPress={() => console.log(game.groupPhoto)}>
-            <View style={styles.card}>
-                <View style={styles.gameTitle_View}>
-                    <Text style={styles.header_txt}>{g.gameName}</Text>
-                </View>
-                <View style={styles.gameInformation_View}>
-                    <View style={styles.gameInformation_View_R}>
-                        <View>
-                            <Text style={styles.txtStyle}>Time: {g.time}</Text>
-                            <Text style={styles.txtStyle}>Age range: {g.ageRange}</Text>
-                        </View>
-                        <View style={styles.gameInformation_View_R_Down}>
-                            <TouchableOpacity style={appCss.blue_btn} onPress={() => console.log("btn enter game")}>
-                                <Text style={[styles.txtStyle, { color: 'white', alignItems: 'center' }]}>ENTER</Text>
-                            </TouchableOpacity>
-                        </View>
+        return <View key={key} style={styles.GameInformation_Touch} onPress={() => console.log(game.groupPhoto)}>
+            <View style={styles.gameTitle_View}>
+                <Text style={styles.header_txt}>{g.gameName}</Text>
+            </View>
+            <View style={styles.gameInformation_View}>
+                <View style={styles.gameInformation_View_R}>
+                    <View>
+                        <Text style={styles.txtStyle}>Time: {g.time}</Text>
+                        <Text style={styles.txtStyle}>Avarege range: {g.ageRange}</Text>
                     </View>
-                    <View style={styles.gameInformation_View_L}>
-                        <Text style={styles.txtStyle}>Date: {g.date}</Text>
-                        <Text style={styles.txtStyle}>Number of Players: {g.numberOfPlayers}</Text>
-                        <Text style={styles.txtStyle}>Location: {g.location}</Text>
-                        <TouchableOpacity onPress={() => console.log("waze btn")}>
-                            <Text style={styles.txtStyle}>Take me there
-                            <Image source={require('../../assets/Waze.png')} resizeMode="contain" style={styles.waze_Icon} />
-                            </Text>
+                    <View style={styles.gameInformation_View_R_Down}>
+                        <TouchableOpacity style={appCss.blue_btn} onPress={() => console.log("btn enter game")}>
+                            <Text style={[styles.txtStyle, { color: 'white', alignItems: 'center' }]}>Join</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
+                <View style={styles.gameInformation_View_L}>
+                    <Text style={styles.txtStyle}>Date: {g.date}</Text>
+                    <Text style={styles.txtStyle}>Number of Players: {g.numberOfPlayers}</Text>
+                    <Text style={styles.txtStyle}>Location: {g.location}</Text>
+
+                </View>
             </View>
-        </TouchableOpacity>
+        </View>
     });
     return (
         <ScrollView>
@@ -123,7 +117,7 @@ export default function GameList(props) {
                     <Octicons name="flame" size={24} color="black" />
                 </TouchableOpacity>
                 {gameCards}
-                <TouchableOpacity style={[appCss.btnTouch, { width: '85%' }, { flexDirection: "row" },]} onPress={() =>navToPitch()}>
+                <TouchableOpacity style={[appCss.btnTouch, { width: '85%' }, { flexDirection: "row" },]} onPress={() => navToPitch()}>
                     <MaterialCommunityIcons name="soccer-field" size={24} color="black" />
                     <Text style={appCss.txtBtnTouch}>Courts around your area</Text>
                     <MaterialCommunityIcons name="soccer-field" size={24} color="black" />

@@ -1,5 +1,5 @@
-import React,{useRef}  from 'react';
-import { Text, StyleSheet, View, TouchableOpacity,Dimensions } from "react-native";
+import React, { useRef } from 'react';
+import { Text, StyleSheet, View, TouchableOpacity, Dimensions } from "react-native";
 import Carousel from 'react-native-anchor-carousel';
 import AppCss from '../../../CSS/AppCss';
 
@@ -9,6 +9,7 @@ const appCss = AppCss;
 const styles = StyleSheet.create({
   carousel_Container: {
     height: 200,
+    flexDirection:'row-reverse'
   },
   carousel: {
     flex: 1,
@@ -51,8 +52,8 @@ export default function GameTeamsCard() {
       color: "black",
     },
   ]
-   
-  
+
+
   const renderItem = ({ item, index }) => {
     let changingColor = item.color;
     return (
@@ -70,18 +71,19 @@ export default function GameTeamsCard() {
 
   return (
     <View style={styles.carousel_Container}>
-            <Carousel style={styles.carousel}
-              data={carouselItems}
-              renderItem={renderItem}
-              itemWidth={200}
-              containerWidth={width - 20}
-              separatorWidth={0}
-              ref={carouselRef}
-              loop={true}
-            //pagingEnable={false}
-            //minScrollDistance={20}
-            />
-          </View>
+      <Carousel style={styles.carousel}
+        data={carouselItems}
+        renderItem={renderItem}
+        initialIndex={0}
+        itemWidth={200}
+        containerWidth={width - 20}
+        //separatorWidth={0}
+        ref={carouselRef}
+        loop={false}
+      //pagingEnable={false}
+      //minScrollDistance={20}
+      />
+    </View>
   );
 }
 

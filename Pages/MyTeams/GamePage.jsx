@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import {
   SafeAreaView, ScrollView, Text, StyleSheet, View, Animated, TouchableOpacity, StatusBar, Image
 } from "react-native";
@@ -41,34 +41,34 @@ const styles = StyleSheet.create({
 })
 
 export default function GamePage(props) {
-  const { game, key } = props.route.params;
+  const {  index, keyTeam } = props.route.params;
   const [registered, setRegistered] = useState(false)
   const { state: { myTeams } } = useContext(TeamContext);
   const { state: { token } } = useContext(AuthContext)
   const [user, setUser] = useState(token)
-  const { state: { gamesList, playersPerGame }, RegisterGame } = useContext(GameContext);
+  const { state: { gamesList, playersPerGame, registeredTo }, RegisterGame } = useContext(GameContext);
 
 
   const gameDate = new Date("2021-05-29T20:00:00Z"); //Need to enter here game date
   const oneDay = 60 * 60 * 24 * 1000 //This give us 24 hours parmeter
+  
+  useEffect(() => {
+    let isRegistered = playersPerGame.find(p => p.Email == user.Email);
+    if (isRegistered !== null)
+      setRegistered(true)
+  }, [playersPerGame])
 
   const JoinGame = () => {
-    console.log(myTeams[key].TeamSerialNum)
-    console.log("Join Game Button")
-    let gameSerialNum = game.GameSerialNum
-    console.log(gameSerialNum)
-    console.log(user.Email)
     let addPlayer2Game = {
-      GameSerialNum: gameSerialNum,
+      GameSerialNum: gamesList[key].GameSerialNum,
       EmailPlayer: user.Email,
       TeamSerialNum: myTeams[key].TeamSerialNum,
     }
     RegisterGame(addPlayer2Game)
-    alert("You have joined the game successfuly")
-    // console.log(new Date(game.GameDate))
-    // console.log(new Date()-0)
   }
-
+  const LeaveGame = () => {
+    console.log("Leave")
+  }
   const showDate = (date) => {
     return `${date.getDate()}/${date.getMonth() +
       1}/${date.getFullYear()}`;//Builds up togther the date and time
@@ -79,37 +79,31 @@ export default function GamePage(props) {
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.labels}>
-            {myTeams[key].EmailManager !== user.Email ? null :
-              <TouchableOpacity onPress={console.log("Edit")}>
+            {myTeams[keyTeam].EmailManager !== user.Email ? null :
+              <TouchableOpacity onPress={() => console.log("Edit")}>
                 <Pencil name="pencil" size={24} color="black" />
               </TouchableOpacity>
             }
-            <Text style={[appCss.inputLabel, { paddingBottom: 20 }]}>Game Date: {showDate(new Date(game.GameDate))} </Text>
+            <Text style={[appCss.inputLabel, { paddingBottom: 20 }]}>Game Date: {showDate(new Date(gamesList[index].GameDate))} </Text>
           </View>
 
           {/* Join Requests */}
-          {myTeams[key].EmailManager !== user.Email ? null : <Modal_JoinRequests />}
+          {myTeams[keyTeam].EmailManager !== user.Email ? null : <Modal_JoinRequests game={gamesList[index]} />}
 
           {/* Players Window Or Teams Cards*/}
-          {(new Date() <= gameDate - oneDay) ? <Players_Window game={game} /> : <GameTeamsCard game={game} />}
+          {(new Date() <= gameDate - oneDay) ? <Players_Window game={gamesList[index]} /> : <GameTeamsCard game={gamesList[index]} />}
 
           {/* Equipment Window */}
-          <Equipment_Window game={game} />
+          <Equipment_Window game={gamesList[index]} />
 
           <View style={{ paddingTop: 20 }}>
-            {(new Date() <= gameDate - oneDay) ? <Text style={appCss.inputLabel}>Last Registration Date: {showDate(new Date(game.LastRegistrationDate))}</Text>
-              : null}
-            {registered ?
-              <TouchableOpacity activeOpacity={0.8} onPress={() => LeaveGame()} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
-                <Image source={require('../../assets/ball.png')} resizeMode="contain" style={styles.imgBall} />
-                <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>Leave</Text>
-                <Image source={require('../../assets/ball.png')} resizeMode="contain" style={styles.imgBall} />
-              </TouchableOpacity>
-              : <TouchableOpacity activeOpacity={0.8} onPress={() => JoinGame()} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
-                <Image source={require('../../assets/ball.png')} resizeMode="contain" style={styles.imgBall} />
-                <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>Join</Text>
-                <Image source={require('../../assets/ball.png')} resizeMode="contain" style={styles.imgBall} />
-              </TouchableOpacity>}
+            {(new Date() <= gameDate - oneDay) ? <Text style={appCss.inputLabel}>Last Registration Date: {showDate(new Date(gamesList[index].LastRegistrationDate))}</Text> : null}
+            
+            <TouchableOpacity activeOpacity={0.8} onPress={() => registered ? LeaveGame() : JoinGame()} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
+              <Image source={require('../../assets/ball.png')} resizeMode="contain" style={styles.imgBall} />
+              <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>{registered ? "Leave" : "Join"}</Text>
+              <Image source={require('../../assets/ball.png')} resizeMode="contain" style={styles.imgBall} />
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>

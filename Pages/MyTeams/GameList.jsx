@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#D9D9D9',
         width: '90%',
         borderRadius: 30,
-        marginTop: 30
+        marginTop: 40, 
+        alignSelf:'center'
     },
     gameTitle_View: {
         justifyContent: 'flex-start',
@@ -57,7 +58,9 @@ const styles = StyleSheet.create({
 export default function GameList(props) {
     // const { state: { gamesList }, GetGamesList } = useContext(GameContext);
     // const {team} = props.route.params;
-    const { gamesList,key } = props.route.params;
+    const { state: { gamesList }} = useContext(GameContext);
+    const { key } = props.route.params;
+    const keyTeam  = key;
     //const { state: { gamesList } } = useContext(GameContext);
 
     // const GetGameDate=(date)=>{
@@ -78,12 +81,12 @@ export default function GameList(props) {
 
     const navInWaze = (loc) => {
         console.log(loc)
-        Linking.openURL('https://www.google.com/maps/search/?api=1&query='+loc) //מנווט למקום ספציפי
+        Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + loc) //מנווט למקום ספציפי
         // Linking.openURL('https://www.google.com/maps/search/?api=1&query=%D7%9E%D7%92%D7%A8%D7%A9+%D7%9B%D7%93%D7%95%D7%A8%D7%92%D7%9C'); //ניווט לכל המגרשי ספורט
     }
 
-    let gameCards = gamesList.map((game, k) => {
-        return <View key={k} style={styles.card}>
+    let gameCards = gamesList.map((game, index) => {
+        return <View key={index} style={styles.card}>
             <View style={styles.gameInformation_View}>
                 <View style={styles.gameInformation_View_R}>
                     <View>
@@ -91,7 +94,7 @@ export default function GameList(props) {
                         <Text style={styles.txtStyle}>Avarege Age: {game.AvgPlayerAge}</Text>
                     </View>
                     <View style={styles.gameInformation_View_R_Down}>
-                        <TouchableOpacity style={appCss.blue_btn} onPress={() => props.navigation.navigate('GamePage', { game,key })}>
+                        <TouchableOpacity style={appCss.blue_btn} onPress={() => props.navigation.navigate('GamePage', { index, keyTeam })}>
                             <Text style={[styles.txtStyle, { color: 'white', alignItems: 'center' }]}>ENTER</Text>
                         </TouchableOpacity>
                     </View>
@@ -113,17 +116,17 @@ export default function GameList(props) {
         </View>
     });
     return (
-        <ScrollView>
-            <View style={[appCss.container, { alignItems: 'center', paddingTop: 30 }]}>
-                {/* {console.log(gamesList)} */}
-                <Text style={[appCss.title, { top: 5 }]}>Game List</Text>
+        <View style={[appCss.container, {  paddingTop: 50 }]}>
+            {/* {console.log(gamesList)} */}
+            <Text style={[appCss.title, { top: 5, paddingBottom:20, }]}>Game List</Text>
+            <ScrollView>
                 {gameCards}
-            </View>
-        </ScrollView>
+            </ScrollView>
+
+        </View>
     );
 }
 
 
 
 
-                    

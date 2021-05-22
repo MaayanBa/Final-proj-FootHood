@@ -55,7 +55,6 @@ export default function Main({ navigation }) {
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             //GetTeamDetails(user.Email)
-            console.log("FOOOOOOOOOOOOOOOOOOOOOOOOOOO");
             setRenderScreen(!renderScreen)
             GetPlayers();
         });
@@ -66,8 +65,6 @@ export default function Main({ navigation }) {
     useEffect(() => {
         GetTeamDetails(user.Email)
     }, [])
-
-
 
 
     return (

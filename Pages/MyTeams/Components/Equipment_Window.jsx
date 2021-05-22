@@ -51,7 +51,7 @@ export default function Players_Window() {
         <Text style={styles.txtGame}>Equipment List:</Text>
       </View>
       {equipmentList}
-      <TouchableOpacity onPress={console.log("Edit")} style={{ alignItems: 'flex-start' }}>
+      <TouchableOpacity onPress={()=>console.log("Edit")} style={{ alignItems: 'flex-start' }}>
         <Pencil name="pencil" size={24} color="black" />
       </TouchableOpacity>
     </View>

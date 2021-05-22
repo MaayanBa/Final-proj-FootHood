@@ -24,9 +24,9 @@ const teamReducer = (state, action) => {
         case 'SearchPlayer': {
             return { ...state, searchedPlayers: action.payload }
         }
-        // case 'GetJoinRequests': {
-        //     return { ...state, joinRequests: action.payload }
-        // }
+        case 'GetJoinRequests': {
+            return { ...state, joinRequests: action.payload }
+        }
         case 'TeamPlayers': {
             return { ...state, teamPlayers: action.payload }
         }
@@ -56,8 +56,6 @@ const CreateNewTeam = dispatch => async (newTeam) => {
 const GetTeamDetails = dispatch => async (playerEmail) => {
     try {
         const response = await TeamApi.post('/TeamDetails', { EmailPlayer: playerEmail });
-        //console.log("response . data === " + response.data);
-        //console.log( response.data);
         dispatch({ type: 'GetTeamDetails', payload: response.data })
     } catch (err) {
         // console.log("in error" +err.response.data)
@@ -93,19 +91,26 @@ const LeaveTeam = dispatch => async (playerInTeam) => {
     }
 }
 
-// const GetJoinRequests = dispatch => async (GameSerialNum) => {
-//     try {
-//         const response = await TeamApi.post('/JoinRequests', { GameSerialNum });
-//         console.log("response . data === " + response.data);
-//         console.log( response.data);
-//         dispatch({ type: 'GetJoinRequests', payload: response.data })
-//     } catch (err) {
-//         console.log("in error" +err.response.data)
-//         console.log(err.response.data)
+const GetJoinRequests = dispatch => async (game, players) => {
+    try {
+        const response = await TeamApi.post('/JoinRequests', { GameSerialNum: game.GameSerialNum });
 
-//         dispatch({ type: 'add_error', payload: 'Somthing went wrong when getting the join requests for the game' })
-//     }
-// }
+        let emailsPlayers = response.data;
+        let allRequests4Game = [];
+        emailsPlayers.map(p => {
+            let playerThatReg = players.find(x => x.Email == p.EmailPlayer);
+            if (playerThatReg !== null)
+                allRequests4Game.push(playerThatReg)
+        })
+
+        dispatch({ type: 'GetJoinRequests', payload: allRequests4Game })
+    } catch (err) {
+        console.log("in error" + err.response.data)
+        console.log(err.response.data)
+
+        // dispatch({ type: 'add_error', payload: 'Somthing went wrong when getting the join requests for the game' })
+    }
+}
 
 const SearchPlayer = dispatch => async (player) => {
     try {
@@ -158,7 +163,7 @@ export const { Context, Provider } = CreateDataContext(
         clearState,
         GetPlayers4Team,
         LeaveTeam,
-        // GetJoinRequests,
+        GetJoinRequests,
         SearchPlayer,
         AddPlayer,
         SetSearchPlayer,
