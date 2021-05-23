@@ -15,7 +15,6 @@ import { Context as AuthContext } from '../../Contexts/AuthContext'
 import { Context as GameContext } from '../../Contexts/GameContext'
 
 
-
 const appCss = AppCss;
 const styles = StyleSheet.create({
   container: {
@@ -49,7 +48,8 @@ export default function GamePage(props) {
   const { state: { gamesList, playersPerGame, registeredTo }, RegisterGame } = useContext(GameContext);
 
 
-  const gameDate = new Date("2021-05-29T20:00:00Z"); //Need to enter here game date
+  // const gameDate = new Date("2021-05-29T20:00:00Z"); //Need to enter here game date
+  const gameDate = new Date();
   const oneDay = 60 * 60 * 24 * 1000 //This give us 24 hours parmeter
   
   useEffect(() => {
@@ -84,7 +84,7 @@ export default function GamePage(props) {
                 <Pencil name="pencil" size={24} color="black" />
               </TouchableOpacity>
             }
-            <Text style={[appCss.inputLabel, { paddingBottom: 20 }]}>Game Date: {showDate(new Date(gamesList[index].GameDate))} </Text>
+            <Text style={[appCss.inputLabel, { paddingBottom: 30 }]}>Game Date: {showDate(new Date(gamesList[index].GameDate))} </Text>
           </View>
 
           {/* Join Requests */}

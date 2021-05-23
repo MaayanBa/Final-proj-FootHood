@@ -1,22 +1,18 @@
 import React, { useRef } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, Dimensions } from "react-native";
-import Carousel from 'react-native-anchor-carousel';
+import { Text, StyleSheet, View, Dimensions } from "react-native";
 import AppCss from '../../../CSS/AppCss';
-
-const { width } = Dimensions.get('window');
+import Carousel from 'react-native-snap-carousel';
+const { width: screenWidth } = Dimensions.get('window')
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
   carousel_Container: {
-    height: 200,
-    flexDirection:'row-reverse'
-  },
-  carousel: {
-    flex: 1,
+    height: 250,
+    flexDirection: 'row-reverse'
   },
   group: {
     borderWidth: 2,
-    height: 200,
+    height: 250,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -24,6 +20,11 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     fontSize: 22
+  },
+  item: {
+    width: screenWidth - 60,
+    height: screenWidth - 60,
+    backgroundColor:'white'
   },
 })
 
@@ -34,54 +35,44 @@ export default function GameTeamsCard() {
     {
       title: "Team 1",
       players: "Benel,Maayan",
-      color: "crimson",
+      color: "#90EE90",
     },
     {
       title: "Team 2",
       players: "Daniel,Guy",
-      color: "lightblue",
+      color: "#FF4500",
     },
     {
       title: "Team 3",
       players: "Nala,Lucky",
-      color: "green",
+      color: "#9932CC",
     },
     {
       title: "Team 4",
       players: "check",
-      color: "black",
+      color: "#7FFFD4",
     },
   ]
-
 
   const renderItem = ({ item, index }) => {
     let changingColor = item.color;
     return (
-      <TouchableOpacity
-        style={[styles.group, { backgroundColor: changingColor }]}
-        onPress={() => {
-          carouselRef.current.scrollToIndex(index);
-        }}
-      >
+      <View style={[styles.group, { backgroundColor: changingColor }]}>
         <Text style={styles.player_ListTitle}>{item.title}</Text>
         <Text style={appCss.inputLabel}>{item.players}</Text>
-      </TouchableOpacity>
+      </View>
     );
   };
 
   return (
     <View style={styles.carousel_Container}>
-      <Carousel style={styles.carousel}
+      <Carousel layout={'default'}
+        sliderWidth={screenWidth}
+        sliderHeight={screenWidth}
+        itemWidth={screenWidth - 60}
         data={carouselItems}
         renderItem={renderItem}
-        initialIndex={0}
-        itemWidth={200}
-        containerWidth={width - 20}
-        //separatorWidth={0}
-        ref={carouselRef}
-        loop={false}
-      //pagingEnable={false}
-      //minScrollDistance={20}
+        loop={true}
       />
     </View>
   );
