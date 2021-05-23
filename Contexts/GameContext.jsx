@@ -98,6 +98,7 @@ const GetPlayers4Game = dispatch => async (gameSerialNum, players) => {
 const DeleteRequest = dispatch => async (EmailPlayer, GameSerialNum) => {
     try {
         await GameApi.post('/DeleteRequest', { EmailPlayer, GameSerialNum });
+        GetGamesList(game.TeamSerialNum);
     } catch (error) {
         console.log("err DeleteRequest")
         console.log(error.message)
@@ -114,6 +115,14 @@ const ApproveRequest = dispatch => async (EmailPlayer, GameSerialNum) => {
     }
 }
 
+const EditGameDetailes = dispatch => async (game) => {
+    try {
+        await GameApi.post('/EditGameDetailes', { game });
+    } catch (error) {
+        console.log("err EditGameDetailes")
+        console.log(error.message)
+    }
+}
 
 
 export const { Context, Provider } = CreateDataContext(
@@ -127,6 +136,7 @@ export const { Context, Provider } = CreateDataContext(
         GetPlayers4Game,
         DeleteRequest,
         ApproveRequest,
+        EditGameDetailes
     },
     {
         gamesList: [],

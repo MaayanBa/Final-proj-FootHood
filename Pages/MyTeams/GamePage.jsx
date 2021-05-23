@@ -11,8 +11,9 @@ import Equipment_Window from '../MyTeams/Components/Equipment_Window';
 import Players_Window from '../MyTeams/Components/Players_Window';
 import GameTeamsCard from './Components/GameTeamsCard';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
-import { Context as AuthContext } from '../../Contexts/AuthContext'
-import { Context as GameContext } from '../../Contexts/GameContext'
+import { Context as AuthContext } from '../../Contexts/AuthContext';
+import { Context as GameContext } from '../../Contexts/GameContext';
+import Modal_EditGame from './Components/Modal_EditGame';
 
 
 
@@ -41,17 +42,18 @@ const styles = StyleSheet.create({
 })
 
 export default function GamePage(props) {
-  const {  index, keyTeam } = props.route.params;
+  const { index, keyTeam } = props.route.params;
   const [registered, setRegistered] = useState(false)
   const { state: { myTeams } } = useContext(TeamContext);
   const { state: { token } } = useContext(AuthContext)
   const [user, setUser] = useState(token)
   const { state: { gamesList, playersPerGame, registeredTo }, RegisterGame } = useContext(GameContext);
+const [showEditGame_Modal, setShowEditGame_Modal] = useState(false)
 
-
-  const gameDate = new Date("2021-05-29T20:00:00Z"); //Need to enter here game date
+  //const gameDate = new Date("2021-05-29T20:00:00Z"); //Need to enter here game date
+  const gameDate = new Date(); //Need to enter here game date
   const oneDay = 60 * 60 * 24 * 1000 //This give us 24 hours parmeter
-  
+
   useEffect(() => {
     let isRegistered = playersPerGame.find(p => p.Email == user.Email);
     if (isRegistered !== null)
@@ -76,13 +78,17 @@ export default function GamePage(props) {
 
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="handled">
         <View style={styles.container}>
           <View style={styles.labels}>
             {myTeams[keyTeam].EmailManager !== user.Email ? null :
-              <TouchableOpacity onPress={() => console.log("Edit")}>
-                <Pencil name="pencil" size={24} color="black" />
-              </TouchableOpacity>
+              <View>
+                <TouchableOpacity onPress={() => setShowEditGame_Modal(!showEditGame_Modal)}>
+                  <Pencil name="pencil" size={24} color="black" />
+                </TouchableOpacity>
+                {showEditGame_Modal?<Modal_EditGame indexGame={index} keyTeam={keyTeam} showEditGame_Modal={showEditGame_Modal} setShowEditGame_Modal={()=>setShowEditGame_Modal()} />:null}
+              </View>
+
             }
             <Text style={[appCss.inputLabel, { paddingBottom: 20 }]}>Game Date: {showDate(new Date(gamesList[index].GameDate))} </Text>
           </View>
@@ -98,7 +104,7 @@ export default function GamePage(props) {
 
           <View style={{ paddingTop: 20 }}>
             {(new Date() <= gameDate - oneDay) ? <Text style={appCss.inputLabel}>Last Registration Date: {showDate(new Date(gamesList[index].LastRegistrationDate))}</Text> : null}
-            
+
             <TouchableOpacity activeOpacity={0.8} onPress={() => registered ? LeaveGame() : JoinGame()} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
               <Image source={require('../../assets/ball.png')} resizeMode="contain" style={styles.imgBall} />
               <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>{registered ? "Leave" : "Join"}</Text>
