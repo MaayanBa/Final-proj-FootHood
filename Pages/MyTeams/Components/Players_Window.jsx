@@ -41,8 +41,6 @@ export default function Players_Window(props) {
     GetPlayers4Game(props.game.GameSerialNum,players);
   }, [])
 
-
-
   const registeredPlayers = playersPerGame.map((p, key) => {
     return <ListItem key={key} style={styles.playerInGameList}>
       <ListItem.Content style={{ alignItems: 'flex-end' }} >

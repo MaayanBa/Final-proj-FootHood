@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
     //flex: 1,
   },
   group: {
-    // borderWidth: 2,
-    // height: 200,
+    borderWidth: 2,
+    height: 250,
     flexDirection: 'row-reverse',
     justifyContent: 'center',
     alignItems: 'center',
@@ -29,6 +29,11 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     fontSize: 22
+  },
+  item: {
+    width: screenWidth - 60,
+    height: screenWidth - 60,
+    backgroundColor:'white'
   },
 })
 
@@ -58,7 +63,6 @@ export default function GameTeamsCard(props) {
     setCards(arrCards)
   }, [])
 
-
   const renderItem = ({ item, index }) => {
     return (
       <TouchableOpacity style={styles.group} onPress={() => console.log(index)}>
@@ -68,28 +72,29 @@ export default function GameTeamsCard(props) {
           <Text style={appCss.inputLabel}>{item.players}</Text>
         </ImageBackground>
       </TouchableOpacity>
+      // <View style={[styles.group, { backgroundColor: changingColor }]}>
+      //   <Text style={styles.player_ListTitle}>{item.title}</Text>
+      //   <Text style={appCss.inputLabel}>{item.players}</Text>
+      // </View>
     );
   };
 
   return (
     <View style={styles.carousel_Container}>
-      {/* <Carousel style={styles.carousel}
-        data={carouselItems}
-        renderItem={renderItem}
-        initialIndex={0}
-        itemWidth={200}
-        containerWidth={width - 20}
-        //separatorWidth={0}
-        ref={carouselRef}
-        loop={false}
-      //pagingEnable={false}
-      //minScrollDistance={20}
-      /> */}
-      <FlatList
+   
+      {/* <FlatList
         data={cards}
         renderItem={renderItem}
         keyExtractor={item => item.key}
         horizontal
+        /> */}
+      <Carousel layout={'default'}
+        sliderWidth={screenWidth}
+        sliderHeight={screenWidth}
+        itemWidth={screenWidth - 60}
+        data={carouselItems}
+        renderItem={renderItem}
+        loop={true}
       />
 
     </View>

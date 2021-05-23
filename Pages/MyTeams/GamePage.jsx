@@ -16,7 +16,6 @@ import { Context as GameContext } from '../../Contexts/GameContext';
 import Modal_EditGame from './Components/Modal_EditGame';
 
 
-
 const appCss = AppCss;
 const styles = StyleSheet.create({
   container: {
@@ -90,7 +89,7 @@ const [showEditGame_Modal, setShowEditGame_Modal] = useState(false)
               </View>
 
             }
-            <Text style={[appCss.inputLabel, { paddingBottom: 20 }]}>Game Date: {showDate(new Date(gamesList[index].GameDate))} </Text>
+            <Text style={[appCss.inputLabel, { paddingBottom: 30 }]}>Game Date: {showDate(new Date(gamesList[index].GameDate))} </Text>
           </View>
 
           {/* Join Requests */}

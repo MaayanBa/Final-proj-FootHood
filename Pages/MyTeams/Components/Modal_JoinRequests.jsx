@@ -5,12 +5,11 @@ import {
 } from 'react-native';
 import { AntDesign as MailIcon, AntDesign as PlusIcon, Feather as RequestAction } from '@expo/vector-icons';
 import AppCss from '../../../CSS/AppCss';
-import { Avatar, ListItem } from 'react-native-elements';
+import { Avatar, ListItem, Badge } from 'react-native-elements';
 import { Context as TeamContext } from '../../../Contexts/TeamContext';
 import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 import { Context as GameContext } from '../../../Contexts/GameContext';
 import { Context as AuthContext } from '../../../Contexts/AuthContext';
-
 
 
 const appCss = AppCss;
@@ -37,7 +36,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#D9D9D9',
         padding: 20,
         width: '50%',
-        borderRadius: 30,
+        borderRadius: 20,
         opacity: 0.3,
         alignItems: "center",
         flexDirection: 'row',
@@ -63,27 +62,35 @@ const styles = StyleSheet.create({
 
 export default function Modal_JoinRequests(props) {
     const [requestsModalVisible, setRequestsModalVisible] = useState(false);
-    const { state: { joinRequests }, GetJoinRequests ,GetTeamDetails} = useContext(TeamContext);
+    const { state: { joinRequests }, GetJoinRequests, GetTeamDetails } = useContext(TeamContext);
     const { state: { players } } = useContext(PlayerContext);
-    const { DeleteRequest, ApproveRequest,GetPlayers4Game } = useContext(GameContext);
+    const { DeleteRequest, ApproveRequest, GetPlayers4Game } = useContext(GameContext);
     const { state: { token } } = useContext(AuthContext)
+    const [badge, setBadge] = useState(0);
 
 
     useEffect(() => {
         GetJoinRequests(props.game, players)
+        setBadge(joinRequests.length)
+        console.log(badge)
     }, [])
 
-    const DeleteRequests =async (player) => {
+    useEffect(() => {
+        setBadge(joinRequests.length)
+        console.log(badge)
+    }, [joinRequests])
+
+    const DeleteRequests = async (player) => {
         await DeleteRequest(player.Email, props.game.GameSerialNum);
         await GetJoinRequests(props.game, players);
     }
-    const ApproveRequests =async (player) => {
+    const ApproveRequests = async (player) => {
         await ApproveRequest(player.Email, props.game.GameSerialNum);
         await GetJoinRequests(props.game, players);
-        await GetPlayers4Game(props.game.GameSerialNum,players);
+        await GetPlayers4Game(props.game.GameSerialNum, players);
         GetTeamDetails(token.Email);
     }
-    
+
 
     const joinRequestsList = joinRequests.map((p, i) => (
         <ListItem key={i} bottomDivider style={{ color: "#D9D9D9" }} >
@@ -123,11 +130,17 @@ export default function Modal_JoinRequests(props) {
 
     return (
         <View style={{ padding: 10 }}>
-            <TouchableOpacity onPress={() => setRequestsModalVisible(true)} style={styles.PlayerRequest}>
+            <TouchableOpacity onPress={() => badge === 0 ? alert("There are no requests") : setRequestsModalVisible(true)} style={styles.PlayerRequest}>
                 <Text style={styles.btnText}>Players requests</Text>
                 <MailIcon name="mail" size={24} color="black" />
             </TouchableOpacity>
             {modal_JoinRequests}
+            {badge === 0 ? null :
+                <Badge
+                    containerStyle={{ position: 'absolute', top: 0, left: 0 }}
+                    value={badge} //Need to count length of messages from DB
+                    status="error" />
+            }
         </View>
     )
 }
