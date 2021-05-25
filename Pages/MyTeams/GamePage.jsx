@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
 })
 
 export default function GamePage(props) {
+  //index = GameKey || keyTeam = keyTeam
   const { index, keyTeam } = props.route.params;
   const [registered, setRegistered] = useState(false)
   const { state: { myTeams } } = useContext(TeamContext);
@@ -54,16 +55,19 @@ const [showEditGame_Modal, setShowEditGame_Modal] = useState(false)
   const oneDay = 60 * 60 * 24 * 1000 //This give us 24 hours parmeter
 
   useEffect(() => {
+    console.log(playersPerGame)
     let isRegistered = playersPerGame.find(p => p.Email == user.Email);
-    if (isRegistered !== null)
+    console.log(isRegistered)
+    if (isRegistered !== undefined)
       setRegistered(true)
+      
   }, [playersPerGame])
 
   const JoinGame = () => {
     let addPlayer2Game = {
-      GameSerialNum: gamesList[key].GameSerialNum,
+      GameSerialNum: gamesList[index].GameSerialNum,
       EmailPlayer: user.Email,
-      TeamSerialNum: myTeams[key].TeamSerialNum,
+      TeamSerialNum: myTeams[keyTeam].TeamSerialNum,
     }
     RegisterGame(addPlayer2Game)
   }
