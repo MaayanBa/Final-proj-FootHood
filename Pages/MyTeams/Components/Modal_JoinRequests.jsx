@@ -71,16 +71,14 @@ export default function Modal_JoinRequests(props) {
     useEffect(() => {
         GetJoinRequests(props.game, players)
         setBadge(joinRequests.length)
-        console.log(badge)
     }, [])
 
     useEffect(() => {
         setBadge(joinRequests.length)
-        console.log(badge)
     }, [joinRequests])
 
     const DeleteRequests = async (player) => {
-        await DeleteRequest(player.Email, props.game.GameSerialNum);
+        await DeleteRequest(player.Email, props.game.GameSerialNum,props.game.TeamSerialNum);
         await GetJoinRequests(props.game, players);
     }
     const ApproveRequests = async (player) => {

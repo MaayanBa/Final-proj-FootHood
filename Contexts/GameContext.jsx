@@ -95,10 +95,11 @@ const GetPlayers4Game = dispatch => async (gameSerialNum, players) => {
         console.log("err")
     }
 }
-const DeleteRequest = dispatch => async (EmailPlayer, GameSerialNum) => {
+const DeleteRequest = dispatch => async (EmailPlayer, GameSerialNum,TeamSerialNum) => {
     try {
         await GameApi.post('/DeleteRequest', { EmailPlayer, GameSerialNum });
-        GetGamesList(game.TeamSerialNum);
+        console.log(TeamSerialNum)
+        GetGamesList(TeamSerialNum);
     } catch (error) {
         console.log("err DeleteRequest")
         console.log(error.message)

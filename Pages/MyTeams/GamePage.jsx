@@ -69,14 +69,14 @@ export default function GamePage(props) {
     GetPlayers4Game(gamesList[index].GameSerialNum, players)
   }, [])
 
-  const JoinGame = () => {
+  const JoinGame = async() => {
     let addPlayer2Game = {
       GameSerialNum: gamesList[index].GameSerialNum,
       EmailPlayer: user.Email,
       TeamSerialNum: myTeams[keyTeam].TeamSerialNum,
     }
-    RegisterGame(addPlayer2Game)
-    GetPlayers4Game(gamesList[index].GameSerialNum, players)
+    await RegisterGame(addPlayer2Game)
+    await GetPlayers4Game(gamesList[index].GameSerialNum, players)
   }
   const LeaveGame = () => {
     console.log("Leave")
