@@ -13,6 +13,7 @@ import GameTeamsCard from './Components/GameTeamsCard';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import { Context as GameContext } from '../../Contexts/GameContext';
+import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 import Modal_EditGame from './Components/Modal_EditGame';
 
 
@@ -46,8 +47,9 @@ export default function GamePage(props) {
   const [registered, setRegistered] = useState(false)
   const { state: { myTeams } } = useContext(TeamContext);
   const { state: { token } } = useContext(AuthContext)
+  const { state: { players } } = useContext(PlayerContext)
   const [user, setUser] = useState(token)
-  const { state: { gamesList, playersPerGame, registeredTo }, RegisterGame } = useContext(GameContext);
+  const { state: { gamesList, playersPerGame, registeredTo }, RegisterGame,GetPlayers4Game } = useContext(GameContext);
 const [showEditGame_Modal, setShowEditGame_Modal] = useState(false)
 
   //const gameDate = new Date("2021-05-29T20:00:00Z"); //Need to enter here game date
@@ -55,13 +57,19 @@ const [showEditGame_Modal, setShowEditGame_Modal] = useState(false)
   const oneDay = 60 * 60 * 24 * 1000 //This give us 24 hours parmeter
 
   useEffect(() => {
-    console.log(playersPerGame)
+    //console.log(playersPerGame)
     let isRegistered = playersPerGame.find(p => p.Email == user.Email);
     console.log(isRegistered)
     if (isRegistered !== undefined)
-      setRegistered(true)
+      setRegistered(true);
+      else  
+      setRegistered(false);
       
   }, [playersPerGame])
+
+  useEffect(() => {
+    GetPlayers4Game(gamesList[index].GameSerialNum,players)
+  }, [])
 
   const JoinGame = () => {
     let addPlayer2Game = {
