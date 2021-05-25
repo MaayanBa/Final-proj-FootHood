@@ -69,7 +69,7 @@ export default function DateAndTime(props) {
                         setShowChoosenDateGame(true);
                     }
                     else {
-                        alert("You must choose the time of the game in feature")
+                        alert("You must choose the future game time")
                         setShowChoosenDateGame(false)
                     }
                 }
@@ -100,7 +100,7 @@ export default function DateAndTime(props) {
                         setShowLastRegistration(true);
                     }
                     else {
-                        alert("You must choose the time of last registration before the game")
+                        alert("You must choose the last registration time before the game time")
                         setShowLastRegistration(false)
                     }
                 }

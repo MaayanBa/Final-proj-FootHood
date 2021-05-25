@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import {
     StyleSheet, TouchableOpacity, View, Text, Image, TextInput,
-    Modal, Dimensions, Pressable
+    Modal, Dimensions, Pressable,ImageBackground
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import AppCss from '../../../CSS/AppCss';
@@ -13,19 +13,36 @@ import GooglePlacesInput from './GooglePlacesInput';
 const appCss = AppCss;
 
 const styles = StyleSheet.create({
+    // modal_View: {
+    //     margin: 20,
+    //     backgroundColor: "white",
+    //     borderRadius: 20,
+    //     padding: 35,
+    //     alignItems: "center",
+    //     shadowColor: "#000",
+    //     shadowOffset: { width: 0, height: 2 },
+    //     shadowOpacity: 0.25,
+    //     shadowRadius: 4,
+    //     elevation: 5,
+    //     height: '90%',
+    //     width: '90%',
+
+    // },
     modal_View: {
         margin: 20,
-        backgroundColor: "white",
-        borderRadius: 20,
-        padding: 35,
-        alignItems: "center",
-        shadowColor: "#000",
+        // backgroundColor: "#808080",
+        //backgroundColor: imgBackGround,
+        //borderRadius:0,
+        padding: 5,
+        //paddingTop: 5,
+        shadowColor: "#D9D9D9",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 5,
+        elevation: 20,
         height: '90%',
         width: '90%',
+        borderRadius: 30
 
     },
     modal_Txt: {
@@ -37,21 +54,22 @@ const styles = StyleSheet.create({
     map_Container: {
         flex: 1,
         marginTop: 20,
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
+        alignItems:'center'
     },
     mapView_container: {
         flex: 1,
         zIndex: 0,
-        width: Dimensions.get('window').width - 70,
+        width: Dimensions.get('window').width - 60,
         height: '70%'
     },
     map_BtnClose: {
         backgroundColor: "#2196F3",
-        marginTop: 20,
+        marginTop: 40,
         borderRadius: 20,
         padding: 10,
-        elevation: 2,
-
+        alignSelf: "center",
+        marginBottom:20
     },
     // addressText: {
     //     color: "black",
@@ -115,6 +133,7 @@ export default function Modal_LocationMap(props) {
             transparent={true} visible={props.modalVisible} onRequestClose={() => props.setModalVisible()}>
 
             <View style={styles.modal_View}>
+            <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50}} source={require('../../../assets/WallPaperWhite2.png')}>
                 <Text style={styles.modal_Txt}>Choose Location:</Text>
 
                 <GooglePlacesInput notifyChange={(loc) => getCoordsFromName(loc)} />
@@ -137,6 +156,7 @@ export default function Modal_LocationMap(props) {
                 <Pressable style={styles.map_BtnClose} onPress={() => props.setModalVisible()}            >
                     <Text style={appCss.inputLabel}>Close Map</Text>
                 </Pressable>
+                </ImageBackground>
             </View>
         </Modal>
     )

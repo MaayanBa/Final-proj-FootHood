@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import {
     StyleSheet, TouchableOpacity, View, Text,
-    Modal as ModalJoinRequests, Pressable, Image
+    Modal as ModalJoinRequests, Pressable, Image,ImageBackground
 } from 'react-native';
 import { AntDesign as MailIcon, AntDesign as PlusIcon, Feather as RequestAction } from '@expo/vector-icons';
 import AppCss from '../../../CSS/AppCss';
@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
     },
     modal_View: {
         margin: 20,
-        backgroundColor: "white",
         borderRadius: 20,
         padding: 5,
         paddingBottom: 20,
@@ -30,7 +29,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 30,
-        height: '60%',
+        height: '80%',
     },
     PlayerRequest: {
         backgroundColor: '#D9D9D9',
@@ -119,11 +118,13 @@ export default function Modal_JoinRequests(props) {
     >
         <View style={styles.centeredView}>
             <View style={styles.modal_View}>
+            <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50}} source={require('../../../assets/WallPaperWhite2.png')}>
                 <Text style={styles.modal_Txt}>Join Requests:</Text>
                 {joinRequestsList}
                 <Pressable style={styles.modal_Closebtn} onPress={() => setRequestsModalVisible(!requestsModalVisible)} >
                     <Text style={appCss.inputLabel}>Close</Text>
                 </Pressable>
+                </ImageBackground>
             </View>
         </View>
     </ModalJoinRequests>

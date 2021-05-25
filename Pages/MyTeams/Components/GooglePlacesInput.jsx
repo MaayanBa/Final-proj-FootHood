@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width - 70,
         position:'absolute',
         zIndex:1,
-        top:80
+        top:80,
+        alignSelf:'center'
     },
 })
 

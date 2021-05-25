@@ -2,7 +2,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
     StyleSheet, TouchableOpacity, View, Text,
-    Modal as ModalSearchInApp, Pressable, TextInput, Image, ScrollView, SafeAreaView
+    Modal as ModalSearchInApp, Pressable, TextInput, Image, ScrollView, SafeAreaView,ImageBackground
 } from 'react-native';
 import { Entypo as PlusIcon } from '@expo/vector-icons';
 import { ListItem, Avatar } from 'react-native-elements';
@@ -20,16 +20,13 @@ const styles = StyleSheet.create({
     },
     modal_View: {
         margin: 20,
-        backgroundColor: "#F4EFE8",
         borderRadius: 20,
         padding: 5,
         paddingBottom: 20,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 4 },
+        shadowColor: "#D9D9D9",
+        shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-        height: 600
+        height: 600,
     },
     modal_Txt: {
         marginBottom: 15,
@@ -138,24 +135,26 @@ export default function Modal_SearchInApp(props) {
                 <ScrollView>
                     <View style={styles.centeredView}>
                         <View style={styles.modal_View}>
-                            <Text style={styles.modal_Txt}>Enter Player Details:</Text>
-                            <Text style={styles.labels}>Full Name:</Text>
-                            <TextInput style={styles.input} onChangeText={setFullName} value={fullName} />
-                            <Pressable style={styles.modal_Closebtn} onPress={() => SearchPlayers()} >
-                                <Text style={appCss.inputLabel}>Search</Text>
-                            </Pressable>
-                            {
-                                searchedPlayers.length == 0 ? null :
-                                    <View style={styles.playerList_View}>
-                                        <Text style={styles.teamPlayers_Text}>Search Results:</Text>
-                                        <ScrollView style={styles.playerList_scrollView}>
-                                            {searchedPlayerList}
-                                        </ScrollView>
-                                        <Pressable style={styles.modal_Closebtn} onPress={() => Close()} >
-                                            <Text style={appCss.inputLabel}>Close</Text>
-                                        </Pressable>
-                                    </View >
-                            }
+                            <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../../assets/WallPaperWhite2.png')}>
+                                <Text style={styles.modal_Txt}>Enter Player Details:</Text>
+                                <Text style={styles.labels}>Full Name:</Text>
+                                <TextInput style={styles.input} onChangeText={setFullName} value={fullName} />
+                                <Pressable style={styles.modal_Closebtn} onPress={() => SearchPlayers()} >
+                                    <Text style={appCss.inputLabel}>Search</Text>
+                                </Pressable>
+                                {
+                                    searchedPlayers.length == 0 ? null :
+                                        <View style={styles.playerList_View}>
+                                            <Text style={styles.teamPlayers_Text}>Search Results:</Text>
+                                            <ScrollView style={styles.playerList_scrollView}>
+                                                {searchedPlayerList}
+                                            </ScrollView>
+                                            <Pressable style={styles.modal_Closebtn} onPress={() => Close()} >
+                                                <Text style={appCss.inputLabel}>Close</Text>
+                                            </Pressable>
+                                        </View >
+                                }
+                            </ImageBackground>
                         </View>
                     </View>
                 </ScrollView>
