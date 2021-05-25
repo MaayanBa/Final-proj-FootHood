@@ -80,10 +80,6 @@ const GameRegisterd = dispatch => async (email, teamSerialNum) => {
 
 const GetPlayers4Game = dispatch => async (gameSerialNum, players) => {
     try {
-        console.log("GameSerialNum")
-        console.log(gameSerialNum);
-        console.log("Player length")
-        console.log(players.length);
         const response = await GameApi.post('/GetPlayers4Game', { gameSerialNum });
         let emailsPlayers = response.data;
         let allPlayers4Game = [];

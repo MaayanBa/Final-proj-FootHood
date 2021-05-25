@@ -49,8 +49,8 @@ export default function GamePage(props) {
   const { state: { token } } = useContext(AuthContext)
   const { state: { players } } = useContext(PlayerContext)
   const [user, setUser] = useState(token)
-  const { state: { gamesList, playersPerGame, registeredTo }, RegisterGame,GetPlayers4Game } = useContext(GameContext);
-const [showEditGame_Modal, setShowEditGame_Modal] = useState(false)
+  const { state: { gamesList, playersPerGame, registeredTo }, RegisterGame, GetPlayers4Game } = useContext(GameContext);
+  const [showEditGame_Modal, setShowEditGame_Modal] = useState(false)
 
   //const gameDate = new Date("2021-05-29T20:00:00Z"); //Need to enter here game date
   const gameDate = new Date(); //Need to enter here game date
@@ -59,16 +59,14 @@ const [showEditGame_Modal, setShowEditGame_Modal] = useState(false)
   useEffect(() => {
     //console.log(playersPerGame)
     let isRegistered = playersPerGame.find(p => p.Email == user.Email);
-    console.log(isRegistered)
     if (isRegistered !== undefined)
       setRegistered(true);
-      else  
+    else
       setRegistered(false);
-      
   }, [playersPerGame])
 
   useEffect(() => {
-    GetPlayers4Game(gamesList[index].GameSerialNum,players)
+    GetPlayers4Game(gamesList[index].GameSerialNum, players)
   }, [])
 
   const JoinGame = () => {
@@ -78,13 +76,13 @@ const [showEditGame_Modal, setShowEditGame_Modal] = useState(false)
       TeamSerialNum: myTeams[keyTeam].TeamSerialNum,
     }
     RegisterGame(addPlayer2Game)
+    GetPlayers4Game(gamesList[index].GameSerialNum, players)
   }
   const LeaveGame = () => {
     console.log("Leave")
   }
   const showDate = (date) => {
-    return `${date.getDate()}/${date.getMonth() +
-      1}/${date.getFullYear()}`;//Builds up togther the date and time
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;//Builds up togther the date and time
   };
 
   return (
@@ -97,7 +95,7 @@ const [showEditGame_Modal, setShowEditGame_Modal] = useState(false)
                 <TouchableOpacity onPress={() => setShowEditGame_Modal(!showEditGame_Modal)}>
                   <Pencil name="pencil" size={24} color="black" />
                 </TouchableOpacity>
-                {showEditGame_Modal?<Modal_EditGame indexGame={index} keyTeam={keyTeam} showEditGame_Modal={showEditGame_Modal} setShowEditGame_Modal={()=>setShowEditGame_Modal()} />:null}
+                {showEditGame_Modal ? <Modal_EditGame indexGame={index} keyTeam={keyTeam} showEditGame_Modal={showEditGame_Modal} setShowEditGame_Modal={() => setShowEditGame_Modal()} /> : null}
               </View>
 
             }
