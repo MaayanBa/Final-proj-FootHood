@@ -98,7 +98,7 @@ export default function Modal_EditGame(props) {
         }
         console.log("Game")
         console.log(game)
-        //EditGameDetailes(game);
+        EditGameDetailes(game);
         props.setShowEditGame_Modal(false)
     }
     return (

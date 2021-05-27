@@ -17,6 +17,11 @@ const gameReducer = (state, action) => {
         }
         case 'GetPlayers4Game': {
             return { ...state, playersPerGame: action.payload }
+        } case 'GetPlayers4Game': {
+            return { ...state, playersPerGame: action.payload }
+        }
+        case 'EditGameDetailes': {
+            return { ...state, gamesList: action.payload }
         }
         default:
             return state
@@ -95,7 +100,7 @@ const GetPlayers4Game = dispatch => async (gameSerialNum, players) => {
         console.log("err")
     }
 }
-const DeleteRequest = dispatch => async (EmailPlayer, GameSerialNum,TeamSerialNum) => {
+const DeleteRequest = dispatch => async (EmailPlayer, GameSerialNum, TeamSerialNum) => {
     try {
         await GameApi.post('/DeleteRequest', { EmailPlayer, GameSerialNum });
         console.log(TeamSerialNum)
@@ -118,7 +123,9 @@ const ApproveRequest = dispatch => async (EmailPlayer, GameSerialNum) => {
 
 const EditGameDetailes = dispatch => async (game) => {
     try {
-        await GameApi.post('/EditGameDetailes', { game });
+        const res = await GameApi.post('/EditGameDetailes', { game });
+        console.log(res.data)
+        dispatch({ type: 'EditGameDetailes', payload: res.data })
     } catch (error) {
         console.log("err EditGameDetailes")
         console.log(error.message)
