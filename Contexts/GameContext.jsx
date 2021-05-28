@@ -17,8 +17,6 @@ const gameReducer = (state, action) => {
         }
         case 'GetPlayers4Game': {
             return { ...state, playersPerGame: action.payload }
-        } case 'GetPlayers4Game': {
-            return { ...state, playersPerGame: action.payload }
         }
         case 'EditGameDetailes': {
             return { ...state, gamesList: action.payload }
@@ -125,10 +123,11 @@ const EditGameDetailes = dispatch => async (game) => {
     try {
         const res = await GameApi.post('/EditGameDetailes', { game });
         console.log(res.data)
-        dispatch({ type: 'EditGameDetailes', payload: res.data })
+        if (res.data !="Somting went wrong with the gameSerialNum")
+            dispatch({ type: 'EditGameDetailes', payload: res.data })
     } catch (error) {
         console.log("err EditGameDetailes")
-        console.log(error.message)
+        console.log(error)
     }
 }
 
