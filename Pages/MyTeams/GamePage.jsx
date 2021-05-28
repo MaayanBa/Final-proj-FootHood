@@ -57,7 +57,7 @@ export default function GamePage(props) {
   const oneDay = 60 * 60 * 24 * 1000 //This give us 24 hours parmeter
 
   useEffect(() => {
-    //console.log(playersPerGame)
+    // console.log(playersPerGame)
     let isRegistered = playersPerGame.find(p => p.Email == user.Email);
     if (isRegistered !== undefined)
       setRegistered(true);

@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Text, StyleSheet, View, TouchableOpacity, Dimensions, ImageBackground } from "react-native";
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import AppCss from '../../../CSS/AppCss';
+import { Avatar } from 'react-native-elements';
+import { Context as GameContext } from '../../../Contexts/GameContext';
+import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 
 const { width: screenWidth } = Dimensions.get('window')
 
@@ -17,18 +20,32 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 10
   },
+  playerList: {
+    flexDirection: "row",
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    padding: 5,
+    margin: 5,
+  },
   player_ListTitle: {
     color: "white",
     fontWeight: "bold",
     fontSize: 22,
     alignSelf: 'center',
-    paddingTop: 30
+    paddingTop: 30,
+    paddingBottom: 20
+  },
+  playerText: {
+    color: "white",
+    fontWeight: "bold",
   },
 })
 
 export default function GameTeamsCard(props) {
   const [cards, setCards] = useState([])
-  const [activeSlide,setActiveSlide] = useState(0);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const { state: { playersPerGame }, GetPlayers4Game } = useContext(GameContext);
+  const { state: { players } } = useContext(PlayerContext);
 
   const imageCards = [
     require('../../../assets/Cards/Orange.png'),
@@ -44,6 +61,7 @@ export default function GameTeamsCard(props) {
   ];
 
   useEffect(() => {
+    GetPlayers4Game(props.game.GameSerialNum, players);
     let num = props.game.NumOfTeams;
     let arrCards = []
     for (let index = 0; index < num; index++)
@@ -52,11 +70,21 @@ export default function GameTeamsCard(props) {
   }, [])
 
   const renderItem = ({ item, index }) => {
+    // let gameCards = gamesList.map((game, index) => {
     return (
       <TouchableOpacity style={styles.group} onPress={() => console.log("")}>
-        <ImageBackground style={{ width: 350, height: 400 }} source={item} >
-          <Text style={styles.player_ListTitle}>{"item.title"}</Text>
-          <Text style={appCss.inputLabel}>{item.players}</Text>
+        <ImageBackground style={{ width: 380, height: 430 }} source={item} >
+          <Text style={styles.player_ListTitle}>{"Team " + (index + 1)}</Text>
+          {/* if user is in game&& card index=game index */}
+          {
+            playersPerGame.map((player, index) => {
+              return <View key={index} style={styles.playerList}>
+                <Text style={styles.playerText}>{player.OverallRating}</Text>
+                <Text style={styles.playerText}>{player.FirstName + ' ' + player.LastName}</Text>
+                <Avatar rounded source={{ uri: player.PlayerPicture }} />
+              </View>
+            })
+          }
         </ImageBackground>
       </TouchableOpacity>
     );
@@ -70,23 +98,23 @@ export default function GameTeamsCard(props) {
         itemWidth={screenWidth - 60}
         data={cards}
         renderItem={renderItem}
-        loop={true}
-        onSnapToItem={(index) => setActiveSlide(index) }
+        // loop={true}
+        onSnapToItem={(index) => setActiveSlide(index)}
       />
 
-     <Pagination
-      dotsLength={cards.length}
-      activeDotIndex={activeSlide}
-      dotStyle={{
-        width: 10,
-        height: 10,
-        borderRadius: 5,
-        marginHorizontal: 8,
-        backgroundColor: 'rgba(255, 255, 255, 0.92)'
-      }}
-      inactiveDotOpacity={0.4}
-      inactiveDotScale={0.6}
-    />
+      <Pagination
+        dotsLength={cards.length}
+        activeDotIndex={activeSlide}
+        dotStyle={{
+          width: 10,
+          height: 10,
+          borderRadius: 5,
+          marginHorizontal: 8,
+          backgroundColor: 'rgba(255, 255, 255, 0.92)'
+        }}
+        inactiveDotOpacity={0.4}
+        inactiveDotScale={0.6}
+      />
     </View>
   );
 }
