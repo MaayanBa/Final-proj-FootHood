@@ -5,6 +5,7 @@ import AppCss from '../../../CSS/AppCss';
 import { Avatar } from 'react-native-elements';
 import { Context as GameContext } from '../../../Contexts/GameContext';
 import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
+import { MaterialCommunityIcons as Podium } from '@expo/vector-icons';
 
 
 export default function GameTeamsCard(props) {
@@ -42,10 +43,13 @@ export default function GameTeamsCard(props) {
       <TouchableOpacity style={styles.group} onPress={() => console.log("")}>
         <ImageBackground style={{ width: 380, height: 430 }} source={item} >
           <Text style={styles.player_ListTitle}>{"Team " + (index + 1)}</Text>
+          <View style={styles.podiumIcon}>
+            <Podium name="podium-gold" size={24} color="white" />
+          </View>
           {/* if user is in game&& card index=game index */}
           {
             playersPerGroups.map((p, i) => {
-              if (p.GroupNumber == index+1) {
+              if (p.GroupNumber == index + 1) {
                 let player = playersPerGame.find(x => x.Email == p.EmailPlayer);
 
                 return <View key={i} style={styles.playerList}>
@@ -100,8 +104,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 10,
-    margin: 10
+    padding: 20,
+    margin: 10,
   },
   playerList: {
     flexDirection: "row",
@@ -117,6 +121,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingTop: 30,
     paddingBottom: 20
+  },
+  podiumIcon: {
+    flexDirection: 'row-reverse',
+    alignSelf: 'flex-start',
+    marginRight: 60,
   },
   playerText: {
     color: "white",

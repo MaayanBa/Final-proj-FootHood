@@ -1,6 +1,6 @@
 import React, { useRef,useEffect } from 'react';
 import { Text, StyleSheet, View, Animated, TouchableOpacity} from "react-native";
-import { Entypo as Pencil } from '@expo/vector-icons';
+import Modal_PlayerBringsEquipment from './Modal_PlayerBringsEquipment';
 
 const styles = StyleSheet.create({
   playersAndEquipment_Window: {
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export default function Players_Window(props) {
+export default function EquipmentWindow(props) {
   const scrollX = useRef(new Animated.Value(0)).current;
   const players =
     [
@@ -40,8 +40,9 @@ export default function Players_Window(props) {
       },
     ]
     useEffect(() => {
-      console.log(props.game)
+      // console.log(props.game)
     }, [])
+    
   let equipmentList = players.map((p, key) => {
     return <View key={key}>
       <Text>{p.equipment + "-" + p.playerName}</Text>
@@ -54,9 +55,7 @@ export default function Players_Window(props) {
         <Text style={styles.txtGame}>Equipment List:</Text>
       </View>
       {equipmentList}
-      <TouchableOpacity onPress={()=>console.log("Edit")} style={{ alignItems: 'flex-start' }}>
-        <Pencil name="pencil" size={24} color="black" />
-      </TouchableOpacity>
+      <Modal_PlayerBringsEquipment game={props.game}/>
     </View>
   );
 }
