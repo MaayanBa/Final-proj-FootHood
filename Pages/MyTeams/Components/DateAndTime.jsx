@@ -21,25 +21,31 @@ const styles = StyleSheet.create({
 export default function DateAndTime(props) {
     const [mode, setMode] = useState(null);
     const [showshowDateTimePicker_Game, setShowDateTimePicker_Game] = useState(false);
-    const [dateGame, setDateGame] = useState(new Date());
-    const [gameTime, setGameTime] = useState(new Date());
+    const [dateGame, setDateGame] = useState(props.gameDate != undefined ? new Date(props.gameDate) : new Date());
+    const [gameTime, setGameTime] = useState(props.gameTime != undefined ? props.gameTime : new Date());
     const [showChoosenDateGame, setShowChoosenDateGame] = useState(false);
     const [gameOrRegistration, setGameOrRegistration] = useState(false)
     const [showDateTimePicker_Regi, setShowDateTimePicker_Regi] = useState(false);
-    const [dateRegistration, setDateRegistration] = useState(new Date());
-    const [registrationTime, setRegistretionTime] = useState(new Date());
+    const [dateRegistration, setDateRegistration] = useState(props.lastRegistrationDate != undefined ? new Date(props.lastRegistrationDate) : new Date());
+    const [registrationTime, setRegistretionTime] = useState(props.lastRegistrationTime != undefined ? props.lastRegistrationTime : new Date());
     const [showLastRegistration, setShowLastRegistration] = useState(false);
+    //to use
 
     LogBox.ignoreLogs([
         'TypeError: _reactNative.NativeModules.RNDatePickerAndroid.dismiss is not a function',
     ]);
+    LogBox.ignoreLogs([
+        'Cannot update a component from inside the function body of a different component',
+    ]);
+    useEffect(() => {
+        console.log(registrationTime);
+    }, [])
 
     useEffect(() => {
         props.liftState(dateGame, gameTime, dateRegistration, registrationTime);
     }, [registrationTime])
 
     const onChange = (event, selectedValue) => {
-        console.log(selectedValue)
         let now = new Date();
         if (gameOrRegistration === 'game') {
             setShowDateTimePicker_Game(false);
@@ -79,7 +85,7 @@ export default function DateAndTime(props) {
             setShowDateTimePicker_Regi(false);
 
             if (mode == 'date') {
-                const lastDate2Reg = selectedValue || selectedValue.setDate(selectedValue.getDate()-1);
+                const lastDate2Reg = selectedValue || selectedValue.setDate(selectedValue.getDate() - 1);
 
                 if (lastDate2Reg.setHours(0, 0, 0, 0) <= dateGame.setHours(0, 0, 0, 0)) {
                     setDateRegistration(lastDate2Reg);
@@ -141,9 +147,14 @@ export default function DateAndTime(props) {
                 />
             )}
 
+            {props.edit ?
+                <Text style={[appCss.inputLabel, { color: 'orange', fontSize: 15, marginTop: 5, alignSelf: 'center' }]}>
+                    {props.gameTime.toLocaleString()}    {new Date(props.gameDate).toLocaleDateString()}
+                </Text> : null}
             {showChoosenDateGame &&
                 <Text style={[appCss.inputLabel, { color: 'orange', fontSize: 15, marginTop: 5, alignSelf: 'center' }]}>
-                    {dateAndTime(gameTime)}
+                    {dateAndTime(gameTime)} {props.setEdit(false)}
+
                 </Text>}
 
             {/* Last date for registration */}
@@ -166,6 +177,10 @@ export default function DateAndTime(props) {
                 />
             )}
 
+            {props.edit ?
+                <Text style={[appCss.inputLabel, { color: 'orange', fontSize: 15, marginTop: 5, alignSelf: 'center' }]}>
+                    {new Date(props.lastRegistrationDate).toLocaleDateString()}    {props.lastRegistrationTime.toLocaleString()}
+                </Text> : null}
             {showLastRegistration &&
                 <Text style={[appCss.inputLabel, { color: 'orange', fontSize: 15, marginTop: 5, alignSelf: 'center' }]}>
                     {dateAndTime(registrationTime)}

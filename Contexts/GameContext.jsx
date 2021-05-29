@@ -21,6 +21,10 @@ const gameReducer = (state, action) => {
         case 'EditGameDetailes': {
             return { ...state, gamesList: action.payload }
         }
+        case 'GetPlayersDivied2Groups': {
+            return { ...state, playersPerGroups: action.payload }
+        }
+        
         default:
             return state
     }
@@ -130,7 +134,17 @@ const EditGameDetailes = dispatch => async (game) => {
         console.log(error)
     }
 }
-
+const GetPlayersDivied2Groups = dispatch => async (GameSerialNum,registeredPlayers) => {
+    try {
+        const res = await GameApi.post('/GetPlayersDivied2Groups', { GameSerialNum });
+        //console.log(res.data)
+        if (res.data !="No one has registered yet for this game")
+            dispatch({ type: 'GetPlayersDivied2Groups', payload: res.data })
+    } catch (error) {
+        console.log("err GetPlayersDivied2Groups")
+        console.log(error)
+    }
+}
 
 export const { Context, Provider } = CreateDataContext(
     //Reducer
@@ -143,12 +157,15 @@ export const { Context, Provider } = CreateDataContext(
         GetPlayers4Game,
         DeleteRequest,
         ApproveRequest,
-        EditGameDetailes
+        EditGameDetailes,
+        GetPlayersDivied2Groups
     },
     {
         gamesList: [],
         registeredTo: [],
         //emailsOfPlayersPerGame: [],
         playersPerGame: [],
+        playersPerGroups: [],
+
     }
 );

@@ -95,7 +95,7 @@ export default function GamePage(props) {
                 <TouchableOpacity onPress={() => setShowEditGame_Modal(!showEditGame_Modal)}>
                   <Pencil name="pencil" size={24} color="black" />
                 </TouchableOpacity>
-                {showEditGame_Modal ? <Modal_EditGame indexGame={index} keyTeam={keyTeam} showEditGame_Modal={showEditGame_Modal} setShowEditGame_Modal={() => setShowEditGame_Modal()} /> : null}
+                {showEditGame_Modal ? <Modal_EditGame game={gamesList[index]} indexGame={index} keyTeam={keyTeam} showEditGame_Modal={showEditGame_Modal} setShowEditGame_Modal={() => setShowEditGame_Modal()} /> : null}
               </View>
 
             }

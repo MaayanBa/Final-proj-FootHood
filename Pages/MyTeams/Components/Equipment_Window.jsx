@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef,useEffect } from 'react';
 import { Text, StyleSheet, View, Animated, TouchableOpacity} from "react-native";
 import { Entypo as Pencil } from '@expo/vector-icons';
 
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
 })
 
-export default function Players_Window() {
+export default function Players_Window(props) {
   const scrollX = useRef(new Animated.Value(0)).current;
   const players =
     [
@@ -39,6 +39,9 @@ export default function Players_Window() {
         equipment: "First Aid Kit"
       },
     ]
+    useEffect(() => {
+      console.log(props.game)
+    }, [])
   let equipmentList = players.map((p, key) => {
     return <View key={key}>
       <Text>{p.equipment + "-" + p.playerName}</Text>
