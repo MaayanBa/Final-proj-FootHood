@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
 
 export default function EquipmentWindow(props) {
   const scrollX = useRef(new Animated.Value(0)).current;
+
   const players =
     [
       {
@@ -55,7 +56,7 @@ export default function EquipmentWindow(props) {
         <Text style={styles.txtGame}>Equipment List:</Text>
       </View>
       {equipmentList}
-      <Modal_PlayerBringsEquipment game={props.game}/>
+      <Modal_PlayerBringsEquipment game={props.game} manager={props.manager}/>
     </View>
   );
 }

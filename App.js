@@ -8,6 +8,7 @@ import { Provider as TeamProvider } from './Contexts/TeamContext';
 import { Provider as PlayerProvider } from './Contexts/PlayerContext';
 import { Provider as GameProvider } from './Contexts/GameContext';
 import { Provider as CitiesProvider } from './Contexts/CitiesContext';
+import { Provider as EquipmentProvider } from './Contexts/EquipmentContext';
 
 //import {setNavigator} from './Navigations/navigationRef'
 //inside the stack nav ===>   ref={(navigator) => setNavigator(navigator)}
@@ -18,6 +19,7 @@ const cssApp = AppCss;
 export default function App() {
 
   return (
+  <EquipmentProvider>
     <CitiesProvider>
       <PlayerProvider>
         <GameProvider>
@@ -31,7 +33,9 @@ export default function App() {
           </TeamProvider>
         </GameProvider>
       </PlayerProvider>
-    </CitiesProvider>
+    </CitiesProvider>    
+  </EquipmentProvider>
+
 
   );
 }

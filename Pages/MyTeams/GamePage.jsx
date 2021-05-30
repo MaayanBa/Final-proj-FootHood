@@ -109,7 +109,7 @@ export default function GamePage(props) {
           {(new Date() <= gameDate - oneDay) ? <Players_Window game={gamesList[index]} /> : <GameTeamsCard game={gamesList[index]} />}
 
           {/* Equipment Window */}
-          <Equipment_Window game={gamesList[index]} />
+          <Equipment_Window game={gamesList[index]} manager={myTeams[keyTeam].EmailManager}/>
 
           <View style={{ paddingTop: 20 }}>
             {(new Date() <= gameDate - oneDay) ? <Text style={appCss.inputLabel}>Last Registration Date: {showDate(new Date(gamesList[index].LastRegistrationDate))}</Text> : null}
