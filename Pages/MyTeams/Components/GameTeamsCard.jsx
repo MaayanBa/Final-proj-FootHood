@@ -11,7 +11,7 @@ import { MaterialCommunityIcons as Podium } from '@expo/vector-icons';
 export default function GameTeamsCard(props) {
   const [cards, setCards] = useState([])
   const [activeSlide, setActiveSlide] = useState(0);
-  const { state: { playersPerGame, playersPerGroups }, GetPlayers4Game, GetPlayersDivied2Groups } = useContext(GameContext);
+  const { state: { gamesList,playersPerGame, playersPerGroups } } = useContext(GameContext);
   const { state: { players } } = useContext(PlayerContext);
 
   const imageCards = [
@@ -28,41 +28,48 @@ export default function GameTeamsCard(props) {
   ];
 
   useEffect(() => {
-    //GetPlayers4Game(props.game.GameSerialNum, players);
-    GetPlayersDivied2Groups(props.game.GameSerialNum);
-    let num = props.game.NumOfTeams;
+    pushCards();
+  }, [])
+  useEffect(() => {
+    pushCards();
+  }, [gamesList])
+
+  const pushCards =()=>{
+    let num = gamesList[props.index].NumOfTeams;
     let arrCards = []
     for (let index = 0; index < num; index++)
       arrCards.push(imageCards[index])
     setCards(arrCards)
-  }, [])
+  }
 
   const renderItem = ({ item, index }) => {
-    // let gameCards = gamesList.map((game, index) => {
-    return (
-      <TouchableOpacity style={styles.group} onPress={() => console.log("")}>
-        <ImageBackground style={{ width: 380, height: 430 }} source={item} >
-          <Text style={styles.player_ListTitle}>{"Team " + (index + 1)}</Text>
-          <View style={styles.podiumIcon}>
-            <Podium name="podium-gold" size={24} color="white" />
-          </View>
-          {/* if user is in game&& card index=game index */}
-          {
-            playersPerGroups.map((p, i) => {
-              if (p.GroupNumber == index + 1) {
-                let player = playersPerGame.find(x => x.Email == p.EmailPlayer);
-
-                return <View key={i} style={styles.playerList}>
-                  <Text style={styles.playerText}>{player.OverallRating}</Text>
-                  <Text style={styles.playerText}>{player.FirstName + ' ' + player.LastName}</Text>
-                  <Avatar rounded source={{ uri: player.PlayerPicture }} />
-                </View>
-              }
-            })
-          }
-        </ImageBackground>
-      </TouchableOpacity>
-    );
+    if (cards.length == gamesList[props.index].NumOfTeams) {
+      return (
+        <TouchableOpacity style={styles.group} onPress={() => console.log("")}>
+          <ImageBackground style={{ width: 380, height: 430 }} source={item} >
+            <Text style={styles.player_ListTitle}>{"Team " + (index + 1)}</Text>
+            <View style={styles.podiumIcon}>
+              <Podium name="podium-gold" size={24} color="white" />
+            </View>
+            {/* if user is in game&& card index=game index */}
+            {
+              playersPerGroups.map((p, i) => {
+                if (p.GroupNumber == index + 1) {
+                  let player = playersPerGame.find(x => x.Email == p.EmailPlayer);
+                  if (player !== undefined) {
+                    return <View key={i} style={styles.playerList}>
+                      <Text style={styles.playerText}>{player.OverallRating}</Text>
+                      <Text style={styles.playerText}>{player.FirstName + ' ' + player.LastName}</Text>
+                      <Avatar rounded source={{ uri: player.PlayerPicture }} />
+                    </View>
+                  }
+                }
+              })
+            }
+          </ImageBackground>
+        </TouchableOpacity>
+      );
+    }
   };
 
   return (
@@ -74,7 +81,7 @@ export default function GameTeamsCard(props) {
         data={cards}
         renderItem={renderItem}
         //loop={true}
-        onSnapToItem={(index) => setActiveSlide(index)}
+        onSnapToItem={(index) => { setActiveSlide(index) }}
       />
 
       <Pagination

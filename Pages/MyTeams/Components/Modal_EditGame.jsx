@@ -101,8 +101,6 @@ export default function Modal_EditGame(props) {
         //     TeamSerialNum: myTeams[props.keyTeam].TeamSerialNum,
         //     GameSerialNum: gamesList[props.indexGame].GameSerialNum
         // }
-        console.log("Game")
-        console.log(game)
         EditGameDetailes(game);
         props.setShowEditGame_Modal(false)
     }

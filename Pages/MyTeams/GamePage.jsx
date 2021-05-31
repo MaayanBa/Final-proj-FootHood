@@ -16,6 +16,8 @@ import { Context as GameContext } from '../../Contexts/GameContext';
 import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 import Modal_EditGame from './Components/Modal_EditGame';
 
+import CarouselGroupGame from './Components/CarouselGroupGame';
+
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
@@ -49,7 +51,7 @@ export default function GamePage(props) {
   const { state: { token } } = useContext(AuthContext)
   const { state: { players } } = useContext(PlayerContext)
   const [user, setUser] = useState(token)
-  const { state: { gamesList, playersPerGame, registeredTo }, RegisterGame, GetPlayers4Game } = useContext(GameContext);
+  const { state: { gamesList, playersPerGame, registeredTo }, RegisterGame, GetPlayers4Game, GetPlayersDivied2Groups } = useContext(GameContext);
   const [showEditGame_Modal, setShowEditGame_Modal] = useState(false)
 
   //const gameDate = new Date("2021-05-29T20:00:00Z"); //Need to enter here game date
@@ -67,6 +69,7 @@ export default function GamePage(props) {
 
   useEffect(() => {
     GetPlayers4Game(gamesList[index].GameSerialNum, players)
+    GetPlayersDivied2Groups(gamesList[index].GameSerialNum);
   }, [])
 
   const JoinGame = async() => {
@@ -106,7 +109,8 @@ export default function GamePage(props) {
           {myTeams[keyTeam].EmailManager !== user.Email ? null : <Modal_JoinRequests game={gamesList[index]} />}
 
           {/* Players Window Or Teams Cards*/}
-          {(new Date() <= gameDate - oneDay) ? <Players_Window game={gamesList[index]} /> : <GameTeamsCard game={gamesList[index]} />}
+          {(new Date() <= gameDate - oneDay) ? <Players_Window game={gamesList[index]} /> : <GameTeamsCard game={gamesList[index]} index={index}/>}
+          {/* {(new Date() <= gameDate - oneDay) ? <Players_Window game={gamesList[index]} /> : <CarouselGroupGame game={gamesList[index]} />} */}
 
           {/* Equipment Window */}
           <Equipment_Window game={gamesList[index]} />

@@ -37,9 +37,7 @@ export default function DateAndTime(props) {
     LogBox.ignoreLogs([
         'Cannot update a component from inside the function body of a different component',
     ]);
-    useEffect(() => {
-        console.log(registrationTime);
-    }, [])
+
 
     useEffect(() => {
         props.liftState(dateGame, gameTime, dateRegistration, registrationTime);

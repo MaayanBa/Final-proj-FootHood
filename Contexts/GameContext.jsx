@@ -24,7 +24,9 @@ const gameReducer = (state, action) => {
         case 'GetPlayersDivied2Groups': {
             return { ...state, playersPerGroups: action.payload }
         }
-        
+        case 'Check': {
+            return { ...state, check: action.payload }
+        }
         default:
             return state
     }
@@ -126,7 +128,6 @@ const ApproveRequest = dispatch => async (EmailPlayer, GameSerialNum) => {
 const EditGameDetailes = dispatch => async (game) => {
     try {
         const res = await GameApi.post('/EditGameDetailes', { game });
-        console.log(res.data)
         if (res.data !="Somting went wrong with the gameSerialNum")
             dispatch({ type: 'EditGameDetailes', payload: res.data })
     } catch (error) {
@@ -146,6 +147,14 @@ const GetPlayersDivied2Groups = dispatch => async (GameSerialNum,registeredPlaye
     }
 }
 
+const Check = dispatch => async () => {
+    try {
+            dispatch({ type: 'Check', payload: "check" })
+    } catch (error) {
+        console.log("err GetPlayersDivied2Groups")
+        console.log(error)
+    }
+}
 export const { Context, Provider } = CreateDataContext(
     //Reducer
     gameReducer,
@@ -158,7 +167,8 @@ export const { Context, Provider } = CreateDataContext(
         DeleteRequest,
         ApproveRequest,
         EditGameDetailes,
-        GetPlayersDivied2Groups
+        GetPlayersDivied2Groups,
+        Check
     },
     {
         gamesList: [],
@@ -166,6 +176,6 @@ export const { Context, Provider } = CreateDataContext(
         //emailsOfPlayersPerGame: [],
         playersPerGame: [],
         playersPerGroups: [],
-
+        check:[],
     }
 );
