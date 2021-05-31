@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, Dimensions, ImageBackground, FlatList, ScrollView } from "react-native";
+import { Text, StyleSheet, View, TouchableOpacity, Dimensions, ImageBackground } from "react-native";
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import AppCss from '../../../CSS/AppCss';
 import { Avatar } from 'react-native-elements';
@@ -9,10 +9,10 @@ import { MaterialCommunityIcons as Podium } from '@expo/vector-icons';
 
 
 export default function GameTeamsCard(props) {
-//   const [cards, setCards] = useState([])
-  const [activeSlide, setActiveSlide] = useState(0);
-  const { state: { gamesList,playersPerGame, playersPerGroups } } = useContext(GameContext);
-  const { state: { players } } = useContext(PlayerContext);
+  const [cards, setCards] = useState([])
+  const { state: { gamesList, playersPerGame, playersPerGroups } } = useContext(GameContext);
+  const [activeSlide, setActiveSlide] = useState(cards.length-1);
+
 
   const imageCards = [
     require('../../../assets/Cards/Orange.png'),
@@ -34,7 +34,7 @@ export default function GameTeamsCard(props) {
     pushCards();
   }, [gamesList])
 
-  const pushCards =()=>{
+  const pushCards = () => {
     let num = gamesList[props.index].NumOfTeams;
     let arrCards = []
     for (let index = 0; index < num; index++)
@@ -74,18 +74,18 @@ export default function GameTeamsCard(props) {
 
   return (
     <View style={styles.carousel_Container}>
-
-      {/* <Carousel layout={'default'}
+      <Carousel layout={'default'}
         sliderWidth={screenWidth}
         sliderHeight={screenWidth}
         itemWidth={screenWidth - 60}
         data={cards}
         renderItem={renderItem}
         //loop={true}
+        firstItem={activeSlide}  
         onSnapToItem={(index) => { setActiveSlide(index) }}
       />
 
-      {/* <Pagination
+      <Pagination
         dotsLength={cards.length}
         activeDotIndex={activeSlide}
         dotStyle={{
@@ -95,22 +95,10 @@ export default function GameTeamsCard(props) {
           marginHorizontal: 8,
           backgroundColor: 'rgba(255, 255, 255, 0.92)'
         }}
+        firstItem={parseInt(cards.length-1)}  
         inactiveDotOpacity={0.4}
         inactiveDotScale={0.6}
-      /> */}
-
-      <ScrollView>
-        <FlatList
-          data={[1,2]}
-          horizontal
-          renderItem={_ => (
-            <View style={{ height: 200, width: 200, backgroundColor: "gold", margin: 50, alignItems: 'center' }}>
-              {console.log(15)}
-            </View>
-
-          )}
-        />
-      </ScrollView>
+      />
     </View>
   );
 }
