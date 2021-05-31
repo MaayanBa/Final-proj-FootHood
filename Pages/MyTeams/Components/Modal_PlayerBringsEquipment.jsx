@@ -9,6 +9,7 @@ import { RadioButton } from 'react-native-paper';
 import { Entypo as Pencil } from '@expo/vector-icons';
 import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 import { Context as GameContext } from '../../../Contexts/GameContext';
+import { Context as AuthContext } from '../../../Contexts/AuthContext';
 // import { Context as EquipmentContext } from '../../../Contexts/EquipmentContext';
 
 
@@ -55,11 +56,14 @@ export default function Modal_PlayerBringsEquipment(props) {
     const { state: { playersPerGame }, GetPlayers4Game } = useContext(GameContext);
     const { state: { players } } = useContext(PlayerContext);
     const [choosenPlayer, setChoosenPlayer] = useState();
+    const { state: { token } } = useContext(AuthContext)
+    const [user, setUser] = useState(token)
     // const { state: { equipments }, GetAllEquipments } = useContext(EquipmentContext);
 
 
     useEffect(() => {
         GetPlayers4Game(props.game.GameSerialNum, players)
+        console.log(props.manager)
     }, [])
 
 
@@ -106,9 +110,10 @@ export default function Modal_PlayerBringsEquipment(props) {
 
     return (
         <View style={{ padding: 10 }}>
+            {props.manager !== user.Email ? null:
             <TouchableOpacity onPress={() => setPlayerBringsModalVisible(true)} style={{ alignItems: 'flex-start' }}>
                 <Pencil name="pencil" size={24} color="black" />
-            </TouchableOpacity>
+            </TouchableOpacity>}
             {modal_PlayerBringsEquipment}
         </View>
     )
