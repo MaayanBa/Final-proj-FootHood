@@ -1,75 +1,17 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Text, StyleSheet, Image, View, TouchableOpacity, ScrollView } from 'react-native';
-import Navigation from '../../Pages/MyTeams/Components/Navigation'
+// import Navigation from '../../Pages/MyTeams/Components/Navigation'
 import AppCss from '../../CSS/AppCss';
 import { Context as GameContext } from '../../Contexts/GameContext';
-import DateAndTime from './Components/DateAndTime';
+// import DateAndTime from './Components/DateAndTime';
 //import LaunchNavigator from 'react-native-launch-navigator';
 import * as Linking from 'expo-linking';
 
 
-
-const appCss = AppCss;
-const styles = StyleSheet.create({
-    card: {
-        backgroundColor: '#D9D9D9',
-        width: '90%',
-        borderRadius: 30,
-        marginTop: 40, 
-        alignSelf:'center'
-    },
-    gameTitle_View: {
-        justifyContent: 'flex-start',
-        paddingTop: 20
-    },
-    gameInformation_View: {
-        padding: 20,
-        flexDirection: "row",
-        justifyContent: "space-between",
-    },
-    txtStyle: {
-        paddingBottom: 20,
-        fontWeight: "bold",
-    },
-    header_txt: {
-        alignSelf: 'center',
-        fontSize: 30,
-        fontWeight: "bold",
-    },
-    waze_Icon: {
-        width: 50,
-        height: 30,
-        tintColor: 'black',
-        alignSelf: 'flex-end'
-
-    },
-    gameInformation_View_R: {
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-    },
-    gameInformation_View_R_Down: {
-        flexDirection: 'column',
-        alignItems: 'center'
-    },
-
-})
-
-
 export default function GameList(props) {
-    // const { state: { gamesList }, GetGamesList } = useContext(GameContext);
-    // const {team} = props.route.params;
     const { state: { gamesList }} = useContext(GameContext);
     const { key } = props.route.params;
     const keyTeam  = key;
-    //const { state: { gamesList } } = useContext(GameContext);
-
-    // const GetGameDate=(date)=>{
-    //     console.log(date.getFullYear())
-    //     var gameDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    //     return gameDate;
-    // }
-
-
 
     const convertDate = (date) => {
         return (`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
@@ -118,16 +60,55 @@ export default function GameList(props) {
     });
     return (
         <View style={[appCss.container, {  paddingTop: 50 }]}>
-            {/* {console.log(gamesList)} */}
             <Text style={[appCss.title, { top: 5, paddingBottom:20, }]}>Game List</Text>
             <ScrollView>
                 {gameCards}
             </ScrollView>
-
         </View>
     );
 }
 
+const appCss = AppCss;
+const styles = StyleSheet.create({
+    card: {
+        backgroundColor: '#D9D9D9',
+        width: '90%',
+        borderRadius: 30,
+        marginTop: 40, 
+        alignSelf:'center'
+    },
+    gameTitle_View: {
+        justifyContent: 'flex-start',
+        paddingTop: 20
+    },
+    gameInformation_View: {
+        padding: 20,
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    txtStyle: {
+        paddingBottom: 20,
+        fontWeight: "bold",
+    },
+    header_txt: {
+        alignSelf: 'center',
+        fontSize: 30,
+        fontWeight: "bold",
+    },
+    waze_Icon: {
+        width: 50,
+        height: 30,
+        tintColor: 'black',
+        alignSelf: 'flex-end'
 
+    },
+    gameInformation_View_R: {
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+    },
+    gameInformation_View_R_Down: {
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
 
-
+})

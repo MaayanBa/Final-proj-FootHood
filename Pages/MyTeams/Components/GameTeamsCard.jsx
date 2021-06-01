@@ -11,9 +11,7 @@ import { MaterialCommunityIcons as Podium } from '@expo/vector-icons';
 export default function GameTeamsCard(props) {
   const [cards, setCards] = useState([])
   const { state: { gamesList, playersPerGame, playersPerGroups } } = useContext(GameContext);
-  const [activeSlide, setActiveSlide] = useState(cards.length-1);
-
-
+  const [activeSlide, setActiveSlide] = useState(cards.length - 1);
   const imageCards = [
     require('../../../assets/Cards/Orange.png'),
     require('../../../assets/Cards/Blue.png'),
@@ -32,7 +30,7 @@ export default function GameTeamsCard(props) {
   }, [])
   useEffect(() => {
     pushCards();
-  }, [gamesList])
+  }, [gamesList, playersPerGroups])
 
   const pushCards = () => {
     let num = gamesList[props.index].NumOfTeams;
@@ -74,31 +72,33 @@ export default function GameTeamsCard(props) {
 
   return (
     <View style={styles.carousel_Container}>
-      <Carousel layout={'default'}
-        sliderWidth={screenWidth}
-        sliderHeight={screenWidth}
-        itemWidth={screenWidth - 60}
-        data={cards}
-        renderItem={renderItem}
-        //loop={true}
-        firstItem={activeSlide}  
-        onSnapToItem={(index) => { setActiveSlide(index) }}
-      />
-
-      <Pagination
-        dotsLength={cards.length}
-        activeDotIndex={activeSlide}
-        dotStyle={{
-          width: 10,
-          height: 10,
-          borderRadius: 5,
-          marginHorizontal: 8,
-          backgroundColor: 'rgba(255, 255, 255, 0.92)'
-        }}
-        firstItem={parseInt(cards.length-1)}  
-        inactiveDotOpacity={0.4}
-        inactiveDotScale={0.6}
-      />
+    
+          <Carousel layout={'default'}
+            sliderWidth={screenWidth}
+            sliderHeight={screenWidth}
+            itemWidth={screenWidth - 60}
+            data={cards}
+            renderItem={renderItem}
+            //loop={true}
+            firstItem={activeSlide}
+            onSnapToItem={(index) => { setActiveSlide(index) }}
+          />
+  
+          <Pagination
+            dotsLength={cards.length}
+            activeDotIndex={activeSlide}
+            dotStyle={{
+              width: 10,
+              height: 10,
+              borderRadius: 5,
+              marginHorizontal: 8,
+              backgroundColor: 'rgba(255, 255, 255, 0.92)'
+            }}
+            firstItem={parseInt(cards.length - 1)}
+            inactiveDotOpacity={0.4}
+            inactiveDotScale={0.6}
+          />
+  
     </View>
   );
 }

@@ -128,18 +128,18 @@ const ApproveRequest = dispatch => async (EmailPlayer, GameSerialNum) => {
 const EditGameDetailes = dispatch => async (game) => {
     try {
         const res = await GameApi.post('/EditGameDetailes', { game });
-        if (res.data !="Somting went wrong with the gameSerialNum")
+        if (res.data != "Somting went wrong with the gameSerialNum")
             dispatch({ type: 'EditGameDetailes', payload: res.data })
     } catch (error) {
         console.log("err EditGameDetailes")
         console.log(error)
     }
 }
-const GetPlayersDivied2Groups = dispatch => async (GameSerialNum,registeredPlayers) => {
+const GetPlayersDivied2Groups = dispatch => async (GameSerialNum, registeredPlayers) => {
     try {
         const res = await GameApi.post('/GetPlayersDivied2Groups', { GameSerialNum });
         //console.log(res.data)
-        if (res.data !="No one has registered yet for this game")
+        if (res.data != "No one has registered yet for this game")
             dispatch({ type: 'GetPlayersDivied2Groups', payload: res.data })
     } catch (error) {
         console.log("err GetPlayersDivied2Groups")
@@ -147,14 +147,21 @@ const GetPlayersDivied2Groups = dispatch => async (GameSerialNum,registeredPlaye
     }
 }
 
-const Check = dispatch => async () => {
+const LeaveGame = dispatch => async (EmailPlayer, GameSerialNum) => {
     try {
-            dispatch({ type: 'Check', payload: "check" })
+       console.log(EmailPlayer)
+       console.log(GameSerialNum)
+        const res = await GameApi.post('/LeaveGame', { EmailPlayer, GameSerialNum });
+        
+         if (res.data != "You Have Left the Game Succesfully")
+            alert("You Have Left the Game Succesfully");
     } catch (error) {
-        console.log("err GetPlayersDivied2Groups")
+        console.log("err LeaveGame")
         console.log(error)
     }
 }
+
+
 export const { Context, Provider } = CreateDataContext(
     //Reducer
     gameReducer,
@@ -168,7 +175,7 @@ export const { Context, Provider } = CreateDataContext(
         ApproveRequest,
         EditGameDetailes,
         GetPlayersDivied2Groups,
-        Check
+        LeaveGame,
     },
     {
         gamesList: [],
@@ -176,6 +183,5 @@ export const { Context, Provider } = CreateDataContext(
         //emailsOfPlayersPerGame: [],
         playersPerGame: [],
         playersPerGroups: [],
-        check:[],
     }
 );

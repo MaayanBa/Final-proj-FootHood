@@ -63,7 +63,6 @@ export default function Modal_PlayerBringsEquipment(props) {
 
     useEffect(() => {
         GetPlayers4Game(props.game.GameSerialNum, players)
-        console.log(props.manager)
     }, [])
 
 

@@ -16,32 +16,6 @@ import { Context as GameContext } from '../../Contexts/GameContext';
 import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 import Modal_EditGame from './Components/Modal_EditGame';
 
-import CarouselGroupGame from './Components/CarouselGroupGame';
-
-
-const appCss = AppCss;
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: StatusBar.currentHeight,
-    width: '100%',
-    paddingTop: 80,
-    alignItems: 'center',
-    justifyContent: 'space-evenly'
-  },
-  labels: {
-    flexDirection: "row",
-    justifyContent: 'flex-end',
-  },
-  imgBall: {
-    width: 50,
-    height: 30,
-  },
-  btnTouch_Extra: {
-    flexDirection: 'row',
-    width: '60%',
-  },
-})
 
 export default function GamePage(props) {
   //index = GameKey || keyTeam = keyTeam
@@ -51,7 +25,7 @@ export default function GamePage(props) {
   const { state: { token } } = useContext(AuthContext)
   const { state: { players } } = useContext(PlayerContext)
   const [user, setUser] = useState(token)
-  const { state: { gamesList, playersPerGame, registeredTo }, RegisterGame, GetPlayers4Game, GetPlayersDivied2Groups } = useContext(GameContext);
+  const { state: { gamesList, playersPerGame, registeredTo }, RegisterGame, GetPlayers4Game, GetPlayersDivied2Groups,LeaveGame } = useContext(GameContext);
   const [showEditGame_Modal, setShowEditGame_Modal] = useState(false)
 
   //const gameDate = new Date("2021-05-29T20:00:00Z"); //Need to enter here game date
@@ -80,9 +54,14 @@ export default function GamePage(props) {
     }
     await RegisterGame(addPlayer2Game)
     await GetPlayers4Game(gamesList[index].GameSerialNum, players)
+    await GetPlayersDivied2Groups(gamesList[index].GameSerialNum);
+
   }
-  const LeaveGame = () => {
-    console.log("Leave")
+  const LeaveGameFunction =async () => {
+    await LeaveGame(user.Email,gamesList[index].GameSerialNum)
+    await GetPlayers4Game(gamesList[index].GameSerialNum, players)
+    await GetPlayersDivied2Groups(gamesList[index].GameSerialNum);
+
   }
   const showDate = (date) => {
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;//Builds up togther the date and time
@@ -110,7 +89,6 @@ export default function GamePage(props) {
 
           {/* Players Window Or Teams Cards*/}
           {(new Date() <= gameDate - oneDay) ? <Players_Window game={gamesList[index]} /> : <GameTeamsCard game={gamesList[index]} index={index}/>}
-          {/* {(new Date() <= gameDate - oneDay) ? <Players_Window game={gamesList[index]} /> : <CarouselGroupGame game={gamesList[index]} />} */}
 
           {/* Equipment Window */}
           <Equipment_Window game={gamesList[index]} manager={myTeams[keyTeam].EmailManager}/>
@@ -118,7 +96,7 @@ export default function GamePage(props) {
           <View style={{ paddingTop: 20 }}>
             {(new Date() <= gameDate - oneDay) ? <Text style={appCss.inputLabel}>Last Registration Date: {showDate(new Date(gamesList[index].LastRegistrationDate))}</Text> : null}
 
-            <TouchableOpacity activeOpacity={0.8} onPress={() => registered ? LeaveGame() : JoinGame()} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => registered ? LeaveGameFunction() : JoinGame()} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
               <Image source={require('../../assets/ball.png')} resizeMode="contain" style={styles.imgBall} />
               <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>{registered ? "Leave" : "Join"}</Text>
               <Image source={require('../../assets/ball.png')} resizeMode="contain" style={styles.imgBall} />
@@ -129,3 +107,29 @@ export default function GamePage(props) {
     </SafeAreaView>
   );
 }
+
+
+const appCss = AppCss;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: StatusBar.currentHeight,
+    width: '100%',
+    paddingTop: 80,
+    alignItems: 'center',
+    justifyContent: 'space-evenly'
+  },
+  labels: {
+    flexDirection: "row",
+    justifyContent: 'flex-end',
+  },
+  imgBall: {
+    width: 50,
+    height: 30,
+  },
+  btnTouch_Extra: {
+    flexDirection: 'row',
+    width: '60%',
+  },
+})
+
