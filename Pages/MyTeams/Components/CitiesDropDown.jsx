@@ -40,7 +40,7 @@ export default function CitiesDropDown(props) {
                 value={city}
                 searchable={true}
                 defaultValue={props.city}
-                containerStyle={{ height: 30, width: 350 }}
+                containerStyle={{ height: 43, width: 315 }}
                 placeholder="Choose City Below"
                 style={{ backgroundColor: '#fafafa' }}
                 itemStyle={{
@@ -50,7 +50,6 @@ export default function CitiesDropDown(props) {
                 dropDownStyle={{ backgroundColor: '#dfdfdf' }}
                 onChangeItem={item => setCity(item.label)}
             />
-            {console.log(city)}
         </View>
     )
 }

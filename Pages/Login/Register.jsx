@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { StyleSheet, TextInput, View, TouchableOpacity, ScrollView, SafeAreaView, StatusBar, Platform, Image, Text } from 'react-native';
 //import { Text } from 'react-native-elements';
 import { RadioButton } from 'react-native-paper';
@@ -14,75 +14,11 @@ import { Avatar } from 'react-native-paper';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import AppCss from '../../CSS/AppCss'
 
+import { Context as CitiesContext } from '../../Contexts/CitiesContext';
+import CitiesDropDown from '../MyTeams/Components/CitiesDropDown';
+import { getLocation, geocodeLocationByName } from '../../Services/location-service';
 
-const appCss = AppCss;
-const styles = StyleSheet.create({
-  title_View: {
-    alignItems: 'center',
-    padding: 30,
-    marginBottom: 10
-  },
-  gender: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    padding: 10
-  },
-  signupButton: {
-    alignItems: 'center',
-    width: '10',
-    padding: 50
-  },
-  textboxes: {
-    alignItems: 'center',
-  },
-  role: {
-    padding: 20,
-    alignItems: 'center'
-  },
-  starStamina: {
-    padding: 20,
-    justifyContent: 'flex-start',
-  },
-  radioButtonStyle: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-  },
-  calanderStyle: {
-    margin: 5,
-    height: 60,
-    width: 60,
-  },
-  prefferedLeg: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    padding: 8,
-  },
 
-})
-
-const loginValidationSchema = yup.object().shape({
-  firstName: yup
-    .string()
-    .required('First Name is Required'),
-  lastName: yup
-    .string()
-    .required('Last Name is Required'),
-  email: yup
-    .string()
-    .email("Please enter valid email")
-    .required('Email Address is Required'),
-  password: yup
-    .string()
-    .min(1, ({ min }) => `Password must be at least ${min} characters`)
-    .required('Password is required'),
-  phoneNumber: yup
-    .string()
-    .min(10, ({ min }) => `Phone number must be at least ${min} characters`)
-    .required('Phone number is required'),
-  passwordConfirmation: yup
-    .string()
-    .oneOf([yup.ref('password'), null], 'Passwords must match'),
-})
 
 export default function Register(props) {
   const { state, register } = useContext(AuthContext);
@@ -97,7 +33,45 @@ export default function Register(props) {
   const [prefferedRole, setPrefferedRole] = useState('midfield');
   const [strongLeg, setStrongLeg] = React.useState('right');
 
+  const { state: { cities }, GetListCities } = useContext(CitiesContext);
+  const [cityLive, setCityLive] = useState(null);
+  const [region, setRegion] = useState({
+    latitude: 0,
+    longitude: 0,
+    latitudeDelta: 0,
+    longitudeDelta: 0,
+  });
 
+  useEffect(() => {
+    GetListCities();
+    console.log(cityLive)
+  }, []);
+
+  useEffect(() => {
+    getCoordsFromName()
+  }, [cityLive]);
+
+  const GetCityFromUser = (c) => {
+    setCityLive(c)
+  }
+
+  const getCoordsFromName = () => {
+    //props.location(loc)
+    console.log(cityLive)
+    cityLive !== null ?
+        geocodeLocationByName(cityLive).then(
+            (data) => {
+                console.log("Data====>" + data);
+                console.log(data);
+                setRegion({
+                    latitude: data.lat,
+                    longitude: data.lng,
+                    latitudeDelta: 0.008,
+                    longitudeDelta: 0.008
+                });
+            }
+        ) : null
+}
 
   const onChange = (event, selectedDate) => {
     //setDateBigger(false)
@@ -151,8 +125,8 @@ export default function Register(props) {
         </TouchableOpacity>
       );
     }
-
   }
+
 
   const printDate = () => {
     let today = new Date()
@@ -174,13 +148,16 @@ export default function Register(props) {
       Phone: values.phoneNumber,
       Passcode: values.password,
       Gender: gender,
-      PlayerCity: "tzur moshe", //need to complte ----> values.city
+      PlayerCity: cityLive, //need to complte ----> values.city
       DateOfBirth: date,
       PlayerPicture: 'pic',
       Height: 180,  //need to complte-----> values.height,
       StrongLeg: strongLeg,
       Stamina: staminaStars,
-      PreferredRole: prefferedRole
+      PreferredRole: prefferedRole,
+      LatitudeHomeCity: region.latitude,
+      LongitudeHomeCity: region.longitude
+
     }
     register(player, () => {
       props.navigation.navigate('TabNav')
@@ -325,7 +302,9 @@ export default function Register(props) {
 
                 <View style={styles.formGroup}>
                   <Text style={appCss.inputLabel}>City:</Text>
-                  <View style={appCss.sectionStyle}>
+                  <CitiesDropDown ChoosenCity={(city) => GetCityFromUser(city)} city={cityLive} />
+
+                  {/* <View style={appCss.sectionStyle}>
                     <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="city"
@@ -333,7 +312,8 @@ export default function Register(props) {
                       onChangeText={handleChange('city')}
                       value={values.city}
                     />
-                  </View>
+
+                  </View> */}
                 </View>
                 <View style={[styles.formGroup, { flexDirection: "row-reverse", justifyContent: 'space-between' }]}>
                   <Text style={appCss.inputLabel}>Date Of Birth: {printDate()}</Text>
@@ -445,3 +425,72 @@ export default function Register(props) {
     </SafeAreaView>
   );
 }
+
+const loginValidationSchema = yup.object().shape({
+  firstName: yup
+    .string()
+    .required('First Name is Required'),
+  lastName: yup
+    .string()
+    .required('Last Name is Required'),
+  email: yup
+    .string()
+    .email("Please enter valid email")
+    .required('Email Address is Required'),
+  password: yup
+    .string()
+    .min(1, ({ min }) => `Password must be at least ${min} characters`)
+    .required('Password is required'),
+  phoneNumber: yup
+    .string()
+    .min(10, ({ min }) => `Phone number must be at least ${min} characters`)
+    .required('Phone number is required'),
+  passwordConfirmation: yup
+    .string()
+    .oneOf([yup.ref('password'), null], 'Passwords must match'),
+})
+
+const appCss = AppCss;
+const styles = StyleSheet.create({
+  title_View: {
+    alignItems: 'center',
+    padding: 30,
+    marginBottom: 10
+  },
+  gender: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    padding: 10
+  },
+  signupButton: {
+    alignItems: 'center',
+    width: '10',
+    padding: 50
+  },
+  textboxes: {
+    alignItems: 'center',
+  },
+  role: {
+    padding: 20,
+    alignItems: 'center'
+  },
+  starStamina: {
+    padding: 20,
+    justifyContent: 'flex-start',
+  },
+  radioButtonStyle: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+  calanderStyle: {
+    margin: 5,
+    height: 60,
+    width: 60,
+  },
+  prefferedLeg: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    padding: 8,
+  },
+
+})

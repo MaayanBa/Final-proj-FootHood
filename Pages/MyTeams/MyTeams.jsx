@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
 });
 
 export default function MyTeams(props) {
-    const { state: { myTeams },GetTeamDetails } = useContext(TeamContext);
+    const { state: { myTeams }, GetTeamDetails } = useContext(TeamContext);
     const { state: { players } } = useContext(PlayerContext);
     const { state: { token } } = useContext(AuthContext)
     const [teamCards, setTeamCards] = useState(null);
@@ -96,41 +96,43 @@ export default function MyTeams(props) {
     }
 
     const calcTeamCards = async () => {
-        const teamCards = await Promise.all(myTeams.map(async (team, key) => {
-            //console.log(players)
-            let manager = players.find(x => x.Email === team.EmailManager);
-            // fetchMessages(team)
-            const badge = await calcBadge(team);
-            return <TouchableOpacity style={styles.teamCard} key={key}
-                onPress={() => props.navigation.navigate('TeamPage', { key })}>
-                <View style={styles.contextSide}>
-                    <View style={styles.headerCard_View}>
-                        <Text style={[appCss.inputLabel, { fontSize: 25, color: 'black' }]}>{team.TeamName}</Text>
-                    </View>
-                    <View style={styles.descripitionCard}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text> {manager.FirstName + " " + manager.LastName} </Text>
-                            <Text style={{ fontWeight: 'bold' }}> Manager: </Text>
+        if (myTeams.length > 0) {
+            const teamCards = await Promise.all(myTeams.map(async (team, key) => {
+                //console.log(players)
+                let manager = players.find(x => x.Email === team.EmailManager);
+                // fetchMessages(team)
+                const badge = await calcBadge(team);
+                return <TouchableOpacity style={styles.teamCard} key={key}
+                    onPress={() => props.navigation.navigate('TeamPage', { key })}>
+                    <View style={styles.contextSide}>
+                        <View style={styles.headerCard_View}>
+                            <Text style={[appCss.inputLabel, { fontSize: 25, color: 'black' }]}>{team.TeamName}</Text>
                         </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text> {team.PlayersList.length} </Text>
-                            <Text style={{ fontWeight: 'bold' }}> Players: </Text>
-                        </View>
+                        <View style={styles.descripitionCard}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text> {manager.FirstName + " " + manager.LastName} </Text>
+                                <Text style={{ fontWeight: 'bold' }}> Manager: </Text>
+                            </View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text> {team.PlayersList.length} </Text>
+                                <Text style={{ fontWeight: 'bold' }}> Players: </Text>
+                            </View>
 
+                        </View>
                     </View>
-                </View>
-                <View style={styles.side_img}>
-                    <Avatar.Image size={64} source={{ uri: team.TeamPicture }} />
-                </View>
-                {badge === 0 ? null :
-                    <Badge
-                        containerStyle={{ position: 'absolute', top: 0, left: 0 }}
-                        value={badge} //Need to count length of messages from DB
-                        status="error" />
-                }
-            </TouchableOpacity>
-        }))
-        setTeamCards(teamCards);
+                    <View style={styles.side_img}>
+                        <Avatar.Image size={64} source={{ uri: team.TeamPicture }} />
+                    </View>
+                    {badge === 0 ? null :
+                        <Badge
+                            containerStyle={{ position: 'absolute', top: 0, left: 0 }}
+                            value={badge} //Need to count length of messages from DB
+                            status="error" />
+                    }
+                </TouchableOpacity>
+            }))
+            setTeamCards(teamCards);
+        }
     }
 
     useEffect(() => {

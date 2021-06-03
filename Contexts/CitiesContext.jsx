@@ -12,11 +12,11 @@ const citiesReducer = (state, action) => {
 
 const GetListCities = dispatch => async () => {
     try {
-        const response = await fetch('https://parseapi.back4app.com/classes/Israelcities_City?limit=100000&order=name&keys=name,country,location,cityId,objectId',
+        const response = await fetch('https://parseapi.back4app.com/classes/Israelcities_City?limit=10000&order=name&keys=name,country,location',
             {
                 headers: {
-                    'X-Parse-Application-Id': 'WzDS6Uhu9MpqArl85l8GM5fmmHFF1QsFJamMFWIY', // This is your app's application id
-                    'X-Parse-REST-API-Key': 'F1wFpQk18GaPawGBth2rZ7yyQ9YAmk0LN7MqeDjY', // This is your app's REST API key
+                    'X-Parse-Application-Id': '2crO70TFYqZq3sHRNNlspnAWvXV5UN866dxE50eO', // This is your app's application id
+                    'X-Parse-REST-API-Key': 'G3QLN54fOIbaLAAZA56jJMiS2YmHYYzNwuWe9xWe            ', // This is your app's REST API key
                 }
             }
         );

@@ -17,7 +17,8 @@ const GetPlayers = dispatch => async () => {
         const response = await PlayerApi.get('/GetPlayers')
         dispatch({type: 'GetPlayers', payload: response.data})
     } catch (err) {
-        console.log(err.data)
+        console.log("err GetPlayers - Player Context")
+        console.log(err)
     }
 
 }

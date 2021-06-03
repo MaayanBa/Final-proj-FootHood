@@ -28,8 +28,8 @@ export default function GamePage(props) {
   const { state: { gamesList, playersPerGame, registeredTo }, RegisterGame, GetPlayers4Game, GetPlayersDivied2Groups,LeaveGame } = useContext(GameContext);
   const [showEditGame_Modal, setShowEditGame_Modal] = useState(false)
 
-  //const gameDate = new Date("2021-05-29T20:00:00Z"); //Need to enter here game date
-  const gameDate = new Date(); //Need to enter here game date
+  const gameDate = new Date("2021-06-29T20:00:00Z"); //Need to enter here game date
+  //const gameDate = new Date(); //Need to enter here game date
   const oneDay = 60 * 60 * 24 * 1000 //This give us 24 hours parmeter
 
   useEffect(() => {

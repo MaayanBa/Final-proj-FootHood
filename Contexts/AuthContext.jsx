@@ -57,6 +57,7 @@ const register = dispatch => {
             await AsyncStorage.setItem('token', jsonValue)
             //console.log("response . data === " + response.data);
             dispatch({ type: 'register', payload: response.data });
+            alert("You have sign up succesfuly ! \nEnjoy")
         } catch (err) {
             //console.log(err.response.data)
             dispatch({ type: 'add_error', payload: 'Somthing went wrong with registration' })
@@ -71,9 +72,10 @@ const signIn = dispatch => {
     return async (player, checked) => {
         //api request
         try {
+            console.log("Player"+ player)
             const data = {
-                email: player.email,
-                passcode: player.passcode
+                Email: player.email,
+                Passcode: player.passcode
             }
             const options = {
                 //method: "Post",
@@ -100,7 +102,8 @@ const signIn = dispatch => {
                 // console.log("this is the obj from DB  => ");
                 // console.log(res);
             }
-            //console.log(playerDetails.data)
+            console.log("ndskanslda")
+            console.log(playerDetails.data)
             if (playerDetails.status < 400 || playerDetails.status >= 500) {
                 if (checked) {
                     let jsonValue = JSON.stringify(playerDetails.data);
@@ -108,15 +111,6 @@ const signIn = dispatch => {
                 }
                 dispatch({ type: 'signin', payload: playerDetails.data });
             }
-            else {
-                dispatch({
-                    type: 'add_error',
-                    payload: 'Somthing went wrong with the SignIn'
-                })
-            }
-
-
-
 
         } catch (err) {
             //if fail error massege
@@ -133,6 +127,7 @@ const signIn = dispatch => {
     }
 }
 const signOut = dispatch => async () => {
+    console.log(JSON.stringify( AsyncStorage.getItem('token')))
     await AsyncStorage.removeItem('token');
     console.log("The local storge has cleaned")
     dispatch({ type: 'signOut' })
