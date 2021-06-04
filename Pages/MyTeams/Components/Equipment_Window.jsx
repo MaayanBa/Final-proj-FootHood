@@ -1,9 +1,43 @@
 import React, { useRef, useEffect, useContext } from 'react';
-import { Text, StyleSheet, View, Animated, TouchableOpacity,ScrollView } from "react-native";
+import { Text, StyleSheet, View, Animated, TouchableOpacity, ScrollView } from "react-native";
 import Modal_PlayerBringsEquipment from './Modal_PlayerBringsEquipment';
 import { Context as EquipmentContext } from '../../../Contexts/EquipmentContext';
 import { Context as GameContext } from '../../../Contexts/GameContext';
 import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
+import EquipmentList from './EquipmentList';
+
+
+export default function EquipmentWindow(props) {
+  const index = props.index;
+  const keyTeam = props.keyTeam;
+  // const scrollX = useRef(new Animated.Value(0)).current;
+  const { state: { gameEquipments }, GetItemsAssignForGame } = useContext(EquipmentContext);
+  const { state: { players } } = useContext(PlayerContext)
+  const { state: { gamesList, playersPerGame }, GetPlayers4Game } = useContext(GameContext);
+
+
+  useEffect(() => {
+    GetItemsAssignForGame(gamesList[index].GameSerialNum)
+    GetPlayers4Game(gamesList[index].GameSerialNum, players)
+  }, [])
+
+  // useEffect(() => {
+  //   GetItemsAssignForGame(gamesList[index].GameSerialNum)
+  // }, [gameEquipments])
+
+
+  return (
+    <View style={styles.playersAndEquipment_Window}>
+      <View style={styles.playersAndEquipment_Title}>
+        <Text style={styles.txtGame}>Equipment List:</Text>
+      </View>
+      <ScrollView>
+        <EquipmentList />
+      </ScrollView>
+      <Modal_PlayerBringsEquipment index={props.index} keyTeam={props.keyTeam} />
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   playersAndEquipment_Window: {
@@ -24,46 +58,3 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 })
-
-export default function EquipmentWindow(props) {
-  // const scrollX = useRef(new Animated.Value(0)).current;
-  const { state: { gameEquipments }, GetItemsAssignForGame } = useContext(EquipmentContext);
-  const { state: { players } } = useContext(PlayerContext)
-  const { state: { playersPerGame }, GetPlayers4Game } = useContext(GameContext);
-
-
-  useEffect(() => {
-    GetItemsAssignForGame(props.game.GameSerialNum)
-    GetPlayers4Game(props.game.GameSerialNum, players)
-  }, [])
-
-  useEffect(() => {
-    GetItemsAssignForGame(props.game.GameSerialNum)
-  }, [gameEquipments])
-
-  let equipmentList = () => gameEquipments.map((g, key) => {
-    // let player = playersPerGame.find(x => x.Email == g.EmailPlayer);
-    // console.log(player.FirstName)
-    // if (player !== undefined) {
-    return <View key={key}>
-      <Text>
-        {/* {g.BringItems + "-" + player.FirstName + " " + player.LastName} */}
-        {g.BringItems}
-      </Text>
-    </View>
-    // }
-  })
-
-  return (
-    <View style={styles.playersAndEquipment_Window}>
-      <View style={styles.playersAndEquipment_Title}>
-        <Text style={styles.txtGame}>Equipment List:</Text>
-      </View>
-      <ScrollView>
-        {gameEquipments == "No items were assigned yet" ? <Text>There are no equipments for this game</Text> : equipmentList()}
-      </ScrollView>
-      <Modal_PlayerBringsEquipment game={props.game} manager={props.manager} equipments={props.equipments} />
-    </View>
-  );
-}
-

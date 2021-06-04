@@ -28,7 +28,7 @@ export default function GamePage(props) {
   const [user, setUser] = useState(token)
   const { state: { gamesList, playersPerGame, registeredTo }, RegisterGame, GetPlayers4Game, GetPlayersDivied2Groups,LeaveGame } = useContext(GameContext);
   const [showEditGame_Modal, setShowEditGame_Modal] = useState(false)
-  const { state: { equipments }, GetAllEquipments } = useContext(EquipmentContext);
+  const { state: { gameEquipments }, GetAllEquipments,GetItemsAssignForGame } = useContext(EquipmentContext);
   //const gameDate = new Date("2021-05-29T20:00:00Z"); //Need to enter here game date
   const gameDate = new Date(); //Need to enter here game date
   const oneDay = 60 * 60 * 24 * 1000 //This give us 24 hours parmeter
@@ -47,6 +47,10 @@ export default function GamePage(props) {
     GetPlayersDivied2Groups(gamesList[index].GameSerialNum);
     GetAllEquipments(gamesList[index].GameSerialNum)
   }, [])
+  useEffect(() => {
+    GetItemsAssignForGame(gamesList[index].GameSerialNum)
+  }, [gameEquipments])
+
 
   const JoinGame = async() => {
     let addPlayer2Game = {
@@ -93,7 +97,7 @@ export default function GamePage(props) {
           {(new Date() <= gameDate - oneDay) ? <Players_Window game={gamesList[index]} /> : <GameTeamsCard game={gamesList[index]} index={index}/>}
 
           {/* Equipment Window */}
-          <Equipment_Window game={gamesList[index]} manager={myTeams[keyTeam].EmailManager} equipments={equipments}/>
+          <Equipment_Window keyTeam={keyTeam} index={index}/>
 
           <View style={{ paddingTop: 20 }}>
             {(new Date() <= gameDate - oneDay) ? <Text style={appCss.inputLabel}>Last Registration Date: {showDate(new Date(gamesList[index].LastRegistrationDate))}</Text> : null}
