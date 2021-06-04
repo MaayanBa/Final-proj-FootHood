@@ -10,7 +10,6 @@ import AppCss from '../../../CSS/AppCss';
 import { Context as TeamContext } from '../../../Contexts/TeamContext';
 // import { Context as AuthContext } from '../../../Contexts/AuthContext'
 
-
 const appCss = AppCss;
 const styles = StyleSheet.create({
     centeredView: {
@@ -33,7 +32,6 @@ const styles = StyleSheet.create({
         padding: 10,
         textAlign: "center",
     },
-
     input: {
         height: 40,
         margin: 12,

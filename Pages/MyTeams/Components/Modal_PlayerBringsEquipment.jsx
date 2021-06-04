@@ -1,8 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
-import {
-    StyleSheet, TouchableOpacity, View, Text,
-    Modal as ModalPlayerBringsEquipment, Pressable, ImageBackground, ScrollView
-} from 'react-native';
+import {StyleSheet, TouchableOpacity, View, Text, TextInput,Modal as ModalPlayerBringsEquipment,
+     Pressable, ImageBackground, ScrollView} from 'react-native';
 import AppCss from '../../../CSS/AppCss';
 import { Avatar, ListItem } from 'react-native-elements';
 import { RadioButton } from 'react-native-paper';
@@ -11,7 +9,6 @@ import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 import { Context as GameContext } from '../../../Contexts/GameContext';
 import { Context as AuthContext } from '../../../Contexts/AuthContext';
 import { Context as EquipmentContext } from '../../../Contexts/EquipmentContext';
-
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
@@ -25,12 +22,12 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 5,
         paddingBottom: 20,
-        height: '90%',
+        height: '100%',
     },
     modal_Txt: {
         marginBottom: 15,
         padding: 10,
-        marginTop:10,
+        marginTop: 10,
         textAlign: "center",
         fontWeight: "bold",
         color: "white",
@@ -45,16 +42,22 @@ const styles = StyleSheet.create({
         color: "white",
     },
     btns_View: {
+        paddingTop:20,
         marginBottom: 20,
         flexDirection: 'row',
         justifyContent: 'space-evenly',
     },
     modal_Closebtn: {
         backgroundColor: "#2196F3",
-        marginTop: 40,
         borderRadius: 20,
         padding: 10,
         alignSelf: "center",
+    },
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        width: 200
     },
 })
 
@@ -67,7 +70,7 @@ export default function Modal_PlayerBringsEquipment(props) {
     const { state: { token } } = useContext(AuthContext)
     const [user, setUser] = useState(token)
     const { state: { equipments }, AssignEquipment2Player } = useContext(EquipmentContext);
-
+    const [newEquipment, setNewEquipment] = useState()
 
     useEffect(() => {
         GetPlayers4Game(props.game.GameSerialNum, players)
@@ -80,11 +83,19 @@ export default function Modal_PlayerBringsEquipment(props) {
                 EmailPlayer: playersPerGame[choosenPlayer].Email,
                 BringItems: props.equipments[choosenEquipment].EquipmentName,
             }
-            // console.log(assignEquipment2Player)
             AssignEquipment2Player(assignEquipment2Player)
         }
         else
             alert("You must pick a player and item")
+    }
+
+    const AddNewEquipment=()=>{
+        if (newEquipment!=null) {
+            //function to add new equip
+            console.log(newEquipment)
+        }
+        else
+        alert("Please enter equipment name")
     }
     const playersInGameList = playersPerGame.map((p, i) => (
         <ListItem key={i} containerStyle={{ backgroundColor: "transparent" }}>
@@ -124,13 +135,20 @@ export default function Modal_PlayerBringsEquipment(props) {
             <View style={styles.modal_View}>
                 <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../../assets/WallPaperWhite2.png')}>
                     <Text style={styles.modal_Txt}>Choose Player:</Text>
-                    <ScrollView style={{height: 300 }}>
+                    <ScrollView style={{ height: 300 }}>
                         {playersInGameList}
                     </ScrollView>
                     <Text style={styles.modal_Txt}>Choose Equipment To Assign:</Text>
                     <ScrollView>
                         {props.equipments == "There are no Equipments for this game" ? null : equipmentsList()}
                     </ScrollView>
+                    <Text style={styles.modal_Txt}>Add A New Equipment:</Text>
+                    <View style={{flexDirection: 'row',justifyContent: 'space-evenly'}}>
+                        <Pressable style={styles.modal_Closebtn} onPress={() => AddNewEquipment()} >
+                            <Text style={appCss.inputLabel}>Add</Text>
+                        </Pressable>
+                        <TextInput style={styles.input} onChangeText={setNewEquipment} value={newEquipment} />
+                    </View>
                     <View style={styles.btns_View}>
                         <Pressable style={styles.modal_Closebtn} onPress={() => setPlayerBringsModalVisible(!playerBringsModalVisible)} >
                             <Text style={appCss.inputLabel}>Close</Text>

@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 })
 
 export default function EquipmentWindow(props) {
-  const scrollX = useRef(new Animated.Value(0)).current;
+  // const scrollX = useRef(new Animated.Value(0)).current;
   const { state: { gameEquipments }, GetItemsAssignForGame } = useContext(EquipmentContext);
   const { state: { players } } = useContext(PlayerContext)
   const { state: { playersPerGame }, GetPlayers4Game } = useContext(GameContext);
