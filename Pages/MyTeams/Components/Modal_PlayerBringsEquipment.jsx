@@ -67,7 +67,7 @@ export default function Modal_PlayerBringsEquipment(props) {
 
 
     const playersInGameList = playersPerGame.map((p, i) => (
-        <ListItem key={i} bottomDivider style={{ color: "#D9D9D9" }} >
+        <ListItem key={i} style={{ color: "#D9D9D9" }} containerStyle={{backgroundColor:"transparent"}} >
             <View>
                 <RadioButton
                     value={i}
