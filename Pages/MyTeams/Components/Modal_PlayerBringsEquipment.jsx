@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import {
     StyleSheet, TouchableOpacity, View, Text,
-    Modal as ModalPlayerBringsEquipment, Pressable, ImageBackground,ScrollView
+    Modal as ModalPlayerBringsEquipment, Pressable, ImageBackground, ScrollView
 } from 'react-native';
 import AppCss from '../../../CSS/AppCss';
 import { Avatar, ListItem } from 'react-native-elements';
@@ -32,13 +32,19 @@ const styles = StyleSheet.create({
         padding: 10,
         textAlign: "center",
         fontWeight: "bold",
+        color: "white",
+        fontSize: 16,
     },
     btnText: {
         alignSelf: 'center',
         fontWeight: "bold",
     },
+    label: {
+        fontWeight: "bold",
+        color: "white",
+    },
     btns_View: {
-        marginBottom:20,
+        marginBottom: 20,
         flexDirection: 'row',
         justifyContent: 'space-evenly',
     },
@@ -56,18 +62,31 @@ export default function Modal_PlayerBringsEquipment(props) {
     const { state: { playersPerGame }, GetPlayers4Game } = useContext(GameContext);
     const { state: { players } } = useContext(PlayerContext);
     const [choosenPlayer, setChoosenPlayer] = useState();
+    const [choosenEquipment, setChoosenEquipment] = useState();
     const { state: { token } } = useContext(AuthContext)
     const [user, setUser] = useState(token)
-    // const { state: { equipments }, GetAllEquipments } = useContext(EquipmentContext);
+    const { state: { equipments }, GetAllEquipments,AssignEquipment2Player } = useContext(EquipmentContext);
 
 
     useEffect(() => {
         GetPlayers4Game(props.game.GameSerialNum, players)
     }, [])
 
-
+    const AssignEquipment = () => {
+        if (choosenPlayer != null && choosenEquipment != null) {
+            let assignEquipment2Player = {
+                GameSerialNum: props.game.GameSerialNum,
+                EmailPlayer: playersPerGame[choosenPlayer].Email,
+                BringItems: props.equipments[choosenEquipment].EquipmentName,
+            }
+            // console.log(assignEquipment2Player)
+            AssignEquipment2Player(assignEquipment2Player)
+        }
+        else
+            alert("You must pick a player and item")
+    }
     const playersInGameList = playersPerGame.map((p, i) => (
-        <ListItem key={i} style={{ color: "#D9D9D9" }} containerStyle={{backgroundColor:"transparent"}} >
+        <ListItem key={i} containerStyle={{ backgroundColor: "transparent" }}>
             <View>
                 <RadioButton
                     value={i}
@@ -76,12 +95,25 @@ export default function Modal_PlayerBringsEquipment(props) {
                 />
             </View>
             <ListItem.Content style={{ alignItems: 'flex-end' }} >
-                <ListItem.Title>{p.FirstName + " " + p.LastName}</ListItem.Title>
+                <ListItem.Title style={styles.label}>{p.FirstName + " " + p.LastName}</ListItem.Title>
             </ListItem.Content>
             <Avatar rounded source={{ uri: p.PlayerPicture }} />
         </ListItem>
     ))
-    // const equipmentsList= 
+    const equipmentsList = props.equipments.map((e, i) => (
+        <ListItem key={i} containerStyle={{ backgroundColor: "transparent" }} >
+            <View>
+                <RadioButton
+                    value={i}
+                    status={choosenEquipment === i ? 'checked' : 'unchecked'}
+                    onPress={() => setChoosenEquipment(i)}
+                />
+            </View>
+            <ListItem.Content style={{ alignItems: 'flex-end' }} >
+                <ListItem.Title style={styles.label}>{e.EquipmentName}</ListItem.Title>
+            </ListItem.Content>
+        </ListItem>
+    ))
 
     const modal_PlayerBringsEquipment = <ModalPlayerBringsEquipment animationType="slide"
         transparent={true} visible={playerBringsModalVisible}
@@ -91,14 +123,14 @@ export default function Modal_PlayerBringsEquipment(props) {
             <View style={styles.modal_View}>
                 <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../../assets/WallPaperWhite2.png')}>
                     <Text style={styles.modal_Txt}>Choose Player:</Text>
-                        {playersInGameList}
+                    {playersInGameList}
                     <Text style={styles.modal_Txt}>Choose Equipment To Assign:</Text>
-                    {/* {equipmentsList} */}
+                    {equipmentsList}
                     <View style={styles.btns_View}>
                         <Pressable style={styles.modal_Closebtn} onPress={() => setPlayerBringsModalVisible(!playerBringsModalVisible)} >
                             <Text style={appCss.inputLabel}>Close</Text>
                         </Pressable>
-                        <Pressable style={styles.modal_Closebtn} onPress={() => console.log("Assign")} >
+                        <Pressable style={styles.modal_Closebtn} onPress={() => AssignEquipment()} >
                             <Text style={appCss.inputLabel}>Assign</Text>
                         </Pressable>
                     </View>
@@ -109,10 +141,10 @@ export default function Modal_PlayerBringsEquipment(props) {
 
     return (
         <View style={{ padding: 10 }}>
-            {props.manager !== user.Email ? null:
-            <TouchableOpacity onPress={() => setPlayerBringsModalVisible(true)} style={{ alignItems: 'flex-start' }}>
-                <Pencil name="pencil" size={24} color="black" />
-            </TouchableOpacity>}
+            {props.manager !== user.Email ? null :
+                <TouchableOpacity onPress={() => setPlayerBringsModalVisible(true)} style={{ alignItems: 'flex-start' }}>
+                    <Pencil name="pencil" size={24} color="black" />
+                </TouchableOpacity>}
             {modal_PlayerBringsEquipment}
         </View>
     )

@@ -14,6 +14,7 @@ import { Context as TeamContext } from '../../Contexts/TeamContext';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import { Context as GameContext } from '../../Contexts/GameContext';
 import { Context as PlayerContext } from '../../Contexts/PlayerContext';
+import { Context as EquipmentContext } from '../../Contexts/EquipmentContext';
 import Modal_EditGame from './Components/Modal_EditGame';
 
 
@@ -27,9 +28,9 @@ export default function GamePage(props) {
   const [user, setUser] = useState(token)
   const { state: { gamesList, playersPerGame, registeredTo }, RegisterGame, GetPlayers4Game, GetPlayersDivied2Groups,LeaveGame } = useContext(GameContext);
   const [showEditGame_Modal, setShowEditGame_Modal] = useState(false)
-
-  const gameDate = new Date("2021-06-29T20:00:00Z"); //Need to enter here game date
-  //const gameDate = new Date(); //Need to enter here game date
+  const { state: { equipments }, GetAllEquipments } = useContext(EquipmentContext);
+  //const gameDate = new Date("2021-05-29T20:00:00Z"); //Need to enter here game date
+  const gameDate = new Date(); //Need to enter here game date
   const oneDay = 60 * 60 * 24 * 1000 //This give us 24 hours parmeter
 
   useEffect(() => {
@@ -44,6 +45,7 @@ export default function GamePage(props) {
   useEffect(() => {
     GetPlayers4Game(gamesList[index].GameSerialNum, players)
     GetPlayersDivied2Groups(gamesList[index].GameSerialNum);
+    GetAllEquipments(gamesList[index].GameSerialNum)
   }, [])
 
   const JoinGame = async() => {
@@ -91,7 +93,7 @@ export default function GamePage(props) {
           {(new Date() <= gameDate - oneDay) ? <Players_Window game={gamesList[index]} /> : <GameTeamsCard game={gamesList[index]} index={index}/>}
 
           {/* Equipment Window */}
-          <Equipment_Window game={gamesList[index]} manager={myTeams[keyTeam].EmailManager}/>
+          <Equipment_Window game={gamesList[index]} manager={myTeams[keyTeam].EmailManager} equipments={equipments}/>
 
           <View style={{ paddingTop: 20 }}>
             {(new Date() <= gameDate - oneDay) ? <Text style={appCss.inputLabel}>Last Registration Date: {showDate(new Date(gamesList[index].LastRegistrationDate))}</Text> : null}

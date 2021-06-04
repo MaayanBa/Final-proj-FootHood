@@ -42,6 +42,7 @@ export default function EquipmentWindow(props) {
     ]
     useEffect(() => {
       // console.log(props.game)
+      // console.log(props.equipments[0].EquipmentName)
     }, [])
     
   let equipmentList = players.map((p, key) => {
@@ -56,7 +57,7 @@ export default function EquipmentWindow(props) {
         <Text style={styles.txtGame}>Equipment List:</Text>
       </View>
       {equipmentList}
-      <Modal_PlayerBringsEquipment game={props.game} manager={props.manager}/>
+      <Modal_PlayerBringsEquipment game={props.game} manager={props.manager} equipments={props.equipments}/>
     </View>
   );
 }
