@@ -29,17 +29,16 @@ const equipmentReducer = (state, action) => {
 const GetAllEquipments = dispatch => async (gameSerialNum) => {
     try {
         const response = await EquipmentApi.post('/GetAllEquipments', { GameSerialNum: gameSerialNum })
-        console.log(response.data)
+        //console.log(response.data)
         dispatch({ type: 'GetAllEquipments', payload: response.data })
     } catch (err) {
         console.log(err.data)
     }
 }
 
-const GetItemsAssignForGame = dispatch => async () => {
+const GetItemsAssignForGame = dispatch => async (gameSerialNum) => {
     try {
-        // console.log("IM JAJAJA")
-        const response = await EquipmentApi.post('/GetItemsAssignForGame')
+        const response = await EquipmentApi.post('/GetItemsAssignForGame',{ GameSerialNum: gameSerialNum })
         dispatch({ type: 'GetItemsAssignForGame', payload: response.data })
     } catch (err) {
         console.log(err.data)
@@ -48,9 +47,9 @@ const GetItemsAssignForGame = dispatch => async () => {
 
 const AssignEquipment2Player = dispatch => async (assignEquipment2Player) => {
     try {
-        // console.log("IM JAJAJA")
-        console.log(assignEquipment2Player)
-        // const response = await EquipmentApi.post('/AssignEquipment2Player')
+        //console.log(assignEquipment2Player)
+        const response = await EquipmentApi.post('/AssignEquipment2Player', assignEquipment2Player)
+        alert("The equipment was assigned successfuly")
         //dispatch({ type: 'AssignEquipment2Player', payload: response.data })
     } catch (err) {
         console.log(err.data)

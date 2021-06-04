@@ -10,7 +10,7 @@ import { Entypo as Pencil } from '@expo/vector-icons';
 import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 import { Context as GameContext } from '../../../Contexts/GameContext';
 import { Context as AuthContext } from '../../../Contexts/AuthContext';
-// import { Context as EquipmentContext } from '../../../Contexts/EquipmentContext';
+import { Context as EquipmentContext } from '../../../Contexts/EquipmentContext';
 
 
 const appCss = AppCss;
@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     modal_Txt: {
         marginBottom: 15,
         padding: 10,
+        marginTop:10,
         textAlign: "center",
         fontWeight: "bold",
         color: "white",
@@ -65,7 +66,7 @@ export default function Modal_PlayerBringsEquipment(props) {
     const [choosenEquipment, setChoosenEquipment] = useState();
     const { state: { token } } = useContext(AuthContext)
     const [user, setUser] = useState(token)
-    const { state: { equipments }, GetAllEquipments,AssignEquipment2Player } = useContext(EquipmentContext);
+    const { state: { equipments }, AssignEquipment2Player } = useContext(EquipmentContext);
 
 
     useEffect(() => {
@@ -100,7 +101,7 @@ export default function Modal_PlayerBringsEquipment(props) {
             <Avatar rounded source={{ uri: p.PlayerPicture }} />
         </ListItem>
     ))
-    const equipmentsList = props.equipments.map((e, i) => (
+    const equipmentsList = () => props.equipments.map((e, i) => (
         <ListItem key={i} containerStyle={{ backgroundColor: "transparent" }} >
             <View>
                 <RadioButton
@@ -123,9 +124,13 @@ export default function Modal_PlayerBringsEquipment(props) {
             <View style={styles.modal_View}>
                 <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../../assets/WallPaperWhite2.png')}>
                     <Text style={styles.modal_Txt}>Choose Player:</Text>
-                    {playersInGameList}
+                    <ScrollView style={{height: 300 }}>
+                        {playersInGameList}
+                    </ScrollView>
                     <Text style={styles.modal_Txt}>Choose Equipment To Assign:</Text>
-                    {equipmentsList}
+                    <ScrollView>
+                        {props.equipments == "There are no Equipments for this game" ? null : equipmentsList()}
+                    </ScrollView>
                     <View style={styles.btns_View}>
                         <Pressable style={styles.modal_Closebtn} onPress={() => setPlayerBringsModalVisible(!playerBringsModalVisible)} >
                             <Text style={appCss.inputLabel}>Close</Text>
