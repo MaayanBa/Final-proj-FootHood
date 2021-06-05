@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import {
     StyleSheet, TouchableOpacity, View, Text, TextInput, Modal as ModalPlayerBringsEquipment,
-    Pressable, ImageBackground, ScrollView
+    Pressable, ImageBackground, ScrollView, SafeAreaView
 } from 'react-native';
 import AppCss from '../../../CSS/AppCss';
 import { Avatar, ListItem } from 'react-native-elements';
@@ -13,7 +13,6 @@ import { Context as AuthContext } from '../../../Contexts/AuthContext';
 import { Context as EquipmentContext } from '../../../Contexts/EquipmentContext';
 import { Context as TeamContext } from '../../../Contexts/TeamContext';
 
-
 export default function Modal_PlayerBringsEquipment(props) {
     const index = props.index;
     const keyTeam = props.keyTeam;
@@ -24,14 +23,18 @@ export default function Modal_PlayerBringsEquipment(props) {
     const [choosenPlayer, setChoosenPlayer] = useState();
     const [choosenEquipment, setChoosenEquipment] = useState();
     const { state: { token } } = useContext(AuthContext)
-    const [user, setUser] = useState(token)
-    const { state: { equipments }, AssignEquipment2Player, GetItemsAssignForGame } = useContext(EquipmentContext);
+    // const [user, setUser] = useState(token)
+    const { state: { equipments }, AssignEquipment2Player,GetAllEquipments, GetItemsAssignForGame, AddNewItem } = useContext(EquipmentContext);
     const [newEquipment, setNewEquipment] = useState()
 
     useEffect(() => {
         GetPlayers4Game(gamesList[index].GameSerialNum, players);
-        GetItemsAssignForGame(gamesList[index].GameSerialNum);
+        GetAllEquipments(gamesList[index].GameSerialNum);
     }, [])
+
+    useEffect(() => {
+        GetAllEquipments(gamesList[index].GameSerialNum);
+    }, [equipments])
 
     const AssignEquipment = () => {
         if (choosenPlayer != null && choosenEquipment != null) {
@@ -41,6 +44,8 @@ export default function Modal_PlayerBringsEquipment(props) {
                 BringItems: equipments[choosenEquipment].EquipmentName,
             }
             AssignEquipment2Player(assignEquipment2Player)
+            setChoosenPlayer(null)
+            setChoosenEquipment(null)
         }
         else
             alert("You must pick a player and item")
@@ -48,14 +53,23 @@ export default function Modal_PlayerBringsEquipment(props) {
 
     const AddNewEquipment = () => {
         if (newEquipment != null) {
-            //function to add new equip
-            console.log(newEquipment)
+            const equipment = {
+                GameSerialNum: gamesList[index].GameSerialNum,
+                EquipmentName: newEquipment
+            }
+            AddNewItem(equipment)
+            // console.log(equipment)
+            setNewEquipment(null)
         }
         else
             alert("Please enter equipment name")
     }
     const playersInGameList = playersPerGame.map((p, i) => (
         <ListItem key={i} containerStyle={{ backgroundColor: "transparent" }}>
+            <ListItem.Content style={{ alignItems: 'flex-end' }} >
+                <ListItem.Title style={styles.label}>{p.FirstName + " " + p.LastName}</ListItem.Title>
+            </ListItem.Content>
+            {/* <Avatar rounded source={{ uri: p.PlayerPicture }} /> */}
             <View>
                 <RadioButton
                     value={i}
@@ -63,14 +77,13 @@ export default function Modal_PlayerBringsEquipment(props) {
                     onPress={() => setChoosenPlayer(i)}
                 />
             </View>
-            <ListItem.Content style={{ alignItems: 'flex-end' }} >
-                <ListItem.Title style={styles.label}>{p.FirstName + " " + p.LastName}</ListItem.Title>
-            </ListItem.Content>
-            <Avatar rounded source={{ uri: p.PlayerPicture }} />
         </ListItem>
     ))
     const equipmentsList = () => equipments.map((e, i) => (
         <ListItem key={i} containerStyle={{ backgroundColor: "transparent" }} >
+            <ListItem.Content style={{ alignItems: 'flex-end' }} >
+                <ListItem.Title style={styles.label}>{e.EquipmentName}</ListItem.Title>
+            </ListItem.Content>
             <View>
                 <RadioButton
                     value={i}
@@ -78,45 +91,60 @@ export default function Modal_PlayerBringsEquipment(props) {
                     onPress={() => setChoosenEquipment(i)}
                 />
             </View>
-            <ListItem.Content style={{ alignItems: 'flex-end' }} >
-                <ListItem.Title style={styles.label}>{e.EquipmentName}</ListItem.Title>
-            </ListItem.Content>
         </ListItem>
     ))
 
+    const Close = () => {
+        setChoosenPlayer(null)
+        setChoosenEquipment(null)
+        setNewEquipment(null)
+        setPlayerBringsModalVisible(!playerBringsModalVisible)
+    }
     const modal_PlayerBringsEquipment = <ModalPlayerBringsEquipment animationType="slide"
         transparent={true} visible={playerBringsModalVisible}
-        onRequestClose={() => setPlayerBringsModalVisible(!playerBringsModalVisible)}
+        onRequestClose={() => Close()}
     >
-        <View style={styles.centeredView}>
-            <View style={styles.modal_View}>
-                <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../../assets/WallPaperWhite2.png')}>
-                    <Text style={styles.modal_Txt}>Choose Player:</Text>
-                    <ScrollView style={{ height: 300 }}>
-                        {playersInGameList}
-                    </ScrollView>
-                    <Text style={styles.modal_Txt}>Choose Equipment To Assign:</Text>
-                    <ScrollView>
-                        {equipments == "There are no Equipments for this game" ? null : equipmentsList()}
-                    </ScrollView>
-                    <Text style={styles.modal_Txt}>Add A New Equipment:</Text>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                        <Pressable style={styles.modal_Closebtn} onPress={() => AddNewEquipment()} >
-                            <Text style={appCss.inputLabel}>Add</Text>
-                        </Pressable>
-                        <TextInput style={styles.input} onChangeText={setNewEquipment} value={newEquipment} />
+        <SafeAreaView>
+            <ScrollView keyboardShouldPersistTaps="handled">
+                <View style={styles.centeredView}>
+                    <View style={styles.modal_View}>
+                        <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../../assets/WallPaperWhite2.png')}>
+                            <Text style={styles.modal_Txt}>Assign Equipment:</Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <View style={{ width: 170 }}>
+                                    <Text style={styles.modal_Txt}>Equipment:</Text>
+                                    <ScrollView style={{ height: 300 }}>
+                                        {equipments == "There are no Equipments for this game" ? null : equipmentsList()}
+                                    </ScrollView>
+                                </View>
+                                <View style={styles.verticleLine}></View>
+                                <View style={{ width: 170 }}>
+                                    <Text style={styles.modal_Txt}>Player:</Text>
+                                    <ScrollView style={{ height: 300 }}>
+                                        {playersInGameList}
+                                    </ScrollView>
+                                </View>
+                            </View>
+                            <Text style={styles.modal_Txt}>Add A New Equipment:</Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                                <Pressable style={styles.modal_Closebtn} onPress={() => AddNewEquipment()} >
+                                    <Text style={appCss.inputLabel}>Add</Text>
+                                </Pressable>
+                                <TextInput style={styles.input} onChangeText={setNewEquipment} value={newEquipment} />
+                            </View>
+                            <View style={styles.btns_View}>
+                                <Pressable style={styles.modal_Closebtn} onPress={() => Close()} >
+                                    <Text style={appCss.inputLabel}>Close</Text>
+                                </Pressable>
+                                <Pressable style={styles.modal_Closebtn} onPress={() => AssignEquipment()} >
+                                    <Text style={appCss.inputLabel}>Assign</Text>
+                                </Pressable>
+                            </View>
+                        </ImageBackground>
                     </View>
-                    <View style={styles.btns_View}>
-                        <Pressable style={styles.modal_Closebtn} onPress={() => setPlayerBringsModalVisible(!playerBringsModalVisible)} >
-                            <Text style={appCss.inputLabel}>Close</Text>
-                        </Pressable>
-                        <Pressable style={styles.modal_Closebtn} onPress={() => AssignEquipment()} >
-                            <Text style={appCss.inputLabel}>Assign</Text>
-                        </Pressable>
-                    </View>
-                </ImageBackground>
-            </View>
-        </View>
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     </ModalPlayerBringsEquipment>
 
     return (
@@ -140,14 +168,15 @@ const styles = StyleSheet.create({
         marginBottom: 70
     },
     modal_View: {
-        margin: 20,
+        // margin: 20,
         borderRadius: 20,
         padding: 5,
         paddingBottom: 20,
         height: '100%',
+        width: '100%'
     },
     modal_Txt: {
-        marginBottom: 15,
+        marginBottom: 5,
         padding: 10,
         marginTop: 10,
         textAlign: "center",
@@ -179,6 +208,13 @@ const styles = StyleSheet.create({
         height: 40,
         margin: 12,
         borderWidth: 1,
-        width: 200
+        width: 200,
+        backgroundColor: 'white',
+    },
+    verticleLine: {
+        marginTop: 30,
+        height: '90%',
+        width: 1,
+        backgroundColor: '#909090',
     },
 })

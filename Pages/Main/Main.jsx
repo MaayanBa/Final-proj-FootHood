@@ -70,7 +70,7 @@ export default function Main({ navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Header />
+                <Header navigation={navigation}/>
                 <Text style={styles.title}>"Main page"</Text>
             </View>
             <View style={styles.mainContent}></View>

@@ -43,12 +43,11 @@ const styles = StyleSheet.create({
 
 })
 
-export default function Header() {
+export default function Header(props) {
     return (
 
         <View style={styles.headerRow}>
-
-            <TouchableOpacity style={styles.btnSetting} onPress={() => console.log("SettingPage")}>
+            <TouchableOpacity style={styles.btnSetting} onPress={() => props.navigation.navigate('SettingsPage')}>
                 <Image source={require('../../assets/Settings.png')} resizeMode="contain" style={styles.iconSetting} />
             </TouchableOpacity>
 

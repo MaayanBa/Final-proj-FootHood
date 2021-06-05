@@ -10,6 +10,8 @@ const equipmentReducer = (state, action) => {
             return { ...state, gameEquipments: action.payload }
         case 'AssignEquipment2Player':
             return { ...state, gameEquipments: action.payload }
+        case 'AddNewItem':
+            return { ...state, gameEquipments: action.payload }
         default:
             return state
     }
@@ -38,7 +40,7 @@ const GetAllEquipments = dispatch => async (gameSerialNum) => {
 
 const GetItemsAssignForGame = dispatch => async (gameSerialNum) => {
     try {
-        const response = await EquipmentApi.post('/GetItemsAssignForGame',{ GameSerialNum: gameSerialNum })
+        const response = await EquipmentApi.post('/GetItemsAssignForGame', { GameSerialNum: gameSerialNum })
         dispatch({ type: 'GetItemsAssignForGame', payload: response.data })
     } catch (err) {
         console.log(err.data)
@@ -55,6 +57,19 @@ const AssignEquipment2Player = dispatch => async (assignEquipment2Player) => {
         console.log(err.data)
     }
 }
+
+const AddNewItem = dispatch => async (newEquipment) => {
+    try {
+        console.log(newEquipment)
+        const response = await EquipmentApi.post('/AddNewItem', newEquipment)
+        GetAllEquipments(newEquipment.GameSerialNum)
+        alert(response.data)
+        //dispatch({ type: 'AssignEquipment2Player', payload: response.data })
+    } catch (err) {
+        console.log(err.data)
+    }
+}
+
 export const { Context, Provider } = CreateDataContext(
     //Reducer
     equipmentReducer,
@@ -62,6 +77,7 @@ export const { Context, Provider } = CreateDataContext(
         GetAllEquipments,
         GetItemsAssignForGame,
         AssignEquipment2Player,
+        AddNewItem,
     },
     {
         equipments: [],

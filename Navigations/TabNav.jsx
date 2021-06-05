@@ -7,7 +7,7 @@ import {
     Image as ImgMyTeams
 } from 'react-native';
 import Main from '../Pages/Main/Main';
-import Timer from '../Pages/Timer/Timer';
+import Watches from '../Pages/Timer/Watches';
 import Players from '../Pages/Players/Players';
 import FindGame from '../Pages/FindGame/FindGame';
 import StackNav_MyTeams from './StackNav_MyTeams'
@@ -35,7 +35,7 @@ export default function TabNav() {
                     elevation: 0
                 },
             }}>
-            <Tab.Screen name="Timer" component={Timer}
+            <Tab.Screen name="Timer" component={Watches}
                 //tabBarOptions={showIcon = true}
                 options={{
                     tabBarLabel: 'Timer',

@@ -127,9 +127,9 @@ const signIn = dispatch => {
     }
 }
 const signOut = dispatch => async () => {
-    console.log(JSON.stringify( AsyncStorage.getItem('token')))
+    //console.log(JSON.stringify( AsyncStorage.getItem('token')))
     await AsyncStorage.removeItem('token');
-    console.log("The local storge has cleaned")
+    //console.log("The local storge has cleaned")
     dispatch({ type: 'signOut' })
 }
 
