@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Text, StyleSheet, View, Animated, TouchableOpacity, ScrollView } from "react-native";
 import Modal_PlayerBringsEquipment from './Modal_PlayerBringsEquipment';
 import { Context as EquipmentContext } from '../../../Contexts/EquipmentContext';
@@ -6,25 +6,15 @@ import { Context as GameContext } from '../../../Contexts/GameContext';
 import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 import EquipmentList from './EquipmentList';
 
-
 export default function EquipmentWindow(props) {
-  const index = props.index;
-  const keyTeam = props.keyTeam;
-  // const scrollX = useRef(new Animated.Value(0)).current;
-  const { state: { gameEquipments }, GetItemsAssignForGame } = useContext(EquipmentContext);
+  const {  GetItemsAssignForGame } = useContext(EquipmentContext);
   const { state: { players } } = useContext(PlayerContext)
-  const { state: { gamesList, playersPerGame }, GetPlayers4Game } = useContext(GameContext);
-
+  const { state: { gamesList }, GetPlayers4Game } = useContext(GameContext);
 
   useEffect(() => {
-    GetItemsAssignForGame(gamesList[index].GameSerialNum)
-    GetPlayers4Game(gamesList[index].GameSerialNum, players)
+    GetItemsAssignForGame(gamesList[props.index].GameSerialNum)
+    GetPlayers4Game(gamesList[props.index].GameSerialNum, players)
   }, [])
-
-  // useEffect(() => {
-  //   GetItemsAssignForGame(gamesList[index].GameSerialNum)
-  // }, [gameEquipments])
-
 
   return (
     <View style={styles.playersAndEquipment_Window}>

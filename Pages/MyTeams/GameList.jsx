@@ -9,7 +9,7 @@ import * as Linking from 'expo-linking';
 
 
 export default function GameList(props) {
-    const { state: { gamesList }} = useContext(GameContext);
+    const { state: { gamesList,amountRegisteredPlayersEachGame }} = useContext(GameContext);
     const { key } = props.route.params;
     const keyTeam  = key;
 
@@ -44,8 +44,8 @@ export default function GameList(props) {
                 </View>
                 <View style={styles.gameInformation_View_L}>
                     <Text style={styles.txtStyle}>Date: {convertDate(new Date(game.GameDate))}</Text>
-                    <Text style={styles.txtStyle}>Number of Players: {game.NumOfPlayersInTeam}</Text>
-                    {/* <View style={{flexDirection:'row-reverse'}}> */}
+                    <Text style={styles.txtStyle}>Number of Registered: {amountRegisteredPlayersEachGame.find(x=>x.GameSerialNum===game.GameSerialNum).NumOfPlayers}</Text>
+
                     <Text style={styles.txtStyle}>Location: {game.GameLocation}</Text>
                     {/* <Navigation location={game.GameLocation} /> */}
                     <TouchableOpacity onPress={() => navInWaze(game.GameLocation)}>
@@ -53,7 +53,6 @@ export default function GameList(props) {
                             <Image source={require('../../assets/Waze.png')} resizeMode="contain" style={styles.waze_Icon} />
                         </Text>
                     </TouchableOpacity>
-                    {/* </View> */}
                 </View>
             </View>
         </View>

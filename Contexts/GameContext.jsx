@@ -24,6 +24,9 @@ const gameReducer = (state, action) => {
         case 'GetPlayersDivied2Groups': {
             return { ...state, playersPerGroups: action.payload }
         }
+        case 'GetAmountRegisteredPlayersEachGame': {
+            return { ...state, amountRegisteredPlayersEachGame: action.payload }
+        }
         case 'Check': {
             return { ...state, check: action.payload }
         }
@@ -147,13 +150,26 @@ const GetPlayersDivied2Groups = dispatch => async (GameSerialNum, registeredPlay
     }
 }
 
+const GetAmountRegisteredPlayersEachGame = dispatch => async (TeamSerialNum) => {
+    try {
+        const res = await GameApi.post('/GetAmountRegisteredPlayersEachGame', { TeamSerialNum });
+        if (res.data != "There are no games for this Team")
+            dispatch({ type: 'GetAmountRegisteredPlayersEachGame', payload: res.data })
+        else
+            console.log("Thare are not players that registerd in any game")
+    } catch (error) {
+        console.log("err Get Amount Registered Players Each Game")
+        console.log(error)
+    }
+}
+
 const LeaveGame = dispatch => async (EmailPlayer, GameSerialNum) => {
     try {
-       console.log(EmailPlayer)
-       console.log(GameSerialNum)
+        console.log(EmailPlayer)
+        console.log(GameSerialNum)
         const res = await GameApi.post('/LeaveGame', { EmailPlayer, GameSerialNum });
-        
-         if (res.data != "You Have Left the Game Succesfully")
+
+        if (res.data != "You Have Left the Game Succesfully")
             alert("You Have Left the Game Succesfully");
     } catch (error) {
         console.log("err LeaveGame")
@@ -169,6 +185,7 @@ export const { Context, Provider } = CreateDataContext(
         GetGamesList,
         CreatNewGame,
         RegisterGame,
+        GetAmountRegisteredPlayersEachGame,
         GameRegisterd,
         GetPlayers4Game,
         DeleteRequest,
@@ -183,5 +200,6 @@ export const { Context, Provider } = CreateDataContext(
         //emailsOfPlayersPerGame: [],
         playersPerGame: [],
         playersPerGroups: [],
+        amountRegisteredPlayersEachGame: []
     }
 );

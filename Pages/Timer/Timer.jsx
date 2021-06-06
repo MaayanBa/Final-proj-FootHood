@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, TextInput, TouchableOpacity, Image as ImageBall } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, TextInput, TouchableOpacity, Image as ImageBall, ScrollView } from 'react-native';
 import CountDown from 'react-native-countdown-component';
 import AppCss from '../../CSS/AppCss';
 
@@ -27,10 +27,11 @@ export default function Timer() {
         //alert('Times up!')
     }
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.container}>
+        <SafeAreaView >
+
+            <View style={appCss.container}>
                 <Text style={appCss.title}>Timer</Text>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={styles.watchStyle}>
                     <TextInput
                         style={styles.input}
                         onChangeText={setTotalDuration}
@@ -38,45 +39,54 @@ export default function Timer() {
                         keyboardType="phone-pad"
                         placeholder="Please Enter Minutes"
                     />
-                    <TouchableOpacity activeOpacity={0.8} onPress={() => StartTimer()} style={[appCss.btnTouch, { width: "30%" }]}>
-                        <Text style={appCss.txtBtnTouch}>Start</Text>
-                    </TouchableOpacity>
+                    <View style={styles.buttons}>
+                        <TouchableOpacity activeOpacity={0.8} onPress={() => StartTimer()} style={[appCss.btnTouch, { marginHorizontal: 30 }]}>
+                            <Text style={appCss.txtBtnTouch}>  Start  </Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch, { marginHorizontal: 30 }]}
+                        // onPress={() => {
+                        //     setIsStopwatchStart(false);
+                        //     setResetStopwatch(true);
+                        // }}
+                        >
+                            <Text style={appCss.txtBtnTouch}>RESET</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
+
                 {clicked == true ? <CountDown until={selectTime * 60} timeToShow={['M', 'S']} digitStyle={{ backgroundColor: '#FFF' }}
                     digitTxtStyle={{ color: 'black' }} timeLabelStyle={{ color: 'white', fontWeight: 'bold' }}
                     timeLabels={{ m: 'Minutes', s: 'Seconds' }} onFinish={() => Finish()} size={30} /> : null}
             </View>
         </SafeAreaView>
+
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 10,
-        justifyContent: 'center',
+    watchStyle: {
         alignItems: 'center',
+        flex: 1,
+        marginTop: 40,
+        // justifyContent: 'center',
     },
-    title: {
-        textAlign: 'center',
-        fontSize: 20,
-        fontWeight: 'bold',
-        padding: 20,
+    buttons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 30
     },
 
-    ball_img: {
-        margin: 50,
-        height: 110,
-        width: 100,
-        alignSelf: 'center',
-        top: 40
-    },
     input: {
-        height: 40,
-        margin: 12,
-        marginTop: 40,
+        height: 56,
+        fontSize: 22,
+        //margin: 12,
+        marginTop: 43,
         borderWidth: 1,
-        width: 200,
-        backgroundColor: 'white',
+        paddingRight: 43,
+        width: 300,
+        backgroundColor: '#D9D9D9',
+        borderRadius: 20,
+        // padding:10
     }
 });

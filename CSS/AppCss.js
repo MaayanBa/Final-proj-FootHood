@@ -89,4 +89,11 @@ export default styles = StyleSheet.create({
     width: 35,
     height: 35
   },
+  ball_img: {
+    margin: 50,
+    height: 110,
+    width: 100,
+    alignSelf: 'center',
+    top: 40
+  },
 });

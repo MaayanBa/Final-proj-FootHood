@@ -14,17 +14,17 @@ export default function Watches() {
     return (
         <View style={styles.container}>
             <View style={styles.buttons}>
-                <TouchableOpacity activeOpacity={0.8} onPress={() => setStopWatch(true)} style={[appCss.btnTouch, { width: "45%" }]}>
+                <TouchableOpacity activeOpacity={0.8} onPress={() => setStopWatch(true)} style={[appCss.btnTouch, { width: "45%" },stopwatch? {backgroundColor: 'rgba(100,100, 100, 0.8)'}:null]}>
                     <Text style={appCss.txtBtnTouch}>StopWatch</Text>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.8} onPress={() => setStopWatch(false)} style={[appCss.btnTouch, { width: "45%" }]}>
+                <TouchableOpacity activeOpacity={0.8} onPress={() => setStopWatch(false)} style={[appCss.btnTouch, { width: "45%" },stopwatch? null:{backgroundColor: 'rgba(100,100, 100, 0.8)'}]}>
                     <Text style={appCss.txtBtnTouch}>Timer</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.container}>
                 {stopwatch == true ? <StopWatch /> : <Timer />}
             </View>
-            <ImageBall source={require('../../assets/ball.png')} style={styles.ball_img} />
+            <ImageBall source={require('../../assets/ball.png')} style={appCss.ball_img} />
         </View>
     );
 };
@@ -40,11 +40,5 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         padding: 30
     },
-    ball_img: {
-        margin: 50,
-        height: 110,
-        width: 100,
-        alignSelf: 'center',
-        top: 40
-    },
+
 });

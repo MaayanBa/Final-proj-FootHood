@@ -10,7 +10,6 @@ export default function EquipmentList() {
     const { state: { playersPerGame } } = useContext(GameContext);
     const { state: { players } } = useContext(PlayerContext)
 
- 
     return (
         <View>
             <Text></Text>
@@ -24,7 +23,7 @@ export default function EquipmentList() {
                     if (player !== undefined) {
                         return <View key={key}>
                             <Text>
-                                {g.BringItems + "-" + player.FirstName + " " + player.LastName}
+                                {g.BringItems + "   -   " + player.FirstName + " " + player.LastName}
                                 {/* {g.BringItems} */}
                             </Text>
                         </View>

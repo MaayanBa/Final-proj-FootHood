@@ -6,7 +6,7 @@ import {
     Image as ImgFindGame,
     Image as ImgMyTeams
 } from 'react-native';
-import Main from '../Pages/Main/Main';
+import StackNav_Main from './StackNav_Main';
 import Watches from '../Pages/Timer/Watches';
 import Players from '../Pages/Players/Players';
 import FindGame from '../Pages/FindGame/FindGame';
@@ -19,7 +19,7 @@ const Tab = createBottomTabNavigator();
 
 export default function TabNav() {
     return (
-        <Tab.Navigator initialRouteName='Main'
+        <Tab.Navigator initialRouteName='StackNav_Main'
             tabBarOptions={{
                 showIcon: 'true',
                 labelStyle: {
@@ -47,7 +47,7 @@ export default function TabNav() {
                     tabBarLabel: 'Players',
                     tabBarIcon: () => (<ImgPlayers source={require('../assets/Players.png')} resizeMode='contain' style={{ width: 50, height: 50 }} />)
                 }} />
-            <Tab.Screen name="Main" component={Main}
+            <Tab.Screen name="StackNav_Main" component={StackNav_Main}
                 //tabBarOptions={showIcon = true}
                 options={{
                     tabBarLabel: 'Home Page',

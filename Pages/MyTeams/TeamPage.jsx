@@ -73,7 +73,7 @@ export default function TeamPage(props) {
 
     const { key } = props.route.params;
     const { state: { myTeams, teamPlayers }, setTeamPlayers,GetTeamDetails } = useContext(TeamContext);
-    const { state: { gamesList }, GetGamesList, GameRegisterd } = useContext(GameContext);
+    const { state: { gamesList }, GetGamesList, GameRegisterd, GetAmountRegisteredPlayersEachGame } = useContext(GameContext);
     const { state: { players } } = useContext(PlayerContext);
     const [messages, setMessages] = useState([]);
     const { state: { token } } = useContext(AuthContext)
@@ -84,6 +84,7 @@ export default function TeamPage(props) {
         setTeamPlayers(myTeams[key], players);
         fetchMessages().catch(e => console.log(e))
         GetGamesList(myTeams[key].TeamSerialNum)
+        GetAmountRegisteredPlayersEachGame(myTeams[key].TeamSerialNum)
         //GameRegisterd(user.Email,myTeams[key].TeamSerialNum);
     }, [])
 

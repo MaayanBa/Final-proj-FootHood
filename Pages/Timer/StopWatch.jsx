@@ -11,10 +11,9 @@ export default function StopWatch() {
     const [resetStopwatch, setResetStopwatch] = useState(false);
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.container}>
+        <SafeAreaView style={appCss.container}>
                 <Text style={appCss.title}>Stop Watch</Text>
-                <View style={styles.sectionStyle}>
+                <View style={styles.watchStyle}>
                     <View style={{ alignItems: 'center' }}>
                         <Stopwatch
                             laps
@@ -51,28 +50,15 @@ export default function StopWatch() {
                         </TouchableHighlight>
                     </View>
                 </View>
-            </View>
         </SafeAreaView>
     );
 };
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
-    container: {
+    watchStyle: {
         flex: 1,
-        padding: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    title: {
-        textAlign: 'center',
-        fontSize: 20,
-        fontWeight: 'bold',
-        padding: 20,
-    },
-    sectionStyle: {
-        flex: 1,
-        marginTop: 32,
+        marginTop: 40,
         justifyContent: 'center',
     },
     buttons: {
@@ -85,9 +71,9 @@ const styles = StyleSheet.create({
 const options = {
     container: {
         backgroundColor: '#D9D9D9',
-        padding: 5,
-        borderRadius: 5,
-        width: 200,
+        padding: 10,
+        borderRadius: 20,
+        width: 300,
         alignItems: 'center',
     },
     text: {

@@ -26,11 +26,13 @@ export default function GamePage(props) {
   const { state: { token } } = useContext(AuthContext)
   const { state: { players } } = useContext(PlayerContext)
   const [user, setUser] = useState(token)
-  const { state: { gamesList, playersPerGame, registeredTo }, RegisterGame, GetPlayers4Game, GetPlayersDivied2Groups,LeaveGame } = useContext(GameContext);
+  const { state: { gamesList, playersPerGame, registeredTo }, RegisterGame, GetPlayers4Game, GetPlayersDivied2Groups, LeaveGame,GetAmountRegisteredPlayersEachGame } = useContext(GameContext);
   const [showEditGame_Modal, setShowEditGame_Modal] = useState(false)
-  const { state: { gameEquipments }, GetAllEquipments,GetItemsAssignForGame } = useContext(EquipmentContext);
-  //const gameDate = new Date("2021-05-29T20:00:00Z"); //Need to enter here game date
-  const gameDate = new Date(); //Need to enter here game date
+  const { state: { gameEquipments }, GetAllEquipments, GetItemsAssignForGame } = useContext(EquipmentContext);
+
+
+  const gameDate = new Date("2021-06-29T20:00:00Z"); //Need to enter here game date
+  // const gameDate = new Date(); //Need to enter here game date
   const oneDay = 60 * 60 * 24 * 1000 //This give us 24 hours parmeter
 
   useEffect(() => {
@@ -51,8 +53,7 @@ export default function GamePage(props) {
     GetItemsAssignForGame(gamesList[index].GameSerialNum)
   }, [gameEquipments])
 
-
-  const JoinGame = async() => {
+  const JoinGame = async () => {
     let addPlayer2Game = {
       GameSerialNum: gamesList[index].GameSerialNum,
       EmailPlayer: user.Email,
@@ -61,12 +62,16 @@ export default function GamePage(props) {
     await RegisterGame(addPlayer2Game)
     await GetPlayers4Game(gamesList[index].GameSerialNum, players)
     await GetPlayersDivied2Groups(gamesList[index].GameSerialNum);
+    await GetAmountRegisteredPlayersEachGame(myTeams[keyTeam].TeamSerialNum)
 
   }
-  const LeaveGameFunction =async () => {
-    await LeaveGame(user.Email,gamesList[index].GameSerialNum)
+
+  const LeaveGameFunction = async () => {
+    await LeaveGame(user.Email, gamesList[index].GameSerialNum)
     await GetPlayers4Game(gamesList[index].GameSerialNum, players)
     await GetPlayersDivied2Groups(gamesList[index].GameSerialNum);
+    await GetAmountRegisteredPlayersEachGame(myTeams[keyTeam].TeamSerialNum)
+         
 
   }
   const showDate = (date) => {
@@ -94,14 +99,13 @@ export default function GamePage(props) {
           {myTeams[keyTeam].EmailManager !== user.Email ? null : <Modal_JoinRequests game={gamesList[index]} />}
 
           {/* Players Window Or Teams Cards*/}
-          {(new Date() <= gameDate - oneDay) ? <Players_Window game={gamesList[index]} /> : <GameTeamsCard game={gamesList[index]} index={index}/>}
+          {(new Date() <= gameDate - oneDay) ? <Players_Window game={gamesList[index]} /> : <GameTeamsCard game={gamesList[index]} index={index} />}
 
           {/* Equipment Window */}
-          <Equipment_Window keyTeam={keyTeam} index={index}/>
+          <Equipment_Window keyTeam={keyTeam} index={index} />
 
           <View style={{ paddingTop: 20 }}>
             {(new Date() <= gameDate - oneDay) ? <Text style={appCss.inputLabel}>Last Registration Date: {showDate(new Date(gamesList[index].LastRegistrationDate))}</Text> : null}
-
             <TouchableOpacity activeOpacity={0.8} onPress={() => registered ? LeaveGameFunction() : JoinGame()} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
               <Image source={require('../../assets/ball.png')} resizeMode="contain" style={styles.imgBall} />
               <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>{registered ? "Leave" : "Join"}</Text>
@@ -138,4 +142,3 @@ const styles = StyleSheet.create({
     width: '60%',
   },
 })
-

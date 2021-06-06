@@ -4,7 +4,6 @@ import NewLoginUser from '../Pages/Login/NewLoginUser';
 import Register from '../Pages/Login/Register';
 import ForgotPassword from '../Pages/Login/ForgotPassword';
 import TabNav from './TabNav';
-import SettingsPage from '../Pages/Main/SettingsPage';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Context as AuthContext } from '../Contexts/AuthContext';
@@ -34,7 +33,6 @@ export default function StackNav() {
                         </> :
                         <>
                             <Stack.Screen name="TabNav" component={TabNav} />
-                            <Stack.Screen name="SettingsPage" component={SettingsPage} />
                         </>
                 }
             </Stack.Navigator>

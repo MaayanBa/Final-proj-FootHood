@@ -24,7 +24,7 @@ export default function Modal_PlayerBringsEquipment(props) {
     const [choosenEquipment, setChoosenEquipment] = useState();
     const { state: { token } } = useContext(AuthContext)
     // const [user, setUser] = useState(token)
-    const { state: { equipments }, AssignEquipment2Player,GetAllEquipments, GetItemsAssignForGame, AddNewItem } = useContext(EquipmentContext);
+    const { state: { equipments }, AssignEquipment2Player, GetAllEquipments, GetItemsAssignForGame, AddNewItem } = useContext(EquipmentContext);
     const [newEquipment, setNewEquipment] = useState()
 
     useEffect(() => {
@@ -94,6 +94,7 @@ export default function Modal_PlayerBringsEquipment(props) {
         </ListItem>
     ))
 
+
     const Close = () => {
         setChoosenPlayer(null)
         setChoosenEquipment(null)
@@ -113,14 +114,14 @@ export default function Modal_PlayerBringsEquipment(props) {
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <View style={{ width: 170 }}>
                                     <Text style={styles.modal_Txt}>Equipment:</Text>
-                                    <ScrollView style={{ height: 300 }}>
+                                    <ScrollView style={{ height: 300, backgroundColor: 'rgba(52, 52, 52, 0.1)', borderRadius: 20, left: 10 }}>
                                         {equipments == "There are no Equipments for this game" ? null : equipmentsList()}
                                     </ScrollView>
                                 </View>
                                 <View style={styles.verticleLine}></View>
                                 <View style={{ width: 170 }}>
                                     <Text style={styles.modal_Txt}>Player:</Text>
-                                    <ScrollView style={{ height: 300 }}>
+                                    <ScrollView style={{ height: 300, backgroundColor: 'rgba(52, 52, 52, 0.1)', borderRadius: 20, right: 10 }}>
                                         {playersInGameList}
                                     </ScrollView>
                                 </View>
@@ -128,16 +129,16 @@ export default function Modal_PlayerBringsEquipment(props) {
                             <Text style={styles.modal_Txt}>Add A New Equipment:</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                                 <Pressable style={styles.modal_Closebtn} onPress={() => AddNewEquipment()} >
-                                    <Text style={appCss.inputLabel}>Add</Text>
+                                    <Text style={[appCss.inputLabel,{marginHorizontal:25}]}>Add</Text>
                                 </Pressable>
                                 <TextInput style={styles.input} onChangeText={setNewEquipment} value={newEquipment} />
                             </View>
                             <View style={styles.btns_View}>
                                 <Pressable style={styles.modal_Closebtn} onPress={() => Close()} >
-                                    <Text style={appCss.inputLabel}>Close</Text>
+                                    <Text style={[appCss.inputLabel,{marginHorizontal:25}]}>Close</Text>
                                 </Pressable>
                                 <Pressable style={styles.modal_Closebtn} onPress={() => AssignEquipment()} >
-                                    <Text style={appCss.inputLabel}>Assign</Text>
+                                    <Text style={[appCss.inputLabel,{marginHorizontal:25}]}>Assign</Text>
                                 </Pressable>
                             </View>
                         </ImageBackground>
@@ -205,11 +206,14 @@ const styles = StyleSheet.create({
         alignSelf: "center",
     },
     input: {
-        height: 40,
+        height: 42,
         margin: 12,
         borderWidth: 1,
         width: 200,
         backgroundColor: 'white',
+        borderRadius: 10,
+        paddingRight:10
+
     },
     verticleLine: {
         marginTop: 30,
