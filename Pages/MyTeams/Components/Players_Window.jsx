@@ -5,6 +5,7 @@ import { Avatar, ListItem } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Context as GameContext } from '../../../Contexts/GameContext';
 import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
+import { getLocation, geocodeLocationByName } from '../../../Services/location-service';
 
 const styles = StyleSheet.create({
   playersAndEquipment_Window: {
@@ -21,6 +22,7 @@ const styles = StyleSheet.create({
   txtGame: {
     alignSelf: 'center',
     fontWeight: "bold",
+    fontSize: 16,
     marginBottom: 5,
   },
   playerList_scrollView: {
@@ -34,12 +36,41 @@ const styles = StyleSheet.create({
 })
 
 export default function Players_Window(props) {
-  const { state: { playersPerGame }, GetPlayers4Game } = useContext(GameContext);
+  const { state: { playersPerGame }, GetPlayers4Game,Jarvis_FindPlayers4Game } = useContext(GameContext);
   const { state: { players } } = useContext(PlayerContext);
-
+  const [findPlayersActivated, setFindPlayersActivated] = useState(props.game.FindPlayersActive);
+  const [region, setRegion] = useState(null)
   useEffect(() => {
-    GetPlayers4Game(props.game.GameSerialNum,players);
+    GetPlayers4Game(props.game.GameSerialNum, players);
+    //checkIfJarvisActiveted();
+    // console.log(props.game.GameLocation)
+
+    geocodeLocationByName(props.game.GameLocation).then(
+      (data) => {
+        if (data === undefined || data === null) {
+          alert("there is a problem with the location cordinats")
+        }
+        else {
+          setRegion({
+            latitude: data.lat,
+            longitude: data.lng,
+          });
+        }
+      }
+    )
+
   }, [])
+
+  // const checkIfJarvisActiveted = () =>{
+  // }
+  const activeFindPlayers = async () => {
+    if (region != null) {
+      await Jarvis_FindPlayers4Game(props.game.TeamSerialNum,props.game.GameSerialNum,props.game.AvgPlayerAge, props.game.AvgPlayerRating, region)
+      setFindPlayersActivated(true);
+    }
+    else
+      alert("Something went wrong please go to Home page and try again")
+  }
 
   const registeredPlayers = playersPerGame.map((p, key) => {
     return <ListItem key={key} style={styles.playerInGameList}>
@@ -57,14 +88,15 @@ export default function Players_Window(props) {
       </View>
       <ScrollView style={styles.playerList_scrollView}>
         {registeredPlayers}
-
       </ScrollView>
-      <TouchableOpacity>
-        <View style={styles.txtGame}>
-          <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ color: 'red', paddingTop: 30 }}>Find new players!</Animatable.Text>
-        </View>
-      </TouchableOpacity>
-    </View>
+      <View style={styles.txtGame}>
+        {!findPlayersActivated ?
+          <TouchableOpacity onPress={() => activeFindPlayers()}>
+            <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ color: 'red', paddingTop: 30 }}>Find new players!</Animatable.Text>
+          </TouchableOpacity>
+          : <Text style={[styles.txtGame, { color: "#D9D9D9", paddingTop: 30 }]}> Jarvis Is Looking For New Players </Text>}
+      </View>
+    </View >
   );
 }
 

@@ -98,7 +98,6 @@ export default function MyTeams(props) {
     const calcTeamCards = async () => {
         if (myTeams.length > 0) {
             const teamCards = await Promise.all(myTeams.map(async (team, key) => {
-                //console.log(players)
                 let manager = players.find(x => x.Email === team.EmailManager);
                 // fetchMessages(team)
                 const badge = await calcBadge(team);

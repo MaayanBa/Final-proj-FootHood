@@ -30,7 +30,6 @@ export default function GamePage(props) {
   const [showEditGame_Modal, setShowEditGame_Modal] = useState(false)
   const { state: { gameEquipments }, GetAllEquipments, GetItemsAssignForGame } = useContext(EquipmentContext);
 
-
   const gameDate = new Date("2021-06-29T20:00:00Z"); //Need to enter here game date
   // const gameDate = new Date(); //Need to enter here game date
   const oneDay = 60 * 60 * 24 * 1000 //This give us 24 hours parmeter
@@ -44,17 +43,12 @@ export default function GamePage(props) {
       setRegistered(false);
   }, [playersPerGame])
 
+
   useEffect(() => {
     GetPlayers4Game(gamesList[index].GameSerialNum, players)
     GetPlayersDivied2Groups(gamesList[index].GameSerialNum);
     GetAllEquipments(gamesList[index].GameSerialNum)
   }, [])
-
-  // גורם בעיה
-  // useEffect(() => {
-  //   GetItemsAssignForGame(gamesList[index].GameSerialNum)
-  //   console.log("knsflkdnfl")
-  // }, [gameEquipments])
 
   const JoinGame = async () => {
     let addPlayer2Game = {
@@ -66,7 +60,6 @@ export default function GamePage(props) {
     await GetPlayers4Game(gamesList[index].GameSerialNum, players)
     await GetPlayersDivied2Groups(gamesList[index].GameSerialNum);
     await GetAmountRegisteredPlayersEachGame(myTeams[keyTeam].TeamSerialNum)
-
   }
 
   const LeaveGameFunction = async () => {
@@ -74,9 +67,8 @@ export default function GamePage(props) {
     await GetPlayers4Game(gamesList[index].GameSerialNum, players)
     await GetPlayersDivied2Groups(gamesList[index].GameSerialNum);
     await GetAmountRegisteredPlayersEachGame(myTeams[keyTeam].TeamSerialNum)
-
-
   }
+
   const showDate = (date) => {
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;//Builds up togther the date and time
   };
@@ -85,6 +77,7 @@ export default function GamePage(props) {
     <SafeAreaView>
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={styles.container}>
+          {console.log("GGGGGGGGG")}
           <View style={styles.labels}>
             {myTeams[keyTeam].EmailManager !== user.Email ? null :
               <View>
@@ -103,9 +96,6 @@ export default function GamePage(props) {
           {/* Players Window Or Teams Cards*/}
           {(new Date() <= gameDate - oneDay) ? <Players_Window game={gamesList[index]} /> : <GameTeamsCard game={gamesList[index]} index={index} />}
 
-          {/* Equipment Window */}
-          <Equipment_Window keyTeam={keyTeam} index={index} />
-
           <View style={{ paddingTop: 20 }}>
             {(new Date() <= gameDate - oneDay) ? <Text style={appCss.inputLabel}>Last Registration Date: {showDate(new Date(gamesList[index].LastRegistrationDate))}</Text> : null}
             <TouchableOpacity activeOpacity={0.8} onPress={() => registered ? LeaveGameFunction() : JoinGame()} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
@@ -119,6 +109,7 @@ export default function GamePage(props) {
     </SafeAreaView>
   );
 }
+
 
 
 const appCss = AppCss;

@@ -10,8 +10,6 @@ const equipmentReducer = (state, action) => {
             return { ...state, gameEquipments: action.payload }
         case 'AssignEquipment2Player':
             return { ...state, gameEquipments: action.payload }
-        case 'AddNewItem':
-            return { ...state, gameEquipments: action.payload }
         default:
             return state
     }
@@ -52,7 +50,6 @@ const AssignEquipment2Player = dispatch => async (assignEquipment2Player) => {
         //console.log(assignEquipment2Player)
         const response = await EquipmentApi.post('/AssignEquipment2Player', assignEquipment2Player)
         alert("The equipment was assigned successfuly")
-        //dispatch({ type: 'AssignEquipment2Player', payload: response.data })
     } catch (err) {
         console.log(err.data)
     }

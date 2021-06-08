@@ -12,6 +12,7 @@ import { Context as GameContext } from '../../../Contexts/GameContext';
 import { Context as AuthContext } from '../../../Contexts/AuthContext';
 import { Context as EquipmentContext } from '../../../Contexts/EquipmentContext';
 import { Context as TeamContext } from '../../../Contexts/TeamContext';
+import EquipmentsRadioBtns from './EquipmentsRadioBtns';
 
 export default function Modal_PlayerBringsEquipment(props) {
     const index = props.index;
@@ -32,33 +33,31 @@ export default function Modal_PlayerBringsEquipment(props) {
         GetAllEquipments(gamesList[index].GameSerialNum);
     }, [])
 
-    useEffect(() => {
-        GetAllEquipments(gamesList[index].GameSerialNum);
-    }, [equipments])
-
-    const AssignEquipment = () => {
+    const AssignEquipment = async () => {
         if (choosenPlayer != null && choosenEquipment != null) {
             let assignEquipment2Player = {
                 GameSerialNum: gamesList[index].GameSerialNum,
                 EmailPlayer: playersPerGame[choosenPlayer].Email,
                 BringItems: equipments[choosenEquipment].EquipmentName,
             }
-            AssignEquipment2Player(assignEquipment2Player)
+            await AssignEquipment2Player(assignEquipment2Player)
+            await GetItemsAssignForGame(gamesList[index].GameSerialNum)
             setChoosenPlayer(null)
             setChoosenEquipment(null)
+            setPlayerBringsModalVisible(false)
         }
         else
             alert("You must pick a player and item")
     }
 
-    const AddNewEquipment = () => {
+    const AddNewEquipment = async () => {
         if (newEquipment != null) {
             const equipment = {
                 GameSerialNum: gamesList[index].GameSerialNum,
                 EquipmentName: newEquipment
             }
-            AddNewItem(equipment)
-            // console.log(equipment)
+            await AddNewItem(equipment);
+            await GetAllEquipments(gamesList[index].GameSerialNum);
             setNewEquipment(null)
         }
         else
@@ -79,20 +78,20 @@ export default function Modal_PlayerBringsEquipment(props) {
             </View>
         </ListItem>
     ))
-    const equipmentsList = () => equipments.map((e, i) => (
-        <ListItem key={i} containerStyle={{ backgroundColor: "transparent" }} >
-            <ListItem.Content style={{ alignItems: 'flex-end' }} >
-                <ListItem.Title style={styles.label}>{e.EquipmentName}</ListItem.Title>
-            </ListItem.Content>
-            <View>
-                <RadioButton
-                    value={i}
-                    status={choosenEquipment === i ? 'checked' : 'unchecked'}
-                    onPress={() => setChoosenEquipment(i)}
-                />
-            </View>
-        </ListItem>
-    ))
+    // const equipmentsList = () => equipments.map((e, i) => (
+    //     <ListItem key={i} containerStyle={{ backgroundColor: "transparent" }} >
+    //         <ListItem.Content style={{ alignItems: 'flex-end' }} >
+    //             <ListItem.Title style={styles.label}>{e.EquipmentName}</ListItem.Title>
+    //         </ListItem.Content>
+    //         <View>
+    //             <RadioButton
+    //                 value={i}
+    //                 status={choosenEquipment === i ? 'checked' : 'unchecked'}
+    //                 onPress={() => setChoosenEquipment(i)}
+    //             />
+    //         </View>
+    //     </ListItem>
+    // ))
 
 
     const Close = () => {
@@ -115,7 +114,8 @@ export default function Modal_PlayerBringsEquipment(props) {
                                 <View style={{ width: 170 }}>
                                     <Text style={styles.modal_Txt}>Equipment:</Text>
                                     <ScrollView style={{ height: 300, backgroundColor: 'rgba(52, 52, 52, 0.1)', borderRadius: 20, left: 10 }}>
-                                        {equipments == "There are no Equipments for this game" ? null : equipmentsList()}
+                                        {/* {equipments == "There are no Equipments for this game" ? null : equipmentsList()} */}
+                                        {equipments == "There are no Equipments for this game" ? null : <EquipmentsRadioBtns index={index} keyTeam={keyTeam} setChoosenEquipment={(e) => setChoosenEquipment(e)} choosenEquipment={choosenEquipment} />}
                                     </ScrollView>
                                 </View>
                                 <View style={styles.verticleLine}></View>
@@ -129,16 +129,16 @@ export default function Modal_PlayerBringsEquipment(props) {
                             <Text style={styles.modal_Txt}>Add A New Equipment:</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                                 <Pressable style={styles.modal_Closebtn} onPress={() => AddNewEquipment()} >
-                                    <Text style={[appCss.inputLabel,{marginHorizontal:25}]}>Add</Text>
+                                    <Text style={[appCss.inputLabel, { marginHorizontal: 25 }]}>Add</Text>
                                 </Pressable>
                                 <TextInput style={styles.input} onChangeText={setNewEquipment} value={newEquipment} />
                             </View>
                             <View style={styles.btns_View}>
                                 <Pressable style={styles.modal_Closebtn} onPress={() => Close()} >
-                                    <Text style={[appCss.inputLabel,{marginHorizontal:25}]}>Close</Text>
+                                    <Text style={[appCss.inputLabel, { marginHorizontal: 25 }]}>Close</Text>
                                 </Pressable>
                                 <Pressable style={styles.modal_Closebtn} onPress={() => AssignEquipment()} >
-                                    <Text style={[appCss.inputLabel,{marginHorizontal:25}]}>Assign</Text>
+                                    <Text style={[appCss.inputLabel, { marginHorizontal: 25 }]}>Assign</Text>
                                 </Pressable>
                             </View>
                         </ImageBackground>
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
         width: 200,
         backgroundColor: 'white',
         borderRadius: 10,
-        paddingRight:10
+        paddingRight: 10
 
     },
     verticleLine: {

@@ -72,7 +72,7 @@ const signIn = dispatch => {
     return async (player, checked) => {
         //api request
         try {
-            console.log("Player"+ player)
+            console.log("Player" + player)
             const data = {
                 Email: player.email,
                 Passcode: player.passcode
@@ -102,12 +102,10 @@ const signIn = dispatch => {
                 // console.log("this is the obj from DB  => ");
                 // console.log(res);
             }
-            console.log("ndskanslda")
-            console.log(playerDetails.data)
             if (playerDetails.status < 400 || playerDetails.status >= 500) {
                 if (checked) {
                     let jsonValue = JSON.stringify(playerDetails.data);
-                     await AsyncStorage.setItem('token', jsonValue);                     
+                    await AsyncStorage.setItem('token', jsonValue);
                 }
                 dispatch({ type: 'signin', payload: playerDetails.data });
             }
@@ -175,7 +173,15 @@ const updatPassCode = dispatch => async (player) => {
 const resetRestore_PassCode_values = dispatch => async (player) => {
     dispatch({ type: 'resetRestore_PassCode_values' })
 }
+const pushNotificationToken = dispatch => async (Email, Token) => {
+    try {
+        await AuthApi.put('/pushNotificationToken', { Email, Token });
 
+    } catch (error) {
+        console.log("error in pushNotificationToken")
+       // console.log(error)
+    }
+}
 
 
 
@@ -190,7 +196,8 @@ export const { Context, Provider } = CreateDataContext(
         signOut,
         restorePassCode,
         updatPassCode,
-        resetRestore_PassCode_values
+        resetRestore_PassCode_values,
+        pushNotificationToken,
     },
     {
         token: null,

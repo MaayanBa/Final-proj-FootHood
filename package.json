@@ -53,7 +53,8 @@
     "react-native-web": "^0.15.0",
     "react-native-wheel-scroll-picker": "^0.2.4",
     "rn-faded-scrollview": "^1.0.10",
-    "yup": "^0.32.9"
+    "yup": "^0.32.9",
+    "expo-notifications": "~0.8.2"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

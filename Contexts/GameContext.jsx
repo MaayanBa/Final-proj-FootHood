@@ -1,5 +1,6 @@
 import CreateDataContext from './createDataContext';
 import GameApi from '../api/Game';
+import JarvisApi from '../api/Jarvis';
 
 const gameReducer = (state, action) => {
     switch (action.type) {
@@ -176,6 +177,31 @@ const LeaveGame = dispatch => async (EmailPlayer, GameSerialNum) => {
         console.log(error)
     }
 }
+const Jarvis_FindPlayers4Game = dispatch => async (TeamSerialNum, GameSerialNum, AvgPlayerAge, AvgPlayerRating, Region) => {
+    try {
+        let gameDetailes = {
+            TeamSerialNum,
+            GameSerialNum,
+            AvgPlayerAge,
+            AvgPlayerRating,
+            LatitudeGameLoc: Region.latitude,
+            LongitudeGameLoc: Region.longitude,
+        }
+        console.log(gameDetailes)
+        const res = await JarvisApi.post('/Jarvis_FindPlayers4Game', gameDetailes);
+        console.log("Res==========")
+        console.log(res.data)
+        if (res.data.length > 0)
+            alert(`Jarvis has found  ${res.data.length} matching players for this game ! \n\nPlease keep up on your join requests ! `)
+        else
+            alert(`Jarvis hasn't found  any matching players for this game ! \n\nWe welcome you to invite new friends ! `)
+
+
+    } catch (error) {
+        console.log("err Jarvis_FindPlayers4Game")
+        console.log(error)
+    }
+}
 
 
 export const { Context, Provider } = CreateDataContext(
@@ -193,6 +219,7 @@ export const { Context, Provider } = CreateDataContext(
         EditGameDetailes,
         GetPlayersDivied2Groups,
         LeaveGame,
+        Jarvis_FindPlayers4Game
     },
     {
         gamesList: [],
