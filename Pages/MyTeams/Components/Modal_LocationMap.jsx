@@ -71,11 +71,6 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         marginBottom:20
     },
-    // addressText: {
-    //     color: "black",
-    //     margin: 3,
-    //     fontFamily: "Calibri",
-    // },
 })
 
 export default function Modal_LocationMap(props) {

@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState} from 'react'
 import { Text, StyleSheet, Image, View, StatusBar, TouchableOpacity, ScrollView } from 'react-native';
 import AppCss from '../../CSS/AppCss';
 import { Octicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Linking from 'expo-linking';
+//import Modal_FilterMap from '../FindGame/Modal_FilterMap';
 
 
 const appCss = AppCss;
@@ -73,6 +74,7 @@ const game = [
 ]
 
 export default function GameList(props) {
+    const [modalVisible, setModalVisible] = useState(false);
 
     const navToPitch = () => {
         Linking.openURL('https://www.google.com/maps/search/?api=1&query=%D7%9E%D7%92%D7%A8%D7%A9+%D7%9B%D7%93%D7%95%D7%A8%D7%92%D7%9C'); //ניווט לכל המגרשי ספורט
@@ -108,9 +110,10 @@ export default function GameList(props) {
         <ScrollView>
             <View style={[appCss.container, { alignItems: 'center' }]}>
                 <Text style={[appCss.title, appCss.space]}>Find Game</Text>
-                <TouchableOpacity style={[appCss.btnTouch, { width: '20%' }]} onPress={() => console.log("map btn")}>
+                <TouchableOpacity style={[appCss.btnTouch, { width: '20%' }]} onPress={() => setModalVisible(true)}>
                     <Text style={appCss.txtBtnTouch}>Map</Text>
                 </TouchableOpacity>
+                {/* {modalVisible && <Modal_FilterMap modalVisible={modalVisible} setModalVisible={() => setModalVisible(!modalVisible)} location={(loc) => getLocation(loc)} />} */}
                 <TouchableOpacity style={[appCss.btnTouch, { width: '40%' }, { flexDirection: "row" }, { backgroundColor: "red" }]} onPress={() => console.log("hot games btn")}>
                     <Octicons name="flame" size={24} color="black" />
                     <Text style={appCss.txtBtnTouch}>Hot Games</Text>
