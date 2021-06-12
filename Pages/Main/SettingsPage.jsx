@@ -89,7 +89,7 @@ export default function Settings(props) {
                     <Text style={appCss.txtBtnTouch}>  Logout  </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={[appCss.btnTouch, { width: '80%' }]} onPress={() => console.log("feedback btn")}>
+                <TouchableOpacity style={[appCss.btnTouch, { width: '80%' }]} onPress={() => props.navigation.navigate('SendFeedback')}>
                     <Text style={appCss.txtBtnTouch}> Send feedback    <AntDesign name="questioncircleo" size={24} color="black" /></Text>
                 </TouchableOpacity>
             </View>

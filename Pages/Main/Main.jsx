@@ -119,12 +119,30 @@ export default function Main({ navigation }) {
                 <Header navigation={navigation} />
                 <Text style={styles.title}>"Main page"</Text>
             </View>
+            {/* <View
+                style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'space-around',
+                }}>
+                <Text>Your expo push token: {expoPushToken}</Text>
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <Text>Title: {notification && notification.request.content.title} </Text>
+                    <Text>Body: {notification && notification.request.content.body}</Text>
+                    <Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
+                </View>
+                <Button
+                    title="Press to schedule a notification"
+                    onPress={async () => {
+                        await schedulePushNotification();
+                    }}
+                />
+            </View> */}
             <View style={styles.mainContent}></View>
             <View style={styles.footer}></View>
         </View>
     )
 }
-
 
 const styles = StyleSheet.create({
     container: {

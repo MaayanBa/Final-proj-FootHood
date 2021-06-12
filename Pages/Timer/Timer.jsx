@@ -9,6 +9,9 @@ export default function Timer() {
     const [totalDuration, setTotalDuration] = useState("");
     const [selectTime, setSelectTime] = useState();
     const [clicked, setClicked] = useState(false);
+    const [run, setRun] = useState(true);
+    const [pauseBtn, setPauseBtn] = useState('Pause')
+
 
     useEffect(() => {
         setSelectTime(totalDuration)
@@ -22,15 +25,28 @@ export default function Timer() {
         }
     }
 
+    const Pause = () => {
+        if (run == true) {
+            setRun(false)
+            setPauseBtn('Resume')
+        }
+        else {
+            setRun(true)
+            setPauseBtn('Pause')
+        }
+    }
+
     const Finish = () => {
         setClicked(false)
         //alert('Times up!')
     }
     return (
-        <SafeAreaView >
-
+        <SafeAreaView style={appCss.container} >
             <View style={appCss.container}>
-                <Text style={appCss.title}>Timer</Text>
+                <Text style={[appCss.title, { paddingBottom: 20 }]}>Timer</Text>
+                {clicked == true ? <CountDown until={selectTime * 60} timeToShow={['M','S']} digitStyle={{ backgroundColor: '#FFF' }}
+                    digitTxtStyle={{ color: 'black' }} timeLabelStyle={{ color: 'white', fontWeight: 'bold' }}
+                    timeLabels={{ m: 'Minutes',s: 'Seconds' }} running={run} onFinish={() => Finish()} size={30} /> : null}
                 <View style={styles.watchStyle}>
                     <TextInput
                         style={styles.input}
@@ -43,21 +59,14 @@ export default function Timer() {
                         <TouchableOpacity activeOpacity={0.8} onPress={() => StartTimer()} style={[appCss.btnTouch, { marginHorizontal: 30 }]}>
                             <Text style={appCss.txtBtnTouch}>  Start  </Text>
                         </TouchableOpacity>
-
-                        <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch, { marginHorizontal: 30 }]}
-                        // onPress={() => {
-                        //     setIsStopwatchStart(false);
-                        //     setResetStopwatch(true);
-                        // }}
-                        >
+                        <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch, { marginHorizontal: 30 }]}>
                             <Text style={appCss.txtBtnTouch}>RESET</Text>
                         </TouchableOpacity>
                     </View>
+                    {clicked == true ? <TouchableOpacity activeOpacity={0.8} onPress={() => Pause()} style={[appCss.btnTouch, { marginBottom: 30 }]}>
+                        <Text style={appCss.txtBtnTouch}>{pauseBtn}</Text>
+                    </TouchableOpacity> : null}
                 </View>
-
-                {clicked == true ? <CountDown until={selectTime * 60} timeToShow={['M', 'S']} digitStyle={{ backgroundColor: '#FFF' }}
-                    digitTxtStyle={{ color: 'black' }} timeLabelStyle={{ color: 'white', fontWeight: 'bold' }}
-                    timeLabels={{ m: 'Minutes', s: 'Seconds' }} onFinish={() => Finish()} size={30} /> : null}
             </View>
         </SafeAreaView>
 
@@ -68,20 +77,18 @@ const styles = StyleSheet.create({
     watchStyle: {
         alignItems: 'center',
         flex: 1,
-        marginTop: 40,
+        marginTop: 10,
         // justifyContent: 'center',
     },
     buttons: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding: 30
+        justifyContent: 'space-evenly',
     },
-
     input: {
         height: 56,
         fontSize: 22,
         //margin: 12,
-        marginTop: 43,
+        marginTop: 20,
         borderWidth: 1,
         paddingRight: 43,
         width: 300,
