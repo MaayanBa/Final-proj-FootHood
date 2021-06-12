@@ -29,6 +29,10 @@ const authReducer = (state, action) => {
         case 'register': {
             return { token: action.payload, errorMessage: '' }
         }
+        case 'PushNotificationToken': {
+            return { ...state, token: action.payload }
+        }
+
         default:
             return state
     }
@@ -127,6 +131,7 @@ const signIn = dispatch => {
 const signOut = dispatch => async () => {
     //console.log(JSON.stringify( AsyncStorage.getItem('token')))
     await AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('expoTokenDate')
     //console.log("The local storge has cleaned")
     dispatch({ type: 'signOut' })
 }
@@ -173,13 +178,13 @@ const updatPassCode = dispatch => async (player) => {
 const resetRestore_PassCode_values = dispatch => async (player) => {
     dispatch({ type: 'resetRestore_PassCode_values' })
 }
-const pushNotificationToken = dispatch => async (Email, Token) => {
+const pushNotificationToken = dispatch => async (Email, TokenNotfication) => {
     try {
-        await AuthApi.put('/pushNotificationToken', { Email, Token });
-
+        let response = await AuthApi.post('/PushNotificationToken', { Email, TokenNotfication });
+        dispatch({ type: 'PushNotificationToken', payload: response.data })
     } catch (error) {
         console.log("error in pushNotificationToken")
-       // console.log(error)
+        console.log(error.message)
     }
 }
 
@@ -198,6 +203,7 @@ export const { Context, Provider } = CreateDataContext(
         updatPassCode,
         resetRestore_PassCode_values,
         pushNotificationToken,
+
     },
     {
         token: null,

@@ -60,6 +60,7 @@ export default function CreateNewGame(props) {
   const [lastRegistrationDate, setLastRegistrationDate] = useState(null);
   const [lastRegistrationTime, setLastRegistrationTime] = useState(null);
   const [selectedEquipments, setSelectedEquipments] = useState(null);
+  const [edit, setEdit] = useState(false);
 
   useEffect(() => {
     setRenderCB(true);
@@ -157,7 +158,7 @@ export default function CreateNewGame(props) {
           <Text style={[appCss.inputLabel, { textAlign: 'center', color: 'orange' }]}> {gameLocation}</Text>
 
           {/* Date and Time */}
-          <DateAndTime liftState={liftState} />
+          <DateAndTime liftState={liftState} edit={edit} setEdit={setEdit} />
 
           {/* Equipment required */}
           <View style={styles.checkBox_View}>
