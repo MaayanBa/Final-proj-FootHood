@@ -24,11 +24,12 @@ const GooglePlacesInput = (props) => {
                     fetchDetails={true}
                     onPress={(googlePlaceDetails = null) => { // 'details' is provided when fetchDetails = true
                         props.notifyChange(googlePlaceDetails.structured_formatting.secondary_text+" " +googlePlaceDetails.structured_formatting.main_text);
-                        // console.log("googlePlaceData========>")
+                        //console.log("googlePlaceData========>")
                         // console.log(googlePlaceData)
                         // console.log("googlePlaceDetails======>")
                         //console.log(googlePlaceDetails.structured_formatting.main_text+" " +googlePlaceDetails.structured_formatting.secondary_text)
                     }}
+                    
                     query={{
                         key: 'AIzaSyAY2M0Dj9jb5I6kU-_prhC3i0XLqdufOW8',
                         language: ['en', 'he']

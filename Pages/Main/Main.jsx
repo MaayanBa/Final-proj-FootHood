@@ -7,6 +7,7 @@ import { Context as GameContext } from '../../Contexts/GameContext'
 import { Context as PlayerContext } from '../../Contexts/PlayerContext'
 import * as Notifications from 'expo-notifications';
 import pushNotifications from '../../Services/pushNotifications';
+import { setIn } from 'formik';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -23,6 +24,10 @@ export default function Main({ navigation }) {
     const { GetPlayers } = useContext(PlayerContext);
     const [user, setUser] = useState(token)
     const [renderScreen, setRenderScreen] = useState(false)
+    const [keyTeam, setKeyTeam] = useState(0)
+    const [index, setIndex] = useState(0)
+    const [notificationIncome, setNotificationIncome] = useState(false)
+    const [notification, setNotification] = useState(null)
     const [expoPushToken, setExpoPushToken] = useState('');
     const [notification, setNotification] = useState('')
     const notificationListener = useRef();
@@ -31,8 +36,8 @@ export default function Main({ navigation }) {
     const [keyTeam, setKeyTeam] = useState(0);
 
     useEffect(() => {
-        GetPlayers();
         GetTeamDetails(user.Email)
+        GetPlayers();
         pushNotifications().then(expoToken => {
             setExpoPushToken(expoToken)
             if (expoToken !== undefined) {
@@ -40,17 +45,19 @@ export default function Main({ navigation }) {
             }
         });
 
-        // This listener is fired whenever a notification is received while the app is foregrounded
         notificationListener.current = Notifications.addNotificationReceivedListener(not => {
-            functionsCases(not.request.content.data);
-            setNotification(not.request.content.data);
+            setNotification(not.request.content.data)
+            setNotificationIncome(true)
+            GetTeamDetails(user.Email)
+            //functionsCases(not.request.content.data);
         });
 
         // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-            functionsCases(response.notification.request.content.data);
-            setNotification(response.notification.request.content.data);
-
+            setNotification(response.notification.request.content.data)
+            setNotificationIncome(true)
+            GetTeamDetails(user.Email)
+            // functionsCases(response.not.request.content.data);
         });
 
         return () => {
@@ -59,62 +66,37 @@ export default function Main({ navigation }) {
         };
     }, []);
 
-    const functionsCases = async (not) => {
-        setPushHappend(true);
-        console.log(not)
-        switch (not.name) {
-            case "newTeamAdded":
-                let keyTeam = 0;
-                let index = 0;
-
-                myTeams.map(async (team, i) => {
-                    if (team.TeamSerialNum == notification.T_SerialNum) {
-                        setKeyTeam(i);
-                        GetGamesList(myTeams[i].TeamSerialNum)
-                        // console.log("gamesList.length"+ gamesList.length)
-                        //                         navigation.navigate('StackNav_MyTeams', {
-                        //                             screen: 'GamePage',
-                        //                             params: { keyTeam,index:keyTeam }
-                        //                         });
-
-                        // gamesList.map(async (game, key) => {
-                        //     console.log(game.GameSerialNum)
-                        //     if (game.GameSerialNum == notification.G_SerialNum)
-                        //         navigation.navigate('StackNav_MyTeams', {
-                        //             screen: 'GameList',
-                        //             params: { key: keyTeam }
-                        //         });
-                        // })
-                    }
-                });
-                // console.log("index = " + index)
-                //navigation.navigate('StackNav_MyTeams')
-                // navigation.navigate('MyTeams')
-                // navigation.navigate('TeamPage', { key: keyTeam })
-                // navigation.navigate('GameList', { key: keyTeam })
-
-
-                return //navigation.navigate('GamePage', { index, keyTeam })
-
-
-
-            default:
-                return console.log("null")
+    useEffect(() => {
+        console.log("TEAM-------------->" + myTeams.length)
+        if (notificationIncome) {
+            setNotificationIncome(false)
+            //console.log("CHECK===========")
+            console.log(notification)
+            myTeams.map(async (team, i) => {
+                if (team.TeamSerialNum == notification.T_SerialNum) {
+                    //console.log(team.TeamSerialNum)
+                    setKeyTeam(i)
+                    GetGamesList(team.TeamSerialNum)
+                    //console.log(gamesList.length)
+                }
+            })
         }
-    }
+    }, [notificationIncome]);
 
     useEffect(() => {
-        if (pushHappend) {
-            gamesList.map(async (game, index) => {
-                if (game.GameSerialNum == notification.G_SerialNum)
-                    navigation.navigate('StackNav_MyTeams', {
-                        screen: 'GamePage',
-                        params: { keyTeam, index }
-                    });
-            })
-            setPushHappend(false)
-        }
-    }, [gamesList])
+        //console.log(gamesList.length)
+        gamesList.map(async (game, key) => {
+            //console.log(game.GameSerialNum)
+            if (game.GameSerialNum == notification.G_SerialNum){
+            //console.log(game.GameSerialNum)
+            console.log("INDEX------> "+key)
+                navigation.navigate('StackNav_MyTeams', {
+                    screen: 'GamePage',
+                    params: { keyTeam: keyTeam,index:key }
+                });
+            }
+        })
+    }, [gamesList]);
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {

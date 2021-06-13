@@ -148,7 +148,7 @@ export default function Modal_LocationMap(props) {
                     </MapView>
                 </View>
 
-                <Pressable style={styles.map_BtnClose} onPress={() => props.setModalVisible()}            >
+                <Pressable style={styles.map_BtnClose} onPress={() => props.setModalVisible()}>
                     <Text style={appCss.inputLabel}>Close Map</Text>
                 </Pressable>
                 </ImageBackground>
