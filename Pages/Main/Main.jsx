@@ -24,8 +24,11 @@ export default function Main({ navigation }) {
     const [user, setUser] = useState(token)
     const [renderScreen, setRenderScreen] = useState(false)
     const [expoPushToken, setExpoPushToken] = useState('');
+    const [notification, setNotification] = useState('')
     const notificationListener = useRef();
     const responseListener = useRef();
+    const [pushHappend, setPushHappend] = useState(false);
+    const [keyTeam, setKeyTeam] = useState(0);
 
     useEffect(() => {
         GetPlayers();
@@ -38,13 +41,16 @@ export default function Main({ navigation }) {
         });
 
         // This listener is fired whenever a notification is received while the app is foregrounded
-        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-            functionsCases(notification.request.content.data);
+        notificationListener.current = Notifications.addNotificationReceivedListener(not => {
+            functionsCases(not.request.content.data);
+            setNotification(not.request.content.data);
         });
 
         // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
             functionsCases(response.notification.request.content.data);
+            setNotification(response.notification.request.content.data);
+
         });
 
         return () => {
@@ -53,23 +59,24 @@ export default function Main({ navigation }) {
         };
     }, []);
 
-    const functionsCases = async (notification) => {
-        console.log(notification)
-        switch (notification.name) {
+    const functionsCases = async (not) => {
+        setPushHappend(true);
+        console.log(not)
+        switch (not.name) {
             case "newTeamAdded":
                 let keyTeam = 0;
                 let index = 0;
-                console.log(myTeams.length)
 
                 myTeams.map(async (team, i) => {
                     if (team.TeamSerialNum == notification.T_SerialNum) {
-                        keyTeam = i;
-                        await GetGamesList(myTeams[i].TeamSerialNum)
+                        setKeyTeam(i);
+                        GetGamesList(myTeams[i].TeamSerialNum)
+                        // console.log("gamesList.length"+ gamesList.length)
+                        //                         navigation.navigate('StackNav_MyTeams', {
+                        //                             screen: 'GamePage',
+                        //                             params: { keyTeam,index:keyTeam }
+                        //                         });
 
-                        navigation.navigate('StackNav_MyTeams', {
-                            screen: 'GameList',
-                            params: { key: keyTeam }
-                        });
                         // gamesList.map(async (game, key) => {
                         //     console.log(game.GameSerialNum)
                         //     if (game.GameSerialNum == notification.G_SerialNum)
@@ -96,10 +103,18 @@ export default function Main({ navigation }) {
         }
     }
 
-    // useEffect(() => {
-    //     GetPlayers();
-    //     GetTeamDetails(user.Email)
-    // }, [])
+    useEffect(() => {
+        if (pushHappend) {
+            gamesList.map(async (game, index) => {
+                if (game.GameSerialNum == notification.G_SerialNum)
+                    navigation.navigate('StackNav_MyTeams', {
+                        screen: 'GamePage',
+                        params: { keyTeam, index }
+                    });
+            })
+            setPushHappend(false)
+        }
+    }, [gamesList])
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
