@@ -43,8 +43,8 @@ export default function Modal_LocationMap(props) {
         loc !== undefined ?
             geocodeLocationByName(loc).then(
                 (data) => {
-                    console.log("Data====>" + data);
-                    console.log(data);
+                    // console.log("Data====>" + data);
+                    // console.log(data);
                     setRegion({
                         latitude: data.lat,
                         longitude: data.lng,
@@ -59,11 +59,11 @@ export default function Modal_LocationMap(props) {
         if (radius == 0 || locationName == "")
             alert("You must enter place name radius for search")
         else {
-            console.log(region)
-            console.log(locationName)
-            console.log(radius)
+            // console.log(region)
+            // console.log(locationName)
+            // console.log(radius)
             props.distance(parseInt(radius))
-            //Function To get relavent games from DB goes here
+            props.locationCord(region)
             props.setModalVisible()
         }
     }

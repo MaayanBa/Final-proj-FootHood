@@ -30,20 +30,45 @@ const game = [
 
 export default function GameList(props) {
     const [modalVisible, setModalVisible] = useState(false);
-    const [gameLocation, setGameLocation] = useState("");
-    const [gameDistance, setGameDistance] = useState(0)
+    const [filterLocationName, setFilterLocationName] = useState("");
+    const [filterLocationCord, setFilterLocationCord] = useState({
+        latitude: 0,
+        longitude: 0,
+        latitudeDelta: 0,
+        longitudeDelta: 0,
+    });
+    const [filterDistance, setFilterDistance] = useState(0)
+    const [region, setRegion] = useState({
+        latitude: 0,
+        longitude: 0,
+        latitudeDelta: 0,
+        longitudeDelta: 0,
+    });
+    // useEffect(() => {
+    // //load games for player that he is not in
+    // }, [])
+
 
     const getLocation = (loc) => {
-        setGameLocation(loc);
+        setFilterLocationName(loc);
+    }
+    const getLocationCord = (region) => {
+        setFilterLocationCord(region);
     }
 
     const getDistance = (radius) => {
-        setGameDistance(radius);
+        setFilterDistance(radius);
     }
 
     const ResetSearch = () => {
-        setGameDistance(0)
-        setGameLocation("")
+        setFilterDistance(0)
+        setFilterLocationName("")
+        setFilterLocationCord({
+            latitude: 0,
+            longitude: 0,
+            latitudeDelta: 0,
+            longitudeDelta: 0,
+        });
     }
 
     const navToPitch = () => {
@@ -51,30 +76,33 @@ export default function GameList(props) {
     }
 
     let gameCards = game.map((g, key) => {
-        return <View key={key} style={styles.GameInformation_Touch} onPress={() => console.log(game.groupPhoto)}>
-            <View style={styles.gameTitle_View}>
-                <Text style={styles.header_txt}>{g.gameName}</Text>
-            </View>
-            <View style={styles.gameInformation_View}>
-                <View style={styles.gameInformation_View_R}>
-                    <View>
-                        <Text style={styles.txtStyle}>Time: {g.time}</Text>
-                        <Text style={styles.txtStyle}>Avarege range: {g.ageRange}</Text>
-                    </View>
-                    <View style={styles.gameInformation_View_R_Down}>
-                        <TouchableOpacity style={appCss.blue_btn} onPress={() => console.log("btn enter game")}>
-                            <Text style={[styles.txtStyle, { color: 'white', alignItems: 'center' }]}>Join</Text>
-                        </TouchableOpacity>
-                    </View>
+        if (filterDistance > 0) {
+            return <View key={key} style={styles.GameInformation_Touch} onPress={() => console.log(game.groupPhoto)}>
+                <View style={styles.gameTitle_View}>
+                    <Text style={styles.header_txt}>{g.gameName}</Text>
                 </View>
-                <View style={styles.gameInformation_View_L}>
-                    <Text style={styles.txtStyle}>Date: {g.date}</Text>
-                    <Text style={styles.txtStyle}>Number of Players: {g.numberOfPlayers}</Text>
-                    <Text style={styles.txtStyle}>Location: {g.location}</Text>
+                {/* {locationNameToNum(filterLocationName)} */}
+                <View style={styles.gameInformation_View}>
+                    <View style={styles.gameInformation_View_R}>
+                        <View>
+                            <Text style={styles.txtStyle}>Time: {g.time}</Text>
+                            <Text style={styles.txtStyle}>Avarege range: {g.ageRange}</Text>
+                        </View>
+                        <View style={styles.gameInformation_View_R_Down}>
+                            <TouchableOpacity style={appCss.blue_btn} onPress={() => console.log("btn enter game")}>
+                                <Text style={[styles.txtStyle, { color: 'white', alignItems: 'center' }]}>Join</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={styles.gameInformation_View_L}>
+                        <Text style={styles.txtStyle}>Date: {g.date}</Text>
+                        <Text style={styles.txtStyle}>Number of Players: {g.numberOfPlayers}</Text>
+                        <Text style={styles.txtStyle}>Location: {g.location}</Text>
 
+                    </View>
                 </View>
             </View>
-        </View>
+        }
     });
 
     return (
@@ -86,7 +114,7 @@ export default function GameList(props) {
                         <TouchableOpacity style={[appCss.btnTouch, { width: '40%' }]} onPress={() => setModalVisible(true)}>
                             <Text style={appCss.txtBtnTouch}>Filter</Text>
                         </TouchableOpacity>
-                        {modalVisible && <Modal_FilterMap modalVisible={modalVisible} setModalVisible={() => setModalVisible(!modalVisible)} location={(loc) => getLocation(loc)} distance={(radius) => getDistance(radius)} />}
+                        {modalVisible && <Modal_FilterMap modalVisible={modalVisible} setModalVisible={() => setModalVisible(!modalVisible)} location={(loc) => getLocation(loc)} distance={(radius) => getDistance(radius)} locationCord={(region) => getLocationCord(region)} />}
                         <TouchableOpacity style={[appCss.btnTouch, { width: '40%' }, { flexDirection: "row" }, { backgroundColor: "red" }]} onPress={() => console.log("hot games btn")}>
                             <Octicons name="flame" size={24} color="black" />
                             <Text style={appCss.txtBtnTouch}>Hot Games</Text>
@@ -98,15 +126,14 @@ export default function GameList(props) {
                         <Text style={appCss.txtBtnTouch}>Courts around your area</Text>
                         <MaterialCommunityIcons name="soccer-field" size={24} color="black" />
                     </TouchableOpacity>
-                    {/* <Text style={[appCss.inputLabel, { textAlign: 'center', color: 'orange' }]}>-----{gameDistance}</Text> */}
-                    {gameDistance == 0 ? gameCards : <Text>Result For Games {gameDistance} KM Around {gameLocation}</Text>}
+                    {filterDistance == 0 ? null : <Text style={appCss.inputLabel,{paddingTop:5}}>Result For Games {filterDistance} KM Around {filterLocationName}</Text>}
+                    {gameCards}
                     <View style={[{ flexDirection: "row" }]}>
-                        {gameDistance == 0 ? <TouchableOpacity style={[appCss.btnTouch, { width: '45%' }]} onPress={() => console.log("reduce results btn")}>
+                        {filterDistance == 0 ? <TouchableOpacity style={[appCss.btnTouch, { width: '45%' }]} onPress={() => console.log("reduce results btn")}>
                             <Text style={appCss.txtBtnTouch}>Show More</Text>
                         </TouchableOpacity> : <TouchableOpacity style={[appCss.btnTouch, { width: '45%' }]} onPress={() => ResetSearch()}>
                             <Text style={appCss.txtBtnTouch}>Reset Search</Text>
                         </TouchableOpacity>}
-
                     </View>
                 </View>
             </ScrollView>
@@ -159,7 +186,7 @@ const styles = StyleSheet.create({
     buttons: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
-        width:'100%'
+        width: '100%'
     },
 
 });

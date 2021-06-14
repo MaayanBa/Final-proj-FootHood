@@ -7,34 +7,6 @@ import { Context as GameContext } from '../../../Contexts/GameContext';
 import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 import { getLocation, geocodeLocationByName } from '../../../Services/location-service';
 
-const styles = StyleSheet.create({
-  playersAndEquipment_Window: {
-    backgroundColor: 'white',
-    padding: 25,
-    width: '90%',
-    borderRadius: 30,
-    alignSelf: 'center',
-    marginTop: 15
-  },
-  playersAndEquipment_Title: {
-    alignSelf: 'center'
-  },
-  txtGame: {
-    alignSelf: 'center',
-    fontWeight: "bold",
-    fontSize: 16,
-    marginBottom: 5,
-  },
-  playerList_scrollView: {
-    width: '100%',
-    height: 200
-  },
-  playerInGameList: {
-    backgroundColor: '#D9D9D9',
-
-  }
-})
-
 export default function Players_Window(props) {
   const { state: { playersPerGame }, GetPlayers4Game,Jarvis_FindPlayers4Game } = useContext(GameContext);
   const { state: { players } } = useContext(PlayerContext);
@@ -100,3 +72,30 @@ export default function Players_Window(props) {
   );
 }
 
+const styles = StyleSheet.create({
+  playersAndEquipment_Window: {
+    backgroundColor: 'white',
+    padding: 25,
+    width: '90%',
+    borderRadius: 30,
+    alignSelf: 'center',
+    marginTop: 15
+  },
+  playersAndEquipment_Title: {
+    alignSelf: 'center'
+  },
+  txtGame: {
+    alignSelf: 'center',
+    fontWeight: "bold",
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  playerList_scrollView: {
+    width: '100%',
+    height: 200
+  },
+  playerInGameList: {
+    backgroundColor: '#D9D9D9',
+
+  }
+})

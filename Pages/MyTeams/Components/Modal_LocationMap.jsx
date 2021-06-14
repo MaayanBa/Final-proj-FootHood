@@ -10,69 +10,6 @@ import { Context as CitiesContext } from '../../../Contexts/CitiesContext';
 import CitiesDropDown from './CitiesDropDown';
 import GooglePlacesInput from './GooglePlacesInput';
 
-const appCss = AppCss;
-
-const styles = StyleSheet.create({
-    // modal_View: {
-    //     margin: 20,
-    //     backgroundColor: "white",
-    //     borderRadius: 20,
-    //     padding: 35,
-    //     alignItems: "center",
-    //     shadowColor: "#000",
-    //     shadowOffset: { width: 0, height: 2 },
-    //     shadowOpacity: 0.25,
-    //     shadowRadius: 4,
-    //     elevation: 5,
-    //     height: '90%',
-    //     width: '90%',
-
-    // },
-    modal_View: {
-        margin: 20,
-        // backgroundColor: "#808080",
-        //backgroundColor: imgBackGround,
-        //borderRadius:0,
-        padding: 5,
-        //paddingTop: 5,
-        shadowColor: "#D9D9D9",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 20,
-        height: '90%',
-        width: '90%',
-        borderRadius: 30
-
-    },
-    modal_Txt: {
-        marginBottom: 15,
-        textAlign: "center",
-        fontWeight: "bold",
-        color: 'black'
-    },
-    map_Container: {
-        flex: 1,
-        marginTop: 20,
-        // backgroundColor: '#fff',
-        alignItems:'center'
-    },
-    mapView_container: {
-        flex: 1,
-        zIndex: 0,
-        width: Dimensions.get('window').width - 60,
-        height: '70%'
-    },
-    map_BtnClose: {
-        backgroundColor: "#2196F3",
-        marginTop: 40,
-        borderRadius: 20,
-        padding: 10,
-        alignSelf: "center",
-        marginBottom:20
-    },
-})
-
 export default function Modal_LocationMap(props) {
     const { state: { cities } } = useContext(CitiesContext);
 
@@ -157,3 +94,64 @@ export default function Modal_LocationMap(props) {
     )
 }
 
+const appCss = AppCss;
+const styles = StyleSheet.create({
+    // modal_View: {
+    //     margin: 20,
+    //     backgroundColor: "white",
+    //     borderRadius: 20,
+    //     padding: 35,
+    //     alignItems: "center",
+    //     shadowColor: "#000",
+    //     shadowOffset: { width: 0, height: 2 },
+    //     shadowOpacity: 0.25,
+    //     shadowRadius: 4,
+    //     elevation: 5,
+    //     height: '90%',
+    //     width: '90%',
+
+    // },
+    modal_View: {
+        margin: 20,
+        // backgroundColor: "#808080",
+        //backgroundColor: imgBackGround,
+        //borderRadius:0,
+        padding: 5,
+        //paddingTop: 5,
+        shadowColor: "#D9D9D9",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 20,
+        height: '90%',
+        width: '90%',
+        borderRadius: 30
+
+    },
+    modal_Txt: {
+        marginBottom: 15,
+        textAlign: "center",
+        fontWeight: "bold",
+        color: 'black'
+    },
+    map_Container: {
+        flex: 1,
+        marginTop: 20,
+        // backgroundColor: '#fff',
+        alignItems:'center'
+    },
+    mapView_container: {
+        flex: 1,
+        zIndex: 0,
+        width: Dimensions.get('window').width - 60,
+        height: '70%'
+    },
+    map_BtnClose: {
+        backgroundColor: "#2196F3",
+        marginTop: 40,
+        borderRadius: 20,
+        padding: 10,
+        alignSelf: "center",
+        marginBottom:20
+    },
+})
