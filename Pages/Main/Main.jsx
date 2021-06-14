@@ -24,15 +24,11 @@ export default function Main({ navigation }) {
     const { GetPlayers } = useContext(PlayerContext);
     const [user, setUser] = useState(token)
     const [renderScreen, setRenderScreen] = useState(false)
-    const [keyTeam, setKeyTeam] = useState(0)
-    const [index, setIndex] = useState(0)
     const [notificationIncome, setNotificationIncome] = useState(false)
-    const [notification, setNotification] = useState(null)
     const [expoPushToken, setExpoPushToken] = useState('');
     const [notification, setNotification] = useState('')
     const notificationListener = useRef();
     const responseListener = useRef();
-    const [pushHappend, setPushHappend] = useState(false);
     const [keyTeam, setKeyTeam] = useState(0);
 
     useEffect(() => {
@@ -40,9 +36,8 @@ export default function Main({ navigation }) {
         GetPlayers();
         pushNotifications().then(expoToken => {
             setExpoPushToken(expoToken)
-            if (expoToken !== undefined) {
+            if (expoToken !== undefined)
                 pushNotificationToken(token.Email, expoToken.data);
-            }
         });
 
         notificationListener.current = Notifications.addNotificationReceivedListener(not => {
@@ -67,35 +62,30 @@ export default function Main({ navigation }) {
     }, []);
 
     useEffect(() => {
-        console.log("TEAM-------------->" + myTeams.length)
         if (notificationIncome) {
-            setNotificationIncome(false)
-            //console.log("CHECK===========")
-            console.log(notification)
+            // console.log("TEAM-------------->" + myTeams.length)
             myTeams.map(async (team, i) => {
                 if (team.TeamSerialNum == notification.T_SerialNum) {
-                    //console.log(team.TeamSerialNum)
                     setKeyTeam(i)
                     GetGamesList(team.TeamSerialNum)
-                    //console.log(gamesList.length)
                 }
             })
         }
-    }, [notificationIncome]);
+    }, [myTeams]);
 
     useEffect(() => {
-        //console.log(gamesList.length)
-        gamesList.map(async (game, key) => {
-            //console.log(game.GameSerialNum)
-            if (game.GameSerialNum == notification.G_SerialNum){
-            //console.log(game.GameSerialNum)
-            console.log("INDEX------> "+key)
-                navigation.navigate('StackNav_MyTeams', {
-                    screen: 'GamePage',
-                    params: { keyTeam: keyTeam,index:key }
-                });
-            }
-        })
+        if (notificationIncome) {
+            gamesList.map(async (game, key) => {
+                if (game.GameSerialNum == notification.G_SerialNum) {
+                    // console.log("INDEX------> " + key)
+                    navigation.navigate('StackNav_MyTeams', {
+                        screen: 'GamePage',
+                        params: { keyTeam: keyTeam, index: key }
+                    });
+                }
+            })
+            setNotificationIncome(false)
+        }
     }, [gamesList]);
 
     useEffect(() => {
