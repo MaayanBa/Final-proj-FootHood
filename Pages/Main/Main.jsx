@@ -8,6 +8,7 @@ import { Context as PlayerContext } from '../../Contexts/PlayerContext'
 import * as Notifications from 'expo-notifications';
 import pushNotifications from '../../Services/pushNotifications';
 import { setIn } from 'formik';
+import  NotificationActions from '../../Services/NotificationActions';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -34,59 +35,60 @@ export default function Main({ navigation }) {
     useEffect(() => {
         GetTeamDetails(user.Email)
         GetPlayers();
-        pushNotifications().then(expoToken => {
-            setExpoPushToken(expoToken)
-            if (expoToken !== undefined)
-                pushNotificationToken(token.Email, expoToken.data);
-        });
+       // NotificationActions();
+        // pushNotifications().then(expoToken => {
+        //     setExpoPushToken(expoToken)
+        //     if (expoToken !== undefined)
+        //         pushNotificationToken(token.Email, expoToken.data);
+        // });
 
-        notificationListener.current = Notifications.addNotificationReceivedListener(not => {
-            setNotification(not.request.content.data)
-            setNotificationIncome(true)
-            GetTeamDetails(user.Email)
-            //functionsCases(not.request.content.data);
-        });
+        // notificationListener.current = Notifications.addNotificationReceivedListener(not => {
+        //     setNotification(not.request.content.data)
+        //     setNotificationIncome(true)
+        //     GetTeamDetails(user.Email)
+        //     //functionsCases(not.request.content.data);
+        // });
 
-        // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-        responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-            setNotification(response.notification.request.content.data)
-            setNotificationIncome(true)
-            GetTeamDetails(user.Email)
-            // functionsCases(response.not.request.content.data);
-        });
+        // // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+        // responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+        //     setNotification(response.notification.request.content.data)
+        //     setNotificationIncome(true)
+        //     GetTeamDetails(user.Email)
+        //     // functionsCases(response.not.request.content.data);
+        // });
 
-        return () => {
-            Notifications.removeNotificationSubscription(notificationListener.current);
-            Notifications.removeNotificationSubscription(responseListener.current);
-        };
+        // return () => {
+        //     Notifications.removeNotificationSubscription(notificationListener.current);
+        //     Notifications.removeNotificationSubscription(responseListener.current);
+        // };
     }, []);
 
-    useEffect(() => {
-        if (notificationIncome) {
-            // console.log("TEAM-------------->" + myTeams.length)
-            myTeams.map(async (team, i) => {
-                if (team.TeamSerialNum == notification.T_SerialNum) {
-                    setKeyTeam(i)
-                    GetGamesList(team.TeamSerialNum)
-                }
-            })
-        }
-    }, [myTeams]);
+    // useEffect(() => {
+    //     if (notificationIncome) {
+    //         // console.log("TEAM-------------->" + myTeams.length)
+    //         myTeams.map(async (team, i) => {
+    //             if (team.TeamSerialNum == notification.T_SerialNum) {
+    //                 setKeyTeam(i)
+    //                 GetGamesList(team.TeamSerialNum)
+    //             }
+    //         })
+    //     }
+    // }, [myTeams]);
 
-    useEffect(() => {
-        if (notificationIncome) {
-            gamesList.map(async (game, key) => {
-                if (game.GameSerialNum == notification.G_SerialNum) {
-                    // console.log("INDEX------> " + key)
-                    navigation.navigate('StackNav_MyTeams', {
-                        screen: 'GamePage',
-                        params: { keyTeam: keyTeam, index: key }
-                    });
-                }
-            })
-            setNotificationIncome(false)
-        }
-    }, [gamesList]);
+    // useEffect(() => {
+    //     if (notificationIncome) {
+    //         gamesList.map(async (game, key) => {
+    //             if (game.GameSerialNum == notification.G_SerialNum) {
+    //                 // console.log("INDEX------> " + key)
+    //                 navigation.navigate('StackNav_MyTeams', {
+    //                     screen: 'GamePage',
+    //                     params: { keyTeam: keyTeam, index: key }
+    //                 });
+    //             }
+    //         })
+    //         setNotificationIncome(false)
+    //     }
+    // }, [gamesList]);
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -102,6 +104,7 @@ export default function Main({ navigation }) {
 
     return (
         <View style={styles.container}>
+            <NotificationActions navigation={navigation}/>
             <View style={styles.header}>
                 <Header navigation={navigation} />
                 <Text style={styles.title}>"Main page"</Text>
