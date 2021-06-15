@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
     StyleSheet, TextInput,
     View, Text, TouchableOpacity,
@@ -8,6 +8,7 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Formik } from "formik";
 import AppCss from '../../CSS/AppCss';
+import { Context as SettingsContext } from '../../Contexts/SettingsContext';
 
 
 //SEND FEEDBACK PAGE****!!!
@@ -43,17 +44,16 @@ const styles = StyleSheet.create({
 })
 
 export default function SendFeedback(props) {
+    const {AddFeedback } = useContext(SettingsContext);
+
 
     const SendFeedback =  (values) => {
         let newFeedback = {
-            fullName: values.fullName,
             email: values.email,
-            subject: values.subject,
-            content: values.content,
+            content: "Subject: " +values.subject +"  ,    Content: "+ values.content,
         }
-        console.log(newFeedback)
-        //CreateNewFeedback(newFeedback);
-        //alert("The feedback has sent")
+        AddFeedback(newFeedback.email,newFeedback.content)
+
     }
 
 
@@ -64,7 +64,6 @@ export default function SendFeedback(props) {
                     <Text style={[appCss.title, { paddingBottom: 20 }]}>Feedback</Text>
                     <Formik
                         initialValues={{
-                            fullName: '',
                             email: '',
                             subject: '',
                             content: '',
@@ -73,16 +72,6 @@ export default function SendFeedback(props) {
                     >
                         {({ handleChange, handleSubmit, values }) => (
                             <>
-                                <Text style={appCss.inputLabel}>Full Name:</Text>
-                                <View style={appCss.sectionStyle}>
-                                    <Image source={require('../../assets/soccerPlayer.png')} style={styles.ImageStyle} />
-                                    <TextInput
-                                        name="FullName"
-                                        placeholder="Enter Full Name"
-                                        onChangeText={handleChange('fullName')}
-                                        value={values.fullName}
-                                    />
-                                </View>
                                 <Text style={appCss.inputLabel}>Email:</Text>
                                 <View style={appCss.sectionStyle}>
                                     <Image source={require('../../assets/soccerPlayer.png')} style={styles.ImageStyle} />

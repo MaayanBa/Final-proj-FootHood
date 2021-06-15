@@ -9,6 +9,7 @@ import { Provider as PlayerProvider } from './Contexts/PlayerContext';
 import { Provider as GameProvider } from './Contexts/GameContext';
 import { Provider as CitiesProvider } from './Contexts/CitiesContext';
 import { Provider as EquipmentProvider } from './Contexts/EquipmentContext';
+import { Provider as SettingsProvider } from './Contexts/SettingsContext';
 import pushNotifications from './Services/registerForPushNotificationsAsync';
 import * as Notifications from 'expo-notifications';
 
@@ -27,25 +28,25 @@ export default function App() {
 
   //   })
   // })
-  
+
   return (
-    <EquipmentProvider>
-      <CitiesProvider>
-        <PlayerProvider>
-          <GameProvider>
-            <TeamProvider>
-              <AuthProvider>
-                <ImageBackground source={require('./assets/WallPaper.png')} style={cssApp.imageBackGround}>
-                  <StatusBar />
-                  <StackNav />
-                </ImageBackground >
-              </AuthProvider>
-            </TeamProvider>
-          </GameProvider>
-        </PlayerProvider>
-      </CitiesProvider>
-    </EquipmentProvider>
-
-
+    <SettingsProvider>
+      <EquipmentProvider>
+        <CitiesProvider>
+          <PlayerProvider>
+            <GameProvider>
+              <TeamProvider>
+                <AuthProvider>
+                  <ImageBackground source={require('./assets/WallPaper.png')} style={cssApp.imageBackGround}>
+                    <StatusBar />
+                    <StackNav />
+                  </ImageBackground >
+                </AuthProvider>
+              </TeamProvider>
+            </GameProvider>
+          </PlayerProvider>
+        </CitiesProvider>
+      </EquipmentProvider>
+    </SettingsProvider>
   );
 }

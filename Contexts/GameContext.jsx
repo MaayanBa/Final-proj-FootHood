@@ -28,6 +28,9 @@ const gameReducer = (state, action) => {
         case 'GetAmountRegisteredPlayersEachGame': {
             return { ...state, amountRegisteredPlayersEachGame: action.payload }
         }
+        case 'GetGamesPlayerNotRegistered': {
+            return { ...state, gamesPlayerNotRegistered: action.payload }
+        }
         case 'Check': {
             return { ...state, check: action.payload }
         }
@@ -203,6 +206,18 @@ const Jarvis_FindPlayers4Game = dispatch => async (TeamSerialNum, GameSerialNum,
     }
 }
 
+const GetGamesPlayerNotRegistered = dispatch => async (EmailPlayer) => {
+    try {
+        //console.log(EmailPlayer);
+        const response = await GameApi.post('/GamesThatUserNotRegisterd', { EmailPlayer});
+        dispatch({ type: 'GetGamesPlayerNotRegistered', payload: response.data })
+        //console.log(response.data)
+    } catch (err) {
+        console.log("in error ")
+        console.log(err)
+        dispatch({ type: 'add_error', payload: 'Somthing went wrong when getting games' })
+    }
+}
 
 export const { Context, Provider } = CreateDataContext(
     //Reducer
@@ -219,7 +234,8 @@ export const { Context, Provider } = CreateDataContext(
         EditGameDetailes,
         GetPlayersDivied2Groups,
         LeaveGame,
-        Jarvis_FindPlayers4Game
+        Jarvis_FindPlayers4Game,
+        GetGamesPlayerNotRegistered,
     },
     {
         gamesList: [],
@@ -227,6 +243,7 @@ export const { Context, Provider } = CreateDataContext(
         //emailsOfPlayersPerGame: [],
         playersPerGame: [],
         playersPerGroups: [],
-        amountRegisteredPlayersEachGame: []
+        amountRegisteredPlayersEachGame: [],
+        gamesPlayerNotRegistered:[],
     }
 );

@@ -21,7 +21,7 @@ Notifications.setNotificationHandler({
 export default function Main({ navigation }) {
     const { state: { token }, tryLocalSignin, pushNotificationToken } = useContext(AuthContext)
     const { state: { myTeams }, GetTeamDetails, } = useContext(TeamContext);
-    const { state: { gamesList }, GetGamesList } = useContext(GameContext);
+    const { state: { gamesList }, GetGamesList,GetGamesPlayerNotRegistered } = useContext(GameContext);
     const { GetPlayers } = useContext(PlayerContext);
     const [user, setUser] = useState(token)
     const [renderScreen, setRenderScreen] = useState(false)
@@ -34,6 +34,7 @@ export default function Main({ navigation }) {
 
     useEffect(() => {
         GetTeamDetails(user.Email)
+        GetGamesPlayerNotRegistered(user.Email)
         GetPlayers();
        // NotificationActions();
         // pushNotifications().then(expoToken => {
