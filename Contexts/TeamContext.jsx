@@ -30,7 +30,6 @@ const teamReducer = (state, action) => {
         case 'TeamPlayers': {
             return { ...state, teamPlayers: action.payload }
         }
-
         default:
             return state
     }
@@ -153,6 +152,20 @@ const setTeamPlayers = dispatch => async (team, players) => {
     }
 }
 
+const AddNewJoinRequests = dispatch => async (EmailPlayer,GameSerialNum) => {
+    try {
+        console.log(EmailPlayer)
+        console.log(GameSerialNum)
+        const response = await TeamApi.post('/AddNewJoinRequests', {EmailPlayer,GameSerialNum});
+        alert("You have sent a request to join! Please wait for the manager of the team to accept you")
+        console.log("response . data === " + response.data);
+        //console.log(response.data);
+    } catch (err) {
+        console.log(err.response.data)
+        dispatch({ type: 'add_error', payload: 'Somthing went wrong when sending a joining request' })
+    }
+
+}
 
 export const { Context, Provider } = CreateDataContext(
     //Reducer
@@ -168,6 +181,7 @@ export const { Context, Provider } = CreateDataContext(
         AddPlayer,
         SetSearchPlayer,
         setTeamPlayers,
+        AddNewJoinRequests,
     },
     {
         myTeams: [],

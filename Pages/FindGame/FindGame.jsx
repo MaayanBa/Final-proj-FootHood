@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Text, StyleSheet, Image, View, StatusBar, TouchableOpacity, ScrollView } from 'react-native';
 import AppCss from '../../CSS/AppCss';
 import { Octicons } from '@expo/vector-icons';
@@ -6,29 +6,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Linking from 'expo-linking';
 import Modal_FilterMap from '../FindGame/Modal_FilterMap';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-const game = [
-    {
-        teamName: "",
-        gameName: "Game 1",
-        location: "Sammy Ofer",
-        date: "20/6/21",
-        time: "17:00",
-        ageRange: "20-25",
-        numberOfPlayers: 10,
-    },
-    {
-        teamName: "",
-        gameName: "Game 2",
-        location: "Blumfield",
-        date: "11/7/21",
-        time: "17:07",
-        ageRange: "17-27",
-        numberOfPlayers: 17,
-    }
-]
+import { Context as GameContext } from '../../Contexts/GameContext';
+import { Context as AuthContext } from '../../Contexts/AuthContext';
+import { Context as TeamContext } from '../../Contexts/TeamContext';
 
 export default function GameList(props) {
+    const { state: { gamesPlayerNotRegistered } } = useContext(GameContext)
+    const { AddNewJoinRequests} = useContext(TeamContext);
+    const { state: { token }} = useContext(AuthContext)
     const [modalVisible, setModalVisible] = useState(false);
     const [filterLocationName, setFilterLocationName] = useState("");
     const [filterLocationCord, setFilterLocationCord] = useState({
@@ -44,10 +29,6 @@ export default function GameList(props) {
         latitudeDelta: 0,
         longitudeDelta: 0,
     });
-    // useEffect(() => {
-    // //load games for player that he is not in
-    // }, [])
-
 
     const getLocation = (loc) => {
         setFilterLocationName(loc);
@@ -71,38 +52,46 @@ export default function GameList(props) {
         });
     }
 
+    const sliceTime = (time) => {
+        return time.slice(0, -3);
+    }
+
+    const convertDate = (date) => {
+        return (`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
+    }
+
     const navToPitch = () => {
         Linking.openURL('https://www.google.com/maps/search/?api=1&query=%D7%9E%D7%92%D7%A8%D7%A9+%D7%9B%D7%93%D7%95%D7%A8%D7%92%D7%9C'); //ניווט לכל המגרשי ספורט
     }
 
-    let gameCards = game.map((g, key) => {
-        if (filterDistance > 0) {
-            return <View key={key} style={styles.GameInformation_Touch} onPress={() => console.log(game.groupPhoto)}>
-                <View style={styles.gameTitle_View}>
-                    <Text style={styles.header_txt}>{g.gameName}</Text>
-                </View>
-                {/* {locationNameToNum(filterLocationName)} */}
-                <View style={styles.gameInformation_View}>
-                    <View style={styles.gameInformation_View_R}>
-                        <View>
-                            <Text style={styles.txtStyle}>Time: {g.time}</Text>
-                            <Text style={styles.txtStyle}>Avarege range: {g.ageRange}</Text>
-                        </View>
-                        <View style={styles.gameInformation_View_R_Down}>
-                            <TouchableOpacity style={appCss.blue_btn} onPress={() => console.log("btn enter game")}>
-                                <Text style={[styles.txtStyle, { color: 'white', alignItems: 'center' }]}>Join</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View style={styles.gameInformation_View_L}>
-                        <Text style={styles.txtStyle}>Date: {g.date}</Text>
-                        <Text style={styles.txtStyle}>Number of Players: {g.numberOfPlayers}</Text>
-                        <Text style={styles.txtStyle}>Location: {g.location}</Text>
+    const sendJoinRequest = (gameSerialNum) => {
+        AddNewJoinRequests(token.Email,gameSerialNum)
+    }
 
+    let gameCards = gamesPlayerNotRegistered.map((g, key) => {
+        // if (filterDistance > 0) {
+        return <View key={key} style={styles.GameInformation_Touch}>
+            <View style={styles.gameInformation_View}>
+                <View style={styles.gameInformation_View_R}>
+                    <View>
+                        <Text style={styles.txtStyle}>Time: {sliceTime(g.GameTime)}</Text>
+                        <Text style={styles.txtStyle}>Avarage age: {g.AvgPlayerAge}</Text>
                     </View>
+                    <View style={styles.gameInformation_View_R_Down}>
+                        <TouchableOpacity style={appCss.blue_btn} onPress={() => sendJoinRequest(g.GameSerialNum)}>
+                            <Text style={[styles.txtStyle, { color: 'white', alignItems: 'center' }]}>Join</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View style={styles.gameInformation_View_L}>
+                    <Text style={styles.txtStyle}>Date: {convertDate(new Date(g.GameDate))}</Text>
+                    <Text style={styles.txtStyle}>Number of Players: {g.NumOfPlayersInTeam}</Text>
+                    <Text style={styles.txtStyle}>Location: {g.GameLocation}</Text>
+
                 </View>
             </View>
-        }
+        </View>
+        // }
     });
 
     return (
@@ -126,7 +115,7 @@ export default function GameList(props) {
                         <Text style={appCss.txtBtnTouch}>Courts around your area</Text>
                         <MaterialCommunityIcons name="soccer-field" size={24} color="black" />
                     </TouchableOpacity>
-                    {filterDistance == 0 ? null : <Text style={appCss.inputLabel,{paddingTop:5}}>Result For Games {filterDistance} KM Around {filterLocationName}</Text>}
+                    {filterDistance == 0 ? null : <View style={{ paddingBottom: 10 }, { paddingTop: 10 }}><Text style={appCss.inputLabel}>Result For Games {filterDistance} KM Around {filterLocationName}:</Text></View>}
                     {gameCards}
                     <View style={[{ flexDirection: "row" }]}>
                         {filterDistance == 0 ? <TouchableOpacity style={[appCss.btnTouch, { width: '45%' }]} onPress={() => console.log("reduce results btn")}>

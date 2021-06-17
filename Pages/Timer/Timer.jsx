@@ -40,21 +40,17 @@ export default function Timer() {
         setClicked(false)
         //alert('Times up!')
     }
+
+    const Reset = () => {
+        Finish()
+    }
     return (
         <View style={appCss.container} >
             <View style={appCss.container}>
                 <Text style={[appCss.title, { paddingBottom: 20 }]}>Timer</Text>
-                {clicked == true ?
-                    <CountDown
-                        until={selectTime * 60}
-                        timeToShow={['H', 'M', 'S']}
-                        digitStyle={{ backgroundColor: '#FFF' }}
-                        digitTxtStyle={{ color: 'black' }}
-                        timeLabelStyle={{ color: 'white', fontWeight: 'bold' }}
-                        timeLabels={{ s: 'Seconds', h: 'Hour', m: 'Minutes', }}
-                        running={run} onFinish={() => Finish()}
-                        size={30} />
-                    : null}
+                {clicked == true ? <CountDown until={selectTime * 60} timeToShow={['H', 'M', 'S']} digitStyle={{ backgroundColor: '#FFF' }}
+                    digitTxtStyle={{ color: 'black' }} timeLabelStyle={{ color: 'white', fontWeight: 'bold' }}
+                    timeLabels={{ h: 'hours', m: 'Minutes', s: 'Seconds' }} running={run} onFinish={() => Finish()} size={30} /> : null}
                 <View style={styles.watchStyle}>
                     <TextInput
                         style={styles.input}
@@ -64,16 +60,15 @@ export default function Timer() {
                         placeholder="Please Enter Minutes"
                     />
                     <View style={styles.buttons}>
-                        <TouchableOpacity activeOpacity={0.8} onPress={() => StartTimer()} style={[appCss.btnTouch, { marginHorizontal: 30 }]}>
+                        {clicked == true ? <TouchableOpacity activeOpacity={0.8} onPress={() => Pause()} style={[appCss.btnTouch, { marginHorizontal: 30 }]}>
+                            <Text style={appCss.txtBtnTouch}>{pauseBtn}</Text>
+                        </TouchableOpacity> : <TouchableOpacity activeOpacity={0.8} onPress={() => StartTimer()} style={[appCss.btnTouch, { marginHorizontal: 30 }]}>
                             <Text style={appCss.txtBtnTouch}>  Start  </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch, { marginHorizontal: 30 }]}>
+                        </TouchableOpacity>}
+                        <TouchableOpacity activeOpacity={0.8} onPress={() => Reset()} style={[appCss.btnTouch, { marginHorizontal: 30 }]}>
                             <Text style={appCss.txtBtnTouch}>RESET</Text>
                         </TouchableOpacity>
                     </View>
-                    {clicked == true ? <TouchableOpacity activeOpacity={0.8} onPress={() => Pause()} style={[appCss.btnTouch, { marginBottom: 30 }]}>
-                        <Text style={appCss.txtBtnTouch}>{pauseBtn}</Text>
-                    </TouchableOpacity> : null}
                 </View>
             </View>
         </View>
