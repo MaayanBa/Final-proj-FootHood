@@ -41,12 +41,20 @@ export default function Timer() {
         //alert('Times up!')
     }
     return (
-        <SafeAreaView style={appCss.container} >
+        <View style={appCss.container} >
             <View style={appCss.container}>
                 <Text style={[appCss.title, { paddingBottom: 20 }]}>Timer</Text>
-                {clicked == true ? <CountDown until={selectTime * 60} timeToShow={['M','S']} digitStyle={{ backgroundColor: '#FFF' }}
-                    digitTxtStyle={{ color: 'black' }} timeLabelStyle={{ color: 'white', fontWeight: 'bold' }}
-                    timeLabels={{ m: 'Minutes',s: 'Seconds' }} running={run} onFinish={() => Finish()} size={30} /> : null}
+                {clicked == true ?
+                    <CountDown
+                        until={selectTime * 60}
+                        timeToShow={['H', 'M', 'S']}
+                        digitStyle={{ backgroundColor: '#FFF' }}
+                        digitTxtStyle={{ color: 'black' }}
+                        timeLabelStyle={{ color: 'white', fontWeight: 'bold' }}
+                        timeLabels={{ s: 'Seconds', h: 'Hour', m: 'Minutes', }}
+                        running={run} onFinish={() => Finish()}
+                        size={30} />
+                    : null}
                 <View style={styles.watchStyle}>
                     <TextInput
                         style={styles.input}
@@ -68,7 +76,7 @@ export default function Timer() {
                     </TouchableOpacity> : null}
                 </View>
             </View>
-        </SafeAreaView>
+        </View>
 
     );
 };
