@@ -8,36 +8,6 @@ import Modal_LocationMap from './Components/Modal_LocationMap';
 import { Context as GameContext } from '../../Contexts/GameContext'
 import { Feather as LocationFeather } from '@expo/vector-icons';
 
-const appCss = AppCss;
-const styles = StyleSheet.create({
-  container_extra: {
-    paddingTop: 40,
-    paddingLeft: 30,
-    paddingRight: 30,
-    paddingBottom: 20,
-  },
-  headerView: {
-    paddingTop: 40,
-    alignItems: 'center',
-  },
-  txt_View: {
-    alignSelf: 'center',
-    justifyContent: 'flex-end',
-  },
-  checkBox_View: {
-    paddingTop: 30
-  },
-  checkBoxes: {
-    paddingTop: 15,
-    flexDirection: 'row-reverse',
-    marginLeft: 50
-  },
-  location_View: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingTop: 35
-  },
-})
 const equipmentList = [
   { id: 0, title: 'Water', checked: false },
   { id: 1, title: 'Ball', checked: false },
@@ -61,6 +31,12 @@ export default function CreateNewGame(props) {
   const [lastRegistrationTime, setLastRegistrationTime] = useState(null);
   const [selectedEquipments, setSelectedEquipments] = useState(null);
   const [edit, setEdit] = useState(false);
+  const [locationCord, setLocationCord] = useState({
+    latitude: 0,
+    longitude: 0,
+    latitudeDelta: 0,
+    longitudeDelta: 0,
+  });
 
   useEffect(() => {
     setRenderCB(true);
@@ -105,7 +81,6 @@ export default function CreateNewGame(props) {
         selectedEquipments.map(e => {
           equipments.push({ EquipmentName: e.title })
         })
-
       let game = {
         NumOfTeams: numOfTeamsState,
         NumOfPlayersInTeam: numOfPlayersInTeam,
@@ -115,11 +90,13 @@ export default function CreateNewGame(props) {
         LastRegistrationDate: lastRegistrationTime.toLocaleDateString(),
         LastRegistrationTime: lastRegistrationTime.toLocaleTimeString(),
         TeamSerialNum: team.TeamSerialNum,
-        equipmentsInGame: equipments
+        equipmentsInGame: equipments,
+        GameLatitude: locationCord.lat,
+        GameLongitude: locationCord.lng,
       }
       await CreatNewGame(game, equipments);
       await GetGamesList(team.TeamSerialNum)
-      props.navigation.goBack();
+      //props.navigation.goBack();
     }
     else {
       alert("one or more of the field is missing")
@@ -129,7 +106,11 @@ export default function CreateNewGame(props) {
   const getLocation = (loc) => {
     setGameLocation(loc);
   }
-  
+
+  const getLocationCord = (region) => {
+    setLocationCord(region);
+  }
+
   return (
     <SafeAreaView>
       <ScrollView keyboardShouldPersistTaps="handled">
@@ -154,7 +135,7 @@ export default function CreateNewGame(props) {
             </TouchableOpacity>
             <Text style={appCss.inputLabel}>Game Location:</Text>
           </View>
-          {modalVisible && <Modal_LocationMap modalVisible={modalVisible} setModalVisible={() => setModalVisible(!modalVisible)} location={(loc) => getLocation(loc)} />}
+          {modalVisible && <Modal_LocationMap modalVisible={modalVisible} setModalVisible={() => setModalVisible(!modalVisible)} location={(loc) => getLocation(loc)} locationCord={(data) => getLocationCord(data)} />}
           <Text style={[appCss.inputLabel, { textAlign: 'center', color: 'orange' }]}> {gameLocation}</Text>
 
           {/* Date and Time */}
@@ -176,3 +157,35 @@ export default function CreateNewGame(props) {
     </SafeAreaView>
   )
 }
+
+
+const appCss = AppCss;
+const styles = StyleSheet.create({
+  container_extra: {
+    paddingTop: 40,
+    paddingLeft: 30,
+    paddingRight: 30,
+    paddingBottom: 20,
+  },
+  headerView: {
+    paddingTop: 40,
+    alignItems: 'center',
+  },
+  txt_View: {
+    alignSelf: 'center',
+    justifyContent: 'flex-end',
+  },
+  checkBox_View: {
+    paddingTop: 30
+  },
+  checkBoxes: {
+    paddingTop: 15,
+    flexDirection: 'row-reverse',
+    marginLeft: 50
+  },
+  location_View: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: 35
+  },
+})

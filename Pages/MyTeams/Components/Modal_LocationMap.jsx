@@ -50,6 +50,7 @@ export default function Modal_LocationMap(props) {
                 (data) => {
                     console.log("Data====>" + data);
                     console.log(data);
+                    props.locationCord(data)
                     setRegion({
                         latitude: data.lat,
                         longitude: data.lng,
