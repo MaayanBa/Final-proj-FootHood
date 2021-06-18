@@ -53,6 +53,13 @@ export default styles = StyleSheet.create({
     paddingTop: 15,
     alignSelf: 'stretch'
   },
+  grey_btn: {
+    borderRadius: 30,
+    backgroundColor: '#918d8d',
+    alignItems: 'center',
+    paddingTop: 15,
+    alignSelf: 'stretch'
+  },
   txtBtnTouch: {
     fontSize: 18,
     color: "black",

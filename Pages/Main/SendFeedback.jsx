@@ -44,16 +44,21 @@ const styles = StyleSheet.create({
 })
 
 export default function SendFeedback(props) {
-    const {AddFeedback } = useContext(SettingsContext);
+    const { AddFeedback } = useContext(SettingsContext);
 
 
-    const SendFeedback =  (values) => {
+    const SendFeedback = (values) => {
         let newFeedback = {
             email: values.email,
-            content: "Subject: " +values.subject +"  ,    Content: "+ values.content,
+            content: "Subject: " + values.subject + "  ,    Content: " + values.content,
         }
-        AddFeedback(newFeedback.email,newFeedback.content)
-
+        if (newFeedback.email != '' &&  values.subject != '' && values.content!='') {
+            AddFeedback(newFeedback.email, newFeedback.content)
+            props.navigation.goBack();
+        }
+        else {
+            alert("Please fill in all the details.")
+        }
     }
 
 
@@ -92,7 +97,7 @@ export default function SendFeedback(props) {
 
                                     />
                                 </View>
-                                <Text style={appCss.inputLabel}>content: {"\n"}</Text>
+                                <Text style={appCss.inputLabel}>Content: {"\n"}</Text>
                                 <View style={styles.contentStyle}>
                                     <TextInput
                                         placeholder="Enter your feedback (:"

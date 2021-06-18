@@ -12,8 +12,8 @@ import { Context as TeamContext } from '../../Contexts/TeamContext';
 
 export default function GameList(props) {
     const { state: { gamesPlayerNotRegistered } } = useContext(GameContext)
-    const { AddNewJoinRequests } = useContext(TeamContext);
-    const { state: { token } } = useContext(AuthContext)
+    const { state: { token } } = useContext(AuthContext);
+    const { state: { joinRequests },AddNewJoinRequests, GetJoinRequests } = useContext(TeamContext);
     const [modalVisible, setModalVisible] = useState(false);
     const [filterLocationName, setFilterLocationName] = useState("");
     const [filterLocationCord, setFilterLocationCord] = useState({
@@ -68,12 +68,13 @@ export default function GameList(props) {
         AddNewJoinRequests(token.Email, gameSerialNum)
     }
 
-    let counter=0;
+    let counter = 0;
 
     let gameCards = gamesPlayerNotRegistered.map((g, key) => {
+        // GetJoinRequests(g.GameSerialNum)
         if (filterDistance > 0) {
             if ((filterLocationCord.latitude >= g.GameLatitude - (filterDistance * 0.01) && filterLocationCord.latitude <= g.GameLatitude + (filterDistance * 0.01))
-                && (filterLocationCord.longitude >= g.GameLongitude - (filterDistance * 0.01) && filterLocationCord.longitude<= g.GameLongitude + (filterDistance * 0.01))) {
+                && (filterLocationCord.longitude >= g.GameLongitude - (filterDistance * 0.01) && filterLocationCord.longitude <= g.GameLongitude + (filterDistance * 0.01))) {
                 counter++;
                 return <View key={key} style={styles.GameInformation_Touch}>
                     <View style={styles.gameInformation_View}>
@@ -83,9 +84,15 @@ export default function GameList(props) {
                                 <Text style={styles.txtStyle}>Avarage age: {g.AvgPlayerAge}</Text>
                             </View>
                             <View style={styles.gameInformation_View_R_Down}>
-                                <TouchableOpacity style={appCss.blue_btn} onPress={() => sendJoinRequest(g.GameSerialNum)}>
-                                    <Text style={[styles.txtStyle, { color: 'white', alignItems: 'center' }]}>Join</Text>
-                                </TouchableOpacity>
+                                {/* {token.Email == joinRequests.EmailPlayer && g.GameSerialNum == joinRequests.GameSerialNum ?
+                                    <TouchableOpacity style={appCss.grey_btn} onPress={() => alert("You already requested to join this game! Please wait for the manager to accept your request")}>
+                                        <Text style={[styles.txtStyle, { color: 'black', alignItems: 'center' }]}>Pending</Text>
+                                    </TouchableOpacity> 
+                                    : */}
+                                     <TouchableOpacity style={appCss.blue_btn} onPress={() => sendJoinRequest(g.GameSerialNum)}>
+                                        <Text style={[styles.txtStyle, { color: 'white', alignItems: 'center' }]}>Join</Text>
+                                    </TouchableOpacity>
+                                    {/* } */}
                             </View>
                         </View>
                         <View style={styles.gameInformation_View_L}>
@@ -142,11 +149,11 @@ export default function GameList(props) {
                         <Text style={appCss.txtBtnTouch}>Courts around your area</Text>
                         <MaterialCommunityIcons name="soccer-field" size={24} color="black" />
                     </TouchableOpacity>
-                    {filterDistance == 0 || counter==0? null : <View style={{ paddingBottom: 10 }, { paddingTop: 10 }}><Text style={appCss.inputLabel}>Result For Games {filterDistance} KM Around {filterLocationName}:</Text></View>}
+                    {filterDistance == 0 || counter == 0 ? null : <View style={{ paddingBottom: 10 }, { paddingTop: 10 }}><Text style={appCss.inputLabel}>Result For Games {filterDistance} KM Around {filterLocationName}:</Text></View>}
                     {gameCards}
-                    {filterDistance>0&&counter==0?<View><Text style={styles.noResultsTxt}>No Results Found!{"\n"} Please Try Again</Text></View>:null}
+                    {filterDistance > 0 && counter == 0 ? <View><Text style={styles.noResultsTxt}>No Results Found!{"\n"} Please Try Again</Text></View> : null}
                     <View style={[{ flexDirection: "row" }]}>
-                        {filterDistance == 0 ? null:<TouchableOpacity style={[appCss.btnTouch, { width: '45%' }]} onPress={() => ResetSearch()}>
+                        {filterDistance == 0 ? null : <TouchableOpacity style={[appCss.btnTouch, { width: '45%' }]} onPress={() => ResetSearch()}>
                             <Text style={appCss.txtBtnTouch}>Reset Search</Text>
                         </TouchableOpacity>}
                     </View>
@@ -180,10 +187,10 @@ const styles = StyleSheet.create({
     },
     noResultsTxt: {
         paddingTop: 40,
-        color:'white',
+        color: 'white',
         fontSize: 20,
         fontWeight: "bold",
-        alignItems:'center'
+        alignItems: 'center'
     },
     header_txt: {
         alignSelf: 'center',

@@ -17,52 +17,6 @@ import { Context as TeamContext } from '../../Contexts/TeamContext';
 import AppCss from '../../CSS/AppCss';
 import Modal_AddPlayers from './Components/Modal_AddPlayers';
 
-const appCss = AppCss;
-const styles = StyleSheet.create({
-  imageButton: {
-    alignItems: 'center'
-  },
-  formGroup: {
-    padding: 5,
-  },
-  createTeamButton: {
-    alignItems: 'center',
-    width: '10',
-    padding: 70
-  },
-  textboxes: {
-    alignItems: 'center',
-  },
-  textInput: {
-    padding: 2
-  },
-  ImageStyle: {
-    padding: 10,
-    margin: 5,
-    height: 25,
-    width: 25,
-    resizeMode: 'stretch',
-    alignItems: 'center',
-  },
-
-  rulesSectionStyle: {
-    height: 200,
-    width: '100%',
-    backgroundColor: 'white',
-    borderColor: 'gray',
-    borderWidth: StyleSheet.hairlineWidth,
-    borderRadius: 10,
-  },
-  privateOrPublic: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    padding: 2
-  },
-  addPlayersBtns: {
-    flexDirection: "row-reverse",
-  },
-})
-
 //Fix YellowBox Error
 LogBox.ignoreLogs(['Setting a timer for a long period of time, i.e.']);
 
@@ -203,3 +157,49 @@ export default function CreateNewTeam({ navigation }) {
     </SafeAreaView>
   );
 }
+
+const appCss = AppCss;
+const styles = StyleSheet.create({
+  imageButton: {
+    alignItems: 'center'
+  },
+  formGroup: {
+    padding: 5,
+  },
+  createTeamButton: {
+    alignItems: 'center',
+    width: '10',
+    padding: 70
+  },
+  textboxes: {
+    alignItems: 'center',
+  },
+  textInput: {
+    padding: 2
+  },
+  ImageStyle: {
+    padding: 10,
+    margin: 5,
+    height: 25,
+    width: 25,
+    resizeMode: 'stretch',
+    alignItems: 'center',
+  },
+
+  rulesSectionStyle: {
+    height: 200,
+    width: '100%',
+    backgroundColor: 'white',
+    borderColor: 'gray',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: 10,
+  },
+  privateOrPublic: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    padding: 2
+  },
+  addPlayersBtns: {
+    flexDirection: "row-reverse",
+  },
+})
