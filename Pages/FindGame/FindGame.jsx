@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Text, StyleSheet, Image as ImageCourt, View, StatusBar, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, StyleSheet, Image as ImageCourt, View, StatusBar, TouchableOpacity, ScrollView,Dimensions } from 'react-native';
 import AppCss from '../../CSS/AppCss';
 import { Octicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -157,7 +157,7 @@ export default function GameList(props) {
                     </View>
                     <View style={{ flexDirection: "row", justifyContent: 'center', alignSelf: 'center'}}>
                         <ImageCourt source={require('../../assets/Court.png')} style={styles.court_img} />
-                        <TouchableOpacity style={[appCss.btnTouch, { width: '45%',backgroundColor:'#03C04A' }]} onPress={() => navToPitch()}>
+                        <TouchableOpacity style={[appCss.btnTouch, {width:Dimensions.get('window').width - 180,backgroundColor:'#03C04A' }]} onPress={() => navToPitch()}>
                             <Text style={appCss.txtBtnTouch}>Courts Around You</Text>
                             {/* <MaterialCommunityIcons name="soccer-field" size={24} color="black" /> */}
                         </TouchableOpacity>

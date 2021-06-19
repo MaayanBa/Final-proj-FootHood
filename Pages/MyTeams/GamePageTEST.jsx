@@ -5,9 +5,9 @@ import {
 import { Entypo as Pencil } from '@expo/vector-icons';
 // import { Context as TeamContext } from '../../Contexts/TeamContext';
 import AppCss from '../../CSS/AppCss';
-import * as Animatable from 'react-native-animatable';
+// import * as Animatable from 'react-native-animatable';
 import Modal_JoinRequests from './Components/Modal_JoinRequests';
-import Equipment_Window from './Components/Equipment_Window';
+// import Equipment_Window from './Components/Equipment_Window';
 import Players_Window from './Components/Players_Window';
 import GameTeamsCard from './Components/GameTeamsCard';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
