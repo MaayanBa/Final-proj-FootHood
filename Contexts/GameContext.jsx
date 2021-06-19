@@ -1,6 +1,7 @@
 import CreateDataContext from './createDataContext';
 import GameApi from '../api/Game';
 import JarvisApi from '../api/Jarvis';
+import { array } from 'yup';
 
 const gameReducer = (state, action) => {
     switch (action.type) {
@@ -208,10 +209,15 @@ const Jarvis_FindPlayers4Game = dispatch => async (TeamSerialNum, GameSerialNum,
 
 const GetGamesPlayerNotRegistered = dispatch => async (EmailPlayer) => {
     try {
-        //console.log(EmailPlayer);
-        const response = await GameApi.post('/GamesThatUserNotRegisterd', { EmailPlayer});
-        dispatch({ type: 'GetGamesPlayerNotRegistered', payload: response.data })
-        //console.log(response.data)
+    // console.log(EmailPlayer);
+        const response = await GameApi.post('/GamesThatUserNotRegisterd', { EmailPlayer });
+        if (typeof response.data !== 'string')
+            dispatch({ type: 'GetGamesPlayerNotRegistered', payload: response.data })
+        else {
+            console.log("Something Went wrong with the games that user not registered !")
+        console.log(response.data)
+        }
+
     } catch (err) {
         console.log("in error ")
         console.log(err)
@@ -244,6 +250,6 @@ export const { Context, Provider } = CreateDataContext(
         playersPerGame: [],
         playersPerGroups: [],
         amountRegisteredPlayersEachGame: [],
-        gamesPlayerNotRegistered:[],
+        gamesPlayerNotRegistered: [],
     }
 );

@@ -90,7 +90,7 @@ export default function Modal_LocationMap(props) {
                         </MapView>
                     </View>
 
-                    <View style={[{ justifyContent: 'center' }, { marginTop: 20 }, { flexDirection: 'row' }]}>
+                    <View style={{ justifyContent: 'space-around',marginTop: 20, flexDirection: 'row-reverse'}}>
                         <Text style={[appCss.modal_Txt, { paddingTop: 20 }]}>Set radius limit:</Text>
                         <DropDownPicker
                             items={[
