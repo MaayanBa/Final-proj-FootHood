@@ -59,9 +59,6 @@ export default function Modal_LocationMap(props) {
         if (radius == 0 || locationName == "")
             alert("You must enter place name radius for search")
         else {
-            // console.log(region)
-            // console.log(locationName)
-            // console.log(radius)
             props.distance(parseInt(radius))
             props.locationCord(region)
             props.setModalVisible()
@@ -71,22 +68,13 @@ export default function Modal_LocationMap(props) {
         <Modal animationType="slide"
             transparent={true} visible={props.modalVisible} onRequestClose={() => props.setModalVisible()}>
 
-            <View style={styles.modal_View}>
+            <View style={appCss.modal_View}>
                 <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../assets/WallPaperWhite2.png')}>
-                    <Text style={styles.modal_Txt}>Choose Location:</Text>
-                    <View style={{ marginTop: 20 }}>
-                        <Text style={styles.modal_Txt}>Set radius limit:</Text>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={setRadius}
-                            value={radius}
-                            keyboardType="phone-pad"
-                            placeholder="Please Enter Radius KM"
-                        />
-                    </View>
+                    <Text style={[appCss.modal_Txt,{paddingTop: 20,}]}>Choose Location:</Text>
+                    
                     <GooglePlacesInput notifyChange={(loc) => getCoordsFromName(loc)} />
-                    <View style={styles.map_Container}>
-                        <MapView style={styles.mapView_container}
+                    <View style={appCss.map_Container}>
+                        <MapView style={appCss.mapView_container}
                             onPress={(pos) => { console.log(pos.nativeEvent.coordinate); }}
                             provider={PROVIDER_GOOGLE}
                             region={region}
@@ -98,12 +86,23 @@ export default function Modal_LocationMap(props) {
                                 onDragEnd={(e) => console.log(e.nativeEvent)/*setDestination({ destination: e.nativeEvent.coordinate })*/} />
                         </MapView>
                     </View>
-                    
+
+                    <View style={{ marginTop: 20 }}>
+                        <Text style={[appCss.modal_Txt,{paddingTop: 20,}]}>Set radius limit:</Text>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={setRadius}
+                            value={radius}
+                            keyboardType="phone-pad"
+                            placeholder="Please Enter Radius KM"
+                        />
+                    </View>
+
                     <View style={styles.buttons}>
-                        <Pressable style={styles.map_BtnClose} onPress={() => FilterGames()}>
+                        <Pressable style={appCss.map_BtnClose} onPress={() => FilterGames()}>
                             <Text style={appCss.inputLabel}>Filter games</Text>
                         </Pressable>
-                        <Pressable style={styles.map_BtnClose} onPress={() => props.setModalVisible()}            >
+                        <Pressable style={appCss.map_BtnClose} onPress={() => props.setModalVisible()}            >
                             <Text style={appCss.inputLabel}>Close Map</Text>
                         </Pressable>
                     </View>
@@ -113,48 +112,8 @@ export default function Modal_LocationMap(props) {
     )
 }
 
-
 const appCss = AppCss;
-
 const styles = StyleSheet.create({
-    modal_View: {
-        margin: 20,
-        padding: 5,
-        shadowColor: "#D9D9D9",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 20,
-        height: '90%',
-        width: '90%',
-        borderRadius: 30
-    },
-    modal_Txt: {
-        paddingTop: 20,
-        marginBottom: 15,
-        textAlign: "center",
-        fontWeight: "bold",
-        color: 'black'
-    },
-    map_Container: {
-        flex: 1,
-        marginTop: 20,
-        alignItems: 'center'
-    },
-    mapView_container: {
-        flex: 1,
-        zIndex: 0,
-        width: Dimensions.get('window').width - 60,
-        height: '70%'
-    },
-    map_BtnClose: {
-        backgroundColor: "#2196F3",
-        marginTop: 40,
-        borderRadius: 20,
-        padding: 10,
-        alignSelf: "center",
-        marginBottom: 20
-    },
     input: {
         height: 40,
         margin: 12,

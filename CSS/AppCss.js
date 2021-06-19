@@ -1,4 +1,4 @@
-import { StyleSheet, StatusBar } from 'react-native';
+import { StyleSheet, StatusBar, Dimensions } from 'react-native';
 
 
 export default styles = StyleSheet.create({
@@ -102,5 +102,43 @@ export default styles = StyleSheet.create({
     width: 100,
     alignSelf: 'center',
     top: 40
+  },
+  modal_View: {
+    margin: 20,
+    padding: 5,
+    shadowColor: "#D9D9D9",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 20,
+    height: '90%',
+    width: '90%',
+    borderRadius: 30
+  },
+  modal_Txt: {
+    paddingTop: 20,
+    marginBottom: 15,
+    textAlign: "center",
+    fontWeight: "bold",
+    color: 'black'
+  },
+  map_Container: {
+    flex: 1,
+    marginTop: 20,
+    alignItems: 'center'
+  },
+  mapView_container: {
+    flex: 1,
+    zIndex: 0,
+    width: Dimensions.get('window').width - 60,
+    height: '70%'
+  },
+  map_BtnClose: {
+    backgroundColor: "#2196F3",
+    marginTop: 40,
+    borderRadius: 20,
+    padding: 10,
+    alignSelf: "center",
+    marginBottom: 20
   },
 });

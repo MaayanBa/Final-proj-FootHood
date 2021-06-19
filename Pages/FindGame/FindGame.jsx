@@ -2,10 +2,8 @@ import React, { useState, useContext, useEffect } from 'react'
 import { Text, StyleSheet, Image as ImageCourt, View, StatusBar, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import AppCss from '../../CSS/AppCss';
 import { Octicons } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Linking from 'expo-linking';
 import Modal_FilterMap from '../FindGame/Modal_FilterMap';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Context as GameContext } from '../../Contexts/GameContext';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
@@ -23,12 +21,6 @@ export default function GameList(props) {
         longitudeDelta: 0,
     });
     const [filterDistance, setFilterDistance] = useState(0)
-    const [region, setRegion] = useState({
-        latitude: 0,
-        longitude: 0,
-        latitudeDelta: 0,
-        longitudeDelta: 0,
-    });
 
     const getLocation = (loc) => {
         setFilterLocationName(loc);
@@ -67,9 +59,7 @@ export default function GameList(props) {
     const sendJoinRequest = (gameSerialNum) => {
         AddNewJoinRequests(token.Email, gameSerialNum)
     }
-
     let counter = 0;
-
     let gameCards = gamesPlayerNotRegistered.map((g, key) => {
         if (filterDistance > 0) {
             if ((filterLocationCord.latitude >= g.GameLatitude - (filterDistance * 0.01) && filterLocationCord.latitude <= g.GameLatitude + (filterDistance * 0.01))
@@ -83,8 +73,8 @@ export default function GameList(props) {
                                 <Text style={styles.txtStyle}>Avarage age: {g.AvgPlayerAge}</Text>
                             </View>
                             <View style={styles.gameInformation_View_R_Down}>
-                                <TouchableOpacity style={[appCss.blue_btn,{paddingTop:5}]} onPress={() => sendJoinRequest(g.GameSerialNum)}>
-                                    <Text style={[styles.txtStyle,{ color: 'white', alignItems: 'center',paddingBottom:5}]}>Join</Text>
+                                <TouchableOpacity style={[appCss.blue_btn, { paddingTop: 5 }]} onPress={() => sendJoinRequest(g.GameSerialNum)}>
+                                    <Text style={[styles.txtStyle, { color: 'white', alignItems: 'center', paddingBottom: 5 }]}>Join</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -98,30 +88,29 @@ export default function GameList(props) {
             }
         }
         else {
-            return <View key={key} style={styles.gameInformation_View}>
-                <View style={styles.gameInformation_View_R}>
-                    <View>
-                        <Text style={styles.txtStyle}>Time: {sliceTime(g.GameTime)}</Text>
-                        <Text style={styles.txtStyle}>Avarage age: {g.AvgPlayerAge}</Text>
+            return <View key={key} style={styles.GameInformation_Touch}>
+                <View style={styles.gameInformation_View}>
+                    <View style={styles.gameInformation_View_R}>
+                        <View>
+                            <Text style={styles.txtStyle}>Time: {sliceTime(g.GameTime)}</Text>
+                            <Text style={styles.txtStyle}>Avarage age: {g.AvgPlayerAge}</Text>
+                        </View>
+                        <View style={styles.gameInformation_View_R_Down}>
+                            <TouchableOpacity style={[appCss.blue_btn, { paddingTop: 5 }]} onPress={() => sendJoinRequest(g.GameSerialNum)}>
+                                <Text style={[styles.txtStyle, { color: 'white', alignItems: 'center', paddingBottom: 5 }]}>Join</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    <View style={styles.gameInformation_View_R_Down}>
-                        <TouchableOpacity style={appCss.blue_btn} onPress={() => sendJoinRequest(g.GameSerialNum)}>
-                            <Text style={[styles.txtStyle, { color: 'white', alignItems: 'center' }]}>Join</Text>
-                        </TouchableOpacity>
+                    <View style={styles.gameInformation_View_L}>
+                        <Text style={styles.txtStyle}>Date: {convertDate(new Date(g.GameDate))}</Text>
+                        <Text style={styles.txtStyle}>Number of Players: {g.NumOfPlayersInTeam}</Text>
+                        <Text style={styles.txtStyle}>Location: {g.GameLocation}</Text>
                     </View>
-                </View>
-                <View style={styles.gameInformation_View_L}>
-                    <Text style={styles.txtStyle}>Date: {convertDate(new Date(g.GameDate))}</Text>
-                    <Text style={styles.txtStyle}>Number of Players: {g.NumOfPlayersInTeam}</Text>
-                    <Text style={styles.txtStyle}>Location: {g.GameLocation}</Text>
                 </View>
             </View>
         }
     });
-
     return (
-        // <SafeAreaView>
-        //     <ScrollView keyboardShouldPersistTaps="handled">
         <View style={[appCss.container, { alignItems: 'center' }]}>
             <Text style={[appCss.title, appCss.space]}>Find Game</Text>
             <View style={styles.buttons}>
@@ -136,37 +125,30 @@ export default function GameList(props) {
                 </TouchableOpacity>
             </View>
 
-
             {filterDistance == 0 || counter == 0 ? null : <View style={{ paddingBottom: 10 }, { paddingTop: 10 }}><Text style={appCss.inputLabel}>Result For Games {filterDistance} KM Around {filterLocationName}:</Text></View>}
-            <ScrollView>
-                {
-                    gameCards}</ScrollView>
+            <ScrollView style={{ paddingTop: 10 }}>
+                {gameCards}
+            </ScrollView>
+
             {filterDistance > 0 && counter == 0 ? <View><Text style={styles.noResultsTxt}>No Results Found!{"\n"} Please Try Again</Text></View> : null}
             <View style={[{ flexDirection: "row" }]}>
                 {filterDistance == 0 ? null : <TouchableOpacity style={[appCss.btnTouch, { width: '45%' }]} onPress={() => ResetSearch()}>
                     <Text style={appCss.txtBtnTouch}>Reset Search</Text>
                 </TouchableOpacity>}
             </View>
-            {/* <View style={{ alignSelf: 'flex-end' }}> */}
+
             <View style={{ justifyContent: 'center', alignItems: 'flex-end', flexDirection: "row", marginBottom: 20 }}>
                 <ImageCourt source={require('../../assets/Court.png')} style={styles.court_img} />
                 <TouchableOpacity style={[appCss.btnTouch, { width: Dimensions.get('window').width - 180, backgroundColor: '#03C04A' }]} onPress={() => navToPitch()}>
                     <Text style={appCss.txtBtnTouch}>Courts Around You</Text>
-                    {/* <MaterialCommunityIcons name="soccer-field" size={24} color="black" /> */}
                 </TouchableOpacity>
                 <ImageCourt source={require('../../assets/Court.png')} style={styles.court_img} />
             </View>
-            {/* </View> */}
         </View>
-        //     </ScrollView>
-
-        // </SafeAreaView>
-
     );
 }
 
 const appCss = AppCss;
-
 const styles = StyleSheet.create({
     gameTitle_View: {
         justifyContent: 'flex-start',
@@ -216,7 +198,5 @@ const styles = StyleSheet.create({
         width: 45,
         //alignSelf: 'flex-end',
         marginHorizontal: 20
-
     },
-
 });

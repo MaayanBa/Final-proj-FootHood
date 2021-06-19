@@ -65,15 +65,15 @@ export default function Modal_LocationMap(props) {
         <Modal animationType="slide"
             transparent={true} visible={props.modalVisible} onRequestClose={() => props.setModalVisible()}>
 
-            <View style={styles.modal_View}>
+            <View style={appCss.modal_View}>
             <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50}} source={require('../../../assets/WallPaperWhite2.png')}>
-                <Text style={styles.modal_Txt}>Choose Location:</Text>
+                <Text style={appCss.modal_Txt}>Choose Location:</Text>
 
                 <GooglePlacesInput notifyChange={(loc) => getCoordsFromName(loc)} />
 
                 {/* <CitiesDropDown ChoosenCity={(city) => GetCityFromUser(city)} city={cityGame} /> */}
-                <View style={styles.map_Container}>
-                    <MapView style={styles.mapView_container}
+                <View style={appCss.map_Container}>
+                    <MapView style={appCss.mapView_container}
                         onPress={(pos) => { console.log(pos.nativeEvent.coordinate); }}
                         provider={PROVIDER_GOOGLE}
                         region={region}
@@ -86,7 +86,7 @@ export default function Modal_LocationMap(props) {
                     </MapView>
                 </View>
 
-                <Pressable style={styles.map_BtnClose} onPress={() => props.setModalVisible()}>
+                <Pressable style={appCss.map_BtnClose} onPress={() => props.setModalVisible()}>
                     <Text style={appCss.inputLabel}>Close Map</Text>
                 </Pressable>
                 </ImageBackground>
@@ -97,62 +97,5 @@ export default function Modal_LocationMap(props) {
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
-    // modal_View: {
-    //     margin: 20,
-    //     backgroundColor: "white",
-    //     borderRadius: 20,
-    //     padding: 35,
-    //     alignItems: "center",
-    //     shadowColor: "#000",
-    //     shadowOffset: { width: 0, height: 2 },
-    //     shadowOpacity: 0.25,
-    //     shadowRadius: 4,
-    //     elevation: 5,
-    //     height: '90%',
-    //     width: '90%',
 
-    // },
-    modal_View: {
-        margin: 20,
-        // backgroundColor: "#808080",
-        //backgroundColor: imgBackGround,
-        //borderRadius:0,
-        padding: 5,
-        //paddingTop: 5,
-        shadowColor: "#D9D9D9",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 20,
-        height: '90%',
-        width: '90%',
-        borderRadius: 30
-
-    },
-    modal_Txt: {
-        marginBottom: 15,
-        textAlign: "center",
-        fontWeight: "bold",
-        color: 'black'
-    },
-    map_Container: {
-        flex: 1,
-        marginTop: 20,
-        // backgroundColor: '#fff',
-        alignItems:'center'
-    },
-    mapView_container: {
-        flex: 1,
-        zIndex: 0,
-        width: Dimensions.get('window').width - 60,
-        height: '70%'
-    },
-    map_BtnClose: {
-        backgroundColor: "#2196F3",
-        marginTop: 40,
-        borderRadius: 20,
-        padding: 10,
-        alignSelf: "center",
-        marginBottom:20
-    },
 })
