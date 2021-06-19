@@ -16,7 +16,7 @@ Notifications.setNotificationHandler({
 
 export default function NotificationActions({ navigation }) {
     const { state: { token }, pushNotificationToken } = useContext(AuthContext)
-    const { state: { myTeams }, GetTeamDetails, } = useContext(TeamContext);
+    const { state: { myTeams ,loadMessages}, GetTeamDetails,LoadMessages } = useContext(TeamContext);
     const { state: { gamesList }, GetGamesList } = useContext(GameContext);
     const [notificationIncome, setNotificationIncome] = useState(false)
     const [expoPushToken, setExpoPushToken] = useState('');
@@ -24,6 +24,8 @@ export default function NotificationActions({ navigation }) {
     const notificationListener = useRef();
     const responseListener = useRef();
     const [keyTeam, setKeyTeam] = useState(0);
+    const [receivedAction, setReceivedAction] = useState(false)
+    const [responsedAction, setResponsedAction] = useState(false)
 
     useEffect(() => {
         pushNotifications().then(expoToken => {
@@ -33,13 +35,23 @@ export default function NotificationActions({ navigation }) {
         });
 
         notificationListener.current = Notifications.addNotificationReceivedListener(not => {
-            setNotification(not.request.content.data)
-            setNotificationIncome(true)
-            GetTeamDetails(token.Email)
+            if (not.request.content.data.name === "message") {
+                // console.log("loadMessages" +loadMessages)
+                // loadMessages?LoadMessages(false) :LoadMessages(true); 
+                LoadMessages(not.request.content.data.CreatedAt)
+                console.log(not.request.content.data)
+            }
+            else {
+                setReceivedAction(true)
+                setNotification(not.request.content.data)
+                setNotificationIncome(true)
+                GetTeamDetails(token.Email)
+            }
         });
 
         // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+            setResponsedAction(true)
             setNotification(response.notification.request.content.data)
             setNotificationIncome(true)
             GetTeamDetails(token.Email)
@@ -59,9 +71,14 @@ export default function NotificationActions({ navigation }) {
                     setKeyTeam(i)
                     if (notification.G_SerialNum != undefined)
                         GetGamesList(team.TeamSerialNum)
-                    if (notification.name == "message")
-                        navigation.navigate('StackNav_MyTeams', { screen: 'TeamPage', params: { keyTeam: i } });
-                    
+                    if (notification.name == "message") {
+                        if (responsedAction) {
+                            navigation.navigate('StackNav_MyTeams', { screen: 'TeamPage', params: { key: i } });
+                            setResponsedAction(false)
+                            setNotificationIncome(false)
+                        }
+                    }
+                    setReceivedAction(false)
                 }
             })
         }
@@ -71,11 +88,14 @@ export default function NotificationActions({ navigation }) {
         if (notificationIncome) {
             gamesList.map(async (game, key) => {
                 if (game.GameSerialNum == notification.G_SerialNum) {
-                    // console.log("INDEX------> " + key)
-                    navigation.navigate('StackNav_MyTeams', {
-                        screen: 'GamePage',
-                        params: { keyTeam: keyTeam, index: key }
-                    });
+                    if (responsedAction) {
+                        // console.log("INDEX------> " + key)
+                        navigation.navigate('StackNav_MyTeams', {
+                            screen: 'GamePage',
+                            params: { keyTeam: keyTeam, index: key }
+                        });
+                        setResponsedAction(false)
+                    }
                 }
             })
             setNotificationIncome(false)

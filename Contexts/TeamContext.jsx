@@ -30,6 +30,9 @@ const teamReducer = (state, action) => {
         case 'TeamPlayers': {
             return { ...state, teamPlayers: action.payload }
         }
+        case 'LoadMessages': {
+            return { ...state, loadMessages: action.payload }
+        }
         default:
             return state
     }
@@ -166,11 +169,22 @@ const AddNewJoinRequests = dispatch => async (EmailPlayer, GameSerialNum) => {
     }
 
 }
-const SendMessageTeamChat = dispatch => async (EmailPlayer, TeamSerialNum, TeamName, FirstName, MessagePlayer) => {
+const SendMessageTeamChat = dispatch => async (EmailPlayer, TeamSerialNum, TeamName, FirstName, MessagePlayer,CreatedAt) => {
     try {
-        await TeamApi.post('/SendMessageTeamChat', { EmailPlayer, TeamSerialNum,TeamName, FirstName,MessagePlayer});
+        await TeamApi.post('/SendMessageTeamChat', { EmailPlayer, TeamSerialNum, TeamName, FirstName, MessagePlayer,CreatedAt });
     } catch (err) {
-        console.log(err.response.data)
+        console.log(err.message)
+    }
+}
+
+const LoadMessages = dispatch => async (CreatedAt) => {
+    try {
+        
+        console.log("bool"+CreatedAt)
+
+        dispatch({ type: 'LoadMessages', payload: CreatedAt })
+    } catch (error) {
+        console.log("error in LoadMessages")
     }
 }
 
@@ -190,11 +204,13 @@ export const { Context, Provider } = CreateDataContext(
         setTeamPlayers,
         AddNewJoinRequests,
         SendMessageTeamChat,
+        LoadMessages,
     },
     {
         myTeams: [],
         searchedPlayers: [],
         joinRequests: [],
         teamPlayers: [],
+        loadMessages: ''
     }
 );

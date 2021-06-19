@@ -45,10 +45,14 @@ export default function GamePage(props) {
   }, [playersPerGame])
 
   useEffect(() => {
-    GetPlayers4Game(gamesList[index].GameSerialNum, players)
-    GetPlayersDivied2Groups(gamesList[index].GameSerialNum);
-    GetAllEquipments(gamesList[index].GameSerialNum)
-  }, [])
+    const unsubscribe = props.navigation.addListener('focus', () => {
+      GetPlayers4Game(gamesList[index].GameSerialNum, players)
+      GetPlayersDivied2Groups(gamesList[index].GameSerialNum);
+      GetAllEquipments(gamesList[index].GameSerialNum)
+    });
+    return () => unsubscribe();
+}, [props.navigation]);
+
 
   // גורם בעיה
   // useEffect(() => {
