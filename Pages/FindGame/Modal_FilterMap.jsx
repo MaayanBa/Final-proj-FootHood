@@ -4,6 +4,7 @@ import {
     Modal, Dimensions, Pressable, ImageBackground
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import DropDownPicker from 'react-native-dropdown-picker';
 import AppCss from '../../CSS/AppCss';
 import { getLocation, geocodeLocationByName } from '../../Services/location-service';
 import GooglePlacesInput from '../MyTeams/Components/GooglePlacesInput';
@@ -16,8 +17,10 @@ export default function Modal_LocationMap(props) {
         latitudeDelta: 0,
         longitudeDelta: 0,
     });
-    const [radius, setRadius] = useState("");
     const [locationName, setLocationName] = useState("");
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(null);
+    const [radius, setRadius] = useState('');
 
     useEffect(() => {
         getInitialState();
@@ -70,8 +73,8 @@ export default function Modal_LocationMap(props) {
 
             <View style={appCss.modal_View}>
                 <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../assets/WallPaperWhite2.png')}>
-                    <Text style={[appCss.modal_Txt,{paddingTop: 20,}]}>Choose Location:</Text>
-                    
+                    <Text style={[appCss.modal_Txt, { paddingTop: 20, }]}>Choose Location:</Text>
+
                     <GooglePlacesInput notifyChange={(loc) => getCoordsFromName(loc)} />
                     <View style={appCss.map_Container}>
                         <MapView style={appCss.mapView_container}
@@ -87,14 +90,15 @@ export default function Modal_LocationMap(props) {
                         </MapView>
                     </View>
 
-                    <View style={{ marginTop: 20 }}>
-                        <Text style={[appCss.modal_Txt,{paddingTop: 20,}]}>Set radius limit:</Text>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={setRadius}
-                            value={radius}
-                            keyboardType="phone-pad"
-                            placeholder="Please Enter Radius KM"
+                    <View style={[{ justifyContent: 'center' }, { marginTop: 20 }, { flexDirection: 'row' }]}>
+                        <Text style={[appCss.modal_Txt, { paddingTop: 20 }]}>Set radius limit:</Text>
+                        <DropDownPicker
+                            items={[
+                                { label: '1 KM', value: '1' }, { label: '2 KM', value: '2' }, { label: '5 KM', value: '5' }, { label: '10 KM', value: '10' }, { label: '20 KM', value: '20' }, { label: '40 KM', value: '40' }, { label: '', value: '' }
+                            ]}
+                            onChangeItem={item => setRadius(item.value)}
+                            placeholder="KM"
+                            containerStyle={{ marginTop: 15, height: 30, width: 85 }}
                         />
                     </View>
 

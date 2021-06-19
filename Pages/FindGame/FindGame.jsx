@@ -126,7 +126,7 @@ export default function GameList(props) {
             </View>
 
             {filterDistance == 0 || counter == 0 ? null : <View style={{ paddingBottom: 10 }, { paddingTop: 10 }}><Text style={appCss.inputLabel}>Result For Games {filterDistance} KM Around {filterLocationName}:</Text></View>}
-            <ScrollView style={{ paddingTop: 10 }}>
+            <ScrollView style={{ paddingTop: 5}}>
                 {gameCards}
             </ScrollView>
 

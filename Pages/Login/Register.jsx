@@ -13,11 +13,9 @@ import { Avatar } from 'react-native-paper';
 // import { ListItem } from 'react-native-elements/dist/list/ListItem';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import AppCss from '../../CSS/AppCss'
-
 import { Context as CitiesContext } from '../../Contexts/CitiesContext';
 import CitiesDropDown from '../MyTeams/Components/CitiesDropDown';
 import { getLocation, geocodeLocationByName } from '../../Services/location-service';
-
 
 
 export default function Register(props) {
