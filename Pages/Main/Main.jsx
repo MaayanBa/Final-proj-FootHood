@@ -8,7 +8,7 @@ import { Context as PlayerContext } from '../../Contexts/PlayerContext'
 import * as Notifications from 'expo-notifications';
 import pushNotifications from '../../Services/pushNotifications';
 import { setIn } from 'formik';
-import  NotificationActions from '../../Services/NotificationActions';
+import NotificationActions from '../../Services/NotificationActions';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -21,7 +21,7 @@ Notifications.setNotificationHandler({
 export default function Main({ navigation }) {
     const { state: { token }, tryLocalSignin, pushNotificationToken } = useContext(AuthContext)
     const { state: { myTeams }, GetTeamDetails, } = useContext(TeamContext);
-    const { state: { gamesList }, GetGamesList,GetGamesPlayerNotRegistered } = useContext(GameContext);
+    const { state: { gamesList }, GetGamesList, GetGamesPlayerNotRegistered } = useContext(GameContext);
     const { GetPlayers } = useContext(PlayerContext);
     const [user, setUser] = useState(token)
     const [renderScreen, setRenderScreen] = useState(false)
@@ -33,10 +33,10 @@ export default function Main({ navigation }) {
     const [keyTeam, setKeyTeam] = useState(0);
 
     useEffect(() => {
-        GetTeamDetails(user.Email)
-        GetGamesPlayerNotRegistered(user.Email)
-        GetPlayers();
-       // NotificationActions();
+        // GetTeamDetails(user.Email)
+        // GetGamesPlayerNotRegistered(user.Email)
+        // GetPlayers();
+        // NotificationActions();
         // pushNotifications().then(expoToken => {
         //     setExpoPushToken(expoToken)
         //     if (expoToken !== undefined)
@@ -95,6 +95,9 @@ export default function Main({ navigation }) {
         const unsubscribe = navigation.addListener('focus', () => {
             //GetTeamDetails(user.Email)
             setRenderScreen(!renderScreen)
+            GetTeamDetails(user.Email)
+            GetGamesPlayerNotRegistered(user.Email)
+            // console.log("sdmkalsdm")
             GetPlayers();
         });
         // Return the function to unsubscribe from the event so it gets removed on unmount
@@ -105,7 +108,7 @@ export default function Main({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <NotificationActions navigation={navigation}/>
+            <NotificationActions navigation={navigation} />
             <View style={styles.header}>
                 <Header navigation={navigation} />
                 <Text style={styles.title}>"Main page"</Text>

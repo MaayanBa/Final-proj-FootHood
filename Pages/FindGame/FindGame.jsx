@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Text, StyleSheet, Image, View, StatusBar, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, StyleSheet, Image as ImageCourt, View, StatusBar, TouchableOpacity, ScrollView } from 'react-native';
 import AppCss from '../../CSS/AppCss';
 import { Octicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -13,7 +13,7 @@ import { Context as TeamContext } from '../../Contexts/TeamContext';
 export default function GameList(props) {
     const { state: { gamesPlayerNotRegistered } } = useContext(GameContext)
     const { state: { token } } = useContext(AuthContext);
-    const { state: { joinRequests },AddNewJoinRequests, GetJoinRequests } = useContext(TeamContext);
+    const { state: { joinRequests }, AddNewJoinRequests, GetJoinRequests } = useContext(TeamContext);
     const [modalVisible, setModalVisible] = useState(false);
     const [filterLocationName, setFilterLocationName] = useState("");
     const [filterLocationCord, setFilterLocationCord] = useState({
@@ -89,10 +89,10 @@ export default function GameList(props) {
                                         <Text style={[styles.txtStyle, { color: 'black', alignItems: 'center' }]}>Pending</Text>
                                     </TouchableOpacity> 
                                     : */}
-                                     <TouchableOpacity style={appCss.blue_btn} onPress={() => sendJoinRequest(g.GameSerialNum)}>
-                                        <Text style={[styles.txtStyle, { color: 'white', alignItems: 'center' }]}>Join</Text>
-                                    </TouchableOpacity>
-                                    {/* } */}
+                                <TouchableOpacity style={appCss.blue_btn} onPress={() => sendJoinRequest(g.GameSerialNum)}>
+                                    <Text style={[styles.txtStyle, { color: 'white', alignItems: 'center' }]}>Join</Text>
+                                </TouchableOpacity>
+                                {/* } */}
                             </View>
                         </View>
                         <View style={styles.gameInformation_View_L}>
@@ -134,21 +134,19 @@ export default function GameList(props) {
                 <View style={[appCss.container, { alignItems: 'center' }]}>
                     <Text style={[appCss.title, appCss.space]}>Find Game</Text>
                     <View style={styles.buttons}>
-                        <TouchableOpacity style={[appCss.btnTouch, { width: '40%' }]} onPress={() => setModalVisible(true)}>
+                        <TouchableOpacity style={[appCss.btnTouch, { width: '40%' , }]} onPress={() => setModalVisible(true)}>
                             <Text style={appCss.txtBtnTouch}>Filter</Text>
                         </TouchableOpacity>
                         {modalVisible && <Modal_FilterMap modalVisible={modalVisible} setModalVisible={() => setModalVisible(!modalVisible)} location={(loc) => getLocation(loc)} distance={(radius) => getDistance(radius)} locationCord={(data) => getLocationCord(data)} />}
-                        <TouchableOpacity style={[appCss.btnTouch, { width: '40%' }, { flexDirection: "row" }, { backgroundColor: "red" }]} onPress={() => console.log("hot games btn")}>
+                        <TouchableOpacity style={[appCss.btnTouch, { width: '40%' }, { flexDirection: "row",backgroundColor: "#FE5C5C", justifyContent:'space-around' }]} onPress={() => console.log("hot games btn")}>
                             <Octicons name="flame" size={24} color="black" />
                             <Text style={appCss.txtBtnTouch}>Hot Games</Text>
                             <Octicons name="flame" size={24} color="black" />
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={[appCss.btnTouch, { width: '85%' }, { flexDirection: "row" },]} onPress={() => navToPitch()}>
-                        <MaterialCommunityIcons name="soccer-field" size={24} color="black" />
-                        <Text style={appCss.txtBtnTouch}>Courts around your area</Text>
-                        <MaterialCommunityIcons name="soccer-field" size={24} color="black" />
-                    </TouchableOpacity>
+                 
+
+
                     {filterDistance == 0 || counter == 0 ? null : <View style={{ paddingBottom: 10 }, { paddingTop: 10 }}><Text style={appCss.inputLabel}>Result For Games {filterDistance} KM Around {filterLocationName}:</Text></View>}
                     {gameCards}
                     {filterDistance > 0 && counter == 0 ? <View><Text style={styles.noResultsTxt}>No Results Found!{"\n"} Please Try Again</Text></View> : null}
@@ -156,6 +154,14 @@ export default function GameList(props) {
                         {filterDistance == 0 ? null : <TouchableOpacity style={[appCss.btnTouch, { width: '45%' }]} onPress={() => ResetSearch()}>
                             <Text style={appCss.txtBtnTouch}>Reset Search</Text>
                         </TouchableOpacity>}
+                    </View>
+                    <View style={{ flexDirection: "row", justifyContent: 'center', alignSelf: 'center'}}>
+                        <ImageCourt source={require('../../assets/Court.png')} style={styles.court_img} />
+                        <TouchableOpacity style={[appCss.btnTouch, { width: '45%',backgroundColor:'#03C04A' }]} onPress={() => navToPitch()}>
+                            <Text style={appCss.txtBtnTouch}>Courts Around You</Text>
+                            {/* <MaterialCommunityIcons name="soccer-field" size={24} color="black" /> */}
+                        </TouchableOpacity>
+                        <ImageCourt source={require('../../assets/Court.png')} style={styles.court_img} />
                     </View>
                 </View>
             </ScrollView>
@@ -209,6 +215,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         width: '100%'
+    },
+    court_img: {
+        //marginBottom: 90,
+        height: 45,
+        width: 45,
+        alignSelf: 'flex-end',
+        marginHorizontal:20
+
     },
 
 });

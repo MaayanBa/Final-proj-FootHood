@@ -74,6 +74,16 @@ export default function Modal_LocationMap(props) {
             <View style={styles.modal_View}>
                 <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../assets/WallPaperWhite2.png')}>
                     <Text style={styles.modal_Txt}>Choose Location:</Text>
+                    <View style={{ marginTop: 20 }}>
+                        <Text style={styles.modal_Txt}>Set radius limit:</Text>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={setRadius}
+                            value={radius}
+                            keyboardType="phone-pad"
+                            placeholder="Please Enter Radius KM"
+                        />
+                    </View>
                     <GooglePlacesInput notifyChange={(loc) => getCoordsFromName(loc)} />
                     <View style={styles.map_Container}>
                         <MapView style={styles.mapView_container}
@@ -88,16 +98,7 @@ export default function Modal_LocationMap(props) {
                                 onDragEnd={(e) => console.log(e.nativeEvent)/*setDestination({ destination: e.nativeEvent.coordinate })*/} />
                         </MapView>
                     </View>
-                    <View style={{ marginTop: 20 }}>
-                        <Text style={styles.modal_Txt}>Set radius limit:</Text>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={setRadius}
-                            value={radius}
-                            keyboardType="phone-pad"
-                            placeholder="Please Enter Radius KM"
-                        />
-                    </View>
+                    
                     <View style={styles.buttons}>
                         <Pressable style={styles.map_BtnClose} onPress={() => FilterGames()}>
                             <Text style={appCss.inputLabel}>Filter games</Text>

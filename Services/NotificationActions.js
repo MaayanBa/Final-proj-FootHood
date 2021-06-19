@@ -14,7 +14,7 @@ Notifications.setNotificationHandler({
     })
 });
 
-export default function NotificationActions({navigation}) {
+export default function NotificationActions({ navigation }) {
     const { state: { token }, pushNotificationToken } = useContext(AuthContext)
     const { state: { myTeams }, GetTeamDetails, } = useContext(TeamContext);
     const { state: { gamesList }, GetGamesList } = useContext(GameContext);
@@ -57,7 +57,11 @@ export default function NotificationActions({navigation}) {
             myTeams.map(async (team, i) => {
                 if (team.TeamSerialNum == notification.T_SerialNum) {
                     setKeyTeam(i)
-                    GetGamesList(team.TeamSerialNum)
+                    if (notification.G_SerialNum != undefined)
+                        GetGamesList(team.TeamSerialNum)
+                    if (notification.name == "message")
+                        navigation.navigate('StackNav_MyTeams', { screen: 'TeamPage', params: { keyTeam: i } });
+                    
                 }
             })
         }

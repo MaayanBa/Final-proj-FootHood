@@ -65,7 +65,7 @@ export default styles = StyleSheet.create({
     color: "black",
     fontWeight: "bold",
     alignSelf: "center",
-    textTransform: "uppercase"
+    //textTransform: "uppercase"
   },
   sectionStyle: {
     flexDirection: 'row-reverse',

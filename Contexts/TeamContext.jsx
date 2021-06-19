@@ -152,11 +152,11 @@ const setTeamPlayers = dispatch => async (team, players) => {
     }
 }
 
-const AddNewJoinRequests = dispatch => async (EmailPlayer,GameSerialNum) => {
+const AddNewJoinRequests = dispatch => async (EmailPlayer, GameSerialNum) => {
     try {
         console.log(EmailPlayer)
         console.log(GameSerialNum)
-        const response = await TeamApi.post('/AddNewJoinRequests', {EmailPlayer,GameSerialNum});
+        const response = await TeamApi.post('/AddNewJoinRequests', { EmailPlayer, GameSerialNum });
         alert("You have sent a request to join! Please wait for the manager of the team to accept you")
         console.log("response . data === " + response.data);
         //console.log(response.data);
@@ -165,6 +165,13 @@ const AddNewJoinRequests = dispatch => async (EmailPlayer,GameSerialNum) => {
         dispatch({ type: 'add_error', payload: 'Somthing went wrong when sending a joining request' })
     }
 
+}
+const SendMessageTeamChat = dispatch => async (EmailPlayer, TeamSerialNum, TeamName, FirstName, MessagePlayer) => {
+    try {
+        await TeamApi.post('/SendMessageTeamChat', { EmailPlayer, TeamSerialNum,TeamName, FirstName,MessagePlayer});
+    } catch (err) {
+        console.log(err.response.data)
+    }
 }
 
 export const { Context, Provider } = CreateDataContext(
@@ -182,6 +189,7 @@ export const { Context, Provider } = CreateDataContext(
         SetSearchPlayer,
         setTeamPlayers,
         AddNewJoinRequests,
+        SendMessageTeamChat,
     },
     {
         myTeams: [],

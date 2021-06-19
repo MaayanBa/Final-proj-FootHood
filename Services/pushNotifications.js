@@ -15,7 +15,6 @@ export default async () => {
 
         let expoToken = await Notifications.getExpoPushTokenAsync();
         AsyncStorage.setItem('expoTokenDate', new Date().toLocaleDateString());
-        console.log("skadls")
         return expoToken
     }
 }

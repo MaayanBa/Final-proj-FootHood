@@ -15,7 +15,7 @@ import { Context as AuthContext } from '../../Contexts/AuthContext'
 export default function TeamPage(props) {
 
     const { key } = props.route.params;
-    const { state: { myTeams, teamPlayers }, setTeamPlayers,GetTeamDetails } = useContext(TeamContext);
+    const { state: { myTeams, teamPlayers }, setTeamPlayers,GetTeamDetails,SendMessageTeamChat } = useContext(TeamContext);
     const { state: { gamesList }, GetGamesList, GameRegisterd, GetAmountRegisteredPlayersEachGame } = useContext(GameContext);
     const { state: { players } } = useContext(PlayerContext);
     const [messages, setMessages] = useState([]);
@@ -85,10 +85,12 @@ export default function TeamPage(props) {
     }
 
     const onSend = useCallback((message = []) => {
-        console.log("On send")
+        // console.log("On send")
         setMessages((prev) => {
             let newMessages = [...prev, ...message]
             GiftedChat.append(prev, message)
+            // console.log(message[message.length-1].text);
+            SendMessageTeamChat(user.Email,myTeams[key].TeamSerialNum,myTeams[key].TeamName,user.FirstName,message[message.length-1].text)
             return newMessages
         })
     }, [])
