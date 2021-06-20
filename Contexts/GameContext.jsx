@@ -217,7 +217,6 @@ const GetGamesPlayerNotRegistered = dispatch => async (EmailPlayer) => {
             console.log("Something Went wrong with the games that user not registered !")
         console.log(response.data)
         }
-
     } catch (err) {
         console.log("in error ")
         console.log(err)

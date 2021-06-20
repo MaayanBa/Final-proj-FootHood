@@ -52,7 +52,7 @@ export default function Header(props) {
                 <Image source={require('../../assets/Settings.png')} resizeMode="contain" style={styles.iconSetting} />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.btnProfile} onPress={() => console.log("ProfilePage")}>
+            <TouchableOpacity style={styles.btnProfile} onPress={() => props.navigation.navigate('MyProfile')}>
                 <Text style={styles.txtProfile}> My Profile </Text>
                 <Image source={require('../../assets/Nyemar.png')} resizeMode="contain" style={styles.imgProfile} />
 

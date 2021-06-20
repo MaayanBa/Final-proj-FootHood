@@ -154,7 +154,7 @@ export default function CardPlayer({ route }) {
                         {rate !== null ? <Text>{rate.AttackRating}</Text> : null}
                     </View>
                     <View style={styles.rate}>
-                        <Text>Deffense</Text>
+                        <Text>Defence</Text>
                         {rate !== null ? <Text>{rate.DefenseRating}</Text> : null}
                     </View>
                 </View>

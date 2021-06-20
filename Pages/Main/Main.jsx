@@ -6,8 +6,6 @@ import { Context as TeamContext } from '../../Contexts/TeamContext'
 import { Context as GameContext } from '../../Contexts/GameContext'
 import { Context as PlayerContext } from '../../Contexts/PlayerContext'
 import * as Notifications from 'expo-notifications';
-import pushNotifications from '../../Services/pushNotifications';
-import { setIn } from 'formik';
 import NotificationActions from '../../Services/NotificationActions';
 
 Notifications.setNotificationHandler({
