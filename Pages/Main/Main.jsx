@@ -19,7 +19,7 @@ Notifications.setNotificationHandler({
 export default function Main({ navigation }) {
     const { state: { token }, tryLocalSignin, pushNotificationToken } = useContext(AuthContext)
     const { state: { myTeams }, GetTeamDetails, } = useContext(TeamContext);
-    const { state: { gamesList }, GetGamesList, GetGamesPlayerNotRegistered } = useContext(GameContext);
+    const { state: { gamesList }, GetGamesList,  } = useContext(GameContext);
     const { GetPlayers } = useContext(PlayerContext);
     const [user, setUser] = useState(token)
     const [renderScreen, setRenderScreen] = useState(false)
@@ -28,7 +28,6 @@ export default function Main({ navigation }) {
         const unsubscribe = navigation.addListener('focus', () => {
             setRenderScreen(!renderScreen)
             GetTeamDetails(user.Email)
-            GetGamesPlayerNotRegistered(user.Email)
             GetPlayers();
         });
         // Return the function to unsubscribe from the event so it gets removed on unmount

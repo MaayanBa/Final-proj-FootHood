@@ -5,19 +5,21 @@ import { Avatar, ListItem } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Context as GameContext } from '../../../Contexts/GameContext';
 import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
+import { Context as TeamContext } from '../../../Contexts/TeamContext';
 import { getLocation, geocodeLocationByName } from '../../../Services/location-service';
 
 export default function Players_Window(props) {
-  const { state: { playersPerGame }, GetPlayers4Game,Jarvis_FindPlayers4Game } = useContext(GameContext);
+  const { state: { gamesList,playersPerGame }, GetPlayers4Game,Jarvis_FindPlayers4Game } = useContext(GameContext);
   const { state: { players } } = useContext(PlayerContext);
-  const [findPlayersActivated, setFindPlayersActivated] = useState(props.game.FindPlayersActive);
+  const { state: { myTeams } } = useContext(TeamContext);
+  const [findPlayersActivated, setFindPlayersActivated] = useState(gamesList[props.indexGame].FindPlayersActive);
   const [region, setRegion] = useState(null)
   useEffect(() => {
-    GetPlayers4Game(props.game.GameSerialNum, players);
+    GetPlayers4Game(gamesList[props.indexGame].GameSerialNum, players);
     //checkIfJarvisActiveted();
     // console.log(props.game.GameLocation)
 
-    geocodeLocationByName(props.game.GameLocation).then(
+    geocodeLocationByName(gamesList[props.indexGame].GameLocation).then(
       (data) => {
         if (data === undefined || data === null) {
           alert("there is a problem with the location cordinats")
@@ -37,8 +39,10 @@ export default function Players_Window(props) {
   // }
   const activeFindPlayers = async () => {
     if (region != null) {
-      await Jarvis_FindPlayers4Game(props.game.TeamSerialNum,props.game.GameSerialNum,props.game.AvgPlayerAge, props.game.AvgPlayerRating, region)
+      await Jarvis_FindPlayers4Game(gamesList[props.indexGame].TeamSerialNum,gamesList[props.indexGame].GameSerialNum,gamesList[props.indexGame].AvgPlayerAge, gamesList[props.indexGame].AvgPlayerRating, region)
       setFindPlayersActivated(true);
+      GetGamesList(myTeams[props.keyTeam].TeamSerialNum)
+
     }
     else
       alert("Something went wrong please go to Home page and try again")

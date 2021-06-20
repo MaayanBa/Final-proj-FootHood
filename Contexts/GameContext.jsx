@@ -160,8 +160,8 @@ const GetAmountRegisteredPlayersEachGame = dispatch => async (TeamSerialNum) => 
         const res = await GameApi.post('/GetAmountRegisteredPlayersEachGame', { TeamSerialNum });
         if (res.data != "There are no games for this Team")
             dispatch({ type: 'GetAmountRegisteredPlayersEachGame', payload: res.data })
-        else
-            console.log("Thare are not players that registerd in any game")
+        // else
+        //     console.log("Thare are not players that registerd in any game")
     } catch (error) {
         console.log("err Get Amount Registered Players Each Game")
         console.log(error)
@@ -195,8 +195,8 @@ const Jarvis_FindPlayers4Game = dispatch => async (TeamSerialNum, GameSerialNum,
         const res = await JarvisApi.post('/Jarvis_FindPlayers4Game', gameDetailes);
         console.log("Res==========")
         console.log(res.data)
-        if (res.data.length > 0)
-            alert(`Jarvis has found  ${res.data.length} matching players for this game ! \n\nPlease keep up on your join requests ! `)
+        if (res.data > 0)
+            alert(`Jarvis has found  ${res.data} matching players for this game ! \n\nPlease keep up on your join requests ! `)
         else
             alert(`Jarvis hasn't found  any matching players for this game ! \n\nWe welcome you to invite new friends ! `)
 
@@ -209,13 +209,13 @@ const Jarvis_FindPlayers4Game = dispatch => async (TeamSerialNum, GameSerialNum,
 
 const GetGamesPlayerNotRegistered = dispatch => async (EmailPlayer) => {
     try {
-    // console.log(EmailPlayer);
+        // console.log(EmailPlayer);
         const response = await GameApi.post('/GamesThatUserNotRegisterd', { EmailPlayer });
         if (typeof response.data !== 'string')
             dispatch({ type: 'GetGamesPlayerNotRegistered', payload: response.data })
         else {
             console.log("Something Went wrong with the games that user not registered !")
-        console.log(response.data)
+            console.log(response.data)
         }
     } catch (err) {
         console.log("in error ")

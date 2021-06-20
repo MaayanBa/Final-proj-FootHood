@@ -96,7 +96,7 @@ export default function CreateNewGame(props) {
       }
       await CreatNewGame(game, equipments);
       await GetGamesList(team.TeamSerialNum)
-      //props.navigation.goBack();
+      props.navigation.goBack();
     }
     else {
       alert("one or more of the field is missing")

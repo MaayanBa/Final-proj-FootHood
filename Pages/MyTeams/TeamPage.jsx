@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import { Text, StyleSheet, View, TouchableOpacity, SafeAreaView, ScrollView, Dimensions } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat'
 import { firebase } from '../../api/FireBase';
 import { Avatar } from 'react-native-paper';
@@ -89,8 +89,8 @@ export default function TeamPage(props) {
         setMessages((prev) => {
             let newMessages = [...prev, ...message]
             GiftedChat.append(prev, message)
-             console.log(message[message.length-1]);
-            SendMessageTeamChat(user.Email, myTeams[key].TeamSerialNum, myTeams[key].TeamName, user.FirstName, message[message.length - 1].text,message[message.length - 1].createdAt)
+            console.log(message[message.length - 1]);
+            SendMessageTeamChat(user.Email, myTeams[key].TeamSerialNum, myTeams[key].TeamName, user.FirstName, message[message.length - 1].text, message[message.length - 1].createdAt)
             return newMessages
         })
     }, [])
@@ -109,8 +109,8 @@ export default function TeamPage(props) {
     }
 
     return (
-        // <SafeAreaView>
-        //     <ScrollView>
+        <SafeAreaView>
+             <ScrollView>
         <View style={[appCss.container, styles.container_extra]}>
             <TouchableOpacity style={styles.TeamInformation}
                 onPress={() => props.navigation.navigate('TeamDetailsPage', { key })}>
@@ -139,7 +139,7 @@ export default function TeamPage(props) {
                 style={[appCss.btnTouch, styles.btnTouch_extra]}>
                 <Text style={appCss.txtBtnTouch}>View Games</Text>
             </TouchableOpacity>
-            <View style={styles.chatContainer}>
+            <View style={[styles.chatContainer, { height: team.EmailManager == user.Email ? Dimensions.get('window').height - 370 : Dimensions.get('window').height - 310 }]}>
                 <GiftedChat
                     messages={messages}
                     onSend={messages => onSend(messages)}
@@ -149,11 +149,12 @@ export default function TeamPage(props) {
                         avatar: user.PlayerPicture
                     }}
                     inverted={false}
+                // scrollToBottom={true}
                 />
             </View>
         </View>
-        //     </ScrollView>
-        // </SafeAreaView >
+            </ScrollView>
+        </SafeAreaView >
     );
 }
 
@@ -199,9 +200,13 @@ const styles = StyleSheet.create({
         width: '90%'
     },
     chatContainer: {
-        width: '90%',
-        height: '65%',
-        paddingBottom: 40
+        width: Dimensions.get('window').width - 20,
+        // height: team.EmailManager == user.Email ? Dimensions.get('window').height - 320:Dimensions.get('window').height - 370,
+        // flexDirection:'row',
+        // alignSelf:'flex-end'
+        // paddingBottom: 40,
+
+        // top:40,
     },
 
 })

@@ -9,7 +9,7 @@ import { Context as AuthContext } from '../../Contexts/AuthContext';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
 
 export default function GameList(props) {
-    const { state: { gamesPlayerNotRegistered } } = useContext(GameContext)
+    const { state: { gamesPlayerNotRegistered },GetGamesPlayerNotRegistered } = useContext(GameContext)
     const { state: { token } } = useContext(AuthContext);
     const { state: { joinRequests }, AddNewJoinRequests, GetJoinRequests } = useContext(TeamContext);
     const [modalVisible, setModalVisible] = useState(false);
@@ -20,6 +20,14 @@ export default function GameList(props) {
         latitudeDelta: 0,
         longitudeDelta: 0,
     });
+    useEffect(() => {
+        const unsubscribe = props.navigation.addListener('focus', () => {
+            GetGamesPlayerNotRegistered(token.Email)
+        });
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return () => unsubscribe();
+    }, [props.navigation]);
+
     const [filterDistance, setFilterDistance] = useState(0)
 
     const getLocation = (loc) => {

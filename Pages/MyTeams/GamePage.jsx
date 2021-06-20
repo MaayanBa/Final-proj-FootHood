@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import {
-  SafeAreaView, ScrollView, Text, StyleSheet, View, Animated, TouchableOpacity, StatusBar, Image
+  SafeAreaView, ScrollView, Text, StyleSheet, View, Animated, TouchableOpacity, StatusBar, Image,LogBox
 } from "react-native";
 import { Entypo as Pencil } from '@expo/vector-icons';
 // import { Context as TeamContext } from '../../Contexts/TeamContext';
@@ -17,6 +17,7 @@ import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 import { Context as EquipmentContext } from '../../Contexts/EquipmentContext';
 import Modal_EditGame from './Components/Modal_EditGame';
 
+LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
 export default function GamePage(props) {
   //index = GameKey || keyTeam = keyTeam
@@ -51,7 +52,7 @@ export default function GamePage(props) {
       GetAllEquipments(gamesList[index].GameSerialNum)
     });
     return () => unsubscribe();
-}, [props.navigation]);
+  }, [props.navigation]);
 
 
   // גורם בעיה
@@ -105,7 +106,10 @@ export default function GamePage(props) {
           {myTeams[keyTeam].EmailManager !== user.Email ? null : <Modal_JoinRequests game={gamesList[index]} />}
 
           {/* Players Window Or Teams Cards*/}
-          {(new Date() <= gameDate - oneDay) ? <Players_Window game={gamesList[index]} /> : <GameTeamsCard game={gamesList[index]} index={index} />}
+          {(new Date() <= gameDate - oneDay) ?
+            <Players_Window game={gamesList[index]} indexGame={index} keyTeam={keyTeam} />
+            :
+            <GameTeamsCard game={gamesList[index]} index={index} keyTeam={keyTeam} />}
 
           {/* Equipment Window */}
           <Equipment_Window keyTeam={keyTeam} index={index} />
