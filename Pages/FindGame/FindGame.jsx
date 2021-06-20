@@ -111,7 +111,7 @@ export default function GameList(props) {
         }
     });
     return (
-        <View style={[appCss.container, { alignItems: 'center' }]}>
+        <View style={{ alignItems: 'center' }}>
             <Text style={[appCss.title, appCss.space]}>Find Game</Text>
             <View style={styles.buttons}>
                 <TouchableOpacity style={[appCss.btnTouch, { width: '40%', }]} onPress={() => setModalVisible(true)}>
@@ -126,7 +126,7 @@ export default function GameList(props) {
             </View>
 
             {filterDistance == 0 || counter == 0 ? null : <View style={{ paddingBottom: 10 }, { paddingTop: 10 }}><Text style={appCss.inputLabel}>Result For Games {filterDistance} KM Around {filterLocationName}:</Text></View>}
-            <ScrollView style={{ paddingTop: 5}}>
+            <ScrollView style={styles.games_scrollView}>
                 {gameCards}
             </ScrollView>
 
@@ -137,7 +137,7 @@ export default function GameList(props) {
                 </TouchableOpacity>}
             </View>
 
-            <View style={{ justifyContent: 'center', alignItems: 'flex-end', flexDirection: "row", marginBottom: 20 }}>
+            <View style={{ justifyContent: 'center', alignItems: 'flex-end', flexDirection: "row", marginBottom: 20,paddingTop:70 }}>
                 <ImageCourt source={require('../../assets/Court.png')} style={styles.court_img} />
                 <TouchableOpacity style={[appCss.btnTouch, { width: Dimensions.get('window').width - 180, backgroundColor: '#03C04A' }]} onPress={() => navToPitch()}>
                     <Text style={appCss.txtBtnTouch}>Courts Around You</Text>
@@ -199,4 +199,7 @@ const styles = StyleSheet.create({
         //alignSelf: 'flex-end',
         marginHorizontal: 20
     },
+    games_scrollView: {
+        height: 340
+      },
 });

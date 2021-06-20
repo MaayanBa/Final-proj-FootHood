@@ -56,6 +56,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white'
   },
+  playerCard: {
+    backgroundColor: 'white',
+    width: '95%',
+    borderRadius: 10,
+    margin: 5,
+    alignSelf: 'center'
+  },
 })
 
 
@@ -71,7 +78,7 @@ export default function TeamDetailsPage(props) {
 
 
   const playerList = teamPlayers.map((p, i) => (
-    <ListItem key={i} bottomDivider style={styles.rowPlayer_ItemList}>
+    <ListItem key={i} style={styles.playerCard} containerStyle={{ backgroundColor: "transparent" }}>
       <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CardPlayer', { p })} >
         <Image style={appCss.playerCardIcon_Btn} source={require('../../assets/PlayerCardIcon.png')} />
       </TouchableOpacity>
@@ -89,7 +96,7 @@ export default function TeamDetailsPage(props) {
   }
 
   const ExitTeam = async () => {
-    myTeams.length-1==newKey? setNewKey(newKey-1):null
+    myTeams.length - 1 == newKey ? setNewKey(newKey - 1) : null
     let playerInTeam = {
       TeamSerialNum: myTeams[newKey].TeamSerialNum,
       EmailPlayer: user.Email
@@ -119,8 +126,6 @@ export default function TeamDetailsPage(props) {
           }
         </View>
       </ImageBackground>
-
-
 
 
       {/* Player List */}

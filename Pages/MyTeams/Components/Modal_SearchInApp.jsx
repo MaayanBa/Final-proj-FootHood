@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         shadowColor: "#D9D9D9",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
-        height: 600,
+        height: 640,
     },
     modal_Txt: {
         marginBottom: 15,
@@ -54,7 +54,14 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     playerList_scrollView: {
-        height: 200
+        height: 250
+    },
+    playerCard:{
+        backgroundColor:'white',
+        width:'95%',
+        borderRadius:10,
+        margin:5,
+        alignSelf:'center'
     }
 })
 
@@ -106,7 +113,7 @@ export default function Modal_SearchInApp(props) {
 
 
     const searchedPlayerList = searchedPlayers.map((p, key) => {
-        return <ListItem key={key} bottomDivider style={styles.rowPlayer_ItemList}>
+        return <ListItem key={key} style={styles.playerCard} containerStyle={{ backgroundColor: "transparent" }}>
             <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CardPlayer', { p })} >
                 <Image style={appCss.playerCardIcon_Btn} source={require('../../../assets/PlayerCardIcon.png')} />
             </TouchableOpacity>
