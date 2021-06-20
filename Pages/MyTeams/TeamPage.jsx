@@ -15,13 +15,21 @@ import { Context as AuthContext } from '../../Contexts/AuthContext'
 export default function TeamPage(props) {
 
     const { key } = props.route.params;
-    const { state: { myTeams, teamPlayers, loadMessages }, setTeamPlayers, GetTeamDetails, SendMessageTeamChat } = useContext(TeamContext);
+    const { state: { myTeams, teamPlayers }, setTeamPlayers,GetTeamDetails,SendMessageTeamChat } = useContext(TeamContext);
     const { state: { gamesList }, GetGamesList, GameRegisterd, GetAmountRegisteredPlayersEachGame } = useContext(GameContext);
     const { state: { players } } = useContext(PlayerContext);
     const [messages, setMessages] = useState([]);
     const { state: { token } } = useContext(AuthContext)
     const [user, setUser] = useState(token)
     const team = myTeams[key];
+
+    useEffect(() => {
+        setTeamPlayers(myTeams[key], players);
+        fetchMessages().catch(e => console.log(e))
+        GetGamesList(myTeams[key].TeamSerialNum)
+        GetAmountRegisteredPlayersEachGame(myTeams[key].TeamSerialNum)
+        //GameRegisterd(user.Email,myTeams[key].TeamSerialNum);
+    }, [])
 
     const convertToArray = (data) => {
         let res = []
@@ -52,16 +60,8 @@ export default function TeamPage(props) {
     }, [messages])
 
     useEffect(() => {
-        fetchMessages().catch(e => console.log(e))
-        console.log("im tryinggggg")
-    }, [loadMessages])
-
-    useEffect(() => {
         const unsubscribe = props.navigation.addListener('focus', () => {
             setTeamPlayers(myTeams[key], players);
-            fetchMessages().catch(e => console.log(e))
-            GetGamesList(myTeams[key].TeamSerialNum)
-            GetAmountRegisteredPlayersEachGame(myTeams[key].TeamSerialNum)
         });
         return () => unsubscribe();
     }, [props.navigation, myTeams]);
