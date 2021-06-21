@@ -53,16 +53,16 @@ export default function MyProfile() {
                 </View>
                 <Text style={appCss.inputLabel}>Preffered Role: {user.PreferredRole}</Text>
                 <Text style={[appCss.inputLabel, { paddingTop: 20 }]}>Ranking:</Text>
-                <View style={styles.rates_View}>
-                    <View style={styles.rate}>
+                <View style={appCss.rates_View}>
+                    <View style={appCss.rate}>
                         <Text>Attack</Text>
                         {rate !== null ? <Text>{rate.AttackRating}</Text> : null}
                     </View>
-                    <View style={styles.rate}>
+                    <View style={appCss.rate}>
                         <Text>Defence</Text>
                         {rate !== null ? <Text>{rate.DefenseRating}</Text> : null}
                     </View>
-                    <View style={styles.rate}>
+                    <View style={appCss.rate}>
                         <Text>Power</Text>
                         {rate !== null ? <Text>{rate.PowerRating}</Text> : null}
                     </View>
@@ -77,21 +77,6 @@ const styles = StyleSheet.create({
     starStamina: {
         padding: 20,
         justifyContent: 'flex-start',
-    },
-    rates_View: {
-        justifyContent: 'space-around',
-        alignContent:'center',
-        flexDirection: 'row',
-        marginTop: 15
-    },
-    rate: {
-        backgroundColor: 'yellow',
-        borderRadius: 40,
-        height: 60,
-        width: 100,
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        padding: 10,
     },
     player_img: {
         width: 150,

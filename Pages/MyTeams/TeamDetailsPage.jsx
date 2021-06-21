@@ -12,60 +12,6 @@ import { Feather } from '@expo/vector-icons';
 import Modal_RulesAndLaws from './Components/Modal_RulesAndLaws';
 import Modal_AddPlayers from './Components/Modal_AddPlayers';
 
-
-const appCss = AppCss;
-const styles = StyleSheet.create({
-  container_extra: {
-    paddingTop: StatusBar.currentHeight,
-    width: '100%',
-    padding: 20,
-    marginTop: 10,
-  },
-  imgBG: {
-    height: 240,
-    borderRadius: 20,
-    overflow: 'hidden',
-    justifyContent: 'space-between'
-  },
-  options_View: {
-    alignSelf: 'center',
-    marginBottom: 10,
-    width: 250
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    marginBottom: 70
-  },
-  playerList_View: {
-    marginTop: 10,
-    height: '60%',
-  },
-  teamPlayers_Text: {
-    fontSize: 16,
-    padding: 5,
-    fontWeight: "bold",
-    color: 'white'
-  },
-  leaveTeam_Btn: {
-    flexDirection: "row-reverse",
-    margin: 15,
-    justifyContent: 'flex-end',
-  },
-  leaveTeam_txt: {
-    fontSize: 16,
-    color: 'white'
-  },
-  playerCard: {
-    backgroundColor: 'white',
-    width: '95%',
-    borderRadius: 10,
-    margin: 5,
-    alignSelf: 'center'
-  },
-})
-
-
 export default function TeamDetailsPage(props) {
   const { key } = props.route.params;
   const { state: { myTeams, teamPlayers }, setTeamPlayers, LeaveTeam, GetTeamDetails } = useContext(TeamContext);
@@ -78,7 +24,7 @@ export default function TeamDetailsPage(props) {
 
 
   const playerList = teamPlayers.map((p, i) => (
-    <ListItem key={i} style={styles.playerCard} containerStyle={{ backgroundColor: "transparent" }}>
+    <ListItem key={i} style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
       <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CardPlayer', { p })} >
         <Image style={appCss.playerCardIcon_Btn} source={require('../../assets/PlayerCardIcon.png')} />
       </TouchableOpacity>
@@ -145,3 +91,48 @@ export default function TeamDetailsPage(props) {
     </SafeAreaView>
   )
 }
+
+const appCss = AppCss;
+const styles = StyleSheet.create({
+  container_extra: {
+    paddingTop: StatusBar.currentHeight,
+    width: '100%',
+    padding: 20,
+    marginTop: 10,
+  },
+  imgBG: {
+    height: 240,
+    borderRadius: 20,
+    overflow: 'hidden',
+    justifyContent: 'space-between'
+  },
+  options_View: {
+    alignSelf: 'center',
+    marginBottom: 10,
+    width: 250
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    marginBottom: 70
+  },
+  playerList_View: {
+    marginTop: 10,
+    height: '60%',
+  },
+  teamPlayers_Text: {
+    fontSize: 16,
+    padding: 5,
+    fontWeight: "bold",
+    color: 'white'
+  },
+  leaveTeam_Btn: {
+    flexDirection: "row-reverse",
+    margin: 15,
+    justifyContent: 'flex-end',
+  },
+  leaveTeam_txt: {
+    fontSize: 16,
+    color: 'white'
+  },
+})

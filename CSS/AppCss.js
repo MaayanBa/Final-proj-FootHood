@@ -141,4 +141,26 @@ export default styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 20
   },
+  rates_View: {
+    justifyContent: 'space-around',
+    alignContent: 'center',
+    flexDirection: 'row',
+    marginTop: 15
+  },
+  rate: {
+    backgroundColor: 'yellow',
+    borderRadius: 40,
+    height: 60,
+    width: 100,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    padding: 10,
+  },
+  playerCardInList: {
+    backgroundColor: 'white',
+    width: '95%',
+    borderRadius: 10,
+    margin: 5,
+    alignSelf: 'center'
+  },
 });

@@ -11,6 +11,86 @@ import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 import { Context as GameContext } from '../../../Contexts/GameContext';
 import { Context as AuthContext } from '../../../Contexts/AuthContext';
 
+export default function Modal_JoinRequests(props) {
+    const [requestsModalVisible, setRequestsModalVisible] = useState(false);
+    const { state: { joinRequests }, GetJoinRequests, GetTeamDetails } = useContext(TeamContext);
+    const { state: { players } } = useContext(PlayerContext);
+    const { DeleteRequest, ApproveRequest, GetPlayers4Game } = useContext(GameContext);
+    const { state: { token } } = useContext(AuthContext)
+    const [badge, setBadge] = useState(0);
+
+
+    useEffect(() => {
+        GetJoinRequests(props.game, players)
+        setBadge(joinRequests.length)
+    }, [])
+
+    useEffect(() => {
+        setBadge(joinRequests.length)
+    }, [joinRequests])
+
+    const DeleteRequests = async (player) => {
+        await DeleteRequest(player.Email, props.game.GameSerialNum,props.game.TeamSerialNum);
+        await GetJoinRequests(props.game, players);
+    }
+    const ApproveRequests = async (player) => {
+        await ApproveRequest(player.Email, props.game.GameSerialNum);
+        await GetJoinRequests(props.game, players);
+        await GetPlayers4Game(props.game.GameSerialNum, players);
+        GetTeamDetails(token.Email);
+    }
+
+
+    const joinRequestsList = joinRequests.map((p, i) => (
+        <ListItem key={i} style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
+            <TouchableOpacity onPress={() => DeleteRequests(p)}>
+                <RequestAction name="x" size={25} color="red" />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => ApproveRequests(p)}>
+                <RequestAction name="check" size={25} color="green" />
+            </TouchableOpacity>
+
+            <ListItem.Content style={{ alignItems: 'flex-end' }} >
+                <ListItem.Title>{p.FirstName + " " + p.LastName}</ListItem.Title>
+            </ListItem.Content>
+            <Avatar rounded source={{ uri: p.PlayerPicture }} />
+        </ListItem>
+    ))
+
+
+    const modal_JoinRequests = <ModalJoinRequests animationType="slide"
+        transparent={true} visible={requestsModalVisible}
+        onRequestClose={() => setRequestsModalVisible(!requestsModalVisible)}
+    >
+        <View style={styles.centeredView}>
+            <View style={styles.modal_View}>
+            <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50}} source={require('../../../assets/WallPaperWhite2.png')}>
+                <Text style={styles.modal_Txt}>Join Requests:</Text>
+                {joinRequestsList}
+                <Pressable style={styles.modal_Closebtn} onPress={() => setRequestsModalVisible(!requestsModalVisible)} >
+                    <Text style={appCss.inputLabel}>Close</Text>
+                </Pressable>
+                </ImageBackground>
+            </View>
+        </View>
+    </ModalJoinRequests>
+
+    return (
+        <View style={{ padding: 10 }}>
+            <TouchableOpacity onPress={() => badge === 0 ? alert("There are no requests") : setRequestsModalVisible(true)} style={styles.PlayerRequest}>
+                <Text style={styles.btnText}>Players requests</Text>
+                <MailIcon name="mail" size={24} color="black" />
+            </TouchableOpacity>
+            {modal_JoinRequests}
+            {badge === 0 ? null :
+                <Badge
+                    containerStyle={{ position: 'absolute', top: 0, left: 0 }}
+                    value={badge} 
+                    status="error" />}
+        </View>
+    )
+}
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
@@ -58,88 +138,3 @@ const styles = StyleSheet.create({
         alignSelf: "center",
     },
 })
-
-export default function Modal_JoinRequests(props) {
-    const [requestsModalVisible, setRequestsModalVisible] = useState(false);
-    const { state: { joinRequests }, GetJoinRequests, GetTeamDetails } = useContext(TeamContext);
-    const { state: { players } } = useContext(PlayerContext);
-    const { DeleteRequest, ApproveRequest, GetPlayers4Game } = useContext(GameContext);
-    const { state: { token } } = useContext(AuthContext)
-    const [badge, setBadge] = useState(0);
-
-
-    useEffect(() => {
-        GetJoinRequests(props.game, players)
-        setBadge(joinRequests.length)
-    }, [])
-
-    useEffect(() => {
-        setBadge(joinRequests.length)
-    }, [joinRequests])
-
-    const DeleteRequests = async (player) => {
-        await DeleteRequest(player.Email, props.game.GameSerialNum,props.game.TeamSerialNum);
-        await GetJoinRequests(props.game, players);
-    }
-    const ApproveRequests = async (player) => {
-        await ApproveRequest(player.Email, props.game.GameSerialNum);
-        await GetJoinRequests(props.game, players);
-        await GetPlayers4Game(props.game.GameSerialNum, players);
-        GetTeamDetails(token.Email);
-    }
-
-
-    const joinRequestsList = joinRequests.map((p, i) => (
-        <ListItem key={i} bottomDivider style={{ color: "#D9D9D9" }} >
-            {/* <TouchableOpacity activeOpacity={0.8} onPress={() => console.log("player Card")} >
-                <Image style={styles.playerCardIcon_Btn} source={require('../../assets/PlayerCardIcon.png')} />
-            </TouchableOpacity>  */}
-            <TouchableOpacity onPress={() => DeleteRequests(p)}>
-                <RequestAction name="x" size={25} color="black" />
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => ApproveRequests(p)}>
-                <RequestAction name="check" size={25} color="black" />
-            </TouchableOpacity>
-
-            <ListItem.Content style={{ alignItems: 'flex-end' }} >
-                <ListItem.Title>{p.FirstName + " " + p.LastName}</ListItem.Title>
-            </ListItem.Content>
-            <Avatar rounded source={{ uri: p.PlayerPicture }} />
-        </ListItem>
-    ))
-
-
-    const modal_JoinRequests = <ModalJoinRequests animationType="slide"
-        transparent={true} visible={requestsModalVisible}
-        onRequestClose={() => setRequestsModalVisible(!requestsModalVisible)}
-    >
-        <View style={styles.centeredView}>
-            <View style={styles.modal_View}>
-            <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50}} source={require('../../../assets/WallPaperWhite2.png')}>
-                <Text style={styles.modal_Txt}>Join Requests:</Text>
-                {joinRequestsList}
-                <Pressable style={styles.modal_Closebtn} onPress={() => setRequestsModalVisible(!requestsModalVisible)} >
-                    <Text style={appCss.inputLabel}>Close</Text>
-                </Pressable>
-                </ImageBackground>
-            </View>
-        </View>
-    </ModalJoinRequests>
-
-    return (
-        <View style={{ padding: 10 }}>
-            <TouchableOpacity onPress={() => badge === 0 ? alert("There are no requests") : setRequestsModalVisible(true)} style={styles.PlayerRequest}>
-                <Text style={styles.btnText}>Players requests</Text>
-                <MailIcon name="mail" size={24} color="black" />
-            </TouchableOpacity>
-            {modal_JoinRequests}
-            {badge === 0 ? null :
-                <Badge
-                    containerStyle={{ position: 'absolute', top: 0, left: 0 }}
-                    value={badge} //Need to count length of messages from DB
-                    status="error" />
-            }
-        </View>
-    )
-}

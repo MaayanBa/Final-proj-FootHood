@@ -8,62 +8,6 @@ import { Entypo as PlusIcon } from '@expo/vector-icons';
 import { ListItem, Avatar } from 'react-native-elements';
 import AppCss from '../../../CSS/AppCss';
 import { Context as TeamContext } from '../../../Contexts/TeamContext';
-// import { Context as AuthContext } from '../../../Contexts/AuthContext'
-
-const appCss = AppCss;
-const styles = StyleSheet.create({
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        marginBottom: 70
-    },
-    modal_View: {
-        margin: 20,
-        borderRadius: 20,
-        padding: 5,
-        paddingBottom: 20,
-        shadowColor: "#D9D9D9",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        height: 640,
-    },
-    modal_Txt: {
-        marginBottom: 15,
-        padding: 10,
-        textAlign: "center",
-    },
-    input: {
-        height: 40,
-        margin: 12,
-        borderWidth: 1,
-        padding: 5
-    },
-    labels: {
-        alignSelf: 'flex-end',
-        right: 15
-    },
-    modal_Closebtn: {
-        backgroundColor: "#2196F3",
-        marginTop: 50,
-        borderRadius: 20,
-        padding: 10,
-        alignSelf: "center",
-    },
-    teamPlayers_Text: {
-        padding: 10,
-        fontWeight: "bold",
-    },
-    playerList_scrollView: {
-        height: 250
-    },
-    playerCard:{
-        backgroundColor:'white',
-        width:'95%',
-        borderRadius:10,
-        margin:5,
-        alignSelf:'center'
-    }
-})
 
 export default function Modal_SearchInApp(props) {
     const [fullName, setFullName] = useState("");
@@ -113,7 +57,7 @@ export default function Modal_SearchInApp(props) {
 
 
     const searchedPlayerList = searchedPlayers.map((p, key) => {
-        return <ListItem key={key} style={styles.playerCard} containerStyle={{ backgroundColor: "transparent" }}>
+        return <ListItem key={key} style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
             <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CardPlayer', { p })} >
                 <Image style={appCss.playerCardIcon_Btn} source={require('../../../assets/PlayerCardIcon.png')} />
             </TouchableOpacity>
@@ -167,3 +111,51 @@ export default function Modal_SearchInApp(props) {
         </ModalSearchInApp>
     )
 }
+
+const appCss = AppCss;
+const styles = StyleSheet.create({
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        marginBottom: 70
+    },
+    modal_View: {
+        margin: 20,
+        borderRadius: 20,
+        padding: 5,
+        paddingBottom: 20,
+        shadowColor: "#D9D9D9",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        height: 640,
+    },
+    modal_Txt: {
+        marginBottom: 15,
+        padding: 10,
+        textAlign: "center",
+    },
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 5
+    },
+    labels: {
+        alignSelf: 'flex-end',
+        right: 15
+    },
+    modal_Closebtn: {
+        backgroundColor: "#2196F3",
+        marginTop: 50,
+        borderRadius: 20,
+        padding: 10,
+        alignSelf: "center",
+    },
+    teamPlayers_Text: {
+        padding: 10,
+        fontWeight: "bold",
+    },
+    playerList_scrollView: {
+        height: 250
+    },
+})

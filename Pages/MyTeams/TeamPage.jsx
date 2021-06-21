@@ -15,7 +15,7 @@ import { Context as AuthContext } from '../../Contexts/AuthContext'
 export default function TeamPage(props) {
 
     const { key } = props.route.params;
-    const { state: { myTeams, teamPlayers }, setTeamPlayers,GetTeamDetails,SendMessageTeamChat } = useContext(TeamContext);
+    const { state: { myTeams, teamPlayers }, setTeamPlayers, GetTeamDetails, SendMessageTeamChat } = useContext(TeamContext);
     const { state: { gamesList }, GetGamesList, GameRegisterd, GetAmountRegisteredPlayersEachGame } = useContext(GameContext);
     const { state: { players } } = useContext(PlayerContext);
     const [messages, setMessages] = useState([]);
@@ -110,49 +110,49 @@ export default function TeamPage(props) {
 
     return (
         <SafeAreaView>
-             <ScrollView>
-        <View style={[appCss.container, styles.container_extra]}>
-            <TouchableOpacity style={styles.TeamInformation}
-                onPress={() => props.navigation.navigate('TeamDetailsPage', { key })}>
-                <View style={styles.TeamInformation_Up}>
-                    <View style={styles.TeamInformation_Up_Title}>
-                        <Text style={styles.txtTeam}> Team</Text>
-                        <Text style={styles.teamName_txt}>{myTeams[key].TeamName}</Text>
-                    </View>
-                    <View style={styles.TeamInformation_Up_imgView}>
-                        <Avatar.Image size={100} source={{ uri: myTeams[key].TeamPicture }} />
-                    </View>
-                </View>
-                <View style={styles.TeamInformation_players}>
-                    <Text style={{ fontWeight: 'bold' }}>Players: </Text>
-                    <Text>{PrintNameOfPlayers()}</Text>
-                </View>
-            </TouchableOpacity>
+            <ScrollView>
+                <View style={[appCss.container, styles.container_extra]}>
+                    <TouchableOpacity style={styles.TeamInformation}
+                        onPress={() => props.navigation.navigate('TeamDetailsPage', { key })}>
+                        <View style={styles.TeamInformation_Up}>
+                            <View style={styles.TeamInformation_Up_Title}>
+                                <Text style={styles.txtTeam}> Team</Text>
+                                <Text style={styles.teamName_txt}>{myTeams[key].TeamName}</Text>
+                            </View>
+                            <View style={styles.TeamInformation_Up_imgView}>
+                                <Avatar.Image size={100} source={{ uri: myTeams[key].TeamPicture }} />
+                            </View>
+                        </View>
+                        <View style={styles.TeamInformation_players}>
+                            <Text style={{ fontWeight: 'bold' }}>Players: </Text>
+                            <Text>{PrintNameOfPlayers()}</Text>
+                        </View>
+                    </TouchableOpacity>
 
-            {team.EmailManager == user.Email ?
-                <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame', { team })}
-                    style={[appCss.btnTouch, styles.btnTouch_extra]}>
-                    <Text style={appCss.txtBtnTouch}>Create New Game</Text>
-                </TouchableOpacity>
-                : null}
-            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList', { gamesList, key })}
-                style={[appCss.btnTouch, styles.btnTouch_extra]}>
-                <Text style={appCss.txtBtnTouch}>View Games</Text>
-            </TouchableOpacity>
-            <View style={[styles.chatContainer, { height: team.EmailManager == user.Email ? Dimensions.get('window').height - 370 : Dimensions.get('window').height - 310 }]}>
-                <GiftedChat
-                    messages={messages}
-                    onSend={messages => onSend(messages)}
-                    user={{
-                        _id: user.Email,
-                        name: user.FirstName,
-                        avatar: user.PlayerPicture
-                    }}
-                    inverted={false}
-                // scrollToBottom={true}
-                />
-            </View>
-        </View>
+                    {team.EmailManager == user.Email ?
+                        <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CreateNewGame', { team })}
+                            style={[appCss.btnTouch, styles.btnTouch_extra]}>
+                            <Text style={appCss.txtBtnTouch}>Create New Game</Text>
+                        </TouchableOpacity>
+                        : null}
+                    <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('GameList', { gamesList, key })}
+                        style={[appCss.btnTouch, styles.btnTouch_extra]}>
+                        <Text style={appCss.txtBtnTouch}>View Games</Text>
+                    </TouchableOpacity>
+                    <View style={[styles.chatContainer, { height: team.EmailManager == user.Email ? Dimensions.get('window').height - 370 : Dimensions.get('window').height - 310 }]}>
+                        <GiftedChat
+                            messages={messages}
+                            onSend={messages => onSend(messages)}
+                            user={{
+                                _id: user.Email,
+                                name: user.FirstName,
+                                avatar: user.PlayerPicture
+                            }}
+                            inverted={false}
+                        // scrollToBottom={true}
+                        />
+                    </View>
+                </View>
             </ScrollView>
         </SafeAreaView >
     );
@@ -162,7 +162,7 @@ export default function TeamPage(props) {
 const appCss = AppCss;
 const styles = StyleSheet.create({
     container_extra: {
-        paddingTop: 70,
+        paddingTop: 50,
         alignItems: 'center',
         flex: 1,
     },

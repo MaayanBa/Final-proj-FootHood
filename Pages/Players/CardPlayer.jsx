@@ -57,21 +57,6 @@ const styles = StyleSheet.create({
     gender_txt: {
         left: 100
     },
-    rates_View: {
-        justifyContent: 'space-around',
-        flexDirection: 'row',
-        left: 12,//need to change,
-        marginTop: 5
-    },
-    rate: {
-        backgroundColor: 'yellow',
-        borderRadius: 40,
-        height: 60,
-        width: 100,
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        padding: 10,
-    },
     power_View: {
         alignSelf: 'center',
         left: 12,
@@ -148,23 +133,21 @@ export default function CardPlayer({ route }) {
                 </View>
 
                 <Text style={[appCss.inputLabel, styles.inputLabel_extra]}>PreferRole:  {player.PreferredRole} </Text>
-                <View style={styles.rates_View}>
-                    <View style={styles.rate}>
+                <View style={appCss.rates_View}>
+                    <View style={appCss.rate}>
                         <Text>Attack</Text>
                         {rate !== null ? <Text>{rate.AttackRating}</Text> : null}
                     </View>
-                    <View style={styles.rate}>
+                    <View style={appCss.rate}>
                         <Text>Defence</Text>
                         {rate !== null ? <Text>{rate.DefenseRating}</Text> : null}
                     </View>
                 </View>
-                <View style={[styles.rate, styles.power_View]}>
+                <View style={[appCss.rate, styles.power_View]}>
                     <Text>Power</Text>
                     {rate !== null ? <Text>{rate.PowerRating}</Text> : null}
                 </View>
             </View>
-
         </ImageBackground>
-
     )
 }
