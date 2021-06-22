@@ -298,9 +298,9 @@ export default function Register(props) {
                   </View>
                 </View>
 
-                <View style={styles.formGroup}>
-                  <Text style={appCss.inputLabel}>City:</Text>
-                  <CitiesDropDown ChoosenCity={(city) => GetCityFromUser(city)} city={cityLive} />
+                <View style={[styles.formGroup,{paddingBottom:20}]}>
+                  <Text style={[appCss.inputLabel,{paddingBottom:10}]}>City:</Text>
+                  <CitiesDropDown width={315} ChoosenCity={(city) => GetCityFromUser(city)} city={cityLive} />
 
                   {/* <View style={appCss.sectionStyle}>
                     <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />

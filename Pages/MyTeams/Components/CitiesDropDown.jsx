@@ -9,7 +9,7 @@ const appCss = AppCss;
 const styles = StyleSheet.create({
     dropDown: {
         alignItems: 'center',
-        padding: 20,
+        // padding: 20,
     }
 })
 
@@ -40,7 +40,7 @@ export default function CitiesDropDown(props) {
                 value={city}
                 searchable={true}
                 defaultValue={props.city}
-                containerStyle={{ height: 43, width: 315 }}
+                containerStyle={{ height: 43, width:props.width}}
                 placeholder="Choose City Below"
                 style={{ backgroundColor: '#fafafa' }}
                 itemStyle={{
