@@ -134,7 +134,7 @@ export default function CardPlayer({ route }) {
 
                 <Text style={[appCss.inputLabel, styles.inputLabel_extra]}>PreferRole:  {player.PreferredRole} </Text>
                 <View style={appCss.rates_View}>
-                    <View style={appCss.rate}>
+                    <View style={[appCss.rate,{left:22}]}>
                         <Text>Attack</Text>
                         {rate !== null ? <Text>{rate.AttackRating}</Text> : null}
                     </View>
