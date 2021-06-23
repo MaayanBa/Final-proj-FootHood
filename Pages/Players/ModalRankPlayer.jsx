@@ -1,20 +1,23 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, TextInput,Dimensions, Modal, Pressable, ImageBackground, SafeAreaView, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Dimensions, Modal, Pressable, ImageBackground, SafeAreaView, ScrollView, TouchableOpacity, Image } from 'react-native';
 import AppCss from '../../CSS/AppCss';
-// import { Context as TeamContext } from '../../Contexts/TeamContext';
+import { Context as PlayerContext } from '../../Contexts/PlayerContext';
+import { Context as AuthContext } from '../../Contexts/AuthContext';
 import { ListItem, Avatar } from 'react-native-elements';
 // import { MaterialCommunityIcons as Podium, Feather as Filter } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
 
 export default function ModalRankPlayer(props) {
+  const { state: { token } } = useContext(AuthContext)
   // const [selectRate, setSelectedRate] = useState("")
+  const { RankPlayer } = useContext(PlayerContext);
   const [sliderValue, setSliderValue] = useState(0)
 
 
   const Finish = () => {
-    if (props.powerRate != 0 && props.defenceRate != 0 && props.attackRate != 0) {
-      console.log("Power: " + props.powerRate + " ,Defence: " + props.defenceRate + " ,Attack: " + props.attackRate)
-      // console.log(props.playerChoosen)
+    if (props.powerRate > 0 && props.defenceRate > 0 && props.attackRate > 0) {
+      // console.log("Power: " + props.powerRate + " ,Defence: " + props.defenceRate + " ,Attack: " + props.attackRate)
+      RankPlayer(props.playerChoosen.Email, token.Email, props.powerRate, props.defenceRate, props.attackRate)
       props.setPlayerChoosen("")
       props.setOpenModal(false)
     }
@@ -23,6 +26,7 @@ export default function ModalRankPlayer(props) {
   }
 
   const SetRating = () => {
+
     if (props.selectRate == "Attack")
       props.setAttackRate(sliderValue)
     else if (props.selectRate == "Defence")
@@ -39,11 +43,11 @@ export default function ModalRankPlayer(props) {
           <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../assets/WallPaperWhite2.png')}>
             {props.playerChoosen == "" ? null :
               <View>
-                <View style={{marginVertical:40, justifyContent:'space-around', flexDirection:'row-reverse'}}>
-                  <Avatar size={100}rounded source={{ uri: props.playerChoosen.PlayerPicture }} />
-                  <Text style={[appCss.inputLabel,{alignSelf:'center',fontSize:25}]}>{props.playerChoosen.FirstName+' '+props.playerChoosen.LastName} </Text>
+                <View style={{ marginVertical: 40, justifyContent: 'space-around', flexDirection: 'row-reverse' }}>
+                  <Avatar size={100} rounded source={{ uri: props.playerChoosen.PlayerPicture }} />
+                  <Text style={[appCss.inputLabel, { alignSelf: 'center', fontSize: 25 }]}>{props.playerChoosen.FirstName + ' ' + props.playerChoosen.LastName} </Text>
                 </View>
-                <View style={[appCss.rates_View, {paddingBottom: 10}]}>
+                <View style={[appCss.rates_View, { paddingBottom: 10 }]}>
                   <TouchableOpacity onPress={() => props.setSelectedRate("Attack")} style={[appCss.rate, { paddingBottom: 10 }]}>
                     <Text>Attack</Text>
                     {props.attackRate !== null ? <Text>{props.attackRate}</Text> : null}
@@ -59,7 +63,7 @@ export default function ModalRankPlayer(props) {
                 </View>
                 {props.selectRate == "" ? null : <View><Slider
                   step={1}
-                  style={{ width:Dimensions.get('window').width - 60, height: 30 ,}}
+                  style={{ width: Dimensions.get('window').width - 60, height: 30, }}
                   minimumTrackTintColor="#FFFFFF"
                   maximumTrackTintColor="#000000"
                   minimumValue={0}
@@ -95,7 +99,7 @@ const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: "center",
-    top:30
+    top: 30
     // marginBottom: 10
   },
   modal_View: {
@@ -123,7 +127,7 @@ const styles = StyleSheet.create({
   searchRow: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    paddingTop:10
+    paddingTop: 10
   },
   Btn: {
     backgroundColor: "#2196F3",

@@ -110,7 +110,7 @@ export default styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 20,
+    elevation: 5,
     height: '90%',
     width: '90%',
     borderRadius: 30

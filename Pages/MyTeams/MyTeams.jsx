@@ -116,7 +116,6 @@ export default function MyTeams(props) {
                                 <Text> {team.PlayersList.length} </Text>
                                 <Text style={{ fontWeight: 'bold' }}> Players: </Text>
                             </View>
-
                         </View>
                     </View>
                     <View style={styles.side_img}>

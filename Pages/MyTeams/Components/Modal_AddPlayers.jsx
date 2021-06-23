@@ -20,7 +20,7 @@ export default function Modal_AddPlayers(props) {
     onRequestClose={() => setAddPlayerModalVisible(!addPlayerModalVisible)}
   >
     <View style={styles.centeredView}>
-      <View style={styles.modal_View}>
+      <View style={[appCss.modal_View,{height:'45%'}]}>
       <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50}} source={require('../../../assets/WallPaperWhite2.png')}>
         <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch, { width: "90%" }]}>
           <View style={styles.addPlayersBtns}>
@@ -75,23 +75,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 70
   },
-  modal_View: {
-    margin: 20,
-    padding: 10,
-    shadowColor: "#D9D9D9",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 20,
-    height: '55%',
-    borderRadius: 30
-  },
+
   addPlayersBtns: {
     flexDirection: "row-reverse",
-  },
-  modal_Txt: {
-    marginBottom: 15,
-    textAlign: "center"
   },
   modal_Closebtn: {
     backgroundColor: "#2196F3",

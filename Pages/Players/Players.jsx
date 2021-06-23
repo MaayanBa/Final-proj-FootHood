@@ -92,7 +92,13 @@ export default function Players({ navigation }) {
 
   const searchedPlayerList = searchedPlayers.length === 0 ? allPlayers.map((p, key) => {
     return <ListItem key={key} style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
-      <TouchableOpacity activeOpacity={0.8} onPress={() => { setPlayerChoosen(p); setOpenModal(true) }} >
+      <TouchableOpacity activeOpacity={0.8} onPress={() => {
+        setPlayerChoosen(p)
+        setOpenModal(true)
+        setPowerRate(null)
+        setAttackRate(null)
+        setDefenceRate(null)
+      }} >
         <Podium name="podium-gold" size={24} color={playerChoosen.Email == p.Email ? "#c92e5d" : "grey"} />
       </TouchableOpacity>
       <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('StackNav_MyTeams', { screen: 'CardPlayer', params: { p } })} >
@@ -105,7 +111,13 @@ export default function Players({ navigation }) {
     </ListItem>
   }) : searchedPlayers.map((p, key) => {
     return <ListItem key={key} style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
-      <TouchableOpacity activeOpacity={0.8} onPress={() => { setPlayerChoosen(p); setOpenModal(true) }} >
+      <TouchableOpacity activeOpacity={0.8} onPress={() => {
+        setPlayerChoosen(p)
+        setOpenModal(true)
+        setPowerRate(null)
+        setAttackRate(null)
+        setDefenceRate(null)
+      }} >
         <Podium name="podium-gold" size={24} color={playerChoosen.Email == p.Email ? "#c92e5d" : "grey"} />
       </TouchableOpacity>
       <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('StackNav_MyTeams', { screen: 'CardPlayer', params: { p } })} >
@@ -145,7 +157,7 @@ export default function Players({ navigation }) {
                 attackRate={attackRate} setAttackRate={setAttackRate}
                 defenceRate={defenceRate} setDefenceRate={setDefenceRate}
                 selectRate={selectRate} setSelectedRate={setSelectedRate}
-                playerChoosen={playerChoosen} setPlayerChoosen={setPlayerChoosen}/>
+                playerChoosen={playerChoosen} setPlayerChoosen={setPlayerChoosen} />
               : null}
             {searchedPlayers.length == 0 ? null :
 
@@ -155,7 +167,7 @@ export default function Players({ navigation }) {
                 </Pressable>
               </View>
             }
-         
+
           </View >
         </View>
       </ScrollView>

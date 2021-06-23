@@ -143,8 +143,8 @@ export default function CreateNewTeam({ navigation }) {
                     <Text style={styles.txtBtnMdl}>Add Players</Text>
                   </View>
                 </TouchableOpacity> */}
-                <Modal_AddPlayers/>
 
+                <Modal_AddPlayers/>
 
                 <TouchableOpacity activeOpacity={0.8} disabled={!isValid} onPress={handleSubmit} style={[appCss.btnTouch, { width: '60%' }]}>
                   <Text style={appCss.txtBtnTouch}>Create New Team</Text>
