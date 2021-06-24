@@ -62,13 +62,13 @@ export default function PlayersFilter(props) {
     const reducer = (i) => {
         switch (i) {
             case 0:
-                return <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }} >
+                return <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',zIndex:0 }} >
                     <CitiesDropDown width={200} ChoosenCity={(city) => GetCityFromUser(city)} city={cityLive} />
                     <Text style={{ alignSelf: 'center' }}>Location:</Text>
                 </View>
 
             case 1:
-                return <View style={{ alignItems: 'flex-end', flexDirection: 'row', justifyContent: 'space-between' }} >
+                return <View style={{ alignItems: 'flex-end', flexDirection: 'row', justifyContent: 'space-between',zIndex:1 }} >
                     <TextInput style={appCss.inputBox} onChangeText={text => setRadius(text)} placeholder="KM"/>
                     <Text style={{ alignSelf: 'center' }}>Radius:</Text>
                 </View>
@@ -111,8 +111,8 @@ export default function PlayersFilter(props) {
                         values={[rankValues[0], rankValues[1]]}
                         sliderLength={130}
                         onValuesChange={RankValuesChange}
-                        min={18}
                         max={100}
+                        min={18}
                         step={5}
                     />
                     <Text style={{ alignSelf: 'center', paddingRight: 40 }}>Rank Range: {rankValues[0]}-{rankValues[1]}</Text>

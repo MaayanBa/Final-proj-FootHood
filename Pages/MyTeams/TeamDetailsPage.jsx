@@ -54,27 +54,6 @@ export default function TeamDetailsPage(props) {
         
       ]
     );
-  const playerList = teamPlayers.map((p, i) => (
-    <View key={i}>
-      <ListItem style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
-        <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CardPlayer', { p })} >
-          <Image style={[appCss.playerCardIcon_Btn, { left: 5 }]} source={require('../../assets/PlayerCardIcon.png')} />
-        </TouchableOpacity>
-        {user.Email !== myTeams[newKey].EmailManager ? null :
-          p.Email !== myTeams[newKey].EmailManager ?
-            <TouchableOpacity style={[styles.x_TouchIcon, {}]} activeOpacity={0.8} onPress={() => RemoveBtn(p)} >
-              <Image style={styles.xIcon} source={require('../../assets/X.png')} />
-            </TouchableOpacity> : null
-        }
-
-        <ListItem.Content style={{ alignItems: 'flex-end' }} >
-          <ListItem.Title>{p.FirstName + " " + p.LastName}</ListItem.Title>
-        </ListItem.Content>
-        <Avatar rounded source={{ uri: p.PlayerPicture }} />
-      </ListItem>
-    </View>
-
-  ))
 
   const ForceState = async () => {
     setTeamPlayers(myTeams[newKey], players);
@@ -128,8 +107,8 @@ export default function TeamDetailsPage(props) {
                   </TouchableOpacity>
                   {user.Email !== myTeams[newKey].EmailManager ? null :
                     p.Email !== myTeams[newKey].EmailManager ?
-                      <TouchableOpacity style={[styles.x_TouchIcon, {}]} activeOpacity={0.8} onPress={() => RemoveBtn(p)} >
-                        <Image style={styles.xIcon} source={require('../../assets/X.png')} />
+                      <TouchableOpacity style={[appCss.x_TouchIcon, {}]} activeOpacity={0.8} onPress={() => RemoveBtn(p)} >
+                        <Image style={appCss.xIcon} source={require('../../assets/X.png')} />
                       </TouchableOpacity> : null
                   }
 
@@ -196,17 +175,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white'
   },
-  x_TouchIcon: {
-    // left: 2,
-    // top: 0,
-    zIndex: 1,
-    right: 70,
-    bottom: 27
-
-  },
-  xIcon: {
-    width: 20,
-    height: 20,
-
-  }
+ 
 })

@@ -172,4 +172,17 @@ export default styles = StyleSheet.create({
     borderRadius: 10,
     paddingRight: 10,
 },
+x_TouchIcon: {
+  // left: 2,
+  // top: 0,
+  zIndex: 1,
+  right: 70,
+  bottom: 27
+
+},
+xIcon: {
+  width: 22,
+  height: 22,
+
+}
 });

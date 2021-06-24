@@ -9,7 +9,7 @@ import { Context as TeamContext } from '../../../Contexts/TeamContext';
 import { getLocation, geocodeLocationByName } from '../../../Services/location-service';
 
 export default function Players_Window(props) {
-  const { state: { gamesList,playersPerGame }, GetPlayers4Game,Jarvis_FindPlayers4Game } = useContext(GameContext);
+  const { state: { gamesList,playersPerGame }, GetPlayers4Game,GetGamesList,Jarvis_FindPlayers4Game } = useContext(GameContext);
   const { state: { players } } = useContext(PlayerContext);
   const { state: { myTeams } } = useContext(TeamContext);
   const [findPlayersActivated, setFindPlayersActivated] = useState(gamesList[props.indexGame].FindPlayersActive);

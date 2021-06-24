@@ -2,7 +2,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
     StyleSheet, TouchableOpacity, View, Text,
-    Modal as ModalSearchInApp, Pressable, TextInput, Image, ScrollView, SafeAreaView,ImageBackground
+    Modal as ModalSearchInApp, Pressable, TextInput, Image, ScrollView, SafeAreaView, ImageBackground
 } from 'react-native';
 import { Entypo as PlusIcon } from '@expo/vector-icons';
 import { ListItem, Avatar } from 'react-native-elements';
@@ -83,11 +83,11 @@ export default function Modal_SearchInApp(props) {
             <SafeAreaView>
                 <ScrollView>
                     <View style={styles.centeredView}>
-                        <View style={styles.modal_View}>
+                        <View style={[appCss.modal_View, { height:'100%', paddingBottom: 1 }, searchedPlayers.length == 0 ? { height: '92%' } : null]}>
                             <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../../assets/WallPaperWhite2.png')}>
-                                <Text style={styles.modal_Txt}>Enter Player Details:</Text>
-                                <Text style={styles.labels}>Full Name:</Text>
-                                <TextInput style={styles.input} onChangeText={setFullName} value={fullName} />
+                                <Text style={[appCss.modal_Txt, { color: 'white' }]}>Enter Player Details:</Text>
+                                <Text style={[styles.labels, { color: 'white',fontWeight:'bold' }]}>Full Name:</Text>
+                                <TextInput style={[styles.input, { borderColor: 'white',borderRadius:10 }]} onChangeText={setFullName} value={fullName} />
                                 <Pressable style={styles.modal_Closebtn} onPress={() => SearchPlayers()} >
                                     <Text style={appCss.inputLabel}>Search</Text>
                                 </Pressable>
@@ -98,7 +98,7 @@ export default function Modal_SearchInApp(props) {
                                             <ScrollView style={styles.playerList_scrollView}>
                                                 {searchedPlayerList}
                                             </ScrollView>
-                                            <Pressable style={styles.modal_Closebtn} onPress={() => Close()} >
+                                            <Pressable style={[styles.modal_Closebtn]} onPress={() => Close()} >
                                                 <Text style={appCss.inputLabel}>Close</Text>
                                             </Pressable>
                                         </View >
@@ -119,26 +119,12 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         marginBottom: 70
     },
-    modal_View: {
-        margin: 20,
-        borderRadius: 20,
-        padding: 5,
-        paddingBottom: 20,
-        shadowColor: "#D9D9D9",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        height: 640,
-    },
-    modal_Txt: {
-        marginBottom: 15,
-        padding: 10,
-        textAlign: "center",
-    },
     input: {
         height: 40,
         margin: 12,
-        borderWidth: 1,
-        padding: 5
+        borderWidth: 2,
+        padding: 10,
+        color:'white'
     },
     labels: {
         alignSelf: 'flex-end',
@@ -146,7 +132,7 @@ const styles = StyleSheet.create({
     },
     modal_Closebtn: {
         backgroundColor: "#2196F3",
-        marginTop: 50,
+        marginTop: 40,
         borderRadius: 20,
         padding: 10,
         alignSelf: "center",
@@ -154,6 +140,7 @@ const styles = StyleSheet.create({
     teamPlayers_Text: {
         padding: 10,
         fontWeight: "bold",
+        color:'white'
     },
     playerList_scrollView: {
         height: 250

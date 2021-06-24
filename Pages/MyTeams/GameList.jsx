@@ -1,20 +1,52 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, StyleSheet, Image, View, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, StyleSheet, Image, View, TouchableOpacity, ScrollView, Alert } from 'react-native';
 // import Navigation from '../../Pages/MyTeams/Components/Navigation'
 import AppCss from '../../CSS/AppCss';
 import { Context as GameContext } from '../../Contexts/GameContext';
+import { Context as AuthContext } from '../../Contexts/AuthContext';
+import { Context as TeamContext } from '../../Contexts/TeamContext';
 // import DateAndTime from './Components/DateAndTime';
 //import LaunchNavigator from 'react-native-launch-navigator';
 import * as Linking from 'expo-linking';
 
 
 export default function GameList(props) {
-    const { state: { gamesList,amountRegisteredPlayersEachGame }} = useContext(GameContext);
+    const { state: { gamesList, amountRegisteredPlayersEachGame } } = useContext(GameContext);
     const { key } = props.route.params;
-    const keyTeam  = key;
+    const keyTeam = key;
+    const { state: { token } } = useContext(AuthContext)
+    const { state: { myTeams } } = useContext(TeamContext);
 
     const convertDate = (date) => {
         return (`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
+    }
+
+    const RemoveBtn = (g) =>
+        Alert.alert(
+            "Remove Game",
+            "Do you want to remove this game? ",
+            [
+                {
+                    text: "OK",
+                    onPress: () => RemoveGame(g),
+                    style: "ok"
+                },
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+            ]
+        );
+
+    const RemoveGame = async (g) => {
+        let playerInTeam = {
+            TeamSerialNum: myTeams[newKey].TeamSerialNum,
+            EmailPlayer: p.Email
+        }
+        await RemoveFromTeam(playerInTeam)
+        // setForceState(!forceState);
+
     }
 
     //Builds up togther the date and time
@@ -32,6 +64,11 @@ export default function GameList(props) {
         return <View key={index} style={styles.card}>
             <View style={styles.gameInformation_View}>
                 <View style={styles.gameInformation_View_R}>
+                    {token.Email !== myTeams[keyTeam].EmailManager ? null :
+                        <TouchableOpacity style={[appCss.x_TouchIcon, { right: 5, bottom: 10 }]} activeOpacity={0.8} onPress={() => RemoveBtn(game)} >
+                            <Image style={appCss.xIcon} source={require('../../assets/X.png')} />
+                        </TouchableOpacity>
+                    }
                     <View>
                         <Text style={styles.txtStyle}>Time: {sliceTime(game.GameTime)}</Text>
                         <Text style={styles.txtStyle}>Avarege Age: {game.AvgPlayerAge}</Text>
@@ -44,7 +81,7 @@ export default function GameList(props) {
                 </View>
                 <View style={styles.gameInformation_View_L}>
                     <Text style={styles.txtStyle}>Date: {convertDate(new Date(game.GameDate))}</Text>
-                    <Text style={styles.txtStyle}>Number of Registered: {amountRegisteredPlayersEachGame.find(x=>x.GameSerialNum===game.GameSerialNum).NumOfPlayers}</Text>
+                    <Text style={styles.txtStyle}>Number of Registered: {amountRegisteredPlayersEachGame.find(x => x.GameSerialNum === game.GameSerialNum).NumOfPlayers}</Text>
 
                     <Text style={styles.txtStyle}>Location: {game.GameLocation}</Text>
                     {/* <Navigation location={game.GameLocation} /> */}
@@ -58,8 +95,8 @@ export default function GameList(props) {
         </View>
     });
     return (
-        <View style={[appCss.container, {  paddingTop: 50 }]}>
-            <Text style={[appCss.title, { top: 5, paddingBottom:20, }]}>Game List</Text>
+        <View style={[appCss.container, { paddingTop: 50 }]}>
+            <Text style={[appCss.title, { top: 5, paddingBottom: 20, }]}>Game List</Text>
             <ScrollView>
                 {gameCards}
             </ScrollView>
@@ -73,8 +110,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#D9D9D9',
         width: '90%',
         borderRadius: 30,
-        marginTop: 40, 
-        alignSelf:'center'
+        marginTop: 40,
+        alignSelf: 'center'
     },
     gameTitle_View: {
         justifyContent: 'flex-start',
@@ -109,5 +146,4 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center'
     },
-
 })

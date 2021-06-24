@@ -44,7 +44,7 @@ export default function CitiesDropDown(props) {
                     justifyContent: 'flex-end',
                 }}
                 dropDownMaxHeight={500}
-                dropDownStyle={{ backgroundColor: '#dfdfdf' }}
+                dropDownStyle={{ backgroundColor: '#dfdfdf',zIndex:1 }}
                 onChangeItem={item => setCity(item.label)}
             />
         </View>
