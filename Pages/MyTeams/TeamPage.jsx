@@ -139,7 +139,7 @@ export default function TeamPage(props) {
                         style={[appCss.btnTouch, styles.btnTouch_extra]}>
                         <Text style={appCss.txtBtnTouch}>View Games</Text>
                     </TouchableOpacity>
-                    <View style={[styles.chatContainer, { height: team.EmailManager == user.Email ? Dimensions.get('window').height - 370 : Dimensions.get('window').height - 310 }]}>
+                    <View style={[styles.chatContainer, { height: team.EmailManager == user.Email ? Dimensions.get('window').height - 350 : Dimensions.get('window').height - 310 }]}>
                         <GiftedChat
                             messages={messages}
                             onSend={messages => onSend(messages)}

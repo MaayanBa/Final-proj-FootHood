@@ -1,5 +1,6 @@
 import CreateDataContext from './createDataContext';
 import TeamApi from '../api/Team';
+import { object } from 'yup/lib/locale';
 
 const teamReducer = (state, action) => {
     switch (action.type) {
@@ -86,7 +87,24 @@ const GetPlayers4Team = dispatch => async (teamNum, myTeams) => {
 const LeaveTeam = dispatch => async (playerInTeam) => {
     try {
         const response = await TeamApi.post('/LeaveTeam', playerInTeam);
+        console.log(respone.data)
         await dispatch({ type: 'LeaveTeam', payload: response.data })
+    } catch (err) {
+        console.log("in error" + err.response.data)
+        console.log(err.response.data)
+    }
+}
+const RemoveFromTeam = dispatch => async (playerInTeam, players) => {
+    try {
+        const response = await TeamApi.post('/RemoveFromTeam', playerInTeam);
+        dispatch({ type: 'GetTeamDetails', payload: response.data })
+
+        // console.log(typeof response.data)
+        // if (typeof response.data== 'object') {
+        //     console.log("om here" + players.length)
+        //     let team = response.data;
+        //     setTeamPlayers(team, players)
+        // }
     } catch (err) {
         console.log("in error" + err.response.data)
         console.log(err.response.data)
@@ -143,6 +161,8 @@ const SetSearchPlayer = dispatch => async () => {
 const setTeamPlayers = dispatch => async (team, players) => {
     try {
         let tempArr = [];
+        // console.log("team")
+        // console.log(team)
         team.PlayersList.forEach(p => {
             let player = players.find(x => x.Email === p.EmailPlayer)
             if (player !== null)
@@ -169,9 +189,9 @@ const AddNewJoinRequests = dispatch => async (EmailPlayer, GameSerialNum) => {
     }
 
 }
-const SendMessageTeamChat = dispatch => async (EmailPlayer, TeamSerialNum, TeamName, FirstName, MessagePlayer,CreatedAt) => {
+const SendMessageTeamChat = dispatch => async (EmailPlayer, TeamSerialNum, TeamName, FirstName, MessagePlayer, CreatedAt) => {
     try {
-        await TeamApi.post('/SendMessageTeamChat', { EmailPlayer, TeamSerialNum, TeamName, FirstName, MessagePlayer,CreatedAt });
+        await TeamApi.post('/SendMessageTeamChat', { EmailPlayer, TeamSerialNum, TeamName, FirstName, MessagePlayer, CreatedAt });
     } catch (err) {
         console.log(err.message)
     }
@@ -179,8 +199,8 @@ const SendMessageTeamChat = dispatch => async (EmailPlayer, TeamSerialNum, TeamN
 
 const LoadMessages = dispatch => async (CreatedAt) => {
     try {
-        
-        console.log("bool"+CreatedAt)
+
+        console.log("bool" + CreatedAt)
 
         dispatch({ type: 'LoadMessages', payload: CreatedAt })
     } catch (error) {
@@ -205,6 +225,7 @@ export const { Context, Provider } = CreateDataContext(
         AddNewJoinRequests,
         SendMessageTeamChat,
         LoadMessages,
+        RemoveFromTeam,
     },
     {
         myTeams: [],

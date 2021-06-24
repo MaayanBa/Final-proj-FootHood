@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   StyleSheet, View, SafeAreaView, ScrollView, TouchableOpacity,
-  StatusBar, ImageBackground, Image
+  StatusBar, ImageBackground, Image,Alert
 } from 'react-native';
 import AppCss from '../../CSS/AppCss';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
@@ -14,30 +14,70 @@ import Modal_AddPlayers from './Components/Modal_AddPlayers';
 
 export default function TeamDetailsPage(props) {
   const { key } = props.route.params;
-  const { state: { myTeams, teamPlayers }, setTeamPlayers, LeaveTeam, GetTeamDetails } = useContext(TeamContext);
+  const { state: { myTeams, teamPlayers }, setTeamPlayers, LeaveTeam, GetTeamDetails, RemoveFromTeam } = useContext(TeamContext);
   const { state: { players } } = useContext(PlayerContext);
   const { state: { token } } = useContext(AuthContext)
   const [user, setUser] = useState(token)
   const [forceState, setForceState] = useState(false);
   const [newKey, setNewKey] = useState(key);
-  const [pushedLeave, setPushedLeave] = useState(false);
+  // const [pushedLeave, setPushedLeave] = useState(false);
 
+  const RemovePlayer = async (p) => {
+    let playerInTeam = {
+      TeamSerialNum: myTeams[newKey].TeamSerialNum,
+      EmailPlayer: p.Email
+    }
+    await RemoveFromTeam(playerInTeam)
+    // setForceState(!forceState);
 
+  }
+
+  useEffect(() => {
+    ForceState()
+  }, [myTeams])
+
+  const RemoveBtn = (p) =>
+    Alert.alert(
+      "Remove Player",
+      "Do you want to remove " + p.FirstName + " "+p.LastName + " From the team? ",
+      [
+        {
+          text: "OK", 
+          onPress: () => RemovePlayer(p),
+          style: "ok"
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        
+      ]
+    );
   const playerList = teamPlayers.map((p, i) => (
-    <ListItem key={i} style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
-      <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CardPlayer', { p })} >
-        <Image style={appCss.playerCardIcon_Btn} source={require('../../assets/PlayerCardIcon.png')} />
-      </TouchableOpacity>
-      <ListItem.Content style={{ alignItems: 'flex-end' }} >
-        <ListItem.Title>{p.FirstName + " " + p.LastName}</ListItem.Title>
-      </ListItem.Content>
-      <Avatar rounded source={{ uri: p.PlayerPicture }} />
-    </ListItem>
+    <View key={i}>
+      <ListItem style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
+        <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CardPlayer', { p })} >
+          <Image style={[appCss.playerCardIcon_Btn, { left: 5 }]} source={require('../../assets/PlayerCardIcon.png')} />
+        </TouchableOpacity>
+        {user.Email !== myTeams[newKey].EmailManager ? null :
+          p.Email !== myTeams[newKey].EmailManager ?
+            <TouchableOpacity style={[styles.x_TouchIcon, {}]} activeOpacity={0.8} onPress={() => RemoveBtn(p)} >
+              <Image style={styles.xIcon} source={require('../../assets/X.png')} />
+            </TouchableOpacity> : null
+        }
+
+        <ListItem.Content style={{ alignItems: 'flex-end' }} >
+          <ListItem.Title>{p.FirstName + " " + p.LastName}</ListItem.Title>
+        </ListItem.Content>
+        <Avatar rounded source={{ uri: p.PlayerPicture }} />
+      </ListItem>
+    </View>
+
   ))
 
   const ForceState = async () => {
-    await setTeamPlayers(myTeams[newKey], players);
-    console.log("state has changed")
+    setTeamPlayers(myTeams[newKey], players);
     setForceState(!forceState);
   }
 
@@ -78,7 +118,28 @@ export default function TeamDetailsPage(props) {
       <View style={styles.playerList_View}>
         <Text style={styles.teamPlayers_Text}>Team Players:</Text>
         <ScrollView>
-          {playerList}
+          {/* {playerList} */}
+          {
+            teamPlayers.map((p, i) => (
+              <View key={i}>
+                <ListItem style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
+                  <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CardPlayer', { p })} >
+                    <Image style={[appCss.playerCardIcon_Btn, { left: 5 }]} source={require('../../assets/PlayerCardIcon.png')} />
+                  </TouchableOpacity>
+                  {user.Email !== myTeams[newKey].EmailManager ? null :
+                    p.Email !== myTeams[newKey].EmailManager ?
+                      <TouchableOpacity style={[styles.x_TouchIcon, {}]} activeOpacity={0.8} onPress={() => RemoveBtn(p)} >
+                        <Image style={styles.xIcon} source={require('../../assets/X.png')} />
+                      </TouchableOpacity> : null
+                  }
+
+                  <ListItem.Content style={{ alignItems: 'flex-end' }} >
+                    <ListItem.Title>{p.FirstName + " " + p.LastName}</ListItem.Title>
+                  </ListItem.Content>
+                  <Avatar rounded source={{ uri: p.PlayerPicture }} />
+                </ListItem>
+              </View>))
+          }
         </ScrollView>
       </View>
 
@@ -135,4 +196,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white'
   },
+  x_TouchIcon: {
+    // left: 2,
+    // top: 0,
+    zIndex: 1,
+    right: 70,
+    bottom: 27
+
+  },
+  xIcon: {
+    width: 20,
+    height: 20,
+
+  }
 })
