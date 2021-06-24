@@ -7,6 +7,7 @@ import {
     Image as ImgMyTeams
 } from 'react-native';
 import StackNav_Main from './StackNav_Main';
+import StackNav_Players from './StackNav_Players'
 import Watches from '../Pages/Timer/Watches';
 import Players from '../Pages/Players/Players';
 import FindGame from '../Pages/FindGame/FindGame';
@@ -41,7 +42,7 @@ export default function TabNav() {
                     tabBarLabel: 'Timer',
                     tabBarIcon: () => (<ImgTimer source={require('../assets/Timer.png')} resizeMode='contain' style={{ width: 48, height: 48 }} />)
                 }} />
-            <Tab.Screen name="Players" component={Players}
+            <Tab.Screen name="StackNav_Players" component={StackNav_Players}
                 //tabBarOptions={showIcon = true}
                 options={{
                     tabBarLabel: 'Players',

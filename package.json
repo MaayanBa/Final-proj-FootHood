@@ -8,6 +8,10 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@jesster2k10/react-native-range-slider": "^0.3.1",
+    "@material-ui/core": "^4.11.4",
+    "@material/slider": "^11.0.0",
+    "@ptomasroos/react-native-multi-slider": "^2.2.2",
     "@react-native-async-storage/async-storage": "^1.14.1",
     "@react-native-community/datetimepicker": "^3.2.0",
     "@react-native-community/masked-view": "0.1.10",
@@ -37,7 +41,7 @@
     "react-native-elements": "^3.3.2",
     "react-native-flatlist-slider": "^1.0.5",
     "react-native-geocoding": "^0.5.0",
-    "react-native-gesture-handler": "~1.8.0",
+    "react-native-gesture-handler": "^1.10.3",
     "react-native-gifted-chat": "^0.16.3",
     "react-native-google-places-autocomplete": "^2.2.0",
     "react-native-launch-navigator": "^1.0.8",
@@ -45,6 +49,7 @@
     "react-native-maps": "0.27.1",
     "react-native-navigation-apps": "^1.0.27",
     "react-native-paper": "^4.7.2",
+    "react-native-range-slider": "^0.1.2",
     "react-native-reanimated": "~1.13.0",
     "react-native-roll-picker": "^1.0.6",
     "react-native-safe-area-context": "3.1.9",

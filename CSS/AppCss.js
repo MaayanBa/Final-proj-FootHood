@@ -163,4 +163,13 @@ export default styles = StyleSheet.create({
     margin: 5,
     alignSelf: 'center'
   },
+  inputBox: {
+    height: 35,
+    borderWidth: 1,
+    alignSelf: 'center',
+    width: '60%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    paddingRight: 10,
+},
 });

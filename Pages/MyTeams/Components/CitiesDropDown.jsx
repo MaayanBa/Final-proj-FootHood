@@ -18,9 +18,6 @@ export default function CitiesDropDown(props) {
     const [city, setCity] = useState(null)
     const [citiesNames, setCitiesNames] = useState([])
 
-
-
-
     useEffect(() => {
         let arrDemo = []
         let ctr = 0;
