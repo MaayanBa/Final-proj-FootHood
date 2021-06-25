@@ -35,6 +35,9 @@ const gameReducer = (state, action) => {
         case 'Check': {
             return { ...state, check: action.payload }
         }
+        case 'RemoveGameFromList':{
+            return { ...state, gamesList: action.payload }
+        }
         default:
             return state
     }
@@ -67,7 +70,6 @@ const CreatNewGame = dispatch => async (game, equipments) => {
     }
 }
 
-
 const RegisterGame = dispatch => async (addPlayer2Game) => {
     try {
         console.log(addPlayer2Game)
@@ -93,7 +95,6 @@ const GameRegisterd = dispatch => async (email, teamSerialNum) => {
     dispatch({ type: 'GameRegisterd', payload: response.data })
 
 }
-
 
 const GetPlayers4Game = dispatch => async (gameSerialNum, players) => {
     try {
@@ -222,6 +223,22 @@ const GetGamesPlayerNotRegistered = dispatch => async (EmailPlayer) => {
     }
 }
 
+const RemoveGameFromList = dispatch => async (game2Remove) => {
+    try {
+        // console.log(EmailPlayer);
+        const response = await GameApi.post('/RemoveGameFromList', game2Remove);
+        if (response.data.length > 0)
+            dispatch({ type: 'RemoveGameFromList', payload: response.data })
+        else {
+            console.log("Something Went wrong when you tried to remove this game  !")
+            console.log(response.data)
+        }
+    } catch (err) {
+        console.log("in error ")
+        console.log(err.message)
+    }
+}
+
 export const { Context, Provider } = CreateDataContext(
     //Reducer
     gameReducer,
@@ -239,6 +256,7 @@ export const { Context, Provider } = CreateDataContext(
         LeaveGame,
         Jarvis_FindPlayers4Game,
         GetGamesPlayerNotRegistered,
+        RemoveGameFromList,
     },
     {
         gamesList: [],

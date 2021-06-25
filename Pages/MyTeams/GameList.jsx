@@ -11,7 +11,7 @@ import * as Linking from 'expo-linking';
 
 
 export default function GameList(props) {
-    const { state: { gamesList, amountRegisteredPlayersEachGame } } = useContext(GameContext);
+    const { state: { gamesList, amountRegisteredPlayersEachGame }, GetGamesList, GetAmountRegisteredPlayersEachGame,RemoveGameFromList } = useContext(GameContext);
     const { key } = props.route.params;
     const keyTeam = key;
     const { state: { token } } = useContext(AuthContext)
@@ -20,6 +20,16 @@ export default function GameList(props) {
     const convertDate = (date) => {
         return (`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
     }
+
+    useEffect(() => {
+        const unsubscribe = props.navigation.addListener('focus', () => {
+            GetGamesList(myTeams[key].TeamSerialNum)
+            GetAmountRegisteredPlayersEachGame(myTeams[key].TeamSerialNum)
+        });
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return () => unsubscribe();
+    }, [props.navigation]);
+
 
     const RemoveBtn = (g) =>
         Alert.alert(
@@ -40,11 +50,12 @@ export default function GameList(props) {
         );
 
     const RemoveGame = async (g) => {
-        let playerInTeam = {
-            TeamSerialNum: myTeams[newKey].TeamSerialNum,
-            EmailPlayer: p.Email
+        let game2Remove = {
+            EmailManager: token.Email,
+            GameSerialNum: g.GameSerialNum,
+            TeamSerialNum: g.TeamSerialNum
         }
-        await RemoveFromTeam(playerInTeam)
+        await RemoveGameFromList(game2Remove)
         // setForceState(!forceState);
 
     }

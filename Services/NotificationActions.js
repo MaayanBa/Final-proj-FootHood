@@ -16,7 +16,7 @@ Notifications.setNotificationHandler({
 
 export default function NotificationActions({ navigation }) {
     const { state: { token }, pushNotificationToken } = useContext(AuthContext)
-    const { state: { myTeams ,loadMessages}, GetTeamDetails,LoadMessages } = useContext(TeamContext);
+    const { state: { myTeams, loadMessages }, GetTeamDetails, LoadMessages } = useContext(TeamContext);
     const { state: { gamesList }, GetGamesList } = useContext(GameContext);
     const [notificationIncome, setNotificationIncome] = useState(false)
     const [expoPushToken, setExpoPushToken] = useState('');
@@ -65,22 +65,39 @@ export default function NotificationActions({ navigation }) {
 
     useEffect(() => {
         if (notificationIncome) {
-            // console.log("TEAM-------------->" + myTeams.length)
-            myTeams.map(async (team, i) => {
-                if (team.TeamSerialNum == notification.T_SerialNum) {
-                    setKeyTeam(i)
-                    if (notification.G_SerialNum != undefined)
-                        GetGamesList(team.TeamSerialNum)
-                    if (notification.name == "message") {
-                        if (responsedAction) {
-                            navigation.navigate('StackNav_MyTeams', { screen: 'TeamPage', params: { key: i } });
-                            setResponsedAction(false)
-                            setNotificationIncome(false)
-                        }
-                    }
-                    setReceivedAction(false)
+            if (notification.name == "RemoveFromTeam" && notification.T_SerialNum === -1) {
+                if (receivedAction) {
+                    navigation.navigate('StackNav_MyTeams');
+                    setNotificationIncome(false)
                 }
-            })
+                setReceivedAction(false)
+                setResponsedAction(false)
+            }
+            else {
+                // console.log("TEAM-------------->" + myTeams.length)
+                myTeams.map(async (team, i) => {
+                    if (team.TeamSerialNum == notification.T_SerialNum) {
+                        setKeyTeam(i)
+                        if (notification.G_SerialNum != undefined)
+                            GetGamesList(team.TeamSerialNum)
+                        if (notification.name == "message") {
+                            if (responsedAction) {
+                                navigation.navigate('StackNav_MyTeams', { screen: 'TeamPage', params: { key: i } });
+                                setResponsedAction(false)
+                                setNotificationIncome(false)
+                            }
+                        }
+                        if (notification.name == "AcceptRequesta") {
+                            if (receivedAction) {
+                                navigation.navigate('StackNav_MyTeams', { screen: 'TeamPage', params: { key: i } });
+                                setNotificationIncome(false)
+                            }
+                        }
+
+                        setReceivedAction(false)
+                    }
+                })
+            }
         }
     }, [myTeams]);
 

@@ -6,14 +6,17 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Context as GameContext } from '../../../Contexts/GameContext';
 import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 import { Context as TeamContext } from '../../../Contexts/TeamContext';
+import { Context as AuthContext } from '../../../Contexts/AuthContext';
 import { getLocation, geocodeLocationByName } from '../../../Services/location-service';
 
 export default function Players_Window(props) {
-  const { state: { gamesList,playersPerGame }, GetPlayers4Game,GetGamesList,Jarvis_FindPlayers4Game } = useContext(GameContext);
+  const { state: { gamesList, playersPerGame }, GetPlayers4Game, GetGamesList, Jarvis_FindPlayers4Game } = useContext(GameContext);
   const { state: { players } } = useContext(PlayerContext);
   const { state: { myTeams } } = useContext(TeamContext);
   const [findPlayersActivated, setFindPlayersActivated] = useState(gamesList[props.indexGame].FindPlayersActive);
   const [region, setRegion] = useState(null)
+  const { state: { token } } = useContext(AuthContext)
+
   useEffect(() => {
     GetPlayers4Game(gamesList[props.indexGame].GameSerialNum, players);
     //checkIfJarvisActiveted();
@@ -39,7 +42,7 @@ export default function Players_Window(props) {
   // }
   const activeFindPlayers = async () => {
     if (region != null) {
-      await Jarvis_FindPlayers4Game(gamesList[props.indexGame].TeamSerialNum,gamesList[props.indexGame].GameSerialNum,gamesList[props.indexGame].AvgPlayerAge, gamesList[props.indexGame].AvgPlayerRating, region)
+      await Jarvis_FindPlayers4Game(gamesList[props.indexGame].TeamSerialNum, gamesList[props.indexGame].GameSerialNum, gamesList[props.indexGame].AvgPlayerAge, gamesList[props.indexGame].AvgPlayerRating, region)
       setFindPlayersActivated(true);
       GetGamesList(myTeams[props.keyTeam].TeamSerialNum)
 
@@ -66,11 +69,15 @@ export default function Players_Window(props) {
         {registeredPlayers}
       </ScrollView>
       <View style={styles.txtGame}>
-        {!findPlayersActivated ?
-          <TouchableOpacity onPress={() => activeFindPlayers()}>
-            <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ color: 'red', paddingTop: 30 }}>Find new players!</Animatable.Text>
-          </TouchableOpacity>
-          : <Text style={[styles.txtGame, { color: "#D9D9D9", paddingTop: 30 }]}> Jarvis Is Looking For New Players </Text>}
+        {token.Email === myTeams[props.keyTeam].EmailManager ?
+          !findPlayersActivated ?
+            <TouchableOpacity onPress={() => activeFindPlayers()}>
+              <Animatable.Text animation="pulse" easing="ease-out" iterationCount="infinite" style={{ color: 'red', paddingTop: 30 }}>Find new players!</Animatable.Text>
+            </TouchableOpacity>
+            :
+            <Text style={[styles.txtGame, { color: "#D9D9D9", paddingTop: 30 }]}> Jarvis Is Looking For New Players </Text>
+          :
+          null}
       </View>
     </View >
   );
