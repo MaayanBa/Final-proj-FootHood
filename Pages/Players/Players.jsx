@@ -134,11 +134,12 @@ export default function Players({ navigation }) {
 
     return (
         <SafeAreaView>
+            {openModalFilter ? <ModalFilterPlayer setOpenModalFilter={setOpenModalFilter} /> : null}
             <ScrollView>
                 <View>
                     <Text style={[appCss.title, appCss.space]}>Players</Text>
                     <View style={styles.searchRow}>
-                        <TouchableOpacity style={{ padding: 20 }} onPress={() =>  navigation.navigate('PlayersFilter')}>
+                        <TouchableOpacity style={{ padding: 20 }} onPress={() => setOpenModalFilter(true)}>
                             <Filter name="filter" size={28} color="white" />
                         </TouchableOpacity>
                         <Pressable style={styles.Btn} onPress={() => { SearchPlayers(); setFullName(""); }} >
@@ -152,7 +153,6 @@ export default function Players({ navigation }) {
                         <ScrollView style={styles.playerList_scrollView}>
                             {searchedPlayerList}
                         </ScrollView>
-                        {openModalFilter ? <ModalFilterPlayer setOpenModalFilter={setOpenModalFilter}/>:null}
                         {openModal ?
                             <ModalRankPlayer
                                 setOpenModal={setOpenModal}

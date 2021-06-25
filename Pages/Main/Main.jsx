@@ -24,6 +24,7 @@ export default function Main({ navigation }) {
     const [user, setUser] = useState(token)
     const [renderScreen, setRenderScreen] = useState(false)
 
+
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             setRenderScreen(!renderScreen)
