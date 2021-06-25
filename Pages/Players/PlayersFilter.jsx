@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TextInput, Pressable, SafeAreaView, ScrollView,
 import AppCss from '../../CSS/AppCss';
 import { RadioButton } from 'react-native-paper';
 import DraggableFlatList from 'react-native-draggable-flatlist';
-import CitiesDropDown from '../MyTeams/Components/CitiesDropDown';
+import Modal_LocationMap from '../MyTeams/Components/Modal_LocationMap';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 export default function PlayersFilter(props) {
@@ -14,9 +14,19 @@ export default function PlayersFilter(props) {
     const [cityLive, setCityLive] = useState(null);
     const [ageValues, setAgeValues] = useState([18, 100])
     const [rankValues, setRankValues] = useState([0, 100])
-
-    const GetCityFromUser = (c) => {
-        setCityLive(c)
+    const [modalVisible, setModalVisible] = useState(false);
+    const [gameLocation, setGameLocation] = useState('');
+    const [locationCord, setLocationCord] = useState({
+        latitude: 0,
+        longitude: 0,
+        latitudeDelta: 0,
+        longitudeDelta: 0,
+    });
+    const getLocation = (loc) => {
+        setGameLocation(loc);
+    }
+    const getLocationCord = (region) => {
+        setLocationCord(region);
     }
 
     const Filter = () => {
@@ -25,13 +35,14 @@ export default function PlayersFilter(props) {
         var minRank = rankValues[0];
         var maxRank = rankValues[1];
         var gender = maleOrFemale;
-        if(radius<=40 && radius>0){var distance = parseInt(radius);}
-        else if(radius==''){var distance=0}
-        else
-        {alert("Radius Should only be numbers between 1-40")}
+        var gameLocName = gameLocation;
+        var gameLoc = locationCord;
+        if (parseInt(radius) <= 40 && parseInt(radius) > 0) { var distance = parseInt(radius); }
+        else if (radius == '') { var distance = 0 }
+        else { alert("Radius Should only be numbers between 1-40") }
         var city = cityLive;
         // console.log(minAge,maxAge,minRank,maxRank,gender,distance,city)
-        // console.log(placeKey)
+        // console.log(gameLocName)
         //props.navigation.goBack();
     }
     useEffect(() => {
@@ -47,13 +58,14 @@ export default function PlayersFilter(props) {
             setFilterItems(oldArray => [...oldArray, newElement]);
             setItemsRanking(old => [...old, { key: newElement.key, rank: i }])
         }
-    }, [ageValues, rankValues, maleOrFemale])
+    }, [ageValues, rankValues, maleOrFemale,gameLocation])
 
     const renderItem = ({ item, index, drag, isActive }) => {
         const rank = itemsRanking.find(i => i.key === item.key).rank
         return (<View style={[{ backgroundColor: isActive ? "#8c8a89" : "white" }, styles.item]}>
             <TouchableOpacity style={{ backgroundColor: isActive ? "#8c8a89" : "white" }} onLongPress={drag}>
                 {/* <Text>{rank}</Text> */}
+                {/* {console.log(itemsRanking)} */}
                 {item}
             </TouchableOpacity>
         </View>)
@@ -62,15 +74,18 @@ export default function PlayersFilter(props) {
     const reducer = (i) => {
         switch (i) {
             case 0:
-                return <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',zIndex:0 }} >
-                    <CitiesDropDown width={200} ChoosenCity={(city) => GetCityFromUser(city)} city={cityLive} />
-                    <Text style={{ alignSelf: 'center' }}>Location:</Text>
+                return <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', zIndex: 0 }} >
+                    {/* <CitiesDropDown width={200} ChoosenCity={(city) => GetCityFromUser(city)} city={cityLive} /> */}
+                    <Pressable style={[styles.Btn, { width: 70 }]} onPress={() => setModalVisible(true)} >
+                        <Text style={[{ alignSelf: 'center' }, appCss.inputLabel]}>Map</Text>
+                    </Pressable>
+                    <Text style={{ alignSelf: 'center' }}>Location: {gameLocation!=''?gameLocation:null}</Text>
                 </View>
 
             case 1:
-                return <View style={{ alignItems: 'flex-end', flexDirection: 'row', justifyContent: 'space-between',zIndex:1 }} >
-                    <TextInput style={appCss.inputBox} onChangeText={text => setRadius(text)} placeholder="KM"/>
-                    <Text style={{ alignSelf: 'center' }}>Radius:</Text>
+                return <View style={{ alignItems: 'flex-end', flexDirection: 'row', justifyContent: 'space-between', zIndex: 1 }} >
+                    <TextInput style={appCss.inputBox} onChangeText={text => setRadius(text)} placeholder="KM" />
+                    <Text style={{ alignSelf: 'center' }}>Radius: {radius!=''?radius + " KM":null}</Text>
                 </View>
 
             case 2:
@@ -133,7 +148,9 @@ export default function PlayersFilter(props) {
     }
 
     return (
+
         <SafeAreaView>
+            {modalVisible && <Modal_LocationMap modalVisible={modalVisible} setModalVisible={() => setModalVisible(!modalVisible)} location={(loc) => getLocation(loc)} locationCord={(data) => getLocationCord(data)} />}
             <ScrollView>
                 <View>
                     <Text style={[appCss.title, appCss.space]}>Filter Players</Text>

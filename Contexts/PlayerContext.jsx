@@ -26,7 +26,7 @@ const RankPlayer = dispatch => async (EmailofRatedPlayer, EmailofRatingPlayer, P
         if (EmailofRatedPlayer == EmailofRatingPlayer)
             alert("You can't rate yourself")
         else if (PowerRating === 100 && AttackRating === 100 && DefenseRating === 100) {
-            alert("No one is perfect excpet Messi and Ronaldo =)\nPlease rate more detailed the values")
+            alert("No one is perfect except Messi and Ronaldo =)\nPlease rate more detailed the values")
         }
         else {
             const response = await RankApi.post('/RankPlayer', { EmailofRatedPlayer, EmailofRatingPlayer, PowerRating, AttackRating, DefenseRating })
