@@ -70,6 +70,7 @@ export default function MyTeams(props) {
     const { state: { players } } = useContext(PlayerContext);
     const { state: { token } } = useContext(AuthContext)
     const [teamCards, setTeamCards] = useState(null);
+    const [forceState, setForceState] = useState(false)
 
     const convertToArray = (data) => {
         let res = []
@@ -136,11 +137,16 @@ export default function MyTeams(props) {
     useEffect(() => {
         const unsubscribe = props.navigation.addListener('focus', () => {
             calcTeamCards();
+            GetTeamDetails(token.Email)
             //GetTeamDetails(token.Email)
         });
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return () => unsubscribe();
     }, [props.navigation, myTeams]);
+    useEffect(() => {
+        calcTeamCards();
+
+    }, [myTeams])
 
 
 

@@ -10,7 +10,7 @@ import { Context as GameContext } from '../../Contexts/GameContext';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
 // import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { Context as AuthContext } from '../../Contexts/AuthContext'
-// import NotificationActions from '../../Services/NotificationActions';
+import NotificationActions from '../../Services/NotificationActions';
 
 
 export default function TeamPage(props) {
@@ -61,8 +61,10 @@ export default function TeamPage(props) {
     }, [messages])
 
     useEffect(() => {
-        const unsubscribe = props.navigation.addListener('focus', () => {
-            setTeamPlayers(myTeams[key], players);
+        const unsubscribe = props.navigation.addListener('focus',async () => {
+            await GetTeamDetails(token.Email)
+            
+            await setTeamPlayers(myTeams[key], players);
         });
         return () => unsubscribe();
     }, [props.navigation, myTeams]);
@@ -112,7 +114,8 @@ export default function TeamPage(props) {
     return (
         <SafeAreaView>
             <ScrollView>
-            {/* <NotificationActions navigation={props.navigation} /> */}
+            <NotificationActions navigation={props.navigation} />
+
                 <View style={[appCss.container, styles.container_extra]}>
                     <TouchableOpacity style={styles.TeamInformation}
                         onPress={() => props.navigation.navigate('TeamDetailsPage', { key })}>

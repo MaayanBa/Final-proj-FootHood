@@ -51,12 +51,10 @@ export default function MapContainer() {
                 <GooglePlacesInput notifyChange={(loc) => getCoordsFromName(loc)}
                 />
             </View>
-
             {
                 region['latitude'] ?
                     <View style={{ flex: 1 }}>
                         <MyMapView
-                        
                             region={region}
                             onRegionChange={(reg) => onMapRegionChange(reg)} />
                     </View> : null}

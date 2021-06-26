@@ -47,21 +47,22 @@ export default function NotificationActions({ navigation }) {
             else {
                 if (not.request.content.data.name == "RemoveFromTeam" && not.request.content.data.T_SerialNum === -1) {
                     console.log(route.name)
+                    GetTeamDetails(token.Email)
                     switch (route.name) {
                         case "TeamPage":
-                            navigation.navigate('StackNav_MyTeams')
+                            navigation.navigate('StackNav_MyTeams', { screen: 'MyTeams' });
                             break;
                         case "TeamDetailsPage":
-                            navigation.navigate('StackNav_MyTeams')
+                            navigation.navigate('StackNav_MyTeams', { screen: 'MyTeams' });
                             break;
                         case "GameList":
-                            navigation.navigate('StackNav_MyTeams')
+                            navigation.navigate('StackNav_MyTeams', { screen: 'MyTeams' });
                             break;
                         case "GamePage":
-                            navigation.navigate('StackNav_MyTeams')
+                            navigation.navigate('StackNav_MyTeams', { screen: 'MyTeams' });
                             break;
                         case "CardPlayer":
-                            navigation.navigate('StackNav_MyTeams')
+                            navigation.navigate('StackNav_MyTeams', { screen: 'MyTeams' });
                             break;
                     }
                 }
@@ -74,7 +75,7 @@ export default function NotificationActions({ navigation }) {
             }
         });
 
-        // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+        // This listener is fired whenever a user taps on or interacts with a notifi5cation (works when app is foregrounded, backgrounded, or killed)
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
             setResponsedAction(true)
             setNotification(response.notification.request.content.data)
@@ -114,6 +115,7 @@ export default function NotificationActions({ navigation }) {
                     }
                     if (notification.name == "AddedNewTeam") {
                         if (responsedAction) {
+                            GetTeamDetails(token.Email)
                             navigation.navigate('StackNav_MyTeams', { screen: 'TeamPage', params: { key: i } });
                             setNotificationIncome(false)
                         }

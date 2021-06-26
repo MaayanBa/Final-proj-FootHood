@@ -16,7 +16,7 @@ import { Context as GameContext } from '../../Contexts/GameContext';
 import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 import { Context as EquipmentContext } from '../../Contexts/EquipmentContext';
 import Modal_EditGame from './Components/Modal_EditGame';
-// import NotificationActions from '../../Services/NotificationActions';
+import NotificationActions from '../../Services/NotificationActions';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -89,7 +89,7 @@ export default function GamePage(props) {
 
   return (
     <SafeAreaView>
-      {/* <NotificationActions navigation={props.navigation} /> */}
+      <NotificationActions navigation={props.navigation} />
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={styles.container}>
           <View style={styles.labels}>

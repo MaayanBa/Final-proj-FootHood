@@ -7,11 +7,13 @@ import { Context as GameContext } from '../../../Contexts/GameContext';
 import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 import { Context as TeamContext } from '../../../Contexts/TeamContext';
 import { Context as AuthContext } from '../../../Contexts/AuthContext';
+import { Context as JarvisContext } from '../../../Contexts/JarvisContext';
 import { getLocation, geocodeLocationByName } from '../../../Services/location-service';
 
 export default function Players_Window(props) {
-  const { state: { gamesList, playersPerGame }, GetPlayers4Game, GetGamesList, Jarvis_FindPlayers4Game } = useContext(GameContext);
+  const { state: { gamesList, playersPerGame }, GetPlayers4Game, GetGamesList,  } = useContext(GameContext);
   const { state: { players } } = useContext(PlayerContext);
+  const { Jarvis_FindPlayers4Game } = useContext(JarvisContext);
   const { state: { myTeams } } = useContext(TeamContext);
   const [findPlayersActivated, setFindPlayersActivated] = useState(gamesList[props.indexGame].FindPlayersActive);
   const [region, setRegion] = useState(null)
@@ -19,8 +21,6 @@ export default function Players_Window(props) {
 
   useEffect(() => {
     GetPlayers4Game(gamesList[props.indexGame].GameSerialNum, players);
-    //checkIfJarvisActiveted();
-    // console.log(props.game.GameLocation)
 
     geocodeLocationByName(gamesList[props.indexGame].GameLocation).then(
       (data) => {
@@ -38,8 +38,7 @@ export default function Players_Window(props) {
 
   }, [])
 
-  // const checkIfJarvisActiveted = () =>{
-  // }
+
   const activeFindPlayers = async () => {
     if (region != null) {
       await Jarvis_FindPlayers4Game(gamesList[props.indexGame].TeamSerialNum, gamesList[props.indexGame].GameSerialNum, gamesList[props.indexGame].AvgPlayerAge, gamesList[props.indexGame].AvgPlayerRating, region)

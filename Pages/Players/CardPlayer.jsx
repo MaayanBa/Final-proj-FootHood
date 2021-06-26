@@ -4,7 +4,7 @@ import AppCss from '../../CSS/AppCss';
 import { Feather } from '@expo/vector-icons';
 import PlayerApi from '../../api/Player';
 import StarRating from 'react-native-star-rating';
-// import NotificationActions from '../../Services/NotificationActions';
+import NotificationActions from '../../Services/NotificationActions';
 
 const { height } = Dimensions.get("screen");
 const height_logo = height * 0.3;
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function CardPlayer({ route }) {
+export default function CardPlayer({ navigation,route }) {
     const player = route.params.p;
     const [rate, setRate] = useState(null)
     const [age, setAge] = useState(new Date().getFullYear() - new Date(player.DateOfBirth).getFullYear())
@@ -99,7 +99,7 @@ export default function CardPlayer({ route }) {
     }
     return (
         <ImageBackground style={styles.card_bg} source={require('../../assets/BG_PlayerCard.png')} >
-            {/* <NotificationActions navigation={props.navigation} /> */}
+            <NotificationActions navigation={navigation} />
 
 
             <View style={styles.content}>

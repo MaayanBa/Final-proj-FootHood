@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
   StyleSheet, View, SafeAreaView, ScrollView, TouchableOpacity,
-  StatusBar, ImageBackground, Image,Alert
+  StatusBar, ImageBackground, Image, Alert
 } from 'react-native';
 import AppCss from '../../CSS/AppCss';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
@@ -11,6 +11,8 @@ import { Text, ListItem, Avatar } from 'react-native-elements';
 import { Feather } from '@expo/vector-icons';
 import Modal_RulesAndLaws from './Components/Modal_RulesAndLaws';
 import Modal_AddPlayers from './Components/Modal_AddPlayers';
+import NotificationActions from '../../Services/NotificationActions';
+
 
 export default function TeamDetailsPage(props) {
   const { key } = props.route.params;
@@ -39,10 +41,10 @@ export default function TeamDetailsPage(props) {
   const RemoveBtn = (p) =>
     Alert.alert(
       "Remove Player",
-      "Do you want to remove " + p.FirstName + " "+p.LastName + " From the team? ",
+      "Do you want to remove " + p.FirstName + " " + p.LastName + " From the team? ",
       [
         {
-          text: "OK", 
+          text: "OK",
           onPress: () => RemovePlayer(p),
           style: "ok"
         },
@@ -51,7 +53,7 @@ export default function TeamDetailsPage(props) {
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel"
         },
-        
+
       ]
     );
 
@@ -80,7 +82,7 @@ export default function TeamDetailsPage(props) {
 
   return (
     <SafeAreaView style={[appCss.container, styles.container_extra]} >
-            {/* <NotificationActions navigation={props.navigation} /> */}
+      <NotificationActions navigation={props.navigation} />
 
       {/* ImageBackGround With Buttons */}
       <ImageBackground style={styles.imgBG} source={{ uri: myTeams[newKey].TeamPicture }}>
@@ -176,5 +178,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white'
   },
- 
+
 })
