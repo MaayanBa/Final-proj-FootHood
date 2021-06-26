@@ -93,7 +93,6 @@ export default function NotificationActions({ navigation }) {
             console.log(notification.T_SerialNum)
             console.log(notification.name)
 
-
             // console.log("TEAM-------------->" + myTeams.length)
             myTeams.map(async (team, i) => {
                 if (team.TeamSerialNum == notification.T_SerialNum) {
