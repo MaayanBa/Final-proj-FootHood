@@ -65,6 +65,7 @@ export default function NotificationActions({ navigation }) {
 
     useEffect(() => {
         if (notificationIncome) {
+            console.log(notification.T_SerialNum)
             if (notification.name == "RemoveFromTeam" && notification.T_SerialNum === -1) {
                 if (receivedAction) {
                     navigation.navigate('StackNav_MyTeams');
@@ -87,13 +88,19 @@ export default function NotificationActions({ navigation }) {
                                 setNotificationIncome(false)
                             }
                         }
-                        if (notification.name == "AcceptRequesta") {
+                        if (notification.name == "AcceptRequest") {
                             if (receivedAction) {
                                 navigation.navigate('StackNav_MyTeams', { screen: 'TeamPage', params: { key: i } });
                                 setNotificationIncome(false)
                             }
                         }
-
+                        if (notification.name == "AddedNewTeam") {
+                            if (responsedAction) {
+                                navigation.navigate('StackNav_MyTeams', { screen: 'TeamPage', params: { key: i } });
+                                setNotificationIncome(false)
+                                setResponsedAction(false)
+                            }
+                        }
                         setReceivedAction(false)
                     }
                 })
