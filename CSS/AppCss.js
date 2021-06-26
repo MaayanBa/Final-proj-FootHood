@@ -115,6 +115,13 @@ export default styles = StyleSheet.create({
     width: '90%',
     borderRadius: 30
   },
+  noResultsTxt: {
+    paddingTop: 40,
+    color: 'white',
+    fontSize: 20,
+    fontWeight: "bold",
+    alignItems: 'center'
+  },
   modal_Txt: {
     paddingTop: 20,
     marginBottom: 15,
@@ -171,18 +178,18 @@ export default styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     paddingRight: 10,
-},
-x_TouchIcon: {
-  // left: 2,
-  // top: 0,
-  zIndex: 1,
-  right: 70,
-  bottom: 27
+  },
+  x_TouchIcon: {
+    // left: 2,
+    // top: 0,
+    zIndex: 1,
+    right: 70,
+    bottom: 27
 
-},
-xIcon: {
-  width: 22,
-  height: 22,
+  },
+  xIcon: {
+    width: 22,
+    height: 22,
 
-}
+  }
 });
