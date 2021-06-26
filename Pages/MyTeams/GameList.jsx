@@ -8,10 +8,11 @@ import { Context as TeamContext } from '../../Contexts/TeamContext';
 // import DateAndTime from './Components/DateAndTime';
 //import LaunchNavigator from 'react-native-launch-navigator';
 import * as Linking from 'expo-linking';
+// import NotificationActions from '../../Services/NotificationActions';
 
 
 export default function GameList(props) {
-    const { state: { gamesList, amountRegisteredPlayersEachGame }, GetGamesList, GetAmountRegisteredPlayersEachGame,RemoveGameFromList } = useContext(GameContext);
+    const { state: { gamesList, amountRegisteredPlayersEachGame }, GetGamesList, GetAmountRegisteredPlayersEachGame, RemoveGameFromList } = useContext(GameContext);
     const { key } = props.route.params;
     const keyTeam = key;
     const { state: { token } } = useContext(AuthContext)
@@ -107,6 +108,7 @@ export default function GameList(props) {
     });
     return (
         <View style={[appCss.container, { paddingTop: 50 }]}>
+            {/* <NotificationActions navigation={props.navigation} /> */}
             <Text style={[appCss.title, { top: 5, paddingBottom: 20, }]}>Game List</Text>
             <ScrollView>
                 {gameCards}

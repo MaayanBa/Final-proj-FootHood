@@ -4,6 +4,7 @@ import { Context as TeamContext } from '../Contexts/TeamContext';
 import { Context as GameContext } from '../Contexts/GameContext';
 import * as Notifications from 'expo-notifications';
 import pushNotifications from '../Services/pushNotifications'
+import { useRoute } from '@react-navigation/native';
 
 
 Notifications.setNotificationHandler({
@@ -27,6 +28,8 @@ export default function NotificationActions({ navigation }) {
     const [receivedAction, setReceivedAction] = useState(false)
     const [responsedAction, setResponsedAction] = useState(false)
 
+    const route = useRoute();
+
     useEffect(() => {
         pushNotifications().then(expoToken => {
             setExpoPushToken(expoToken)
@@ -42,10 +45,32 @@ export default function NotificationActions({ navigation }) {
                 console.log(not.request.content.data)
             }
             else {
-                setReceivedAction(true)
-                setNotification(not.request.content.data)
-                setNotificationIncome(true)
-                GetTeamDetails(token.Email)
+                if (not.request.content.data.name == "RemoveFromTeam" && not.request.content.data.T_SerialNum === -1) {
+                    console.log(route.name)
+                    switch (route.name) {
+                        case "TeamPage":
+                            navigation.navigate('StackNav_MyTeams')
+                            break;
+                        case "TeamDetailsPage":
+                            navigation.navigate('StackNav_MyTeams')
+                            break;
+                        case "GameList":
+                            navigation.navigate('StackNav_MyTeams')
+                            break;
+                        case "GamePage":
+                            navigation.navigate('StackNav_MyTeams')
+                            break;
+                        case "CardPlayer":
+                            navigation.navigate('StackNav_MyTeams')
+                            break;
+                    }
+                }
+                else {
+                    setReceivedAction(true)
+                    setNotification(not.request.content.data)
+                    setNotificationIncome(true)
+                    GetTeamDetails(token.Email)
+                }
             }
         });
 
@@ -66,45 +91,37 @@ export default function NotificationActions({ navigation }) {
     useEffect(() => {
         if (notificationIncome) {
             console.log(notification.T_SerialNum)
-            if (notification.name == "RemoveFromTeam" && notification.T_SerialNum === -1) {
-                if (receivedAction) {
-                    navigation.navigate('StackNav_MyTeams');
-                    setNotificationIncome(false)
-                }
-                setReceivedAction(false)
-                setResponsedAction(false)
-            }
-            else {
-                // console.log("TEAM-------------->" + myTeams.length)
-                myTeams.map(async (team, i) => {
-                    if (team.TeamSerialNum == notification.T_SerialNum) {
-                        setKeyTeam(i)
-                        if (notification.G_SerialNum != undefined)
-                            GetGamesList(team.TeamSerialNum)
-                        if (notification.name == "message") {
-                            if (responsedAction) {
-                                navigation.navigate('StackNav_MyTeams', { screen: 'TeamPage', params: { key: i } });
-                                setResponsedAction(false)
-                                setNotificationIncome(false)
-                            }
+            console.log(notification.name)
+
+            // console.log("TEAM-------------->" + myTeams.length)
+            myTeams.map(async (team, i) => {
+                if (team.TeamSerialNum == notification.T_SerialNum) {
+                    setKeyTeam(i)
+                    if (notification.G_SerialNum != undefined)
+                        GetGamesList(team.TeamSerialNum)
+                    if (notification.name == "message") {
+                        if (responsedAction) {
+                            navigation.navigate('StackNav_MyTeams', { screen: 'TeamPage', params: { key: i } });
+                            setResponsedAction(false)
+                            setNotificationIncome(false)
                         }
-                        if (notification.name == "AcceptRequest") {
-                            if (receivedAction) {
-                                navigation.navigate('StackNav_MyTeams', { screen: 'TeamPage', params: { key: i } });
-                                setNotificationIncome(false)
-                            }
-                        }
-                        if (notification.name == "AddedNewTeam") {
-                            if (responsedAction) {
-                                navigation.navigate('StackNav_MyTeams', { screen: 'TeamPage', params: { key: i } });
-                                setNotificationIncome(false)
-                                setResponsedAction(false)
-                            }
-                        }
-                        setReceivedAction(false)
                     }
-                })
-            }
+                    if (notification.name == "AcceptRequests") {
+                        if (receivedAction) {
+                            navigation.navigate('StackNav_MyTeams', { screen: 'TeamPage', params: { key: i } });
+                            setNotificationIncome(false)
+                        }
+                    }
+                    if (notification.name == "AddedNewTeam") {
+                        if (responsedAction) {
+                            navigation.navigate('StackNav_MyTeams', { screen: 'TeamPage', params: { key: i } });
+                            setNotificationIncome(false)
+                        }
+                    }
+                    setReceivedAction(false)
+                }
+            })
+
         }
     }, [myTeams]);
 

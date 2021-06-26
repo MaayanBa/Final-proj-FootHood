@@ -4,6 +4,7 @@ import AppCss from '../../CSS/AppCss';
 import { Feather } from '@expo/vector-icons';
 import PlayerApi from '../../api/Player';
 import StarRating from 'react-native-star-rating';
+// import NotificationActions from '../../Services/NotificationActions';
 
 const { height } = Dimensions.get("screen");
 const height_logo = height * 0.3;
@@ -98,6 +99,7 @@ export default function CardPlayer({ route }) {
     }
     return (
         <ImageBackground style={styles.card_bg} source={require('../../assets/BG_PlayerCard.png')} >
+            {/* <NotificationActions navigation={props.navigation} /> */}
 
 
             <View style={styles.content}>
@@ -134,7 +136,7 @@ export default function CardPlayer({ route }) {
 
                 <Text style={[appCss.inputLabel, styles.inputLabel_extra]}>PreferRole:  {player.PreferredRole} </Text>
                 <View style={appCss.rates_View}>
-                    <View style={[appCss.rate,{left:22}]}>
+                    <View style={[appCss.rate, { left: 22 }]}>
                         <Text>Attack</Text>
                         {rate !== null ? <Text>{rate.AttackRating}</Text> : null}
                     </View>

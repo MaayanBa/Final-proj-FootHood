@@ -80,6 +80,7 @@ export default function TeamDetailsPage(props) {
 
   return (
     <SafeAreaView style={[appCss.container, styles.container_extra]} >
+            {/* <NotificationActions navigation={props.navigation} /> */}
 
       {/* ImageBackGround With Buttons */}
       <ImageBackground style={styles.imgBG} source={{ uri: myTeams[newKey].TeamPicture }}>

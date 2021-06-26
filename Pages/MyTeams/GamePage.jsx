@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import {
-  SafeAreaView, ScrollView, Text, StyleSheet, View, Animated, TouchableOpacity, StatusBar, Image,LogBox
+  SafeAreaView, ScrollView, Text, StyleSheet, View, Animated, TouchableOpacity, StatusBar, Image, LogBox
 } from "react-native";
 import { Entypo as Pencil } from '@expo/vector-icons';
 // import { Context as TeamContext } from '../../Contexts/TeamContext';
@@ -16,6 +16,7 @@ import { Context as GameContext } from '../../Contexts/GameContext';
 import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 import { Context as EquipmentContext } from '../../Contexts/EquipmentContext';
 import Modal_EditGame from './Components/Modal_EditGame';
+// import NotificationActions from '../../Services/NotificationActions';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -88,6 +89,7 @@ export default function GamePage(props) {
 
   return (
     <SafeAreaView>
+      {/* <NotificationActions navigation={props.navigation} /> */}
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={styles.container}>
           <View style={styles.labels}>
@@ -121,6 +123,9 @@ export default function GamePage(props) {
               <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>{registered ? "Leave" : "Join"}</Text>
               <Image source={require('../../assets/ball.png')} resizeMode="contain" style={styles.imgBall} />
             </TouchableOpacity>
+            {/* <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('RateGame', { index, keyTeam })} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
+              <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>Test-GameRank</Text>
+            </TouchableOpacity> */}
           </View>
         </View>
       </ScrollView>
