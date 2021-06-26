@@ -69,6 +69,8 @@ export default function Timer() {
                             <Text style={appCss.txtBtnTouch}>RESET</Text>
                         </TouchableOpacity>
                     </View>
+                    <ImageBall source={require('../../assets/ball.png')} style={appCss.ball_img} />
+
                 </View>
             </View>
         </View>

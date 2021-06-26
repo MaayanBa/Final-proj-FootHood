@@ -2,19 +2,18 @@ import React, { useState, useContext, useEffect } from 'react'
 import { Text, StyleSheet, View, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import AppCss from '../../CSS/AppCss';
 import { Octicons } from '@expo/vector-icons';
-import { Context as GameContext } from '../../Contexts/GameContext';
+import { Context as JarvisContext } from '../../Contexts/JarvisContext';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
 
 export default function HotGames(props) {
-    const { state: { gamesPlayerNotRegistered }, GetGamesPlayerNotRegistered } = useContext(GameContext)
+    const { state: { hotGames }, Jarvis_GetHotGames } = useContext(JarvisContext)
     const { state: { token } } = useContext(AuthContext);
     const { state: { joinRequests }, AddNewJoinRequests, GetJoinRequests } = useContext(TeamContext);
-    const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
         const unsubscribe = props.navigation.addListener('focus', () => {
-            GetGamesPlayerNotRegistered(token.Email)
+            Jarvis_GetHotGames(token.Email)
         });
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return () => unsubscribe();
@@ -33,7 +32,7 @@ export default function HotGames(props) {
         AddNewJoinRequests(token.Email, gameSerialNum)
     }
     let counter = 0;
-    let gameCards = gamesPlayerNotRegistered.map((g, key) => {
+    let gameCards = hotGames.map((g, key) => {
         if (counter == 0) {
             counter++;
             return <View key={key} style={styles.GameInformation_Touch}>
@@ -69,7 +68,8 @@ export default function HotGames(props) {
                 <Text style={[appCss.title,{color:'white'}]}>Hot Games</Text>
                 <Octicons name="flame" size={35} color="#ff0000" style={{alignSelf:'center',marginLeft:30}} />
             </View>
-            {gameCards}
+            {hotGames==null?null:gameCards}
+            {console.log(hotGames)}
         </View>
     );
 }

@@ -25,7 +25,6 @@ export default function Watches() {
                 {stopwatch == true ? <StopWatch /> : <Timer />}
             </View>
             {/* <SafeAreaView> */}
-                <ImageBall source={require('../../assets/ball.png')} style={appCss.ball_img} />
             {/* </SafeAreaView> */}
         </View>
     );
