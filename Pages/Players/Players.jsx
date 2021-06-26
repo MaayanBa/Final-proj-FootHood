@@ -5,7 +5,6 @@ import { Context as TeamContext } from '../../Contexts/TeamContext';
 import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 import { ListItem, Avatar } from 'react-native-elements';
 import { MaterialCommunityIcons as Podium, Feather as Filter } from '@expo/vector-icons';
-// import Slider from '@react-native-community/slider';
 import ModalRankPlayer from './ModalRankPlayer'
 import ModalFilterPlayer from './ModalFilterPlayer'
 
@@ -21,6 +20,7 @@ export default function Players({ navigation }) {
     const [openModal, setOpenModal] = useState(false)
     const [selectRate, setSelectedRate] = useState("")
     const [openModalFilter, setOpenModalFilter] = useState(false)
+    const [filterResults, setFilterResults] = useState(null)
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -29,19 +29,23 @@ export default function Players({ navigation }) {
             var arr = shuffle(players)
             setAllPlayers(arr)
         });
-        // Return the function to unsubscribe from the event so it gets removed on unmount
         return () => unsubscribe();
     }, [navigation]);
 
+    const getFilterResults = (filter) => {
+        setFilterResults(filter);
+        console.log("Filter Results==========")
+        console.log(filter)
+    }
 
     const SearchPlayers = () => {
+        setFilterResults(null)
         if (fullName !== "") {
             var firstName = "";
             var lastName = "";
             var checkName = fullName.split(' ');
             if (checkName.length === 1) {
                 console.log("checkName" + checkName);
-
                 firstName = fullName;
                 lastName = null;
             }
@@ -55,17 +59,16 @@ export default function Players({ navigation }) {
             }
             SearchPlayer(player)
         } else {
-            alert("Please enter name")
+            alert("Please Enter Name")
         }
 
     }
-
     const Reset = () => {
+        setFilterResults(null)
         const player = {
             FirstName: null,
             LastName: null
         }
-        //setSliderValue(0)
         setPowerRate(null)
         setAttackRate(null)
         setDefenceRate(null)
@@ -76,19 +79,15 @@ export default function Players({ navigation }) {
 
     const shuffle = (array) => {
         var currentIndex = array.length, randomIndex;
-
         // While there remain elements to shuffle...
         while (0 !== currentIndex) {
-
             // Pick a remaining element...
             randomIndex = Math.floor(Math.random() * currentIndex);
             currentIndex--;
-
             // And swap it with the current element.
             [array[currentIndex], array[randomIndex]] = [
                 array[randomIndex], array[currentIndex]];
         }
-
         return array;
     }
 
@@ -132,9 +131,64 @@ export default function Players({ navigation }) {
         </ListItem>
     })
 
+    let counter = 0
+    const filteredPlayerList = allPlayers.map((p, key) => {
+        if (filterResults != null) {
+            let playerAge = new Date().getFullYear() - new Date(p.DateOfBirth).getFullYear()
+            if (filterResults.distanceRadius == 0 && filterResults.playerLoc.latitude == 0 && filterResults.playerLoc.longitude == 0) {
+                if (filterResults.gender == p.Gender && (filterResults.minAge <= playerAge && filterResults.maxAge >= playerAge) && (filterResults.minRank <= p.OverallRating && filterResults.maxRank >= p.OverallRating)) {
+                    counter++;
+                    return <ListItem key={key} style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
+                        <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                            setPlayerChoosen(p)
+                            setOpenModal(true)
+                            setPowerRate(null)
+                            setAttackRate(null)
+                            setDefenceRate(null)
+                        }} >
+                            <Podium name="podium-gold" size={24} color={playerChoosen.Email == p.Email ? "#c92e5d" : "grey"} />
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('StackNav_MyTeams', { screen: 'CardPlayer', params: { p } })} >
+                            <Image style={appCss.playerCardIcon_Btn} source={require('../../assets/PlayerCardIcon.png')} />
+                        </TouchableOpacity>
+                        <ListItem.Content style={{ alignItems: 'flex-end' }} >
+                            <ListItem.Title>{p.FirstName + " " + p.LastName}</ListItem.Title>
+                        </ListItem.Content>
+                        <Avatar rounded source={{ uri: p.PlayerPicture }} />
+                    </ListItem>
+                }
+            }
+            else {
+                if (filterResults.gender == p.Gender && (filterResults.minAge <= playerAge && filterResults.maxAge >= playerAge) && (filterResults.minRank <= p.OverallRating && filterResults.maxRank >= p.OverallRating)
+                &&(filterResults.playerLoc.lat >= p.LatitudeHomeCity - (filterResults.distanceRadius * 0.01) && filterResults.playerLoc.lat <= p.LatitudeHomeCity + (filterResults.distanceRadius * 0.01))
+                && (filterResults.playerLoc.lng >= p.LongitudeHomeCity - (filterResults.distanceRadius * 0.01) && filterResults.playerLoc.lng<= p.LongitudeHomeCity + (filterResults.distanceRadius * 0.01))) {
+                    counter++;
+                    return <ListItem key={key} style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
+                        <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                            setPlayerChoosen(p)
+                            setOpenModal(true)
+                            setPowerRate(null)
+                            setAttackRate(null)
+                            setDefenceRate(null)
+                        }} >
+                            <Podium name="podium-gold" size={24} color={playerChoosen.Email == p.Email ? "#c92e5d" : "grey"} />
+                        </TouchableOpacity>
+                        <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('StackNav_MyTeams', { screen: 'CardPlayer', params: { p } })} >
+                            <Image style={appCss.playerCardIcon_Btn} source={require('../../assets/PlayerCardIcon.png')} />
+                        </TouchableOpacity>
+                        <ListItem.Content style={{ alignItems: 'flex-end' }} >
+                            <ListItem.Title>{p.FirstName + " " + p.LastName}</ListItem.Title>
+                        </ListItem.Content>
+                        <Avatar rounded source={{ uri: p.PlayerPicture }} />
+                    </ListItem>
+                }
+            }
+        }
+    })
+
     return (
         <SafeAreaView>
-            {openModalFilter ? <ModalFilterPlayer setOpenModalFilter={setOpenModalFilter} /> : null}
+            {openModalFilter ? <ModalFilterPlayer setOpenModalFilter={setOpenModalFilter} filterResults={(filter) => getFilterResults(filter)} /> : null}
             <ScrollView>
                 <View>
                     <Text style={[appCss.title, appCss.space]}>Players</Text>
@@ -147,11 +201,11 @@ export default function Players({ navigation }) {
                         </Pressable>
                         <TextInput style={styles.input} onChangeText={(text) => setFullName(text)} placeholder="Search" value={fullName} />
                     </View>
-
                     <View style={{ padding: 5 }}>
                         <Text style={[appCss.inputLabel, { padding: 10 }]}>Search Results:</Text>
+                        {counter == 0 && filterResults != null ? <View><Text style={[{ alignSelf: 'center' }, appCss.noResultsTxt]}>No Results Found!{"\n"} Please Try Again</Text></View> : null}
                         <ScrollView style={styles.playerList_scrollView}>
-                            {searchedPlayerList}
+                            {filterResults == null ? searchedPlayerList : filteredPlayerList}
                         </ScrollView>
                         {openModal ?
                             <ModalRankPlayer
@@ -163,14 +217,17 @@ export default function Players({ navigation }) {
                                 playerChoosen={playerChoosen} setPlayerChoosen={setPlayerChoosen} />
                             : null}
                         {searchedPlayers.length == 0 ? null :
-
                             <View style={{ paddingBottom: 10, paddingTop: 10 }}>
                                 <Pressable style={[styles.Btn]} onPress={() => Reset()} >
                                     <Text style={appCss.inputLabel}>Reset</Text>
                                 </Pressable>
-                            </View>
-                        }
-
+                            </View>}
+                        {counter == 0 ? null :
+                            <View style={{ paddingBottom: 10, paddingTop: 10 }}>
+                                <Pressable style={[styles.Btn]} onPress={() => Reset()} >
+                                    <Text style={appCss.inputLabel}>Reset</Text>
+                                </Pressable>
+                            </View>}
                     </View >
                 </View>
             </ScrollView>
@@ -180,9 +237,6 @@ export default function Players({ navigation }) {
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
-    footer: {
-        alignItems: 'center'
-    },
     input: {
         height: 42,
         margin: 12,
@@ -203,10 +257,5 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 10,
         alignSelf: "center",
-    },
-    playerList_scrollView: {
-        // height: 300,
-        // backgroundColor: "#D9D9D9",
-        // borderRadius: 15,
     },
 });

@@ -126,7 +126,7 @@ export default function GameList(props) {
                     <Text style={appCss.txtBtnTouch}>Filter</Text>
                 </TouchableOpacity>
                 {modalVisible && <Modal_FilterMap modalVisible={modalVisible} setModalVisible={() => setModalVisible(!modalVisible)} location={(loc) => getLocation(loc)} distance={(radius) => getDistance(radius)} locationCord={(data) => getLocationCord(data)} />}
-                <TouchableOpacity style={[appCss.btnTouch, { width: '40%' }, { flexDirection: "row", backgroundColor: "#FE5C5C", justifyContent: 'space-around' }]} onPress={() => console.log("hot games btn")}>
+                <TouchableOpacity style={[appCss.btnTouch, { width: '40%' }, { flexDirection: "row", backgroundColor: "#FE5C5C", justifyContent: 'space-around' }]} onPress={() => props.navigation.navigate('HotGames')}>
                     <Octicons name="flame" size={24} color="black" />
                     <Text style={appCss.txtBtnTouch}>Hot Games</Text>
                     <Octicons name="flame" size={24} color="black" />
@@ -138,7 +138,7 @@ export default function GameList(props) {
                 {gameCards}
             </ScrollView>
 
-            {filterDistance > 0 && counter == 0 ? <View><Text style={styles.noResultsTxt}>No Results Found!{"\n"} Please Try Again</Text></View> : null}
+            {filterDistance > 0 && counter == 0 ? <View><Text style={appCss.noResultsTxt}>No Results Found!{"\n"} Please Try Again</Text></View> : null}
             <View style={[{ flexDirection: "row" }]}>
                 {filterDistance == 0 ? null : <TouchableOpacity style={[appCss.btnTouch, { width: '45%' }]} onPress={() => ResetSearch()}>
                     <Text style={appCss.txtBtnTouch}>Reset Search</Text>
@@ -174,13 +174,6 @@ const styles = StyleSheet.create({
     txtStyle: {
         paddingBottom: 20,
         fontWeight: "bold",
-    },
-    noResultsTxt: {
-        paddingTop: 40,
-        color: 'white',
-        fontSize: 20,
-        fontWeight: "bold",
-        alignItems: 'center'
     },
     header_txt: {
         alignSelf: 'center',
