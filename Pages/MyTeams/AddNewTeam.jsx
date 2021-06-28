@@ -58,7 +58,7 @@ export default function CreateNewTeam({ navigation }) {
       addPlayers: []/*values.addPlayers*/,
     }
     await CreateNewTeam(newTeam);
-    alert("The Team has Added")
+    // alert("The Team has Added")
     navigation.navigate('MyTeams')
   }
   return (

@@ -63,21 +63,24 @@ export default function TeamDetailsPage(props) {
   }
 
   const ExitTeam = async () => {
-    myTeams.length - 1 == newKey ? setNewKey(newKey - 1) : null
+    if (myTeams.length > 1)
+      myTeams.length - 1 == newKey ? setNewKey(newKey - 1) : null
+
+
     let playerInTeam = {
       TeamSerialNum: myTeams[newKey].TeamSerialNum,
       EmailPlayer: user.Email
     }
-    // props.navigation.navigate('MyTeams');
-    // props.navigation.goBack();
-    //props.navigation.navigate('MyTeams');
-    LeaveTeam(playerInTeam)
-    alert("You have left the team successfully");
 
-    props.navigation.goBack();
-    props.navigation.goBack();
-    //GetTeamDetails(token.Email);
-    props.navigation.goBack();
+
+    await LeaveTeam(playerInTeam)
+    alert("You have left the team successfully");
+    props.navigation.navigate('Main');
+
+    // props.navigation.goBack();
+    // props.navigation.goBack();
+    // //GetTeamDetails(token.Email);
+    // props.navigation.goBack();
   }
 
   return (
