@@ -46,10 +46,12 @@ const clearState = dispatch => () => {
 const CreateNewTeam = dispatch => async (newTeam) => {
     try {
         const response = await TeamApi.post('/CreateNewTeam', newTeam);
+        await TeamApi.post('/CreateNewTeam', newTeam);
         // console.log("response . data === " + response.data);
-        // console.log(response.data);
-        await dispatch({ type: 'CreateNewTeam', payload: response.data });
+        console.log(response.data);
+        // await dispatch({ type: 'CreateNewTeam', payload: response.data });
     } catch (err) {
+        console.log("ERROR in Create NewTeam")
         console.log(err.response.data)
         dispatch({ type: 'add_error', payload: 'Somthing went wrong when creating a team' })
     }
@@ -87,11 +89,14 @@ const GetPlayers4Team = dispatch => async (teamNum, myTeams) => {
 const LeaveTeam = dispatch => async (playerInTeam) => {
     try {
         const response = await TeamApi.post('/LeaveTeam', playerInTeam);
-        console.log(respone.data)
-        
-        await dispatch({ type: 'LeaveTeam', payload: response.data })
+        console.log("Leave teame")
+        console.log(response.data)
+        // if (response.data.length == 0)
+        //     await dispatch({ type: 'LeaveTeam', payload: [] })
+        // else
+        //     await dispatch({ type: 'LeaveTeam', payload: response.data })
     } catch (err) {
-        console.log("in error" + err.response.data)
+        console.log("in error In Leave team" + err.response.data)
         console.log(err.response.data)
     }
 }

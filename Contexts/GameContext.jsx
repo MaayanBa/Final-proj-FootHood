@@ -33,7 +33,7 @@ const gameReducer = (state, action) => {
         case 'Check': {
             return { ...state, check: action.payload }
         }
-        case 'RemoveGameFromList':{
+        case 'RemoveGameFromList': {
             return { ...state, gamesList: action.payload }
         }
         default:
@@ -203,14 +203,10 @@ const RemoveGameFromList = dispatch => async (game2Remove) => {
     try {
         // console.log(EmailPlayer);
         const response = await GameApi.post('/RemoveGameFromList', game2Remove);
-        if (response.data.length > 0)
-            dispatch({ type: 'RemoveGameFromList', payload: response.data })
-        else {
-            console.log("Something Went wrong when you tried to remove this game  !")
-            console.log(response.data)
-        }
+        dispatch({ type: 'RemoveGameFromList', payload: response.data })
+
     } catch (err) {
-        console.log("in error ")
+        console.log("Something Went wrong when you tried to remove this game  ! ")
         console.log(err.message)
     }
 }

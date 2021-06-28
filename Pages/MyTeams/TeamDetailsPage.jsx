@@ -63,6 +63,7 @@ export default function TeamDetailsPage(props) {
   }
 
   const ExitTeam = async () => {
+
     if (myTeams.length > 1)
       myTeams.length - 1 == newKey ? setNewKey(newKey - 1) : null
 
@@ -72,10 +73,15 @@ export default function TeamDetailsPage(props) {
       EmailPlayer: user.Email
     }
 
+    props.navigation.navigate('MyTeams');
+    props.navigation.navigate('Main');
 
     await LeaveTeam(playerInTeam)
+    await props.navigation.navigate('MyTeams');
+
+
+
     alert("You have left the team successfully");
-    props.navigation.navigate('Main');
 
     // props.navigation.goBack();
     // props.navigation.goBack();
@@ -88,16 +94,15 @@ export default function TeamDetailsPage(props) {
       <NotificationActions navigation={props.navigation} />
 
       {/* ImageBackGround With Buttons */}
-      <ImageBackground style={styles.imgBG} source={{ uri: myTeams[newKey].TeamPicture }}>
-        <Text style={appCss.title}>{myTeams[newKey].TeamName}</Text>
-        <View style={styles.options_View}>
-          <Modal_RulesAndLaws team={myTeams[newKey]} />
-          {myTeams[newKey].EmailManager !== user.Email ? null :
-            <Modal_AddPlayers props={props} teamKey={newKey} setForceState={() => ForceState()} />
-          }
-        </View>
-      </ImageBackground>
-
+        <ImageBackground style={styles.imgBG} source={{ uri: myTeams[newKey].TeamPicture }}>
+          <Text style={appCss.title}>{myTeams[newKey].TeamName}</Text>
+          <View style={styles.options_View}>
+            <Modal_RulesAndLaws team={myTeams[newKey]} />
+            {myTeams[newKey].EmailManager !== user.Email ? null :
+              <Modal_AddPlayers props={props} teamKey={newKey} setForceState={() => ForceState()} />
+            }
+          </View>
+        </ImageBackground>
 
       {/* Player List */}
       <View style={styles.playerList_View}>
@@ -134,6 +139,7 @@ export default function TeamDetailsPage(props) {
         <Text style={styles.leaveTeam_txt}>Leave Team </Text>
         <Feather name="log-out" size={24} color="white" />
       </TouchableOpacity>
+
     </SafeAreaView>
   )
 }

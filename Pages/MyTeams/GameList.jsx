@@ -93,7 +93,8 @@ export default function GameList(props) {
                 </View>
                 <View style={styles.gameInformation_View_L}>
                     <Text style={styles.txtStyle}>Date: {convertDate(new Date(game.GameDate))}</Text>
-                    <Text style={styles.txtStyle}>Number of Registered: {amountRegisteredPlayersEachGame.find(x => x.GameSerialNum === game.GameSerialNum).NumOfPlayers}</Text>
+                    <Text style={styles.txtStyle}>Number of Registered: {amountRegisteredPlayersEachGame == undefined ? null : amountRegisteredPlayersEachGame.find(x => x.GameSerialNum === game.GameSerialNum).NumOfPlayers}</Text>
+                    {/* {console.log(amountRegisteredPlayersEachGame)} */}
 
                     <Text style={styles.txtStyle}>Location: {game.GameLocation}</Text>
                     {/* <Navigation location={game.GameLocation} /> */}
@@ -111,7 +112,7 @@ export default function GameList(props) {
             <NotificationActions navigation={props.navigation} />
             <Text style={[appCss.title, { top: 5, paddingBottom: 20, }]}>Game List</Text>
             <ScrollView>
-                {gameCards}
+                {gamesList !== undefined ? gameCards : null}
             </ScrollView>
         </View>
     );
