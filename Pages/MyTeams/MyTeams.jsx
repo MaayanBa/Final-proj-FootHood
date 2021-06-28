@@ -157,7 +157,7 @@ export default function MyTeams(props) {
             <View style={styles.mainContent}>
                 <SafeAreaView>
                     <ScrollView>
-                        {teamCards}
+                        {myTeams.length==0?null:teamCards}
                     </ScrollView>
                 </SafeAreaView>
             </View>

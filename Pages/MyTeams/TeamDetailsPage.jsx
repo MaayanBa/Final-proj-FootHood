@@ -77,7 +77,7 @@ export default function TeamDetailsPage(props) {
     props.navigation.navigate('Main');
 
     await LeaveTeam(playerInTeam)
-    await props.navigation.navigate('MyTeams');
+    await props.navigation.navigate('Main');
 
 
 
