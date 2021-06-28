@@ -70,7 +70,6 @@ export default function Timer() {
                         </TouchableOpacity>
                     </View>
                     <ImageBall source={require('../../assets/ball.png')} style={appCss.ball_img} />
-
                 </View>
             </View>
         </View>

@@ -55,6 +55,6 @@ export const { Context, Provider } = CreateDataContext(
         Jarvis_GetHotGames,
     },
     {
-        hotGames: null,
+        hotGames: [],
     }
 );

@@ -7,9 +7,11 @@ import Modal_FilterMap from '../FindGame/Modal_FilterMap';
 import { Context as GameContext } from '../../Contexts/GameContext';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
+import { Context as JarvisContext } from '../../Contexts/JarvisContext';
 
 export default function GameList(props) {
-    const { state: { gamesPlayerNotRegistered },GetGamesPlayerNotRegistered } = useContext(GameContext)
+    const { state: { gamesPlayerNotRegistered }, GetGamesPlayerNotRegistered } = useContext(GameContext)
+    const { state: { hotGames }, Jarvis_GetHotGames } = useContext(JarvisContext)
     const { state: { token } } = useContext(AuthContext);
     const { state: { joinRequests }, AddNewJoinRequests, GetJoinRequests } = useContext(TeamContext);
     const [modalVisible, setModalVisible] = useState(false);
@@ -23,6 +25,7 @@ export default function GameList(props) {
     useEffect(() => {
         const unsubscribe = props.navigation.addListener('focus', () => {
             GetGamesPlayerNotRegistered(token.Email)
+            Jarvis_GetHotGames(token.Email)
         });
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return () => unsubscribe();
@@ -126,7 +129,7 @@ export default function GameList(props) {
                     <Text style={appCss.txtBtnTouch}>Filter</Text>
                 </TouchableOpacity>
                 {modalVisible && <Modal_FilterMap modalVisible={modalVisible} setModalVisible={() => setModalVisible(!modalVisible)} location={(loc) => getLocation(loc)} distance={(radius) => getDistance(radius)} locationCord={(data) => getLocationCord(data)} />}
-                <TouchableOpacity style={[appCss.btnTouch, { width: '40%' }, { flexDirection: "row", backgroundColor: "#FE5C5C", justifyContent: 'space-around' }]} onPress={() => props.navigation.navigate('HotGames')}>
+                <TouchableOpacity style={[appCss.btnTouch, { width: '40%' }, { flexDirection: "row", backgroundColor: "#FE5C5C", justifyContent: 'space-around' }]} onPress={() => hotGames==null? alert("You do not have Hot Games right now"):props.navigation.navigate('HotGames')}>
                     <Octicons name="flame" size={24} color="black" />
                     <Text style={appCss.txtBtnTouch}>Hot Games</Text>
                     <Octicons name="flame" size={24} color="black" />
@@ -134,23 +137,24 @@ export default function GameList(props) {
             </View>
 
             {filterDistance == 0 || counter == 0 ? null : <View style={{ paddingBottom: 10 }, { paddingTop: 10 }}><Text style={appCss.inputLabel}>Result For Games {filterDistance} KM Around {filterLocationName}:</Text></View>}
+            
             <ScrollView style={styles.games_scrollView}>
-                {gameCards}
+                {gamesPlayerNotRegistered.length==0?<View><Text style={appCss.noResultsTxt}>There Are No Games Available!</Text></View>:gameCards}
             </ScrollView>
 
             {filterDistance > 0 && counter == 0 ? <View><Text style={appCss.noResultsTxt}>No Results Found!{"\n"} Please Try Again</Text></View> : null}
             <View style={[{ flexDirection: "row" }]}>
-                {filterDistance == 0 ? null : <TouchableOpacity style={[appCss.btnTouch, { width: '45%' }]} onPress={() => ResetSearch()}>
+                {filterDistance == 0 ? null : <TouchableOpacity style={[appCss.btnTouch, { marginTop:0,width: '45%' }]} onPress={() => ResetSearch()}>
                     <Text style={appCss.txtBtnTouch}>Reset Search</Text>
                 </TouchableOpacity>}
             </View>
 
-            <View style={{ justifyContent: 'center', alignItems: 'flex-end', flexDirection: "row", marginBottom: 20,paddingTop:70 }}>
-                <ImageCourt source={require('../../assets/Court.png')} style={styles.court_img} />
-                <TouchableOpacity style={[appCss.btnTouch, { width: Dimensions.get('window').width - 180, backgroundColor: '#03C04A' }]} onPress={() => navToPitch()}>
+            <View style={{ justifyContent: 'center', alignItems: 'flex-end', flexDirection: "row", marginBottom: 20 }}>
+                <TouchableOpacity style={[appCss.btnTouch, {marginTop:10,width: Dimensions.get('window').width - 70, backgroundColor: '#03C04A',flexDirection: 'row',justifyContent:'center' }]} onPress={() => navToPitch()}>
+                    <ImageCourt source={require('../../assets/Court.png')} style={styles.court_img} />
                     <Text style={appCss.txtBtnTouch}>Courts Around You</Text>
+                    <ImageCourt source={require('../../assets/Court.png')} style={styles.court_img} />
                 </TouchableOpacity>
-                <ImageCourt source={require('../../assets/Court.png')} style={styles.court_img} />
             </View>
         </View>
     );
@@ -201,6 +205,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 20
     },
     games_scrollView: {
-        height: 340
-      },
+        height: 350,
+    },
 });
