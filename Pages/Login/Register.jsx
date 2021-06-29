@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, TextInput, View, TouchableOpacity, ScrollView, SafeAreaView, StatusBar, Platform, Image, Text } from 'react-native';
-//import { Text } from 'react-native-elements';
+import { StyleSheet, TextInput, View, Dimensions,TouchableOpacity, ScrollView, SafeAreaView, StatusBar, Platform, Image, Text } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import { Formik } from "formik";
 import * as yup from 'yup';
@@ -10,13 +9,12 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import StarRating from 'react-native-star-rating';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Avatar } from 'react-native-paper';
-// import { ListItem } from 'react-native-elements/dist/list/ListItem';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import AppCss from '../../CSS/AppCss'
 import { Context as CitiesContext } from '../../Contexts/CitiesContext';
 import CitiesDropDown from '../MyTeams/Components/CitiesDropDown';
 import { getLocation, geocodeLocationByName } from '../../Services/location-service';
-
+import Slider from '@react-native-community/slider';
 
 export default function Register(props) {
   const { state, register } = useContext(AuthContext);
@@ -30,7 +28,7 @@ export default function Register(props) {
   const [staminaStars, setStaminaStars] = useState(4);
   const [prefferedRole, setPrefferedRole] = useState('midfield');
   const [strongLeg, setStrongLeg] = React.useState('right');
-
+  const [sliderValue, setSliderValue] = useState(0)
   const { state: { cities }, GetListCities } = useContext(CitiesContext);
   const [cityLive, setCityLive] = useState(null);
   const [region, setRegion] = useState({
@@ -154,8 +152,8 @@ export default function Register(props) {
       Stamina: staminaStars,
       PreferredRole: prefferedRole,
       LatitudeHomeCity: region.latitude,
-      LongitudeHomeCity: region.longitude
-
+      LongitudeHomeCity: region.longitude,
+      DistanceOfInvites:sliderValue
     }
     register(player, () => {
       props.navigation.navigate('TabNav')
@@ -313,8 +311,23 @@ export default function Register(props) {
 
                   </View> */}
                 </View>
+
+                <View style={styles.formGroup}>
+                  <Text style={appCss.inputLabel}>Max Games Distance: {sliderValue} KM</Text>
+                  <Slider
+                  step={1}
+                  style={{ width: Dimensions.get('window').width - 60, height: 30,padding:40 }}
+                  minimumTrackTintColor="#FFFFFF"
+                  maximumTrackTintColor="#000000"
+                  minimumValue={0}
+                  maximumValue={20}
+                  inverted={true}
+                  onValueChange={value => setSliderValue(value)}
+                />
+                </View>
+
                 <View style={[styles.formGroup, { flexDirection: "row-reverse", justifyContent: 'space-between' }]}>
-                  <Text style={appCss.inputLabel}>Date Of Birth: {printDate()}</Text>
+                  <Text style={[appCss.inputLabel,{alignSelf:'center'}]}>Date Of Birth: {printDate()}</Text>
                   <View style={styles.datePicker}>
                     <TouchableOpacity onPress={() => showDatepicker()}>
                       <Image source={require("../../assets/Calander.png")} style={styles.calanderStyle} />
@@ -335,7 +348,7 @@ export default function Register(props) {
                 </View>
 
                 <View style={styles.formGroup, { flexDirection: "row-reverse", justifyContent: 'space-between' }}>
-                  <Text style={appCss.inputLabel}>Player Picture:</Text>
+                  <Text style={[appCss.inputLabel,{alignSelf:'center'}]}>Player Picture:</Text>
                   {displayPicture()}
                 </View>
 
@@ -402,7 +415,7 @@ export default function Register(props) {
                       />
                     </TouchableOpacity>
                     <TouchableOpacity>
-                      <Text style={styles.inputLabel}>Left</Text>
+                      <Text style={appCss.inputLabel}>Left</Text>
                       <RadioButton
                         value="right"
                         status={strongLeg === 'left' ? 'checked' : 'unchecked'}

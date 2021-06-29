@@ -33,7 +33,7 @@ export default function GamePage(props) {
   const { state: { gameEquipments }, GetAllEquipments, GetItemsAssignForGame } = useContext(EquipmentContext);
 
 
-  const gameDate = new Date("2021-06-29T20:00:00Z"); //Need to enter here game date
+  const gameDate = new Date(gamesList[index].GameDate); //Need to enter here game date
   // const gameDate = new Date(); //Need to enter here game date
   const oneDay = 60 * 60 * 24 * 1000 //This give us 24 hours parmeter
 
