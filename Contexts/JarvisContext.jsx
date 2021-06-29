@@ -23,10 +23,10 @@ const Jarvis_FindPlayers4Game = dispatch => async (TeamSerialNum, GameSerialNum,
         }
         console.log(gameDetailes)
         const res = await JarvisApi.post('/Jarvis_FindPlayers4Game', gameDetailes);
-        if (res.data > 0)
-            alert(`Jarvis has found  ${res.data} matching players for this game ! \n\nPlease keep up on your join requests ! `)
+        if (res.data.AmountOfResults.length > 0)
+            alert(`Jarvis has found  ${res.data.AmountOfResults} matching players for this game with ${res.data.MatchPrecent}% - 100% match rate ! \n\nPlease keep up on your join requests ! `)
         else
-            alert(`Jarvis hasn't found  any matching players for this game ! \n\nWe welcome you to invite new friends ! `)
+            alert(`Jarvis hasn't found any matching players for this game ! \n\nWe welcome you to invite new friends ! `)
 
 
     } catch (error) {
