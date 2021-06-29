@@ -30,6 +30,7 @@ export default function TeamDetailsPage(props) {
       EmailPlayer: p.Email
     }
     await RemoveFromTeam(playerInTeam)
+    await GetTeamDetails(token.Email);
     // setForceState(!forceState);
 
   }
@@ -92,7 +93,7 @@ export default function TeamDetailsPage(props) {
   return (
     <SafeAreaView style={[appCss.container, styles.container_extra]} >
       <NotificationActions navigation={props.navigation} />
-
+{console.log(myTeams[newKey])}
       {/* ImageBackGround With Buttons */}
         <ImageBackground style={styles.imgBG} source={{ uri: myTeams[newKey].TeamPicture }}>
           <Text style={appCss.title}>{myTeams[newKey].TeamName}</Text>

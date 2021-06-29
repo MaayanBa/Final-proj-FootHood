@@ -112,7 +112,7 @@ const RemoveFromTeam = dispatch => async (playerInTeam, players) => {
         //     setTeamPlayers(team, players)
         // }
     } catch (err) {
-        console.log("in error" + err.response.data)
+        console.log("error in RemoveFromTeam" + err.response.data)
         console.log(err.response.data)
     }
 }

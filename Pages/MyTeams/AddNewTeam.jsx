@@ -47,8 +47,8 @@ export default function CreateNewTeam({ navigation }) {
   };
 
   const CreateTeam = async (values) => {
-    let priOpub = false; //private or public 
-    privateOrPublic === 'public' ? priOpub = true : null;
+    let priOpub = true; //private or public 
+    privateOrPublic === 'public' ? priOpub = false : null;
     let newTeam = {
       teamName: values.teamName,
       TeamPicture: TeamImageUri,
