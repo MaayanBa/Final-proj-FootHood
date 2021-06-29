@@ -40,7 +40,7 @@ export default function Register(props) {
 
   useEffect(() => {
     GetListCities();
-    console.log(cityLive)
+    // console.log(cityLive)
   }, []);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function Register(props) {
 
   const getCoordsFromName = () => {
     //props.location(loc)
-    console.log(cityLive)
+    // console.log(cityLive)
     cityLive !== null ?
         geocodeLocationByName(cityLive).then(
             (data) => {

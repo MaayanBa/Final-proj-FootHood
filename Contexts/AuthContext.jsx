@@ -32,6 +32,9 @@ const authReducer = (state, action) => {
         case 'PushNotificationToken': {
             return { ...state, token: action.payload }
         }
+        case 'SetUserFromGoogle':{
+            return { ...state, userFromGoogle: action.payload }
+        }
 
         default:
             return state
@@ -188,6 +191,15 @@ const pushNotificationToken = dispatch => async (Email, TokenNotfication) => {
     }
 }
 
+const setUserFromGoogle = dispatch => async (userFromGoogle) => {
+    try {
+        dispatch({ type: 'SetUserFromGoogle', payload: userFromGoogle })
+    } catch (error) {
+        console.log("error in setUserFromGoogle")
+        console.log(error.message)
+    }
+}
+
 
 
 export const { Context, Provider } = CreateDataContext(
@@ -203,10 +215,12 @@ export const { Context, Provider } = CreateDataContext(
         updatPassCode,
         resetRestore_PassCode_values,
         pushNotificationToken,
+        setUserFromGoogle,
 
     },
     {
         token: null,
+        userFromGoogle:null,
         errorMessage: '',
         emailVerified: false,
         passCodeHasChanged: false,
