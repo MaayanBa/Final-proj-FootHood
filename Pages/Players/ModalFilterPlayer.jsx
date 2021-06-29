@@ -90,7 +90,7 @@ export default function ModalFilterPlayer(props) {
                             {modalVisible && <Modal_LocationMap modalVisible={modalVisible} setModalVisible={() => setModalVisible(!modalVisible)} location={(loc) => getLocation(loc)} locationCord={(data) => getLocationCord(data)} />}
 
                             <ListItem style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
-                                <TextInput style={appCss.inputBox} onChangeText={text => setRadius(text)} keyboardType="phone-pad" placeholder="KM" />
+                                <TextInput style={[appCss.inputBox,{padding:10}]} onChangeText={text => setRadius(text)} keyboardType="phone-pad" placeholder="KM" />
                                 <ListItem.Content style={{ alignItems: 'flex-end' }} >
                                     <ListItem.Title>Radius:</ListItem.Title>
                                 </ListItem.Content>

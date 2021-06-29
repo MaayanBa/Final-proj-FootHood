@@ -55,13 +55,6 @@ export default function GamePage(props) {
     return () => unsubscribe();
   }, [props.navigation]);
 
-
-  // גורם בעיה
-  // useEffect(() => {
-  //   GetItemsAssignForGame(gamesList[index].GameSerialNum)
-  //   console.log("knsflkdnfl")
-  // }, [gameEquipments])
-
   const JoinGame = async () => {
     let addPlayer2Game = {
       GameSerialNum: gamesList[index].GameSerialNum,
@@ -123,9 +116,9 @@ export default function GamePage(props) {
               <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>{registered ? "Leave" : "Join"}</Text>
               <Image source={require('../../assets/ball.png')} resizeMode="contain" style={styles.imgBall} />
             </TouchableOpacity>
-            {/* <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('RateGame', { index, keyTeam })} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('RateGame', { index, keyTeam })} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
               <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>Test-GameRank</Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
