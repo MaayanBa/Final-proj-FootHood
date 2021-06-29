@@ -4,7 +4,6 @@ import AppCss from '../../CSS/AppCss';
 import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import { ListItem, Avatar } from 'react-native-elements';
-// import { MaterialCommunityIcons as Podium, Feather as Filter } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
 
 export default function ModalRankPlayer(props) {
@@ -48,15 +47,15 @@ export default function ModalRankPlayer(props) {
                   <Text style={[appCss.inputLabel, { alignSelf: 'center', fontSize: 25 }]}>{props.playerChoosen.FirstName + ' ' + props.playerChoosen.LastName} </Text>
                 </View>
                 <View style={[appCss.rates_View, { paddingBottom: 10 }]}>
-                  <TouchableOpacity onPress={() => props.setSelectedRate("Attack")} style={[appCss.rate, { paddingBottom: 10 }]}>
+                  <TouchableOpacity onPress={() => props.setSelectedRate("Attack")} style={props.selectRate == "Attack"?[appCss.rate, { backgroundColor:'orange',paddingBottom: 10 }]:[appCss.rate, { paddingBottom: 10 }]}>
                     <Text>Attack</Text>
                     {props.attackRate !== null ? <Text>{props.attackRate}</Text> : null}
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => props.setSelectedRate("Defence")} style={[appCss.rate, { paddingBottom: 10 }]}>
+                  <TouchableOpacity onPress={() => props.setSelectedRate("Defence")} style={props.selectRate == "Defence"?[appCss.rate, { backgroundColor:'orange',paddingBottom: 10 }]:[appCss.rate, { paddingBottom: 10 }]}>
                     <Text>Defence</Text>
                     {props.defenceRate !== null ? <Text>{props.defenceRate}</Text> : null}
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => props.setSelectedRate("Power")} style={[appCss.rate, { paddingBottom: 10 }]}>
+                  <TouchableOpacity onPress={() => props.setSelectedRate("Power")} style={props.selectRate == "Power"?[appCss.rate, { backgroundColor:'orange',paddingBottom: 10 }]:[appCss.rate, { paddingBottom: 10 }]}>
                     <Text>Power</Text>
                     {props.powerRate !== null ? <Text>{props.powerRate}</Text> : null}
                   </TouchableOpacity>

@@ -33,7 +33,7 @@ export default function GamePage(props) {
   const { state: { gameEquipments }, GetAllEquipments, GetItemsAssignForGame } = useContext(EquipmentContext);
 
 
-  const gameDate = new Date("2021-06-29T20:00:00Z"); //Need to enter here game date
+  const gameDate = new Date(gamesList[index].GameDate); //Need to enter here game date
   // const gameDate = new Date(); //Need to enter here game date
   const oneDay = 60 * 60 * 24 * 1000 //This give us 24 hours parmeter
 
@@ -54,13 +54,6 @@ export default function GamePage(props) {
     });
     return () => unsubscribe();
   }, [props.navigation]);
-
-
-  // גורם בעיה
-  // useEffect(() => {
-  //   GetItemsAssignForGame(gamesList[index].GameSerialNum)
-  //   console.log("knsflkdnfl")
-  // }, [gameEquipments])
 
   const JoinGame = async () => {
     let addPlayer2Game = {
@@ -123,9 +116,9 @@ export default function GamePage(props) {
               <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>{registered ? "Leave" : "Join"}</Text>
               <Image source={require('../../assets/ball.png')} resizeMode="contain" style={styles.imgBall} />
             </TouchableOpacity>
-            {/* <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('RateGame', { index, keyTeam })} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('RateGame', { index, keyTeam })} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
               <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>Test-GameRank</Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
