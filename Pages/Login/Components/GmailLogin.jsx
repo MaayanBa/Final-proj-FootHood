@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import AppCss from '../../../CSS/AppCss';
 import * as Google from 'expo-google-app-auth';
@@ -6,10 +6,10 @@ import { Context as AuthContext } from '../../../Contexts/AuthContext';
 
 const appCss = AppCss;
 
-export default function GmailLogin({navigation}) {
-    const {setUserFromGoogle} = useContext(AuthContext)
-    
-    
+export default function GmailLogin({ navigation }) {
+    const { setUserFromGoogle } = useContext(AuthContext)
+
+
     async function signInWithGoogleAsync() {
         try {
             const { type, accessToken, user } = await Google.logInAsync({
@@ -19,8 +19,8 @@ export default function GmailLogin({navigation}) {
                 // androidStandaloneAppClientId: `24351265915-ljcsflkkpbm3vi3n16ug5d2ud6k51ujn.apps.googleusercontent.com`,
                 scopes: ['profile', 'email'],
             });
-           
-        
+
+
             if (type === 'success') {
                 /* `accessToken` is now valid and can be used to get data from the Google API with HTTP requests */
                 // console.log(user);

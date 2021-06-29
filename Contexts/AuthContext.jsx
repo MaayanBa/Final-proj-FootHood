@@ -33,6 +33,7 @@ const authReducer = (state, action) => {
             return { ...state, token: action.payload }
         }
         case 'SetUserFromGoogle':{
+            console.log(action.payload)
             return { ...state, userFromGoogle: action.payload }
         }
 
@@ -191,9 +192,9 @@ const pushNotificationToken = dispatch => async (Email, TokenNotfication) => {
     }
 }
 
-const setUserFromGoogle = dispatch => async (userFromGoogle) => {
+const setUserFromGoogle = dispatch => async (user) => {
     try {
-        dispatch({ type: 'SetUserFromGoogle', payload: userFromGoogle })
+        dispatch({ type: 'SetUserFromGoogle', payload: user })
     } catch (error) {
         console.log("error in setUserFromGoogle")
         console.log(error.message)

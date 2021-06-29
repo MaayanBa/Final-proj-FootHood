@@ -19,7 +19,7 @@ import { getLocation, geocodeLocationByName } from '../../Services/location-serv
 
 
 export default function Register(props) {
-  const { state, register } = useContext(AuthContext);
+  const { state: { token, userFromGoogle }, register } = useContext(AuthContext);
   const [imageUri, setimageUri] = useState(null);
   const [gender, setGender] = useState(null);
   const [date, setDate] = useState(new Date());
@@ -57,19 +57,19 @@ export default function Register(props) {
     //props.location(loc)
     // console.log(cityLive)
     cityLive !== null ?
-        geocodeLocationByName(cityLive).then(
-            (data) => {
-                console.log("Data====>" + data);
-                console.log(data);
-                setRegion({
-                    latitude: data.lat,
-                    longitude: data.lng,
-                    latitudeDelta: 0.008,
-                    longitudeDelta: 0.008
-                });
-            }
-        ) : null
-}
+      geocodeLocationByName(cityLive).then(
+        (data) => {
+          console.log("Data====>" + data);
+          console.log(data);
+          setRegion({
+            latitude: data.lat,
+            longitude: data.lng,
+            latitudeDelta: 0.008,
+            longitudeDelta: 0.008
+          });
+        }
+      ) : null
+  }
 
   const onChange = (event, selectedDate) => {
     //setDateBigger(false)
@@ -198,10 +198,15 @@ export default function Register(props) {
                     <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="firstName"
-                      placeholder="First Name"
+                      placeholder={userFromGoogle !== null ? userFromGoogle.givenName : "First Name"}
                       onChangeText={handleChange('firstName')}
                       value={values.firstName}
+                      editable={userFromGoogle !== null ? false : true}
                     />
+                    {userFromGoogle !== null ?
+                      <Image style={{zIndex:1,right:100}}source={require('../../assets/CheckMark.png')} style={appCss.soccerPlayer_img} />
+                      : null}
+
                   </View>
                   {errors.firstName && touched.firstName ?
                     <Text style={{ fontSize: 10, color: 'red' }}>{errors.firstName}</Text> : null
@@ -213,10 +218,14 @@ export default function Register(props) {
                     <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="lastName"
-                      placeholder="Last Name"
+                      placeholder={userFromGoogle !== null ? userFromGoogle.familyName : "Last Name"}
                       onChangeText={handleChange('lastName')}
                       value={values.lastName}
+                      editable={userFromGoogle !== null ? false : true}
                     />
+                    {userFromGoogle !== null ?
+                      <Image style={{zIndex:1,right:100}}source={require('../../assets/CheckMark.png')} style={appCss.soccerPlayer_img} />
+                      : null}
                   </View>
                   {errors.lastName && touched.lastName ?
                     <Text style={{ fontSize: 10, color: 'red' }}>{errors.lastName}</Text> : null
@@ -228,16 +237,61 @@ export default function Register(props) {
                     <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="email"
-                      placeholder="Email Address"
+                      placeholder={userFromGoogle !== null ? userFromGoogle.email : "Email Address"}
                       onChangeText={handleChange('email')}
                       value={values.email}
                       keyboardType="email-address"
+                      editable={userFromGoogle !== null ? false : true}
                     />
+                    {userFromGoogle !== null ?
+                      <Image style={{zIndex:1,right:100}}source={require('../../assets/CheckMark.png')} style={appCss.soccerPlayer_img} />
+                      : null}
                   </View>
                   {errors.email && touched.email ?
                     <Text style={{ fontSize: 10, color: 'red' }}>{errors.email}</Text> : null
                   }
                 </View>
+
+                <View style={styles.formGroup}>
+                  <Text style={appCss.inputLabel}>Password:</Text>
+                  <View style={appCss.sectionStyle}>
+                    <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
+                    <TextInput
+                      name="password"
+                      placeholder={userFromGoogle !== null ? "**********" : "Password"}
+                      onChangeText={handleChange('password')}
+                      value={values.password}
+                      secureTextEntry
+                      editable={userFromGoogle !== null ? false : true}
+                    />
+                    {userFromGoogle !== null ?
+                      <Image style={{zIndex:1,right:100}}source={require('../../assets/CheckMark.png')} style={appCss.soccerPlayer_img} />
+                      : null}
+                  </View>
+                  {errors.password && touched.password ?
+                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text> : null
+                  }
+                </View>
+                {
+                  userFromGoogle !== null ? null :
+                    <View style={styles.formGroup}>
+                      <Text style={appCss.inputLabel}>Confirm Password:</Text>
+                      <View style={appCss.sectionStyle}>
+                        <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
+                        <TextInput
+                          name="passwordConfirmation"
+                          placeholder="Password Confirmation"
+                          onChangeText={handleChange('passwordConfirmation')}
+                          value={values.passwordConfirmation}
+                          secureTextEntry
+                        />
+                      </View>
+                      {errors.passwordConfirmation && touched.passwordConfirmation ?
+                        <Text style={{ fontSize: 10, color: 'red' }}>{errors.passwordConfirmation}</Text> : null
+                      }
+                    </View>
+                }
+
                 <View style={styles.formGroup}>
                   <Text style={appCss.inputLabel}>Phone Number:</Text>
                   <View style={appCss.sectionStyle}>
@@ -254,38 +308,7 @@ export default function Register(props) {
                     <Text style={{ fontSize: 10, color: 'red' }}>{errors.phoneNumber}</Text> : null
                   }
                 </View>
-                <View style={styles.formGroup}>
-                  <Text style={appCss.inputLabel}>Password:</Text>
-                  <View style={appCss.sectionStyle}>
-                    <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
-                    <TextInput
-                      name="password"
-                      placeholder="Password"
-                      onChangeText={handleChange('password')}
-                      value={values.password}
-                      secureTextEntry
-                    />
-                  </View>
-                  {errors.password && touched.password ?
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text> : null
-                  }
-                </View>
-                <View style={styles.formGroup}>
-                  <Text style={appCss.inputLabel}>Confirm Password:</Text>
-                  <View style={appCss.sectionStyle}>
-                    <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
-                    <TextInput
-                      name="passwordConfirmation"
-                      placeholder="Password Confirmation"
-                      onChangeText={handleChange('passwordConfirmation')}
-                      value={values.passwordConfirmation}
-                      secureTextEntry
-                    />
-                  </View>
-                  {errors.passwordConfirmation && touched.passwordConfirmation ?
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.passwordConfirmation}</Text> : null
-                  }
-                </View>
+
                 <View style={styles.formGroup}>
                   <Text style={appCss.inputLabel}>Gender: {gender} </Text>
                   <View style={styles.gender}>
@@ -298,8 +321,8 @@ export default function Register(props) {
                   </View>
                 </View>
 
-                <View style={[styles.formGroup,{paddingBottom:20}]}>
-                  <Text style={[appCss.inputLabel,{paddingBottom:10}]}>City:</Text>
+                <View style={[styles.formGroup, { paddingBottom: 20 }]}>
+                  <Text style={[appCss.inputLabel, { paddingBottom: 10 }]}>City:</Text>
                   <CitiesDropDown width={315} ChoosenCity={(city) => GetCityFromUser(city)} city={cityLive} />
 
                   {/* <View style={appCss.sectionStyle}>
