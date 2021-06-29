@@ -185,7 +185,7 @@ export default function NewLoginUser({ navigation }) {
 
                     <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop: 20 }}>
                         <FaceBookLogin />
-                        <GmailLogin />
+                        <GmailLogin navigation={navigation}/>
                     </View>
                 </View>
             </Animatable.View>
