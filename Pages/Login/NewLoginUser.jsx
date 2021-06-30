@@ -25,7 +25,7 @@ const loginCss = LoginCss;
 
 
 export default function NewLoginUser({ navigation }) {
-    const { state, signIn, tryLocalSignin, clearErrorMessage } = useContext(AuthContext);
+    const { state, signIn, tryLocalSignin, clearErrorMessage,clearUserFromGoogle } = useContext(AuthContext);
     const { GetListCities } = useContext(CitiesContext);
     const [email, setEmail] = useState('');
     const [passCode, setPassCode] = useState('');
@@ -179,7 +179,7 @@ export default function NewLoginUser({ navigation }) {
                             : null
                     }
 
-                    <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+                    <TouchableOpacity onPress={() => {navigation.navigate('Register'); clearUserFromGoogle() }}>
                         <Text style={{ color: '#009387', marginTop: 15, alignSelf: 'center' }}>Dont have an account? Register here !</Text>
                     </TouchableOpacity>
 

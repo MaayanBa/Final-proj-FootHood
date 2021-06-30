@@ -32,9 +32,15 @@ const authReducer = (state, action) => {
         case 'PushNotificationToken': {
             return { ...state, token: action.payload }
         }
-        case 'SetUserFromGoogle':{
+        case 'SetUserFromGoogle': {
             console.log(action.payload)
             return { ...state, userFromGoogle: action.payload }
+        }
+        case 'signInFromGoogle': {
+            return { ...state, signFromGoogle: action.payload }
+        }
+        case 'clearUserFromGoogle': {
+            return { ...state, userFromGoogle: action.payload, signFromGoogle:null }
         }
 
         default:
@@ -67,7 +73,7 @@ const register = dispatch => {
             dispatch({ type: 'register', payload: response.data });
             alert("You have sign up succesfuly ! \nEnjoy")
         } catch (err) {
-            //console.log(err.response.data)
+            console.log(err.response.data)
             dispatch({ type: 'add_error', payload: 'Somthing went wrong with registration' })
         }
         //if sign up, modify our state, and say ok
@@ -80,11 +86,12 @@ const signIn = dispatch => {
     return async (player, checked) => {
         //api request
         try {
-            console.log("Player" + player)
+            // console.log("Player" + player)
             const data = {
                 Email: player.email,
                 Passcode: player.passcode
             }
+
             const options = {
                 //method: "Post",
                 headers: new Headers({
@@ -94,42 +101,27 @@ const signIn = dispatch => {
                 //body: JSON.stringify(data)
             }
             let playerDetails = await AuthApi.post('/LoginUser', data, options);
-            {
-                //console.log("From Axios L ___: " + playerDetails.status);
-                //console.log( response.data);
+            console.log("hii")
 
-                // let playerDetails;
-                // var res = await fetch('https://proj.ruppin.ac.il/bgroup13/prod/api/player/LoginUser', options)
-                //     .then((res) => { 
-                //         console.log(res.status)
-                //         res.status < 400 || res.status >= 500 ?
-                //            res = res.json() : res = null
-                //     }).then((result) =>{ playerDetails = res},
-                //         (error) => console.log("err post=", error));
-
-                // console.log("this is the obj from DB  => ");
-                // console.log(res);
-            }
             if (playerDetails.status < 400 || playerDetails.status >= 500) {
                 if (checked) {
                     let jsonValue = JSON.stringify(playerDetails.data);
                     await AsyncStorage.setItem('token', jsonValue);
                 }
-                dispatch({ type: 'signin', payload: playerDetails.data });
+                await dispatch({ type: 'signin', payload: playerDetails.data });
             }
+
+
 
         } catch (err) {
             //if fail error massege
             console.log("im in catch of sign in")
-            //console.log(err.response.data)
+            // console.log(err.response.data)
             dispatch({
                 type: 'add_error',
                 payload: 'Somthing went wrong with the SignIn'
             })
         }
-
-
-
     }
 }
 const signOut = dispatch => async () => {
@@ -143,14 +135,6 @@ const signOut = dispatch => async () => {
 const restorePassCode = dispatch => async (email) => {
     //console.log("Email -----> " + email);
     try {
-        const options = {
-            //method: "Post",
-            headers: new Headers({
-                'Content-type': 'application/json; charset=UTF-8',
-                'Accept': 'application/json',
-            }),
-            //body: JSON.stringify(data)
-        }
         let emailVerify = await AuthApi.post('/RequestOTP', { email });
         //console.log("Email -----> " + emailVerify.data + "----- ststus----->" + emailVerify.status);
         if (emailVerify.data == true && emailVerify.status === 200) {
@@ -201,6 +185,42 @@ const setUserFromGoogle = dispatch => async (user) => {
     }
 }
 
+const CheckIfExist = dispatch => async (user) => {
+    try {
+        // console.log(EmailPlayer);
+        const data = {
+            Email: user.email,
+            Passcode: user.id
+        }
+        const response = await AuthApi.post('/CheckIfExist',{Email: user.email,Passcode: user.id});
+        if (response.data === true)
+            dispatch({ type: 'signInFromGoogle', payload: response.data })
+        else
+            dispatch({ type: 'signInFromGoogle', payload: false })
+
+    } catch (err) {
+        console.log("Something Went wrong when you tried to check this player  ! ")
+        console.log(err.message)
+    }
+}
+
+// const signInFromGoogle = dispatch => async (bool) => {
+//     try {
+//         dispatch({ type: 'signInFromGoogle', payload: bool })
+//     } catch (error) {
+//         console.log("error in signInFromGoogle")
+//         console.log(error.message)
+//     }
+// }
+const clearUserFromGoogle = dispatch => async (bool) => {
+    try {
+        dispatch({ type: 'clearUserFromGoogle', payload: null })
+    } catch (error) {
+        console.log("error in clearUserFromGoogle")
+        console.log(error.message)
+    }
+}
+
 
 
 export const { Context, Provider } = CreateDataContext(
@@ -217,14 +237,18 @@ export const { Context, Provider } = CreateDataContext(
         resetRestore_PassCode_values,
         pushNotificationToken,
         setUserFromGoogle,
+        clearUserFromGoogle,
+        CheckIfExist
 
     },
     {
         token: null,
-        userFromGoogle:null,
+        userFromGoogle: null,
         errorMessage: '',
         emailVerified: false,
         passCodeHasChanged: false,
+        signFromGoogle: null,
+        signFromFacebook: false,
 
     }
 );

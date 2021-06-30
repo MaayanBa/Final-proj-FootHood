@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, TextInput, View, Dimensions,TouchableOpacity, ScrollView, SafeAreaView, StatusBar, Platform, Image, Text } from 'react-native';
+import { StyleSheet, TextInput, View, Dimensions, TouchableOpacity,LogBox, ScrollView, SafeAreaView, StatusBar, Platform, Image, Text } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import { Formik } from "formik";
 import * as yup from 'yup';
@@ -16,6 +16,10 @@ import CitiesDropDown from '../MyTeams/Components/CitiesDropDown';
 import { getLocation, geocodeLocationByName } from '../../Services/location-service';
 import Slider from '@react-native-community/slider';
 
+
+LogBox.ignoreLogs([
+  'TypeError: _reactNative.NativeModules.RNDatePickerAndroid.dismiss is not a function',
+]);
 export default function Register(props) {
   const { state: { token, userFromGoogle }, register } = useContext(AuthContext);
   const [imageUri, setimageUri] = useState(null);
@@ -137,29 +141,61 @@ export default function Register(props) {
   };
 
   const SignUp = (values) => {
+    // console.log(values.firstName)
     let player = {
-      FirstName: values.firstName,
-      LastName: values.lastName,
-      Email: values.email,
-      Phone: values.phoneNumber,
-      Passcode: values.password,
-      Gender: gender,
-      PlayerCity: cityLive, //need to complte ----> values.city
-      DateOfBirth: date,
-      PlayerPicture: 'pic',
-      Height: 180,  //need to complte-----> values.height,
-      StrongLeg: strongLeg,
-      Stamina: staminaStars,
-      PreferredRole: prefferedRole,
-      LatitudeHomeCity: region.latitude,
-      LongitudeHomeCity: region.longitude,
-      DistanceOfInvites:sliderValue
+      FirstName: "",
+      LastName: "",
+      Email: "",
+      Phone: "",
+      Passcode: "",
+      Gender: "",
+      PlayerCity:"", 
+      DateOfBirth: "",
+      PlayerPicture: "",
+      Height: "",
+      StrongLeg: "",
+      Stamina: "",
+      PreferredRole:"",
+      LatitudeHomeCity: "",
+      LongitudeHomeCity: "",
+      DistanceOfInvites:"",
     }
-    register(player, () => {
-      props.navigation.navigate('TabNav')
-    });
+    // console.log(userFromGoogle.givenName) 
+    if (userFromGoogle === null) {
+      player.FirstName = values.firstName;
+      player.LastName = values.lastName;
+      player.Email = values.email;
+      player.Passcode = values.password
+    } else {
+      player.FirstName = userFromGoogle.givenName;
+      player.LastName = userFromGoogle.familyName;
+      player.Email = userFromGoogle.email;
+      player.Passcode = userFromGoogle.id
+    }
+
+    player.Phone = values.phoneNumber
+    player.Gender = gender
+    player.PlayerCity = cityLive
+    player.DateOfBirth = date
+    player.PlayerPicture = imageUri
+    player.Height = values.height
+    player.StrongLeg = strongLeg
+    player.Stamina = staminaStars
+    player.PreferredRole = prefferedRole
+    player.LatitudeHomeCity = region.latitude
+    player.LongitudeHomeCity = region.longitude
+    player.DistanceOfInvites = sliderValue
+
+    register(player)
+
+    // register(player, () => {
+    //   props.navigation.navigate('TabNav')
+    // });
     //console.log(values)
   }
+  useEffect(() => {
+      props.navigation.navigate('TabNav')
+  }, [token])
   return (
     <SafeAreaView>
       <ScrollView>
@@ -171,11 +207,11 @@ export default function Register(props) {
           <Formik
             validationSchema={loginValidationSchema}
             initialValues={{
-              firstName: '',
-              lastName: '',
-              email: '',
+              firstName: userFromGoogle!==null? userFromGoogle.givenName: '',
+              lastName: userFromGoogle!==null? userFromGoogle.familyName: '',
+              email: userFromGoogle!==null? userFromGoogle.email: '',
+              password: userFromGoogle!==null? userFromGoogle.id: '',
               phoneNumber: '',
-              password: '',
               playerGender: '',
               city: '',
               dateOfBirth: '',
@@ -202,7 +238,7 @@ export default function Register(props) {
                       editable={userFromGoogle !== null ? false : true}
                     />
                     {userFromGoogle !== null ?
-                      <Image style={{zIndex:1,right:100}}source={require('../../assets/CheckMark.png')} style={appCss.soccerPlayer_img} />
+                      <Image style={{ zIndex: 1, right: 100 }} source={require('../../assets/CheckMark.png')} style={appCss.soccerPlayer_img} />
                       : null}
 
                   </View>
@@ -222,7 +258,7 @@ export default function Register(props) {
                       editable={userFromGoogle !== null ? false : true}
                     />
                     {userFromGoogle !== null ?
-                      <Image style={{zIndex:1,right:100}}source={require('../../assets/CheckMark.png')} style={appCss.soccerPlayer_img} />
+                      <Image style={{ zIndex: 1, right: 100 }} source={require('../../assets/CheckMark.png')} style={appCss.soccerPlayer_img} />
                       : null}
                   </View>
                   {errors.lastName && touched.lastName ?
@@ -242,7 +278,7 @@ export default function Register(props) {
                       editable={userFromGoogle !== null ? false : true}
                     />
                     {userFromGoogle !== null ?
-                      <Image style={{zIndex:1,right:100}}source={require('../../assets/CheckMark.png')} style={appCss.soccerPlayer_img} />
+                      <Image style={{ zIndex: 1, right: 100 }} source={require('../../assets/CheckMark.png')} style={appCss.soccerPlayer_img} />
                       : null}
                   </View>
                   {errors.email && touched.email ?
@@ -256,16 +292,18 @@ export default function Register(props) {
                     <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
                     <TextInput
                       name="password"
-                      placeholder={userFromGoogle !== null ? "**********" : "Password"}
+                      placeholder={userFromGoogle !== null ? '************' : "Password"}
+                      style={[styles.textInputExtra, userFromGoogle !== null ? styles.blockInput : null]}
                       onChangeText={handleChange('password')}
                       value={values.password}
                       secureTextEntry
                       editable={userFromGoogle !== null ? false : true}
                     />
                     {userFromGoogle !== null ?
-                      <Image style={{zIndex:1,right:100}}source={require('../../assets/CheckMark.png')} style={appCss.soccerPlayer_img} />
+                      <Image style={{ zIndex: 1, right: 100 }} source={require('../../assets/CheckMark.png')} style={appCss.soccerPlayer_img} />
                       : null}
                   </View>
+
                   {errors.password && touched.password ?
                     <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text> : null
                   }
@@ -338,19 +376,19 @@ export default function Register(props) {
                 <View style={styles.formGroup}>
                   <Text style={appCss.inputLabel}>Max Games Distance: {sliderValue} KM</Text>
                   <Slider
-                  step={1}
-                  style={{ width: Dimensions.get('window').width - 60, height: 30,padding:40 }}
-                  minimumTrackTintColor="#FFFFFF"
-                  maximumTrackTintColor="#000000"
-                  minimumValue={0}
-                  maximumValue={20}
-                  inverted={true}
-                  onValueChange={value => setSliderValue(value)}
-                />
+                    step={1}
+                    style={{ width: Dimensions.get('window').width - 60, height: 30, padding: 40 }}
+                    minimumTrackTintColor="#FFFFFF"
+                    maximumTrackTintColor="#000000"
+                    minimumValue={0}
+                    maximumValue={20}
+                    inverted={true}
+                    onValueChange={value => setSliderValue(value)}
+                  />
                 </View>
 
                 <View style={[styles.formGroup, { flexDirection: "row-reverse", justifyContent: 'space-between' }]}>
-                  <Text style={[appCss.inputLabel,{alignSelf:'center'}]}>Date Of Birth: {printDate()}</Text>
+                  <Text style={[appCss.inputLabel, { alignSelf: 'center' }]}>Date Of Birth: {printDate()}</Text>
                   <View style={styles.datePicker}>
                     <TouchableOpacity onPress={() => showDatepicker()}>
                       <Image source={require("../../assets/Calander.png")} style={styles.calanderStyle} />
@@ -371,7 +409,7 @@ export default function Register(props) {
                 </View>
 
                 <View style={styles.formGroup, { flexDirection: "row-reverse", justifyContent: 'space-between' }}>
-                  <Text style={[appCss.inputLabel,{alignSelf:'center'}]}>Player Picture:</Text>
+                  <Text style={[appCss.inputLabel, { alignSelf: 'center' }]}>Player Picture:</Text>
                   {displayPicture()}
                 </View>
 
@@ -384,7 +422,7 @@ export default function Register(props) {
                       placeholder="Height"
                       onChangeText={handleChange('height')}
                       value={values.height}
-
+                      keyboardType="phone-pad"
                     />
                   </View>
                 </View>
@@ -526,5 +564,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     padding: 8,
   },
+  //   textInputExtra:{
+  //         width: Dimensions.get('window').width - 40,
+  //  alignItems:'flex-end'
+  //   },
+  //   blockInput: {
+  //     backgroundColor: 'gray',
+
+  //   },
 
 })
