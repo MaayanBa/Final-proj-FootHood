@@ -129,7 +129,7 @@ export default function GameList(props) {
                     <Text style={appCss.txtBtnTouch}>Filter</Text>
                 </TouchableOpacity>
                 {modalVisible && <Modal_FilterMap modalVisible={modalVisible} setModalVisible={() => setModalVisible(!modalVisible)} location={(loc) => getLocation(loc)} distance={(radius) => getDistance(radius)} locationCord={(data) => getLocationCord(data)} />}
-                <TouchableOpacity style={[appCss.btnTouch, { width: '40%' }, { flexDirection: "row", backgroundColor: "#FE5C5C", justifyContent: 'space-around' }]} onPress={() => hotGames==null? alert("You do not have Hot Games right now"):props.navigation.navigate('HotGames')}>
+                <TouchableOpacity style={[appCss.btnTouch, { width: '40%' }, { flexDirection: "row", backgroundColor: "#FE5C5C", justifyContent: 'space-around' }]} onPress={() => hotGames.length==0? alert("You do not have Hot Games right now"):props.navigation.navigate('HotGames')}>
                     <Octicons name="flame" size={24} color="black" />
                     <Text style={appCss.txtBtnTouch}>Hot Games</Text>
                     <Octicons name="flame" size={24} color="black" />

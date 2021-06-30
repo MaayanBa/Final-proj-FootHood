@@ -370,7 +370,6 @@ export default function Register(props) {
                       onChangeText={handleChange('city')}
                       value={values.city}
                     />
-
                   </View> */}
                 </View>
 

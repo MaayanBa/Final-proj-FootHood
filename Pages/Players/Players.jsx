@@ -160,8 +160,8 @@ export default function Players({ navigation }) {
             }
             else {
                 if (filterResults.gender == p.Gender && (filterResults.minAge <= playerAge && filterResults.maxAge >= playerAge) && (filterResults.minRank <= p.OverallRating && filterResults.maxRank >= p.OverallRating)
-                &&(filterResults.playerLoc.lat >= p.LatitudeHomeCity - (filterResults.distanceRadius * 0.01) && filterResults.playerLoc.lat <= p.LatitudeHomeCity + (filterResults.distanceRadius * 0.01))
-                && (filterResults.playerLoc.lng >= p.LongitudeHomeCity - (filterResults.distanceRadius * 0.01) && filterResults.playerLoc.lng<= p.LongitudeHomeCity + (filterResults.distanceRadius * 0.01))) {
+                    && (filterResults.playerLoc.lat >= p.LatitudeHomeCity - (filterResults.distanceRadius * 0.01) && filterResults.playerLoc.lat <= p.LatitudeHomeCity + (filterResults.distanceRadius * 0.01))
+                    && (filterResults.playerLoc.lng >= p.LongitudeHomeCity - (filterResults.distanceRadius * 0.01) && filterResults.playerLoc.lng <= p.LongitudeHomeCity + (filterResults.distanceRadius * 0.01))) {
                     counter++;
                     return <ListItem key={key} style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
                         <TouchableOpacity activeOpacity={0.8} onPress={() => {
@@ -187,51 +187,47 @@ export default function Players({ navigation }) {
     })
 
     return (
-        <SafeAreaView>
+        <View>
             {openModalFilter ? <ModalFilterPlayer setOpenModalFilter={setOpenModalFilter} filterResults={(filter) => getFilterResults(filter)} /> : null}
-            <ScrollView>
-                <View>
-                    <Text style={[appCss.title, appCss.space]}>Players</Text>
-                    <View style={styles.searchRow}>
-                        <TouchableOpacity style={{ padding: 20 }} onPress={() => setOpenModalFilter(true)}>
-                            <Filter name="filter" size={28} color="white" />
-                        </TouchableOpacity>
-                        <Pressable style={styles.Btn} onPress={() => { SearchPlayers(); setFullName(""); }} >
-                            <Text style={appCss.inputLabel}>Search</Text>
+            <Text style={[appCss.title, appCss.space]}>Players</Text>
+            <View style={styles.searchRow}>
+                <TouchableOpacity style={{ padding: 20 }} onPress={() => setOpenModalFilter(true)}>
+                    <Filter name="filter" size={28} color="white" />
+                </TouchableOpacity>
+                <Pressable style={styles.Btn} onPress={() => { SearchPlayers(); setFullName(""); }} >
+                    <Text style={appCss.inputLabel}>Search</Text>
+                </Pressable>
+                <TextInput style={styles.input} onChangeText={(text) => setFullName(text)} placeholder="Search" value={fullName} />
+            </View>
+            <View style={{ padding: 5 }}>
+                <Text style={[appCss.inputLabel, { padding: 10 }]}>Search Results:</Text>
+                {counter == 0 && filterResults != null ? <View><Text style={[{ alignSelf: 'center' }, appCss.noResultsTxt]}>No Results Found!{"\n"} Please Try Again</Text></View> : null}
+                <ScrollView style={styles.playerList_scrollView}>
+                    {filterResults == null ? searchedPlayerList : filteredPlayerList}
+                </ScrollView>
+                {openModal ?
+                    <ModalRankPlayer
+                        setOpenModal={setOpenModal}
+                        powerRate={powerRate} setPowerRate={setPowerRate}
+                        attackRate={attackRate} setAttackRate={setAttackRate}
+                        defenceRate={defenceRate} setDefenceRate={setDefenceRate}
+                        selectRate={selectRate} setSelectedRate={setSelectedRate}
+                        playerChoosen={playerChoosen} setPlayerChoosen={setPlayerChoosen} />
+                    : null}
+                {searchedPlayers.length == 0 ? null :
+                    <View style={{ paddingBottom: 10, paddingTop: 10 }}>
+                        <Pressable style={[styles.Btn]} onPress={() => Reset()} >
+                            <Text style={appCss.inputLabel}>Reset</Text>
                         </Pressable>
-                        <TextInput style={styles.input} onChangeText={(text) => setFullName(text)} placeholder="Search" value={fullName} />
-                    </View>
-                    <View style={{ padding: 5 }}>
-                        <Text style={[appCss.inputLabel, { padding: 10 }]}>Search Results:</Text>
-                        {counter == 0 && filterResults != null ? <View><Text style={[{ alignSelf: 'center' }, appCss.noResultsTxt]}>No Results Found!{"\n"} Please Try Again</Text></View> : null}
-                        <ScrollView style={styles.playerList_scrollView}>
-                            {filterResults == null ? searchedPlayerList : filteredPlayerList}
-                        </ScrollView>
-                        {openModal ?
-                            <ModalRankPlayer
-                                setOpenModal={setOpenModal}
-                                powerRate={powerRate} setPowerRate={setPowerRate}
-                                attackRate={attackRate} setAttackRate={setAttackRate}
-                                defenceRate={defenceRate} setDefenceRate={setDefenceRate}
-                                selectRate={selectRate} setSelectedRate={setSelectedRate}
-                                playerChoosen={playerChoosen} setPlayerChoosen={setPlayerChoosen} />
-                            : null}
-                        {searchedPlayers.length == 0 ? null :
-                            <View style={{ paddingBottom: 10, paddingTop: 10 }}>
-                                <Pressable style={[styles.Btn]} onPress={() => Reset()} >
-                                    <Text style={appCss.inputLabel}>Reset</Text>
-                                </Pressable>
-                            </View>}
-                        {counter == 0 ? null :
-                            <View style={{ paddingBottom: 10, paddingTop: 10 }}>
-                                <Pressable style={[styles.Btn]} onPress={() => Reset()} >
-                                    <Text style={appCss.inputLabel}>Reset</Text>
-                                </Pressable>
-                            </View>}
-                    </View >
-                </View>
-            </ScrollView>
-        </SafeAreaView>
+                    </View>}
+                {counter == 0 ? null :
+                    <View style={{ paddingBottom: 10, paddingTop: 10 }}>
+                        <Pressable style={[styles.Btn]} onPress={() => Reset()} >
+                            <Text style={appCss.inputLabel}>Reset</Text>
+                        </Pressable>
+                    </View>}
+            </View >
+        </View>
     )
 }
 
@@ -257,5 +253,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 10,
         alignSelf: "center",
+    },
+    playerList_scrollView: {
+        height: 460,
     },
 });

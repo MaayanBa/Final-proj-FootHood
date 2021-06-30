@@ -32,11 +32,6 @@ export default function RateGame(props) {
     }, [props.navigation]);
 
 
-// console.log(newArr)
-// setPlayersToRate(playersToRate)
-// setPlayersToRate(oldArray => [...oldArray, arr[3]]);
-
-
 const SetRating = () => {
     if (selectRate == "Attack")
         setAttackRate(sliderValue)
@@ -92,6 +87,9 @@ const playerToRateView = playersToRate.map((p, key) => {
     return <View key={key} style={playerChoosen == p.Email ? { padding: 20 } : { padding: 20, opacity: 0.5 }}>
         <TouchableOpacity activeOpacity={0.8} onPress={() => SetPlayer(p)}>
             <Avatar size="large" rounded source={{ uri: p.PlayerPicture }} />
+            <Text style={[appCss.inputLabel,{alignSelf:'center',paddingTop:20}]}>{p.FirstName}</Text>
+            <Text style={[appCss.inputLabel,{alignSelf:'center'}]}>{p.LastName}</Text>
+
         </TouchableOpacity>
     </View>
 })
