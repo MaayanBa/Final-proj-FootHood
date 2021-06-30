@@ -191,9 +191,10 @@ export default function Register(props) {
     // register(player, () => {
     //   props.navigation.navigate('TabNav')
     // });
-    //console.log(values)
+    // console.log(values)
   }
   useEffect(() => {
+    if(token!==null)    
       props.navigation.navigate('TabNav')
   }, [token])
   return (

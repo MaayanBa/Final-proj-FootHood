@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
 });
 
 export default function Settings(props) {
-    const { signOut } = useContext(AuthContext);
+    const { state:{ token }, signOut } = useContext(AuthContext);
 
     const SignOut = () => {
         Alert.alert(
@@ -65,7 +65,7 @@ export default function Settings(props) {
                 {
                     text: "Cancel",
                 },
-                { text: "OK", onPress: () => signOut() }
+                { text: "OK", onPress: () => signOut(token.Email) }
             ]
         );
     }

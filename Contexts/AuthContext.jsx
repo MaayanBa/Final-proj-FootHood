@@ -17,7 +17,7 @@ const authReducer = (state, action) => {
             return { token: null, errorMessage: '' }
         }
         case 'signin': {
-            return { token: action.payload, errorMessage: '' }
+            return { ...state, token: action.payload, errorMessage: '' }
         }
         case 'clear_error_message': {
             return { ...state, errorMessage: '' }
@@ -27,7 +27,7 @@ const authReducer = (state, action) => {
             return { ...state, errorMessage: action.payload }
         }
         case 'register': {
-            return { token: action.payload, errorMessage: '' }
+            return { ...state, token: action.payload, errorMessage: '' }
         }
         case 'PushNotificationToken': {
             return { ...state, token: action.payload }
@@ -40,7 +40,7 @@ const authReducer = (state, action) => {
             return { ...state, signFromGoogle: action.payload }
         }
         case 'clearUserFromGoogle': {
-            return { ...state, userFromGoogle: action.payload, signFromGoogle:null }
+            return { ...state, userFromGoogle: action.payload, signFromGoogle: null }
         }
 
         default:
@@ -101,8 +101,6 @@ const signIn = dispatch => {
                 //body: JSON.stringify(data)
             }
             let playerDetails = await AuthApi.post('/LoginUser', data, options);
-            console.log("hii")
-
             if (playerDetails.status < 400 || playerDetails.status >= 500) {
                 if (checked) {
                     let jsonValue = JSON.stringify(playerDetails.data);
@@ -124,10 +122,13 @@ const signIn = dispatch => {
         }
     }
 }
-const signOut = dispatch => async () => {
+const signOut = dispatch => async (Email) => {
     //console.log(JSON.stringify( AsyncStorage.getItem('token')))
     await AsyncStorage.removeItem('token');
     await AsyncStorage.removeItem('expoTokenDate')
+    const res = await AuthApi.post('/LogOut', { Email });
+    console.log(res.data)
+
     //console.log("The local storge has cleaned")
     dispatch({ type: 'signOut' })
 }
@@ -192,7 +193,7 @@ const CheckIfExist = dispatch => async (user) => {
             Email: user.email,
             Passcode: user.id
         }
-        const response = await AuthApi.post('/CheckIfExist',{Email: user.email,Passcode: user.id});
+        const response = await AuthApi.post('/CheckIfExist', { Email: user.email, Passcode: user.id });
         if (response.data === true)
             dispatch({ type: 'signInFromGoogle', payload: response.data })
         else
