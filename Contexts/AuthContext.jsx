@@ -42,7 +42,9 @@ const authReducer = (state, action) => {
         case 'clearUserFromGoogle': {
             return { ...state, userFromGoogle: action.payload, signFromGoogle: null }
         }
-
+        case 'EnableNotifications': {
+            return { ...state, enableNotifications: action.payload, }
+        }
         default:
             return state
     }
@@ -126,6 +128,7 @@ const signOut = dispatch => async (Email) => {
     //console.log(JSON.stringify( AsyncStorage.getItem('token')))
     await AsyncStorage.removeItem('token');
     await AsyncStorage.removeItem('expoTokenDate')
+    await AsyncStorage.removeItem('enableNotifications')
     const res = await AuthApi.post('/LogOut', { Email });
     console.log(res.data)
 
@@ -223,7 +226,6 @@ const clearUserFromGoogle = dispatch => async (bool) => {
 }
 
 
-
 export const { Context, Provider } = CreateDataContext(
     //Reducer
     authReducer,
@@ -239,8 +241,8 @@ export const { Context, Provider } = CreateDataContext(
         pushNotificationToken,
         setUserFromGoogle,
         clearUserFromGoogle,
-        CheckIfExist
-
+        CheckIfExist,
+        
     },
     {
         token: null,
@@ -250,7 +252,7 @@ export const { Context, Provider } = CreateDataContext(
         passCodeHasChanged: false,
         signFromGoogle: null,
         signFromFacebook: false,
-
+        enableNotifications: true
     }
 );
 

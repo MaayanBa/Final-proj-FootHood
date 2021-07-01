@@ -16,7 +16,7 @@ import NotificationActions from '../../Services/NotificationActions';
 export default function TeamPage(props) {
 
     const { key } = props.route.params;
-    const { state: { myTeams, teamPlayers }, setTeamPlayers, GetTeamDetails, SendMessageTeamChat } = useContext(TeamContext);
+    const { state: { myTeams, teamPlayers,loadMessages }, setTeamPlayers, GetTeamDetails, SendMessageTeamChat } = useContext(TeamContext);
     const { state: { gamesList }, GetGamesList, GameRegisterd, GetAmountRegisteredPlayersEachGame } = useContext(GameContext);
     const { state: { players } } = useContext(PlayerContext);
     const [messages, setMessages] = useState([]);
@@ -31,6 +31,10 @@ export default function TeamPage(props) {
         GetAmountRegisteredPlayersEachGame(myTeams[key].TeamSerialNum)
         //GameRegisterd(user.Email,myTeams[key].TeamSerialNum);
     }, [])
+
+    useEffect(() => {
+        fetchMessages().catch(e => console.log(e))
+    }, [loadMessages])
 
     const convertToArray = (data) => {
         let res = []
