@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import {
     StyleSheet, TouchableOpacity, View, Text,
-    Modal as ModalJoinRequests, Pressable, Image, ImageBackground
+    Modal as ModalJoinRequests, Pressable, Image, ImageBackground,ScrollView
 } from 'react-native';
 import { AntDesign as MailIcon, AntDesign as PlusIcon, Feather as RequestAction } from '@expo/vector-icons';
 import AppCss from '../../../CSS/AppCss';
@@ -40,7 +40,7 @@ export default function Modal_JoinRequests(props) {
         GetTeamDetails(token.Email);
     }
 
-    const PlayerCard=(p)=>{
+    const PlayerCard = (p) => {
         props.navigation.navigate('CardPlayer', { p })
         setRequestsModalVisible(!requestsModalVisible)
     }
@@ -74,7 +74,9 @@ export default function Modal_JoinRequests(props) {
             <View style={styles.modal_View}>
                 <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../../assets/WallPaperWhite2.png')}>
                     <Text style={[styles.modal_Txt, appCss.inputLabel, { marginTop: 10 }]}>Join Requests:</Text>
-                    {joinRequestsList}
+                    <ScrollView style={styles.playerList_scrollView}>
+                        {joinRequestsList}
+                    </ScrollView>
                     <Pressable style={styles.modal_Closebtn} onPress={() => setRequestsModalVisible(!requestsModalVisible)} >
                         <Text style={appCss.inputLabel}>Close</Text>
                     </Pressable>
@@ -86,7 +88,7 @@ export default function Modal_JoinRequests(props) {
     return (
         <View>
             <TouchableOpacity onPress={() => badge === 0 ? alert("There are no requests") : setRequestsModalVisible(true)} style={styles.PlayerRequest}>
-                <Text style={styles.btnText}>Players requests</Text>
+                <Text style={styles.btnText}>Join Requests</Text>
                 <MailIcon name="mail" size={24} color="black" />
             </TouchableOpacity>
             {modal_JoinRequests}
@@ -121,9 +123,9 @@ const styles = StyleSheet.create({
     PlayerRequest: {
         backgroundColor: '#D9D9D9',
         padding: 20,
-        width:170,
-        height:50,
-        marginRight:10,
+        width: 170,
+        height: 50,
+        marginRight: 10,
         borderRadius: 20,
         opacity: 0.3,
         alignItems: "center",
@@ -145,5 +147,9 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 10,
         alignSelf: "center",
+        marginBottom:20,
+    },
+    playerList_scrollView: {
+        height: 460,
     },
 })

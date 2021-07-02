@@ -1,44 +1,46 @@
 import React, { useState, useContext, useEffect } from 'react'
 import {
     StyleSheet, TouchableOpacity, View, Text,
-    Modal as ModalWaitingList, Pressable, Image, ImageBackground
+    Modal as ModalWaitingList, Pressable, Image, ImageBackground, ScrollView
 } from 'react-native';
 import AppCss from '../../../CSS/AppCss';
 import { Avatar, ListItem, Badge } from 'react-native-elements';
-import { Context as TeamContext } from '../../../Contexts/TeamContext';
 import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 import { Context as GameContext } from '../../../Contexts/GameContext';
-import { Context as AuthContext } from '../../../Contexts/AuthContext';
 
 export default function Modal_WaitingList(props) {
     const [waitingModalVisible, setWaitingModalVisible] = useState(false);
     const { state: { players } } = useContext(PlayerContext);
-    const { state: { gamesList, playersPerGame }, GetPlayers4Game } = useContext(GameContext);
-    const { state: { token } } = useContext(AuthContext)
-    const [badge, setBadge] = useState(0);
+    const { state: { playersPerGame, waitList }, GetPlayers4Game, GetPlayerWaiting } = useContext(GameContext);
+    const [waitBadge, setWaitBadge] = useState(0);
 
 
     useEffect(() => {
         GetPlayers4Game(props.game.GameSerialNum, players);
+        GetPlayerWaiting(props.game.GameSerialNum, players)
+        setWaitBadge(waitList.length)
     }, [])
 
+    useEffect(() => {
+        setWaitBadge(waitList.length)
+    }, [waitList])
 
     const PlayerCard = (p) => {
         props.navigation.navigate('CardPlayer', { p })
         setWaitingModalVisible(!waitingModalVisible)
     }
 
-    // const waitingList = players.map((p, i) => (
-    //     <ListItem key={i} style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
-    //         <TouchableOpacity activeOpacity={0.8} onPress={() => PlayerCard(p)} >
-    //             <Image style={[appCss.playerCardIcon_Btn, { left: 5 }]} source={require('../../../assets/PlayerCardIcon.png')} />
-    //         </TouchableOpacity>
-    //         <ListItem.Content style={{ alignItems: 'flex-end' }} >
-    //             <ListItem.Title>{p.FirstName + " " + p.LastName}</ListItem.Title>
-    //         </ListItem.Content>
-    //         <Avatar rounded source={{ uri: p.PlayerPicture }} />
-    //     </ListItem>
-    // ))
+    const waitingList = waitList.map((p, i) => (
+        <ListItem key={i} style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => PlayerCard(p)} >
+                <Image style={[appCss.playerCardIcon_Btn, { left: 5 }]} source={require('../../../assets/PlayerCardIcon.png')} />
+            </TouchableOpacity>
+            <ListItem.Content style={{ alignItems: 'flex-end' }} >
+                <ListItem.Title>{p.FirstName + " " + p.LastName}</ListItem.Title>
+            </ListItem.Content>
+            <Avatar rounded source={{ uri: p.PlayerPicture }} />
+        </ListItem>
+    ))
 
 
     const modal_WaitingList = <ModalWaitingList animationType="slide"
@@ -49,7 +51,9 @@ export default function Modal_WaitingList(props) {
             <View style={styles.modal_View}>
                 <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../../assets/WallPaperWhite2.png')}>
                     <Text style={[styles.modal_Txt, appCss.inputLabel, { marginTop: 10 }]}>Waiting List:</Text>
-                    {/* {waitingList} */}
+                    <ScrollView style={styles.playerList_scrollView}>
+                        {waitingList}
+                    </ScrollView>
                     <Pressable style={styles.modal_Closebtn} onPress={() => setWaitingModalVisible(!waitingModalVisible)} >
                         <Text style={appCss.inputLabel}>Close</Text>
                     </Pressable>
@@ -60,14 +64,14 @@ export default function Modal_WaitingList(props) {
 
     return (
         <View>
-            <TouchableOpacity onPress={() => badge === 0 ? alert("There is no one currently waiting") : setWaitingModalVisible(true)} style={styles.WaitingList}>
+            <TouchableOpacity onPress={() => waitBadge === 0 ? alert("There is no one currently waiting") : setWaitingModalVisible(true)} style={styles.WaitingList}>
                 <Text style={styles.btnText}>Waiting List</Text>
             </TouchableOpacity>
             {modal_WaitingList}
-            {badge === 0 ? null :
+            {waitBadge === 0 ? null :
                 <Badge
                     containerStyle={{ position: 'absolute', top: 0, left: 0 }}
-                    value={badge}
+                    value={waitBadge}
                     status="error" />}
         </View>
     )
@@ -118,5 +122,9 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 10,
         alignSelf: "center",
+        marginBottom:20
+    },
+    playerList_scrollView: {
+        height: 460,
     },
 })

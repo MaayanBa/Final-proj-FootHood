@@ -89,7 +89,6 @@ const playerToRateView = playersToRate.map((p, key) => {
             <Avatar size="large" rounded source={{ uri: p.PlayerPicture }} />
             <Text style={[appCss.inputLabel,{alignSelf:'center',paddingTop:20}]}>{p.FirstName}</Text>
             <Text style={[appCss.inputLabel,{alignSelf:'center'}]}>{p.LastName}</Text>
-
         </TouchableOpacity>
     </View>
 })
@@ -98,7 +97,7 @@ return (
     <View style={{ alignItems: 'center' }}>
         <Text style={[appCss.title, appCss.space]}>Rate Game Players</Text>
         <Text style={[appCss.inputLabel, { marginTop: 30 }]}>Game Date: {showDate(new Date(gamesList[index].GameDate))}</Text>
-        <Text style={[appCss.inputLabel, { marginTop: 30, marginBottom: 30 }]}>Rank Your Team mates</Text>
+        <Text style={[appCss.inputLabel, { marginTop: 30, marginBottom: 30 }]}>Choose Player To Rank:</Text>
         <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
             {playerToRateView}
         </View>
@@ -106,7 +105,7 @@ return (
             <View>
                 <Text style={[appCss.inputLabel, { alignSelf: 'center', marginTop: 30, marginBottom: 30 }]}>Choosen Player: {playerRateName}</Text>
                 <View style={[appCss.rates_View, { paddingBottom: 10 }]}>
-                <TouchableOpacity onPress={() => setSelectedRate("Attack")} style={selectRate == "Attack"?[appCss.rate, { backgroundColor:'orange',paddingBottom: 10 }]:[appCss.rate, { paddingBottom: 10 }]}>
+                <TouchableOpacity onPress={() => setSelectedRate("Attack")} style={selectRate == "Attack"?[appCss.rate, { backgroundColor:'orange',paddingBottom: 10,marginRight:10 }]:[appCss.rate, { paddingBottom: 10,marginRight:10 }]}>
                         <Text>Attack</Text>
                         {attackRate !== null ? <Text>{attackRate}</Text> : null}
                     </TouchableOpacity>
@@ -114,7 +113,7 @@ return (
                         <Text>Defence</Text>
                         {defenceRate !== null ? <Text>{defenceRate}</Text> : null}
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => setSelectedRate("Power")} style={selectRate == "Power"?[appCss.rate, { backgroundColor:'orange',paddingBottom: 10 }]:[appCss.rate, { paddingBottom: 10 }]}>
+                    <TouchableOpacity onPress={() => setSelectedRate("Power")} style={selectRate == "Power"?[appCss.rate, { backgroundColor:'orange',paddingBottom: 10,marginLeft:10 }]:[appCss.rate, { paddingBottom: 10,marginLeft:10 }]}>
                         <Text>Power</Text>
                         {powerRate !== null ? <Text>{powerRate}</Text> : null}
                     </TouchableOpacity>

@@ -150,13 +150,12 @@ export default function GameList(props) {
                     <Octicons name="flame" size={24} color="black" />
                 </TouchableOpacity>
             </View>
-            {filterDistance == 0 || counter == 0 ? null : <View style={{ paddingBottom: 10 }, { paddingTop: 10 }}><Text style={appCss.inputLabel}>Result For Games {filterDistance} KM Around {filterLocationName}:</Text></View>}
-
+            {filterDistance == 0 || counter == 0 ? null : <View style={{ paddingBottom: 5 }, { paddingTop: 5 }}><Text style={appCss.inputLabel}>Result For Games {filterDistance} KM Around {filterLocationName}:</Text></View>}
+            {filterDistance > 0 && counter == 0 ? <View><Text style={appCss.noResultsTxt}>No Results Found!{"\n"} Please Try Again</Text></View> : null}
             <ScrollView style={styles.games_scrollView}>
                 {gamesPlayerNotRegistered.length == 0 ? <View><Text style={appCss.noResultsTxt}>There Are No Games Available!</Text></View> : gameCards}
             </ScrollView>
 
-            {filterDistance > 0 && counter == 0 ? <View><Text style={appCss.noResultsTxt}>No Results Found!{"\n"} Please Try Again</Text></View> : null}
             <View style={[{ flexDirection: "row" }]}>
                 {filterDistance == 0 ? null : <TouchableOpacity style={[appCss.btnTouch, { marginTop: 0, width: '45%' }]} onPress={() => ResetSearch()}>
                     <Text style={appCss.txtBtnTouch}>Reset Search</Text>

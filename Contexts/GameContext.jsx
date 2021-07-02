@@ -30,6 +30,9 @@ const gameReducer = (state, action) => {
         case 'GetGamesPlayerNotRegistered': {
             return { ...state, gamesPlayerNotRegistered: action.payload }
         }
+        case 'GetPlayerWaiting': {
+            return { ...state, waitList: action.payload }
+        }
         case 'Check': {
             return { ...state, check: action.payload }
         }
@@ -181,6 +184,24 @@ const LeaveGame = dispatch => async (EmailPlayer, GameSerialNum) => {
     }
 }
 
+const GetPlayerWaiting = dispatch => async (GameSerialNum,players) => {
+    try {
+        const response = await GameApi.post('/GetPlayerWaiting', { GameSerialNum });
+        let emailsPlayers = response.data;
+        let waitingListPlayers = [];
+        emailsPlayers.map(p => {
+            let waitingPlayer = players.find(x => x.Email == p.EmailPlayer);
+            if (waitingPlayer !== null)
+            waitingListPlayers.push(waitingPlayer)
+        })
+        dispatch({ type: 'GetPlayerWaiting', payload: waitingListPlayers })
+
+    } catch (err) {
+        console.log("in error GetPlayerWaiting " + err.data)
+        console.log(err)
+        dispatch({ type: 'add_error', payload: 'Somthing went wrong when getting waiting list' })
+    }
+}
 
 const GetGamesPlayerNotRegistered = dispatch => async (EmailPlayer) => {
     try {
@@ -228,6 +249,7 @@ export const { Context, Provider } = CreateDataContext(
         LeaveGame,
         GetGamesPlayerNotRegistered,
         RemoveGameFromList,
+        GetPlayerWaiting,
     },
     {
         gamesList: [],
@@ -237,5 +259,6 @@ export const { Context, Provider } = CreateDataContext(
         playersPerGroups: [],
         amountRegisteredPlayersEachGame: [],
         gamesPlayerNotRegistered: [],
+        waitList:[],
     }
 );
