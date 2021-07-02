@@ -5,18 +5,13 @@ import { Context as GameContext } from '../Contexts/GameContext';
 import * as Notifications from 'expo-notifications';
 import pushNotifications from '../Services/pushNotifications'
 import { useRoute } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-        shouldShowAlert: true,
-        shouldPlaySound: true,
-        shouldSetBadge: true,
-    })
-});
+
 
 export default function NotificationActions({ navigation }) {
-    const { state: { token }, pushNotificationToken } = useContext(AuthContext)
+    const { state: { token }, pushNotificationToken,enableNotifications } = useContext(AuthContext)
     const { state: { myTeams, loadMessages }, GetTeamDetails, LoadMessages } = useContext(TeamContext);
     const { state: { gamesList }, GetGamesList } = useContext(GameContext);
     const [notificationIncome, setNotificationIncome] = useState(false)
@@ -27,8 +22,18 @@ export default function NotificationActions({ navigation }) {
     const [keyTeam, setKeyTeam] = useState(0);
     const [receivedAction, setReceivedAction] = useState(false)
     const [responsedAction, setResponsedAction] = useState(false)
+    const [alerts, setAlerts] = useState(false)
+
 
     const route = useRoute();
+
+    Notifications.setNotificationHandler({
+        handleNotification: async () => ({
+            shouldShowAlert: alerts,
+            shouldPlaySound: alerts,
+            shouldSetBadge: alerts,
+        })
+    });
 
     useEffect(() => {
         pushNotifications().then(expoToken => {
