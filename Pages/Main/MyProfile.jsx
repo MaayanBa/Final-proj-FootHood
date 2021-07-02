@@ -33,11 +33,12 @@ export default function MyProfile() {
                     }
                 </View>
             </View>
-            <View style={{ padding: 20 }}>
-                <Text style={[appCss.inputLabel, { paddingTop: 20 }]}>Full Name: {user.FirstName + " " + user.LastName}</Text>
-                <Text style={[appCss.inputLabel, { paddingTop: 20 }]}>Age: {age}</Text>
-                <Text style={[appCss.inputLabel, { paddingTop: 20 }]}>Height: {user.Height}</Text>
-                <Text style={[appCss.inputLabel, { paddingTop: 20 }]}>Strong Leg: {user.StrongLeg ? 'Left' : 'Right'}</Text>
+            <View style={{ padding: 10 }}>
+                <Text style={[appCss.inputLabel, { paddingTop: 10 }]}>Full Name: {user.FirstName + " " + user.LastName}</Text>
+                <Text style={[appCss.inputLabel, { paddingTop: 10 }]}>Age: {age}</Text>
+                <Text style={[appCss.inputLabel, { paddingTop: 10 }]}>City: {user.PlayerCity}</Text>
+                <Text style={[appCss.inputLabel, { paddingTop: 10 }]}>Height: {user.Height}</Text>
+                <Text style={[appCss.inputLabel, { paddingTop: 10 }]}>Strong Leg: {user.StrongLeg ? 'Left' : 'Right'}</Text>
                 <View style={{ flexDirection: 'row' ,justifyContent:'flex-end'}}>
                     <View style={styles.starStamina}>
                         <StarRating
@@ -52,7 +53,7 @@ export default function MyProfile() {
                     <Text style={[appCss.inputLabel, { paddingTop: 25 }]}>Fitness:</Text>
                 </View>
                 <Text style={appCss.inputLabel}>Preffered Role: {user.PreferredRole}</Text>
-                <Text style={[appCss.inputLabel, { paddingTop: 20 }]}>Ranking:</Text>
+                <Text style={[appCss.inputLabel, { paddingTop: 10 }]}>Ranking:</Text>
                 <View style={appCss.rates_View}>
                     <View style={appCss.rate}>
                         <Text>Attack</Text>

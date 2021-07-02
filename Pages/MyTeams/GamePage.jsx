@@ -7,6 +7,7 @@ import { Entypo as Pencil } from '@expo/vector-icons';
 import AppCss from '../../CSS/AppCss';
 import * as Animatable from 'react-native-animatable';
 import Modal_JoinRequests from './Components/Modal_JoinRequests';
+import Modal_WaitingList from './Components/Modal_WaitingList';
 import Equipment_Window from './Components/Equipment_Window';
 import Players_Window from './Components/Players_Window';
 import GameTeamsCard from './Components/GameTeamsCard';
@@ -17,6 +18,7 @@ import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 import { Context as EquipmentContext } from '../../Contexts/EquipmentContext';
 import Modal_EditGame from './Components/Modal_EditGame';
 import NotificationActions from '../../Services/NotificationActions';
+import Modal_PlayerBringsEquipment from './Components/Modal_PlayerBringsEquipment';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -98,8 +100,12 @@ export default function GamePage(props) {
           </View>
 
           {/* Join Requests */}
-          {myTeams[keyTeam].EmailManager !== user.Email ? null : <Modal_JoinRequests game={gamesList[index]} />}
+          <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+            {myTeams[keyTeam].EmailManager !== user.Email ? null : <Modal_JoinRequests navigation={props.navigation} game={gamesList[index]} />}
 
+            {/* Waiting List */}
+            {myTeams[keyTeam].EmailManager !== user.Email ? null : <Modal_WaitingList navigation={props.navigation} game={gamesList[index]} />}
+          </View>
           {/* Players Window Or Teams Cards*/}
           {(new Date() <= gameDate - oneDay) ?
             <Players_Window game={gamesList[index]} indexGame={index} keyTeam={keyTeam} />
@@ -116,9 +122,9 @@ export default function GamePage(props) {
               <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>{registered ? "Leave" : "Join"}</Text>
               <Image source={require('../../assets/ball.png')} resizeMode="contain" style={styles.imgBall} />
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('RateGame', { index, keyTeam })} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
+            {/* <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('RateGame', { index, keyTeam })} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
               <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>Test-GameRank</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </ScrollView>

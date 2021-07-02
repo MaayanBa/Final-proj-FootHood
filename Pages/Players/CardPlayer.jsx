@@ -66,7 +66,7 @@ export default function CardPlayer({ navigation, route }) {
                     </View>
                     <Text style={[appCss.inputLabel, styles.inputLabel_extra]}>City Live: {player.PlayerCity}</Text>
                     <View style={styles.ageAndGender_View}>
-                        <Text style={[appCss.inputLabel, styles.inputLabel_extra, styles.gender_txt]}>Gender: {player.Gender == 0 ? "Male" : "Famele"}</Text>
+                        <Text style={[appCss.inputLabel, styles.inputLabel_extra, styles.gender_txt]}>Gender: {player.Gender == 0 ? "Male" : "Female"}</Text>
                         <Text style={[appCss.inputLabel, styles.inputLabel_extra, styles.age_txt]}>Age: {age}</Text>
                     </View>
 

@@ -93,17 +93,17 @@ export default function TeamDetailsPage(props) {
   return (
     <SafeAreaView style={[appCss.container, styles.container_extra]} >
       <NotificationActions navigation={props.navigation} />
-{console.log(myTeams[newKey])}
+      {console.log(myTeams[newKey])}
       {/* ImageBackGround With Buttons */}
-        <ImageBackground style={styles.imgBG} source={{ uri: myTeams[newKey].TeamPicture }}>
-          <Text style={appCss.title}>{myTeams[newKey].TeamName}</Text>
-          <View style={styles.options_View}>
-            <Modal_RulesAndLaws team={myTeams[newKey]} />
-            {myTeams[newKey].EmailManager !== user.Email ? null :
-              <Modal_AddPlayers props={props} teamKey={newKey} setForceState={() => ForceState()} />
-            }
-          </View>
-        </ImageBackground>
+      <ImageBackground style={styles.imgBG} source={{ uri: myTeams[newKey].TeamPicture }}>
+        <Text style={appCss.title}>{myTeams[newKey].TeamName}</Text>
+        <View style={styles.options_View}>
+          <Modal_RulesAndLaws team={myTeams[newKey]} />
+          {myTeams[newKey].EmailManager !== user.Email ? null :
+            <Modal_AddPlayers props={props} teamKey={newKey} setForceState={() => ForceState()} />
+          }
+        </View>
+      </ImageBackground>
 
       {/* Player List */}
       <View style={styles.playerList_View}>
