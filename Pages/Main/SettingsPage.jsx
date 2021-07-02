@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert, Image as ImageBall, Dimensions, Switch } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AppCss from '../../CSS/AppCss';
@@ -8,11 +8,15 @@ import { Context as AuthContext } from '../../Contexts/AuthContext';
 
 
 
-export default function Settings(props) {
-    const { state: { token }, signOut, } = useContext(AuthContext);
-    const [isEnabledChatAlert, setIsEnabledChatAlert] = useState(true)
-    const toggleSwitch = () => setIsEnabledChatAlert(previousState => !previousState);
 
+export default function Settings(props) {
+    const { state: { token,enableNotifications }, signOut, setSettingNotifications } = useContext(AuthContext);
+    const [isEnabledChatAlert, setIsEnabledChatAlert] = useState(enableNotifications)
+    const toggleSwitch = () => { setIsEnabledChatAlert(previousState => !previousState) }
+
+    useEffect(() => {
+        setSettingNotifications(isEnabledChatAlert)
+    }, [isEnabledChatAlert])
 
     const SignOut = () => {
         Alert.alert(
@@ -37,28 +41,28 @@ export default function Settings(props) {
 
             {/* <MainContent /> */}
             <View style={styles.mainContent}>
-                <TouchableOpacity style={[appCss.btnTouch, styles.btnTouch_Extra]} onPress={() => console.log("change personal btn")}>
+                <TouchableOpacity style={[appCss.btnTouch, styles.btnTouch_Extra]} onPress={() => props.navigation.navigate('EditPersonalDetails')}>
                     <Text style={appCss.txtBtnTouch}>  Change personal details  </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[appCss.btnTouch, styles.btnTouch_Extra]} onPress={() => console.log("change personal btn")}>
                     <Text style={appCss.txtBtnTouch}>  Change Password </Text>
                 </TouchableOpacity>
 
-                <View style={{flexDirection:'row-reverse',justifyContent:'space-between' , padding:30,top:10}}>
-                    <Text style={[appCss.txtBtnTouch,styles.txtBtnTouch_Extra]}>  Notifications </Text>
+                <View style={{ flexDirection: 'row-reverse', justifyContent: 'space-between', padding: 30, top: 10 }}>
+                    <Text style={[appCss.txtBtnTouch, styles.txtBtnTouch_Extra]}>  Notifications </Text>
                     <Switch
                         trackColor={{ false: "#767577", true: "#00ff77" }}
                         thumbColor={isEnabledChatAlert ? "white" : "#f4f3f4"}
                         ios_backgroundColor="#3e3e3e"
                         onValueChange={toggleSwitch}
                         value={isEnabledChatAlert}
-                        style={{ transform:[{ scaleX: 2 }, { scaleY: 2 }],right:15, }}
+                        style={{ transform: [{ scaleX: 2 }, { scaleY: 2 }], right: 15, }}
                     />
                 </View>
 
                 {/* <IMGBall /> */}
                 <ImageBall source={require('../../assets/ball.png')} style={styles.ball_img} />
-                <TouchableOpacity style={[appCss.btnTouch, ]} onPress={() => SignOut()}>
+                <TouchableOpacity style={[appCss.btnTouch,]} onPress={() => SignOut()}>
                     <Text style={appCss.txtBtnTouch}>  Logout  </Text>
                 </TouchableOpacity>
 
@@ -76,7 +80,7 @@ export default function Settings(props) {
             </View>
         </View>
     )
-}``
+} ``
 
 
 const appCss = AppCss;
@@ -98,9 +102,9 @@ const styles = StyleSheet.create({
     btnTouch_Extra: {
         width: Dimensions.get('window').width - 80,
     },
-    txtBtnTouch_Extra:{
-        color:'white',
-        fontSize:25
+    txtBtnTouch_Extra: {
+        color: 'white',
+        fontSize: 25
     },
     switchBtn: {
         justifyContent: 'space-evenly'

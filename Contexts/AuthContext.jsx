@@ -42,7 +42,7 @@ const authReducer = (state, action) => {
         case 'clearUserFromGoogle': {
             return { ...state, userFromGoogle: action.payload, signFromGoogle: null }
         }
-        case 'EnableNotifications': {
+        case 'setSettingNotifications': {
             return { ...state, enableNotifications: action.payload, }
         }
         default:
@@ -111,7 +111,9 @@ const signIn = dispatch => {
                 await dispatch({ type: 'signin', payload: playerDetails.data });
             }
 
-
+            let jsonValue = JSON.stringify(true);
+            const settings = await AsyncStorage.setItem('Settings',jsonValue);
+            dispatch({ type: 'setSettingNotifications', payload: true })
 
         } catch (err) {
             //if fail error massege
@@ -128,7 +130,7 @@ const signOut = dispatch => async (Email) => {
     //console.log(JSON.stringify( AsyncStorage.getItem('token')))
     await AsyncStorage.removeItem('token');
     await AsyncStorage.removeItem('expoTokenDate')
-    await AsyncStorage.removeItem('enableNotifications')
+    await AsyncStorage.removeItem('Settings')
     const res = await AuthApi.post('/LogOut', { Email });
     console.log(res.data)
 
@@ -224,6 +226,28 @@ const clearUserFromGoogle = dispatch => async (bool) => {
         console.log(error.message)
     }
 }
+const getSettingNotifications = dispatch => async ()=>{
+    try {
+        const settings = await AsyncStorage.getItem('Settings');
+        // console.log(settings)
+        dispatch({ type: 'setSettingNotifications', payload: JSON.parse(settings) })
+    } catch (error) {
+        console.log("error in getSettingNotifications")
+        console.log(error.message)
+    }
+}
+
+const setSettingNotifications = dispatch => async (bool)=>{
+    try {
+        let jsonValue = JSON.stringify(bool);
+        //console.log("json value === " + jsonValue)
+        await AsyncStorage.setItem('Settings', jsonValue)
+        dispatch({ type: 'setSettingNotifications', payload: bool })
+    } catch (error) {
+        console.log("error in setSettingNotifications")
+        console.log(error.message)
+    }
+}
 
 
 export const { Context, Provider } = CreateDataContext(
@@ -242,7 +266,8 @@ export const { Context, Provider } = CreateDataContext(
         setUserFromGoogle,
         clearUserFromGoogle,
         CheckIfExist,
-        
+        getSettingNotifications,
+        setSettingNotifications
     },
     {
         token: null,

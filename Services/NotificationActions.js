@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function NotificationActions({ navigation }) {
-    const { state: { token }, pushNotificationToken,enableNotifications } = useContext(AuthContext)
+    const { state: { token,enableNotifications }, pushNotificationToken, } = useContext(AuthContext)
     const { state: { myTeams, loadMessages }, GetTeamDetails, LoadMessages } = useContext(TeamContext);
     const { state: { gamesList }, GetGamesList } = useContext(GameContext);
     const [notificationIncome, setNotificationIncome] = useState(false)
@@ -22,8 +22,11 @@ export default function NotificationActions({ navigation }) {
     const [keyTeam, setKeyTeam] = useState(0);
     const [receivedAction, setReceivedAction] = useState(false)
     const [responsedAction, setResponsedAction] = useState(false)
-    const [alerts, setAlerts] = useState(false)
+    const [alerts, setAlerts] = useState(enableNotifications)
 
+useEffect(() => {
+    setAlerts(enableNotifications)
+}, [enableNotifications])
 
     const route = useRoute();
 
