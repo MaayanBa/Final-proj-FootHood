@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from 'react';
 import { StyleSheet, TextInput, View, Dimensions, TouchableOpacity, LogBox, ScrollView, SafeAreaView, StatusBar, Platform, Image, Text } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import { Formik } from "formik";
-import * as yup from 'yup';
 import { Foundation, Feather } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -15,22 +14,19 @@ import { Context as CitiesContext } from '../../Contexts/CitiesContext';
 import CitiesDropDown from '../MyTeams/Components/CitiesDropDown';
 import { getLocation, geocodeLocationByName } from '../../Services/location-service';
 import Slider from '@react-native-community/slider';
-import { interpolate } from 'react-native-reanimated';
-
 
 LogBox.ignoreLogs([
     'TypeError: _reactNative.NativeModules.RNDatePickerAndroid.dismiss is not a function',
     'Warning: Failed prop type: Invalid prop `value` of type `number` supplied to `ForwardRef(TextInput)`, expected `string`.'
 ]);
 
-
 export default function EditPersonalDetails(props) {
 
-    const { state: { token, userFromGoogle }, register } = useContext(AuthContext);
+    const { state: { token },ChangePersonalDetails } = useContext(AuthContext);
     const [imageUri, setimageUri] = useState(token.PlayerPicture);
-    const [gender, setGender] = useState(token.Gender ? 'Female' : 'Male');
+    const [gender, setGender] = useState(token.Gender ?'Male': 'Female'  );
+    const [genderBool, setGenderBool] = useState(token.Gender)
     const [date, setDate] = useState(new Date(token.DateOfBirth));
-
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const [staminaStars, setStaminaStars] = useState(token.Stamina);
@@ -44,6 +40,7 @@ export default function EditPersonalDetails(props) {
         longitude: token.LongitudeHomeCity,
     });
     const phoneNumber = +JSON.stringify(token.Phone)
+
     useEffect(() => {
         GetListCities();
         // console.log(cityLive)
@@ -94,11 +91,13 @@ export default function EditPersonalDetails(props) {
     const checkGender = (gender) => {
         if (gender == 'male') {
             setGender('Male');
+            setGenderBool(true);
         }
-        else
+        else{
             setGender('Female');
+            setGenderBool(false);
+        }
     }
-
 
     const btnOpenGalery = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -129,7 +128,6 @@ export default function EditPersonalDetails(props) {
         }
     }
 
-
     const printDate = () => {
         let today = new Date()
         if (`${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}` === `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
@@ -143,8 +141,8 @@ export default function EditPersonalDetails(props) {
     };
 
     const Edit = (values) => {
-        // console.log(values.firstName)
         let player = {
+            Email: "",
             FirstName: "",
             LastName: "",
             Phone: "",
@@ -160,67 +158,36 @@ export default function EditPersonalDetails(props) {
             LongitudeHomeCity: "",
             DistanceOfInvites: "",
         }
-        // console.log(userFromGoogle.givenName) 
-        // if (token.FirstName !== values.firstName)
-            player.FirstName = values.firstName;
-
-        // if (token.LastName !== values.firstName)
-            player.LastName = values.lastName;
-
-        // if (token.Phone !== values.phoneNumber)
-            player.Phone = values.phoneNumber;
-
-        // if (token.Gender !== values.playerGender)
-            player.Gender = values.playerGender;
-
-        // if (token.PlayerCity !== values.city)
-            player.PlayerCity = cityLive
-
-        // if (token.DateOfBirth !== values.dateOfBirth)
-            player.DateOfBirth = date
-
-        // if (token.PlayerPicture !== values.image)
-            player.PlayerPicture = imageUri
-
-        // if (token.Height !== values.height)
-            player.Height = values.height
-
-        // if (token.StrongLeg !== values.prefferedLeg)
-            player.StrongLeg = strongLeg
-
-        // if (token.Stamina !== values.prefferedLeg)
-            player.Stamina = values.stamina
-
-
-        // if (token.PreferredRole !== values.role)
-            player.PreferredRole = prefferedRole
-
+        player.Email = token.Email;
+        player.FirstName = values.firstName;
+        player.LastName = values.lastName;
+        player.Phone = values.phoneNumber;
+        player.Gender = genderBool;
+        if (cityLive == "" ||cityLive == null )
+            player.PlayerCity = token.PlayerCity
+        player.DateOfBirth = date
+        player.PlayerPicture = imageUri
+        player.Height = values.height
+        player.StrongLeg = strongLeg
+        player.Stamina = values.stamina
+        player.PreferredRole = prefferedRole
         player.LatitudeHomeCity = region.latitude
         player.LongitudeHomeCity = region.longitude
+
         player.DistanceOfInvites = sliderValue
 
 
+        let phoneNumber = JSON.stringify(player.Phone).length
 
-        // player.Phone = values.phoneNumber
-        // player.Gender = gender
-        // player.PlayerCity = cityLive
-        // player.DateOfBirth = date
-        // player.PlayerPicture = imageUri
-        // player.Height = values.height
-        // player.StrongLeg = strongLeg
-        // player.Stamina = staminaStars
-        // player.PreferredRole = prefferedRole
-        // player.LatitudeHomeCity = region.latitude
-        // player.LongitudeHomeCity = region.longitude
-        // player.DistanceOfInvites = sliderValue
-
-        // register(player)
-        console.log("Afteer Edit ",player)
+        if ((phoneNumber >= 9 && phoneNumber <= 10) || player.Phone.length ===10){
+            ChangePersonalDetails(player)
+            props.navigation.goBack()
+        }
+        else alert("Something wrong with your pohne number")
     }
     return (
         <SafeAreaView>
             <ScrollView>
-                {/* {console.log(token)} */}
                 <StatusBar backgroundColor='transparent' barStyle="light-content" />
                 <View style={appCss.container, { padding: 40 }}>
                     <View style={styles.title_View}>
@@ -228,7 +195,6 @@ export default function EditPersonalDetails(props) {
                     </View>
 
                     <Formik
-                        // validationSchema={loginValidationSchema}
                         initialValues={{
                             firstName: token.FirstName,
                             lastName: token.LastName,
@@ -241,11 +207,9 @@ export default function EditPersonalDetails(props) {
                             prefferedLeg: token.StrongLeg,
                             stamina: token.Stamina,
                             role: token.PreferredRole
-                        }}
-                        onSubmit={(values) => Edit(values)
-                        }
+                        }} onSubmit={(values) => Edit(values)}
                     >
-                        {({ handleChange, handleSubmit, values, errors, isValid, touched }) => (
+                        {({ handleChange, handleSubmit, values }) => (
                             <>
                                 <View style={styles.formGroup}>
                                     <Text style={appCss.inputLabel}>First Name:</Text>
@@ -258,9 +222,6 @@ export default function EditPersonalDetails(props) {
                                             value={values.firstName}
                                         />
                                     </View>
-                                    {errors.firstName && touched.firstName ?
-                                        <Text style={{ fontSize: 10, color: 'red' }}>{errors.firstName}</Text> : null
-                                    }
                                 </View>
                                 <View style={styles.formGroup}>
                                     <Text style={appCss.inputLabel}>Last Name:</Text>
@@ -273,9 +234,6 @@ export default function EditPersonalDetails(props) {
                                             value={values.lastName}
                                         />
                                     </View>
-                                    {errors.lastName && touched.lastName ?
-                                        <Text style={{ fontSize: 10, color: 'red' }}>{errors.lastName}</Text> : null
-                                    }
                                 </View>
 
                                 <View style={styles.formGroup}>
@@ -290,9 +248,6 @@ export default function EditPersonalDetails(props) {
                                             keyboardType="phone-pad"
                                         />
                                     </View>
-                                    {errors.phoneNumber && touched.phoneNumber ?
-                                        <Text style={{ fontSize: 10, color: 'red' }}>{errors.phoneNumber}</Text> : null
-                                    }
                                 </View>
 
                                 <View style={styles.formGroup}>
@@ -437,21 +392,6 @@ export default function EditPersonalDetails(props) {
     )
 }
 
-
-
-// const loginValidationSchema = yup.object().shape({
-//     firstName: yup
-//         .string()
-//         .required('First Name is Required'),
-//     lastName: yup
-//         .string()
-//         .required('Last Name is Required'),
-//     phoneNumber: yup
-//         .string()
-//         .min(10, ({ min }) => `Phone number must be at least ${min} characters`)
-//         .required('Phone number is required'),
-// })
-
 const appCss = AppCss;
 const styles = StyleSheet.create({
     title_View: {
@@ -464,14 +404,6 @@ const styles = StyleSheet.create({
         justifyContent: "space-evenly",
         padding: 10
     },
-    signupButton: {
-        alignItems: 'center',
-        width: '10',
-        padding: 50
-    },
-    textboxes: {
-        alignItems: 'center',
-    },
     role: {
         padding: 20,
         alignItems: 'center'
@@ -479,10 +411,6 @@ const styles = StyleSheet.create({
     starStamina: {
         padding: 20,
         justifyContent: 'flex-start',
-    },
-    radioButtonStyle: {
-        flexDirection: "row",
-        justifyContent: "space-evenly",
     },
     calanderStyle: {
         margin: 5,
@@ -494,13 +422,4 @@ const styles = StyleSheet.create({
         justifyContent: "space-evenly",
         padding: 8,
     },
-    //   textInputExtra:{
-    //         width: Dimensions.get('window').width - 40,
-    //  alignItems:'flex-end'
-    //   },
-    //   blockInput: {
-    //     backgroundColor: 'gray',
-
-    //   },
-
 })

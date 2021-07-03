@@ -58,7 +58,7 @@ export default function NewLoginUser({ navigation }) {
     }
 
     const handlePasswordChange = (val) => {
-        if (val.trim().length >= 1) {
+        if (val.trim().length >= 8) {
             setPassCode(val);
             setIsValidPassCode(true);
         } else {

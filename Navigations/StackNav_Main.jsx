@@ -5,6 +5,7 @@ import SendFeedback from '../Pages/Main/SendFeedback';
 import { createStackNavigator } from '@react-navigation/stack';
 import MyProfile from '../Pages/Main/MyProfile';
 import EditPersonalDetails from '../Pages/Main/EditPersonalDetails';
+import ChangePassWord from '../Pages/Main/ChangePassWord';
 
 const Stack = createStackNavigator();
 
@@ -16,6 +17,7 @@ export default function StackNav_Main() {
                 <Stack.Screen name="MyProfile" component={MyProfile} />
                 <Stack.Screen name="SendFeedback" component={SendFeedback} />
                 <Stack.Screen name="EditPersonalDetails" component={EditPersonalDetails} />
+                <Stack.Screen name="ChangePassWord" component={ChangePassWord} />
             </Stack.Navigator>
     )
 }

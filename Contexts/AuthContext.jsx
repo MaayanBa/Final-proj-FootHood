@@ -1,5 +1,6 @@
 import CreateDataContext from './createDataContext';
 import AuthApi from '../api/Auth';
+import SettingsApi from '../api/Settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const authReducer = (state, action) => {
@@ -44,6 +45,9 @@ const authReducer = (state, action) => {
         }
         case 'setSettingNotifications': {
             return { ...state, enableNotifications: action.payload, }
+        }
+        case 'ChangePersonalDetails':{
+            return { ...state, token: action.payload }
         }
         default:
             return state
@@ -250,6 +254,23 @@ const setSettingNotifications = dispatch => async (bool)=>{
 }
 
 
+const ChangePersonalDetails = dispatch => async (player)=>{
+    try {
+        const response = await SettingsApi.post('/ChangePersonalDetails', player);
+        let jsonValue = JSON.stringify(response.data);
+        await AsyncStorage.setItem('token', jsonValue)
+        console.log("response . data === " + response.data);
+        console.log( response.data);
+        dispatch({ type: 'ChangePersonalDetails', payload: response.data })
+        alert("Details updated succesfuly ! \nEnjoy")
+        
+    } catch (error) {
+        alert("Something went wrong with changing personal details")
+        console.log("error in ChangePersonalDetails")
+        console.log(error.message)
+    }
+}
+
 export const { Context, Provider } = CreateDataContext(
     //Reducer
     authReducer,
@@ -267,7 +288,8 @@ export const { Context, Provider } = CreateDataContext(
         clearUserFromGoogle,
         CheckIfExist,
         getSettingNotifications,
-        setSettingNotifications
+        setSettingNotifications,
+        ChangePersonalDetails
     },
     {
         token: null,

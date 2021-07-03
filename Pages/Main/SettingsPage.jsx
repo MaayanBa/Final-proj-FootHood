@@ -38,13 +38,12 @@ export default function Settings(props) {
                 <Text style={[appCss.title, appCss.space]}>Settings</Text>
             </View>
 
-
             {/* <MainContent /> */}
             <View style={styles.mainContent}>
                 <TouchableOpacity style={[appCss.btnTouch, styles.btnTouch_Extra]} onPress={() => props.navigation.navigate('EditPersonalDetails')}>
                     <Text style={appCss.txtBtnTouch}>  Change personal details  </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[appCss.btnTouch, styles.btnTouch_Extra]} onPress={() => console.log("change personal btn")}>
+                <TouchableOpacity style={[appCss.btnTouch, styles.btnTouch_Extra]} onPress={() => props.navigation.navigate('ChangePassWord')}>
                     <Text style={appCss.txtBtnTouch}>  Change Password </Text>
                 </TouchableOpacity>
 
