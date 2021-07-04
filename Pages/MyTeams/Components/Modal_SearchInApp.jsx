@@ -58,7 +58,7 @@ export default function Modal_SearchInApp(props) {
 
     const searchedPlayerList = searchedPlayers.map((p, key) => {
         return <ListItem key={key} style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
-            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CardPlayer', { p })} >
+            <TouchableOpacity activeOpacity={0.8} onPress={() => {props.props.props.navigation.navigate('CardPlayer', { p }); Close()}} >
                 <Image style={appCss.playerCardIcon_Btn} source={require('../../../assets/PlayerCardIcon.png')} />
             </TouchableOpacity>
             <TouchableOpacity onPress={async () => {
@@ -82,6 +82,8 @@ export default function Modal_SearchInApp(props) {
         >
             <SafeAreaView>
                 <ScrollView>
+{console.log(props.props.props.navigation)}
+
                     <View style={styles.centeredView}>
                         <View style={[appCss.modal_View, { height:'100%', paddingBottom: 1 }, searchedPlayers.length == 0 ? { height: '92%' } : null]}>
                             <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../../assets/WallPaperWhite2.png')}>

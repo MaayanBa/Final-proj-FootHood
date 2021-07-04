@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
-    StyleSheet, View, Text, Image, Image as ImageBall, TouchableOpacity, ScrollView, SafeAreaView, StatusBar
+    StyleSheet, View, Text, Image, Image as ImageBall, TouchableOpacity, ScrollView, SafeAreaView, StatusBar, Dimensions
 } from 'react-native';
 import { Badge } from 'react-native-elements'
 //import ScrollView from 'rn-faded-scrollview';
@@ -28,6 +28,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         top: 100
     },
+    manager_img: {
+        height: 22,
+        width: 22,
+        bottom: 20,
+        left: 8
+    },
     footer: {
         justifyContent: 'flex-end',
     },
@@ -53,10 +59,12 @@ const styles = StyleSheet.create({
     },
     contextSide: {
         flex: 1,
-        padding: 10
+        padding: 10,
     },
     headerCard_View: {
-        alignSelf: 'center'
+        alignSelf: 'center',
+        flexDirection: 'row',
+        // width: Dimensions.get('screen').width -20
     },
     descripitionCard: {
         flexDirection: 'row-reverse',
@@ -104,6 +112,9 @@ export default function MyTeams(props) {
                 const badge = await calcBadge(team);
                 return <TouchableOpacity style={styles.teamCard} key={key}
                     onPress={() => props.navigation.navigate('TeamPage', { key })}>
+                    {token.Email === team.EmailManager ?
+                        <Image source={require('../../assets/Manager.png')} style={styles.manager_img} /> : null}
+
                     <View style={styles.contextSide}>
                         <View style={styles.headerCard_View}>
                             <Text style={[appCss.inputLabel, { fontSize: 25, color: 'black' }]}>{team.TeamName}</Text>
@@ -113,7 +124,7 @@ export default function MyTeams(props) {
                                 <Text> {manager.FirstName + " " + manager.LastName} </Text>
                                 <Text style={{ fontWeight: 'bold' }}> Manager: </Text>
                             </View>
-                            <View style={{ flexDirection: 'row' }}>
+                            <View style={{ flexDirection: 'row', left: token.Email === team.EmailManager ? 20 : 0 }}>
                                 <Text> {team.PlayersList.length} </Text>
                                 <Text style={{ fontWeight: 'bold' }}> Players: </Text>
                             </View>
@@ -128,6 +139,7 @@ export default function MyTeams(props) {
                             value={badge} //Need to count length of messages from DB
                             status="error" />
                     }
+
                 </TouchableOpacity>
             }))
             setTeamCards(teamCards);
@@ -145,10 +157,7 @@ export default function MyTeams(props) {
     }, [props.navigation, myTeams]);
     useEffect(() => {
         calcTeamCards();
-
     }, [myTeams])
-
-
 
     return (
         <View style={appCss.container}>
@@ -157,7 +166,7 @@ export default function MyTeams(props) {
             <View style={styles.mainContent}>
                 <SafeAreaView>
                     <ScrollView>
-                        {myTeams.length==0?null:teamCards}
+                        {myTeams.length == 0 ? null : teamCards}
                     </ScrollView>
                 </SafeAreaView>
             </View>
