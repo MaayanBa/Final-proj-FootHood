@@ -71,14 +71,20 @@ const CreatNewGame = dispatch => async (game, equipments) => {
     }
 }
 
-const RegisterGame = dispatch => async (addPlayer2Game) => {
+const RegisterGame = dispatch => async (addPlayer2Game, needsToWait) => {
     try {
         console.log(addPlayer2Game)
         const response = await GameApi.post('/RegisterGame', addPlayer2Game);
-        response.data == "The Player Has already Registered The Game" ?
-            alert("The Player Has already Registered The Game")
-            :
-            alert("You have joined the game successfuly");
+
+        if (needsToWait) {
+            alert("The Game Is Full! You Have Been Added To The Waiting List")
+        }
+        else {
+            response.data == "The Player Has already Registered The Game" ?
+                alert("The Player Has already Registered The Game")
+                :
+                alert("You have joined the game successfuly");
+        }
     } catch (err) {
         console.log(err)
         dispatch({ type: 'add_error', payload: 'Somthing went wrong when joining a game' })
@@ -175,8 +181,7 @@ const LeaveGame = dispatch => async (EmailPlayer, GameSerialNum) => {
         console.log(EmailPlayer)
         console.log(GameSerialNum)
         const res = await GameApi.post('/LeaveGame', { EmailPlayer, GameSerialNum });
-
-        if (res.data != "You Have Left the Game Succesfully")
+        if (res.data == "You Have Left the Game Succesfully")
             alert("You Have Left the Game Succesfully");
     } catch (error) {
         console.log("err LeaveGame")
@@ -184,7 +189,7 @@ const LeaveGame = dispatch => async (EmailPlayer, GameSerialNum) => {
     }
 }
 
-const GetPlayerWaiting = dispatch => async (GameSerialNum,players) => {
+const GetPlayerWaiting = dispatch => async (GameSerialNum, players) => {
     try {
         const response = await GameApi.post('/GetPlayerWaiting', { GameSerialNum });
         let emailsPlayers = response.data;
@@ -192,7 +197,7 @@ const GetPlayerWaiting = dispatch => async (GameSerialNum,players) => {
         emailsPlayers.map(p => {
             let waitingPlayer = players.find(x => x.Email == p.EmailPlayer);
             if (waitingPlayer !== null)
-            waitingListPlayers.push(waitingPlayer)
+                waitingListPlayers.push(waitingPlayer)
         })
         dispatch({ type: 'GetPlayerWaiting', payload: waitingListPlayers })
 
@@ -259,6 +264,6 @@ export const { Context, Provider } = CreateDataContext(
         playersPerGroups: [],
         amountRegisteredPlayersEachGame: [],
         gamesPlayerNotRegistered: [],
-        waitList:[],
+        waitList: [],
     }
 );
