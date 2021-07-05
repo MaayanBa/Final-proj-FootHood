@@ -39,6 +39,9 @@ const gameReducer = (state, action) => {
         case 'RemoveGameFromList': {
             return { ...state, gamesList: action.payload }
         }
+        case 'TodaysGame': {
+            return { ...state, todaysGame: action.payload }
+        }
         default:
             return state
     }
@@ -237,6 +240,16 @@ const RemoveGameFromList = dispatch => async (game2Remove) => {
     }
 }
 
+const GetTodaysGame = dispatch => async (EmailPlayer) => {
+    try {
+        const response = await GameApi.post('/TodaysGame', { EmailPlayer });
+        dispatch({ type: 'TodaysGame', payload: response.data })
+    } catch (err) {
+        console.log("Something Went wrong in todays game  ! ")
+        console.log(err.message)
+    }
+}
+
 export const { Context, Provider } = CreateDataContext(
     //Reducer
     gameReducer,
@@ -255,6 +268,7 @@ export const { Context, Provider } = CreateDataContext(
         GetGamesPlayerNotRegistered,
         RemoveGameFromList,
         GetPlayerWaiting,
+        GetTodaysGame
     },
     {
         gamesList: [],
@@ -265,5 +279,6 @@ export const { Context, Provider } = CreateDataContext(
         amountRegisteredPlayersEachGame: [],
         gamesPlayerNotRegistered: [],
         waitList: [],
+        todaysGame: null
     }
 );

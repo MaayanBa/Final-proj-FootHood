@@ -1,16 +1,17 @@
 import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image,Dimensions } from 'react-native';
 
 
 const styles = StyleSheet.create({
     headerRow: {
         justifyContent: 'space-between',
-        width: '100%',
+        width: Dimensions.get('screen').width-80,
         paddingTop: 15,
         flexDirection: 'row',
         // paddingHorizontal: '10',
         // paddingVertical: 10,
         alignItems: 'center',
+        right:10
     },
     btnProfile: {
         flexDirection: 'row',
