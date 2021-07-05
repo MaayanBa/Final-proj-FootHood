@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import { View, Text, StyleSheet } from 'react-native';
 import Header from './Header';
+import TodaysGame from './TodaysGame';
 import { Context as AuthContext } from '../../Contexts/AuthContext'
 import { Context as TeamContext } from '../../Contexts/TeamContext'
 import { Context as GameContext } from '../../Contexts/GameContext'
@@ -19,7 +20,7 @@ Notifications.setNotificationHandler({
 export default function Main({ navigation }) {
     const { state: { token }, tryLocalSignin, pushNotificationToken,getSettingNotifications } = useContext(AuthContext)
     const { state: { myTeams }, GetTeamDetails, } = useContext(TeamContext);
-    const { state: { gamesList }, GetGamesList,  } = useContext(GameContext);
+    const { state: { gamesList }, GetGamesList,GetTodaysGame  } = useContext(GameContext);
     const { GetPlayers } = useContext(PlayerContext);
     const [user, setUser] = useState(token)
     const [renderScreen, setRenderScreen] = useState(false)
@@ -27,6 +28,7 @@ export default function Main({ navigation }) {
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
+            GetTodaysGame(token.Email)
             setRenderScreen(!renderScreen)
             GetTeamDetails(user.Email)
             GetPlayers();
@@ -41,7 +43,8 @@ export default function Main({ navigation }) {
             <NotificationActions navigation={navigation} />
             <View style={styles.header}>
                 <Header navigation={navigation} />
-                <Text style={styles.title}>"Main page"</Text>
+                <TodaysGame/>
+                {/* <Text style={styles.title}>"Main page"</Text> */}
             </View>
             <View style={styles.mainContent}></View>
             <View style={styles.footer}></View>

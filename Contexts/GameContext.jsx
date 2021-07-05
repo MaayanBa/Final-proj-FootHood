@@ -39,6 +39,9 @@ const gameReducer = (state, action) => {
         case 'RemoveGameFromList': {
             return { ...state, gamesList: action.payload }
         }
+        case 'TodaysGame': {
+            return { ...state, todaysGame: action.payload }
+        }
         default:
             return state
     }
@@ -184,7 +187,7 @@ const LeaveGame = dispatch => async (EmailPlayer, GameSerialNum) => {
     }
 }
 
-const GetPlayerWaiting = dispatch => async (GameSerialNum,players) => {
+const GetPlayerWaiting = dispatch => async (GameSerialNum, players) => {
     try {
         const response = await GameApi.post('/GetPlayerWaiting', { GameSerialNum });
         let emailsPlayers = response.data;
@@ -192,7 +195,7 @@ const GetPlayerWaiting = dispatch => async (GameSerialNum,players) => {
         emailsPlayers.map(p => {
             let waitingPlayer = players.find(x => x.Email == p.EmailPlayer);
             if (waitingPlayer !== null)
-            waitingListPlayers.push(waitingPlayer)
+                waitingListPlayers.push(waitingPlayer)
         })
         dispatch({ type: 'GetPlayerWaiting', payload: waitingListPlayers })
 
@@ -232,6 +235,16 @@ const RemoveGameFromList = dispatch => async (game2Remove) => {
     }
 }
 
+const GetTodaysGame = dispatch => async (EmailPlayer) => {
+    try {
+        const response = await GameApi.post('/TodaysGame', { EmailPlayer });
+        dispatch({ type: 'TodaysGame', payload: response.data })
+    } catch (err) {
+        console.log("Something Went wrong in todays game  ! ")
+        console.log(err.message)
+    }
+}
+
 export const { Context, Provider } = CreateDataContext(
     //Reducer
     gameReducer,
@@ -250,6 +263,7 @@ export const { Context, Provider } = CreateDataContext(
         GetGamesPlayerNotRegistered,
         RemoveGameFromList,
         GetPlayerWaiting,
+        GetTodaysGame
     },
     {
         gamesList: [],
@@ -259,6 +273,7 @@ export const { Context, Provider } = CreateDataContext(
         playersPerGroups: [],
         amountRegisteredPlayersEachGame: [],
         gamesPlayerNotRegistered: [],
-        waitList:[],
+        waitList: [],
+        todaysGame: null
     }
 );
