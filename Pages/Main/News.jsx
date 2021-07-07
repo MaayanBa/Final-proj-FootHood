@@ -1,93 +1,56 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import XMLParser from 'react-xml-parser';
-import TextTicker from 'react-native-text-ticker'
-import { FontAwesome as FootBall } from '@expo/vector-icons';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ScrollView, Image } from 'react-native';
+// import XMLParser from 'react-xml-parser';
 import AppCss from '../../CSS/AppCss';
-import Modal_FullNews from './Modal_FullNews';
+import { ListItem } from 'react-native-elements';
+import { Context as NewsContext } from '../../Contexts/NewsContext'
+
 
 
 export default function News() {
-    const [titles, setTitles] = useState([])
-    const [links, setLinks] = useState([])
     const [israelNews, setIsraelNews] = useState(true)
-    const [modalNewsVisible, setModalNewsVisible] = useState(false);
+    const { state: { titles, links }, GetNews, } = useContext(NewsContext);
 
     useEffect(() => {
-        GetNews();
+        //true = israel | false = World
+        GetNews(israelNews);
     }, [israelNews]);
 
-    const GetNews = () => {
-        let title = [];
-        let linkArr = [];
-        fetch(israelNews == true ? 'https://www.one.co.il/cat/coop/xml/rss/newsfeed.aspx?c=1' : 'https://www.one.co.il/cat/coop/xml/rss/newsfeed.aspx?c=3')
-            .then(res => res.text())
-            .then(data => {
-                var XMLParser = require('react-xml-parser');
-                var xml = new XMLParser().parseFromString(data);
-                //console.log(xml.getElementsByTagName('link'));
-                //console.log(xml.getElementsByTagName('title'));
-                var headers = xml.getElementsByTagName('title')
-                var link = xml.getElementsByTagName('link')
-                headers.map(x => {
-                    if (x.value != "ONE") {
-                        // console.log(x.value)
-                        // console.log("===============")
-                        title.push(x.value);
-                    }
-                })
-                setTitles(title)
-
-                link.map(x => {
-                    if (x.value !== "https://www.ONE.co.il") {
-                        // console.log(x.value)
-                        // console.log("===============")
-                        if (x.value !== "https://images.one.co.il//images/one/logosmall.jpg") {
-                            linkArr.push(x.value);
-                        }
-                    }
-                })
-                console.log(linkArr)
-                setLinks(linkArr)
-            })
-            .catch(err => console.log(err));
-    }
-
-    const printTitles = titles.map((item, index) => {
-        return (
-            <Text key={index}>  {item}  ⚽  </Text>
-        );
-    });
+    const News = titles.map((t, i) => {
+        if (i > 0) {
+            return (<ListItem key={i} style={[appCss.playerCardInList, styles.newsItem]} containerStyle={{ backgroundColor: "transparent" }} >
+                <TouchableOpacity style={{ flexDirection: 'row-reverse' }} activeOpacity={0.8} onPress={() => Linking.openURL(links[i - 1])} >
+                    <ListItem.Content style={{left:150}}>
+                        <ListItem.Title>
+                            {t}
+                        </ListItem.Title>
+                    </ListItem.Content>
+                    <ListItem.Content  >
+                        <Image source={require('../../assets/News.png')} style={styles.ImageStyle} />
+                    </ListItem.Content>
+                </TouchableOpacity>
+            </ListItem>)
+        }
+    })
 
     return (
         <View style={styles.container}>
-            {/* {console.log(links)} */}
+            {console.log(titles)}
             <Text style={[appCss.title, { paddingTop: 20 }]}>Football News</Text>
-            {modalNewsVisible && <Modal_FullNews modalNewsVisible={modalNewsVisible} setModalNewsVisible={() => setModalNewsVisible(!modalNewsVisible)} titles={titles} links={links}/>}
             <View style={styles.buttons}>
-                <TouchableOpacity style={israelNews==true?[appCss.btnTouch, { width: '40%', backgroundColor: 'rgba(100,100, 100, 0.8)'}]:[appCss.btnTouch, { width: '40%', }]} onPress={() => setIsraelNews(true)}>
+                <TouchableOpacity style={israelNews == true ? [appCss.btnTouch, styles.btnTouch_Extra, { backgroundColor: 'rgba(100,100, 100, 0.8)' }] : [appCss.btnTouch, styles.btnTouch_Extra]} onPress={() => setIsraelNews(true)}>
                     <Text style={appCss.txtBtnTouch}>Israel News</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={israelNews==true?[appCss.btnTouch, { width: '40%', }]:[appCss.btnTouch, { width: '40%', backgroundColor: 'rgba(100,100, 100, 0.8)'}]} onPress={() => setIsraelNews(false)}>
+                <TouchableOpacity style={israelNews == true ? [appCss.btnTouch, styles.btnTouch_Extra] : [appCss.btnTouch, styles.btnTouch_Extra, { backgroundColor: 'rgba(100,100, 100, 0.8)' }]} onPress={() => setIsraelNews(false)}>
                     <Text style={appCss.txtBtnTouch}>World News</Text>
                 </TouchableOpacity>
             </View>
 
-
-            <TextTicker
-                style={{ fontSize: 26, backgroundColor: 'rgba(250, 252, 252, 0.4)' }}
-                duration={120000}
-                loop
-                bounce
-                repeatSpacer={50}
-                marqueeDelay={1000}
-                isRTL={true}
-            >
-                {printTitles}
-            </TextTicker>
-            <TouchableOpacity style={[appCss.btnTouch, { width: '40%', }]} onPress={() => setModalNewsVisible(true)}>
-                    <Text style={appCss.txtBtnTouch}>Read More</Text>
-                </TouchableOpacity>
+            <View style={styles.newsPart}>
+                <ScrollView style={styles.news_scrollView}>
+                    {News}
+                </ScrollView>
+            </View>
         </View>
     )
 }
@@ -95,12 +58,38 @@ export default function News() {
 const appCss = AppCss;
 const styles = StyleSheet.create({
     container: {
-        height: "100%"
+        height: Dimensions.get('window').height
     },
     buttons: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         width: '100%',
-        marginBottom: 30
+        // marginBottom: 30
     },
+
+    btnTouch_Extra: {
+        width: '40%',
+        marginTop: 10,
+        marginBottom: 10
+    },
+    ImageStyle: {
+        height: 22,
+        width: 22,
+        zIndex: 999
+    },
+    newsPart: {
+        // backgroundColor: 'rgba(250, 252, 252, 0.4)',
+        // justifyContent: 'space-around',
+        // borderRadius: 30,
+        alignSelf: 'center',
+        width: Dimensions.get('window').width - 60,
+        height: 290,
+        // margin: 10,
+        // padding:10,
+    },
+    newsItem: {
+        // margin:5,
+        backgroundColor: 'rgba(250, 252, 252, 0.4)',
+        borderRadius: 20,
+    }
 });

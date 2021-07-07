@@ -4,7 +4,7 @@ import {
     Image as ImgPlayers,
     Image as ImgHomePage,
     Image as ImgFindGame,
-    Image as ImgMyTeams
+    Image as ImgMyTeams, 
 } from 'react-native';
 import StackNav_Main from './StackNav_Main';
 import Players from '../Pages/Players/Players'
@@ -25,6 +25,7 @@ export default function TabNav() {
                 labelStyle: {
                     fontSize: 13,
                     //color:'white'
+                    paddingBottom: 3
                 },
                 activeTintColor: 'orange',
                 inactiveTintColor: 'white',
@@ -64,7 +65,7 @@ export default function TabNav() {
                 options={{
                     tabBarLabel: 'My Teams',
                     tabBarIcon: () => (<ImgMyTeams source={require('../assets/MyTeams.png')} resizeMode='contain' style={{ width: 60, height: 60 }} />)
-                }} />   
+                }} />
         </Tab.Navigator>
     )
 }

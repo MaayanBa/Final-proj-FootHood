@@ -11,6 +11,7 @@ import { Context as TeamContext } from '../../Contexts/TeamContext';
 // import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { Context as AuthContext } from '../../Contexts/AuthContext'
 import NotificationActions from '../../Services/NotificationActions';
+import TextTickerRow from '../Main/TextTickerRow';
 
 
 export default function TeamPage(props) {
@@ -150,7 +151,7 @@ export default function TeamPage(props) {
                             style={[appCss.btnTouch, styles.btnTouch_extra]}>
                             <Text style={appCss.txtBtnTouch}>View Games</Text>
                         </TouchableOpacity>
-                        <View style={[styles.chatContainer, { height: team.EmailManager == user.Email ? Dimensions.get('window').height - 350 : Dimensions.get('window').height - 310 }]}>
+                        <View style={[styles.chatContainer, { height: team.EmailManager == user.Email ? Dimensions.get('window').height - 392 : Dimensions.get('window').height - 332 }]}>
                             <GiftedChat
                                 messages={messages}
                                 onSend={messages => onSend(messages)}
@@ -163,6 +164,7 @@ export default function TeamPage(props) {
                             // scrollToBottom={true}
                             />
                         </View>
+                        <TextTickerRow />
                     </View>
                 }
             </ScrollView>

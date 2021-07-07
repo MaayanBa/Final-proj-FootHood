@@ -32,7 +32,6 @@ export default function TodaysGame() {
     });
     return (
         <>
-            {/* <ImageBackground style={{width:100,height:100}} imageStyle={{ borderRadius: 50 }} source={require('../../assets/WallPaperWhite2.png')}> */}
             <View style={styles.container}>
                 {todaysGame !== null ?
                     <View>{
@@ -67,7 +66,6 @@ export default function TodaysGame() {
                         </View>
                     </View> : null
                 }
-                {/* </ImageBackground> */}
             </View>
         </>
     )
@@ -85,7 +83,7 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         width: Dimensions.get('window').width - 60,
         height: 150,
-        margin: 20,
+        margin: 10,
         padding: 5,
         // opacity:0.8
     },
