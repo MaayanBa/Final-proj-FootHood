@@ -4,6 +4,8 @@ import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ScrollView, Image
 import AppCss from '../../CSS/AppCss';
 import { ListItem } from 'react-native-elements';
 import { Context as NewsContext } from '../../Contexts/NewsContext'
+import * as Linking from 'expo-linking';
+
 
 
 
@@ -18,18 +20,13 @@ export default function News() {
 
     const News = titles.map((t, i) => {
         if (i > 0) {
-            return (<ListItem key={i} style={[appCss.playerCardInList, styles.newsItem]} containerStyle={{ backgroundColor: "transparent" }} >
-                <TouchableOpacity style={{ flexDirection: 'row-reverse' }} activeOpacity={0.8} onPress={() => Linking.openURL(links[i - 1])} >
-                    <ListItem.Content >
-                        <ListItem.Title>
-                            {t}
-                        </ListItem.Title>
-                    </ListItem.Content>
-                    <ListItem.Content  >
-                        <Image source={require('../../assets/News.png')} style={styles.ImageStyle} />
-                    </ListItem.Content>
+            return (<View key={i} style={[appCss.playerCardInList, styles.newsItem]}>
+                <TouchableOpacity key={i} style={styles.newsCard} activeOpacity={0.8} onPress={() => Linking.openURL(links[i - 1])} >
+                    <Text style={{ alignSelf: 'center' }}>{t}</Text>
+                    <Image source={require('../../assets/News.png')} style={styles.ImageStyle} />
                 </TouchableOpacity>
-            </ListItem>)
+            </View>
+            )
         }
     })
 
@@ -75,7 +72,8 @@ const styles = StyleSheet.create({
     ImageStyle: {
         height: 22,
         width: 22,
-        zIndex: 999
+        alignSelf: 'center',
+        margin: 10
     },
     newsPart: {
         // backgroundColor: 'rgba(250, 252, 252, 0.4)',
@@ -87,9 +85,13 @@ const styles = StyleSheet.create({
         // margin: 10,
         // padding:10,
     },
+    newsCard: { flexDirection: 'row-reverse', paddingHorizontal: 10 },
     newsItem: {
         // margin:5,
         backgroundColor: 'rgba(250, 252, 252, 0.4)',
         borderRadius: 20,
+        height: 60,
+        padding: 10,
+        alignItems: 'center'
     }
 });
