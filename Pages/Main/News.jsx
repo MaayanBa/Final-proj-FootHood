@@ -20,7 +20,7 @@ export default function News() {
         if (i > 0) {
             return (<ListItem key={i} style={[appCss.playerCardInList, styles.newsItem]} containerStyle={{ backgroundColor: "transparent" }} >
                 <TouchableOpacity style={{ flexDirection: 'row-reverse' }} activeOpacity={0.8} onPress={() => Linking.openURL(links[i - 1])} >
-                    <ListItem.Content style={{left:150}}>
+                    <ListItem.Content >
                         <ListItem.Title>
                             {t}
                         </ListItem.Title>

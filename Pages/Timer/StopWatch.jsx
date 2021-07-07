@@ -4,10 +4,7 @@ import { Stopwatch } from 'react-native-stopwatch-timer';
 import AppCss from '../../CSS/AppCss';
 
 export default function StopWatch() {
-  const [isTimerStart, setIsTimerStart] = useState(false);
   const [isStopwatchStart, setIsStopwatchStart] = useState(false);
-  const [timerDuration, setTimerDuration] = useState(420000);
-  const [resetTimer, setResetTimer] = useState(false);
   const [resetStopwatch, setResetStopwatch] = useState(false);
 
   return (

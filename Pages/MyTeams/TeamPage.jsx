@@ -164,7 +164,7 @@ export default function TeamPage(props) {
                             // scrollToBottom={true}
                             />
                         </View>
-                        <TextTickerRow />
+                        <TextTickerRow navigation={props.navigation}/>
                     </View>
                 }
             </ScrollView>

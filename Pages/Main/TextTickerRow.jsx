@@ -1,13 +1,36 @@
-import React,{ useContext} from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Text } from 'react-native';
 import { Context as NewsContext } from '../../Contexts/NewsContext'
 import TextTicker from 'react-native-text-ticker'
 
 
-export default function TextTickerRow() {
+export default function TextTickerRow({navigation}) {
     const { state: { titles } } = useContext(NewsContext)
+    const [TITLES, setTITLES] = useState([])
 
-    const printTitles = titles.map((item, index) => {
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            shuffle(titles)
+        });
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return () => unsubscribe();
+    }, [navigation]);
+
+    const shuffle = (array) => {
+        var currentIndex = array.length, randomIndex;
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            // And swap it with the current element.
+            [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex], array[currentIndex]];
+        }
+        setTITLES(array);
+    }
+
+    const printTitles = TITLES.map((item, index) => {
         return (
             <Text key={index}>  {item}  ⚽  </Text>
         );

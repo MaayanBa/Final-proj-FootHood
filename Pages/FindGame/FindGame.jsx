@@ -9,6 +9,7 @@ import { Context as AuthContext } from '../../Contexts/AuthContext';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
 import { Context as JarvisContext } from '../../Contexts/JarvisContext';
 import Modal_GamePlayers from '../FindGame/Modal_GamePlayers';
+import TextTickerRow from '../Main/TextTickerRow';
 
 export default function GameList(props) {
     const { state: { gamesPlayerNotRegistered }, GetGamesPlayerNotRegistered } = useContext(GameContext)
@@ -162,13 +163,14 @@ export default function GameList(props) {
                 </TouchableOpacity>}
             </View>
 
-            <View style={{ justifyContent: 'center', alignItems: 'flex-end', flexDirection: "row", marginBottom: 20 }}>
+            <View style={{ justifyContent: 'center', alignItems: 'flex-end', flexDirection: "row", marginBottom: 74 }}>
                 <TouchableOpacity style={[appCss.btnTouch, { marginTop: 5, width: Dimensions.get('window').width - 70, backgroundColor: '#03C04A', flexDirection: 'row', justifyContent: 'center' }]} onPress={() => navToPitch()}>
                     <ImageCourt source={require('../../assets/Court.png')} style={styles.court_img} />
                     <Text style={appCss.txtBtnTouch}>Courts Around You</Text>
                     <ImageCourt source={require('../../assets/Court.png')} style={styles.court_img} />
                 </TouchableOpacity>
             </View>
+            <TextTickerRow navigation={props.navigation}/>
         </View>
     );
 }

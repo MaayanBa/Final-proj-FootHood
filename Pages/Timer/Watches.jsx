@@ -3,8 +3,10 @@ import { StyleSheet, Text, View, TouchableOpacity, Image as ImageBall, LogBox , 
 import AppCss from '../../CSS/AppCss';
 import StopWatch from './StopWatch';
 import Timer from './Timer';
+import TextTickerRow from '../Main/TextTickerRow';
 
-export default function Watches() {
+
+export default function Watches(props) {
     const [stopwatch, setStopWatch] = useState(true);
 
     LogBox.ignoreLogs([
@@ -24,6 +26,8 @@ export default function Watches() {
             <View style={styles.container}>
                 {stopwatch == true ? <StopWatch /> : <Timer />}
             </View>
+      <TextTickerRow navigation={props.navigation}/>
+
             {/* <SafeAreaView> */}
             {/* </SafeAreaView> */}
         </View>
