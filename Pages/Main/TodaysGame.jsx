@@ -27,9 +27,19 @@ export default function TodaysGame() {
             setPlayers(todaysGame.Players)
         }
     }, [todaysGame])
+    
     const showPlayers = players.map((p, i) => {
         return <Avatar key={i} rounded source={{ uri: p.PlayerPicture }} />
     });
+
+    const convertDate = (date) => {
+        return (`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
+    }
+
+    const sliceTime = (time) => {
+        return time.slice(0, -3);
+    }
+
     return (
         <>
             <View style={styles.container}>
@@ -47,7 +57,8 @@ export default function TodaysGame() {
                                 </View>
                                 <View style={styles.detailsLeft}>
                                     <Text style={styles.detailText}>Location: {todaysGame.Game.GameLocation}</Text>
-                                    <Text style={styles.detailText}>Time: {todaysGame.Game.GameTime}</Text>
+                                    <Text style={styles.detailText}>Date: {convertDate(new Date(todaysGame.Game.GameDate))}</Text>
+                                    <Text style={styles.detailText}>Time: {sliceTime(todaysGame.Game.GameTime)}</Text>
                                 </View>
                             </View>
                             {/* {todaysGame.Players.length > 1 ? */}
@@ -74,8 +85,8 @@ export default function TodaysGame() {
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
-    container:{
-        
+    container: {
+
     },
     card: {
         backgroundColor: 'rgba(250, 252, 252, 0.4)',

@@ -63,7 +63,7 @@ export default function Timer() {
                         {clicked == true ? <TouchableOpacity activeOpacity={0.8} onPress={() => Pause()} style={[appCss.btnTouch, { marginHorizontal: 30 }]}>
                             <Text style={appCss.txtBtnTouch}>{pauseBtn}</Text>
                         </TouchableOpacity> : <TouchableOpacity activeOpacity={0.8} onPress={() => StartTimer()} style={[appCss.btnTouch, { marginHorizontal: 30 }]}>
-                            <Text style={appCss.txtBtnTouch}>  Start  </Text>
+                            <Text style={appCss.txtBtnTouch}>START</Text>
                         </TouchableOpacity>}
                         <TouchableOpacity activeOpacity={0.8} onPress={() => Reset()} style={[appCss.btnTouch, { marginHorizontal: 30 }]}>
                             <Text style={appCss.txtBtnTouch}>RESET</Text>

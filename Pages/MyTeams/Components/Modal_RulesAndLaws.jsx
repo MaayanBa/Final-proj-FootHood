@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     },
       modal_Txt: {
         padding:20,
-        textAlign:'left',
+        textAlign:'right',
         fontWeight: "bold",
 
       },

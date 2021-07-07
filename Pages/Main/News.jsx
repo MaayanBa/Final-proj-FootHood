@@ -2,16 +2,15 @@ import React, { useState, useEffect, useContext, useRef } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ScrollView, Image } from 'react-native';
 // import XMLParser from 'react-xml-parser';
 import AppCss from '../../CSS/AppCss';
-import { ListItem } from 'react-native-elements';
 import { Context as NewsContext } from '../../Contexts/NewsContext'
 import * as Linking from 'expo-linking';
-
-
+import Modal_FullNews from './Modal_FullNews';
 
 
 export default function News() {
     const [israelNews, setIsraelNews] = useState(true)
     const { state: { titles, links }, GetNews, } = useContext(NewsContext);
+    const [modalNewsVisible, setModalNewsVisible] = useState(false);
 
     useEffect(() => {
         //true = israel | false = World
@@ -32,8 +31,9 @@ export default function News() {
 
     return (
         <View style={styles.container}>
-            {console.log(titles)}
+            {/* {console.log(titles)} */}
             <Text style={[appCss.title, { paddingTop: 20 }]}>Football News</Text>
+            {modalNewsVisible && <Modal_FullNews modalNewsVisible={modalNewsVisible} setModalNewsVisible={() => setModalNewsVisible(!modalNewsVisible)} News={News}/>}
             <View style={styles.buttons}>
                 <TouchableOpacity style={israelNews == true ? [appCss.btnTouch, styles.btnTouch_Extra, { backgroundColor: 'rgba(100,100, 100, 0.8)' }] : [appCss.btnTouch, styles.btnTouch_Extra]} onPress={() => setIsraelNews(true)}>
                     <Text style={appCss.txtBtnTouch}>Israel News</Text>
@@ -42,6 +42,10 @@ export default function News() {
                     <Text style={appCss.txtBtnTouch}>World News</Text>
                 </TouchableOpacity>
             </View>
+
+            <TouchableOpacity style={[appCss.btnTouch, { width: '40%',marginTop:0 }]} onPress={() => setModalNewsVisible(true)}>
+                <Text style={appCss.txtBtnTouch}>Read More</Text>
+            </TouchableOpacity>
 
             <View style={styles.newsPart}>
                 <ScrollView style={styles.news_scrollView}>

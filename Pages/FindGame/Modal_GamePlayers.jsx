@@ -17,7 +17,7 @@ export default function Modal_GamePlayers(props) {
     }, [])
 
     const PlayerCard = (p) => {
-        props.navigation.navigate('CardPlayer', { p })
+        props.navigation.navigate('StackNav_MyTeams', { screen: 'CardPlayer', params: { p } })
         props.setModalPlayersVisible()
     }
 
