@@ -1,17 +1,43 @@
-import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, Image,Dimensions } from 'react-native';
+import React, { useContext } from 'react'
+import { StyleSheet, View, Text, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { Context as AuthContext } from '../../Contexts/AuthContext'
+import { Avatar } from 'react-native-elements';
+
+
+
+export default function Header(props) {
+    const { state: { token } } = useContext(AuthContext)
+
+    return (
+        <View style={styles.headerRow}>
+            <TouchableOpacity style={styles.btnSetting} onPress={() => props.navigation.navigate('SettingsPage')}>
+                <Image source={require('../../assets/Settings.png')} resizeMode="contain" style={styles.iconSetting} />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.btnProfile} onPress={() => props.navigation.navigate('MyProfile')}>
+                <Text style={styles.txtProfile}>  My Profile </Text>
+                {token.PlayerPicture !== null ?
+                    <Avatar size={28} rounded source={{ uri: token.PlayerPicture }} />
+                    : <Image source={require('../../assets/Nyemar.png')} resizeMode="contain" style={styles.imgProfile} />
+                }
+
+
+            </TouchableOpacity>
+        </View>
+    )
+}
 
 
 const styles = StyleSheet.create({
     headerRow: {
         justifyContent: 'space-between',
-        width: Dimensions.get('screen').width-80,
+        width: Dimensions.get('screen').width - 80,
         paddingTop: 15,
         flexDirection: 'row',
         // paddingHorizontal: '10',
         // paddingVertical: 10,
         alignItems: 'center',
-        right:10
+        right: 10
     },
     btnProfile: {
         flexDirection: 'row',
@@ -40,26 +66,10 @@ const styles = StyleSheet.create({
         width: 30,
         height: 40,
         tintColor: 'white'
+    },
+    player_img: {
+        height: 20,
+        width: 20
     }
 
 })
-
-export default function Header(props) {
-    return (
-
-        <View style={styles.headerRow}>
-
-            <TouchableOpacity style={styles.btnSetting} onPress={() => props.navigation.navigate('SettingsPage')}>
-                <Image source={require('../../assets/Settings.png')} resizeMode="contain" style={styles.iconSetting} />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.btnProfile} onPress={() => props.navigation.navigate('MyProfile')}>
-                <Text style={styles.txtProfile}> My Profile </Text>
-                <Image source={require('../../assets/Nyemar.png')} resizeMode="contain" style={styles.imgProfile} />
-
-            </TouchableOpacity>
-
-
-        </View>
-    )
-}

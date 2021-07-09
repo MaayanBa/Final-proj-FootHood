@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image as ImageBall, LogBox , SafeAreaView} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image as ImageBall, LogBox, SafeAreaView } from 'react-native';
 import AppCss from '../../CSS/AppCss';
 import StopWatch from './StopWatch';
 import Timer from './Timer';
@@ -26,10 +26,7 @@ export default function Watches(props) {
             <View style={styles.container}>
                 {stopwatch == true ? <StopWatch /> : <Timer />}
             </View>
-      <TextTickerRow navigation={props.navigation}/>
-
-            {/* <SafeAreaView> */}
-            {/* </SafeAreaView> */}
+            <TextTickerRow navigation={props.navigation} />
         </View>
     );
 };
@@ -38,12 +35,12 @@ const appCss = AppCss;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 10,
+        // padding: 10,
+        marginTop:10
     },
     buttons: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: 30
     },
-
 });

@@ -57,10 +57,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 40
     },
-    title: {
-        alignItems: 'center',
-        padding: 40,
-        color: 'white',
-        fontSize: 40,
-    },
+
 });

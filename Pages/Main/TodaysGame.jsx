@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
-import { View, Text, StyleSheet, Dimensions, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, ImageBackground, Image } from 'react-native';
 import Header from './Header';
 import AppCss from '../../CSS/AppCss';
 import { Avatar } from 'react-native-elements';
@@ -27,7 +27,7 @@ export default function TodaysGame() {
             setPlayers(todaysGame.Players)
         }
     }, [todaysGame])
-    
+
     const showPlayers = players.map((p, i) => {
         return <Avatar key={i} rounded source={{ uri: p.PlayerPicture }} />
     });
@@ -52,20 +52,20 @@ export default function TodaysGame() {
                         <View style={styles.card}>
                             <View style={styles.details}>
                                 <View style={styles.detailsRight}>
-                                    <Text style={styles.detailText}>Bring: {todaysGame.Bring}</Text>
-                                    <Text style={styles.detailText}>Teams: {todaysGame.Game.NumOfTeams}</Text>
+                                    <Text style={styles.detailText}><Image source={require('../../assets/Bring.png')} style={styles.ImageStyle} /> Bring: {todaysGame.Bring}</Text>
+                                    <Text style={styles.detailText}><Image source={require('../../assets/VS.png')} style={styles.ImageStyle} /> Teams: {todaysGame.Game.NumOfTeams}</Text>
                                 </View>
                                 <View style={styles.detailsLeft}>
-                                    <Text style={styles.detailText}>Location: {todaysGame.Game.GameLocation}</Text>
-                                    <Text style={styles.detailText}>Date: {convertDate(new Date(todaysGame.Game.GameDate))}</Text>
-                                    <Text style={styles.detailText}>Time: {sliceTime(todaysGame.Game.GameTime)}</Text>
+                                    <Text style={styles.detailText}><Image source={require('../../assets/MapPin.png')} style={styles.ImageStyle} /> Location: {todaysGame.Game.GameLocation}</Text>
+                                    <Text style={styles.detailText}><Image source={require('../../assets/Calander.png')} style={styles.ImageStyle} /> Date: {convertDate(new Date(todaysGame.Game.GameDate))}</Text>
+                                    <Text style={styles.detailText}><Image source={require('../../assets/Watch.png')} style={styles.ImageStyle} /> Time: {sliceTime(todaysGame.Game.GameTime)}</Text>
                                 </View>
                             </View>
                             {/* {todaysGame.Players.length > 1 ? */}
                             {/* <View> */}
                             <View style={styles.border} />
                             <View style={styles.playersView}>
-                                <Text style={styles.detailText}>Your Group:</Text>
+                                <Text style={[styles.detailText, {alignSelf:'center', marginVertical:5}]}>Your Group:</Text>
                                 <View style={styles.players}>
                                     {showPlayers}
                                 </View>
@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         borderRadius: 30,
         width: Dimensions.get('window').width - 60,
-        height: 150,
-        margin: 10,
+        height: 180,
+        margin: 15,
         padding: 5,
         // opacity:0.8
     },
@@ -112,10 +112,15 @@ const styles = StyleSheet.create({
         borderBottomEndRadius: 100,
         borderBottomStartRadius: 100,
         width: Dimensions.get('window').width - 150,
+        paddingVertical:10
     },
     detailText: {
         fontWeight: 'bold',
-        padding: 2
+        padding: 2,
+        
+    },
+    detailsRight:{
+left:15
     },
     playersView: {
         paddingHorizontal: 10,
@@ -123,7 +128,11 @@ const styles = StyleSheet.create({
     },
     players: {
         flexDirection: 'row',
-        justifyContent: 'center'
+        justifyContent: 'center',
+    },
+    ImageStyle: {
+        width: 20,
+        height: 20
     }
 });
 

@@ -37,7 +37,7 @@ export default function TextTickerRow({navigation}) {
     });
     return (
         <TextTicker
-            style={{ fontSize: 26, backgroundColor: 'rgba(250, 252, 252, 0.4)', marginTop: 10 }}
+            style={{ fontSize: 22, backgroundColor: 'rgba(250, 252, 252, 0.4)', marginTop: 10 }}
             duration={120000}
             loop
             bounce

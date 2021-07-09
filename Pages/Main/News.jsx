@@ -18,7 +18,7 @@ export default function News() {
     }, [israelNews]);
 
     const News = titles.map((t, i) => {
-        if (i > 0) {
+        if (i > 0 && i < 4) {
             return (<View key={i} style={[appCss.playerCardInList, styles.newsItem]}>
                 <TouchableOpacity key={i} style={styles.newsCard} activeOpacity={0.8} onPress={() => Linking.openURL(links[i - 1])} >
                     <Text style={{ alignSelf: 'center' }}>{t}</Text>
@@ -32,25 +32,26 @@ export default function News() {
     return (
         <View style={styles.container}>
             {/* {console.log(titles)} */}
-            <Text style={[appCss.title, { paddingTop: 20 }]}>Football News</Text>
-            {modalNewsVisible && <Modal_FullNews modalNewsVisible={modalNewsVisible} setModalNewsVisible={() => setModalNewsVisible(!modalNewsVisible)} News={News}/>}
+            <Text style={[appCss.title, { paddingTop: 10 }]}>News</Text>
+            {modalNewsVisible && <Modal_FullNews modalNewsVisible={modalNewsVisible} setModalNewsVisible={() => setModalNewsVisible(!modalNewsVisible)} News={News} />}
             <View style={styles.buttons}>
-                <TouchableOpacity style={israelNews == true ? [appCss.btnTouch, styles.btnTouch_Extra, { backgroundColor: 'rgba(100,100, 100, 0.8)' }] : [appCss.btnTouch, styles.btnTouch_Extra]} onPress={() => setIsraelNews(true)}>
-                    <Text style={appCss.txtBtnTouch}>Israel News</Text>
+                <TouchableOpacity style={israelNews == true ? [appCss.btnTouch, styles.btnTouch_Extra, { paddingVertical: 5, backgroundColor: 'rgba(100,100, 100, 0.8)' }] : [appCss.btnTouch, styles.btnTouch_Extra, { paddingVertical: 5 }]} onPress={() => setIsraelNews(true)}>
+                    <Text style={appCss.txtBtnTouch}><Image source={require('../../assets/Israel.png')} style={styles.ImageStyle} /> Israel News</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={israelNews == true ? [appCss.btnTouch, styles.btnTouch_Extra] : [appCss.btnTouch, styles.btnTouch_Extra, { backgroundColor: 'rgba(100,100, 100, 0.8)' }]} onPress={() => setIsraelNews(false)}>
-                    <Text style={appCss.txtBtnTouch}>World News</Text>
+                <TouchableOpacity style={israelNews == true ? [appCss.btnTouch, styles.btnTouch_Extra, { paddingVertical: 5 }] : [appCss.btnTouch, styles.btnTouch_Extra, { backgroundColor: 'rgba(100,100, 100, 0.8)', paddingVertical: 5 }]} onPress={() => setIsraelNews(false)}>
+                    <Text style={appCss.txtBtnTouch}><Image source={require('../../assets/World.png')} style={styles.ImageStyle} /> World News</Text>
                 </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={[appCss.btnTouch, { width: '40%',marginTop:0 }]} onPress={() => setModalNewsVisible(true)}>
-                <Text style={appCss.txtBtnTouch}>Read More</Text>
-            </TouchableOpacity>
+
 
             <View style={styles.newsPart}>
                 <ScrollView style={styles.news_scrollView}>
                     {News}
                 </ScrollView>
+                <TouchableOpacity style={[appCss.btnTouch, styles.btnTouch_Extra, { paddingVertical: 2, width: 100, backgroundColor: 'rgba(220, 252, 252, 0.4)' }]} onPress={() => setModalNewsVisible(true)}>
+                    <Text style={appCss.txtBtnTouch}>Read More</Text>
+                </TouchableOpacity>
             </View>
         </View>
     )
@@ -70,8 +71,8 @@ const styles = StyleSheet.create({
 
     btnTouch_Extra: {
         width: '40%',
-        marginTop: 10,
-        marginBottom: 10
+        marginTop: 15,
+        marginBottom: 15
     },
     ImageStyle: {
         height: 22,
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
         // borderRadius: 30,
         alignSelf: 'center',
         width: Dimensions.get('window').width - 60,
-        height: 290,
+        height: 270,
         // margin: 10,
         // padding:10,
     },
@@ -97,5 +98,6 @@ const styles = StyleSheet.create({
         height: 60,
         padding: 10,
         alignItems: 'center'
-    }
+    },
+
 });
