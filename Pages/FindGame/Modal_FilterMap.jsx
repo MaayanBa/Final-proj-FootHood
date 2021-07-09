@@ -8,9 +8,11 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import AppCss from '../../CSS/AppCss';
 import { getLocation, geocodeLocationByName } from '../../Services/location-service';
 import GooglePlacesInput from '../MyTeams/Components/GooglePlacesInput';
+import Modal_Alert from '../Modal_Alert';
 
 
 export default function Modal_LocationMap(props) {
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [region, setRegion] = useState({
         latitude: 0,
         longitude: 0,
@@ -60,7 +62,8 @@ export default function Modal_LocationMap(props) {
 
     const FilterGames = () => {
         if (radius == 0 || locationName == "")
-            alert("You must enter place name radius for search")
+            // alert("You must enter place name radius for search")
+            setAlertModalVisible(true)
         else {
             props.distance(parseInt(radius))
             props.locationCord(region)
@@ -72,9 +75,9 @@ export default function Modal_LocationMap(props) {
             transparent={true} visible={props.modalVisible} onRequestClose={() => props.setModalVisible()}>
 
             <View style={appCss.modal_View}>
+            {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={"You must enter place name and radius for search"}/>}
                 <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../assets/WallPaperWhite2.png')}>
                     <Text style={[appCss.modal_Txt, { paddingTop: 20, }]}>Choose Location:</Text>
-
                     <GooglePlacesInput notifyChange={(loc) => getCoordsFromName(loc)} />
                     <View style={appCss.map_Container}>
                         <MapView style={appCss.mapView_container}

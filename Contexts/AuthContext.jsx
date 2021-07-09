@@ -30,6 +30,9 @@ const authReducer = (state, action) => {
         case 'register': {
             return { ...state, token: action.payload, errorMessage: '' }
         }
+        case 'restorePassCode': {
+            return { ...state, errorMessage: '' }
+        }
         case 'PushNotificationToken': {
             return { ...state, token: action.payload }
         }
@@ -153,7 +156,8 @@ const restorePassCode = dispatch => async (email) => {
     } catch (error) {
         //console.log("im in catch in restore psscode  ===== > " + error.response)
         //console.log(error.response.data)
-        alert("The email you have entered is wrong. Please try again")
+        // alert("The email you have entered is wrong. Please try again")
+        dispatch({type: 'add_error',payload: 'The email you entered is wrong. Please try again'})
     }
 }
 
@@ -170,7 +174,8 @@ const updatPassCode = dispatch => async (player) => {
     } catch (error) {
         // console.log("im in catch in reset passcode  ===== > " + error.response)
         // console.log(error.response.data)
-        alert("The otp you have entered is wrong. Please try again")
+        // alert("The otp you have entered is wrong. Please try again")
+        dispatch({type: 'add_error',payload: 'The otp you have entered is wrong. Please try again'})
     }
 }
 const resetRestore_PassCode_values = dispatch => async (player) => {

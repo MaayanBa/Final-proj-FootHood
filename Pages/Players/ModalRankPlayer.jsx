@@ -5,13 +5,14 @@ import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import { ListItem, Avatar } from 'react-native-elements';
 import Slider from '@react-native-community/slider';
+import Modal_Alert from '../Modal_Alert';
 
 export default function ModalRankPlayer(props) {
   const { state: { token } } = useContext(AuthContext)
   // const [selectRate, setSelectedRate] = useState("")
   const { RankPlayer } = useContext(PlayerContext);
   const [sliderValue, setSliderValue] = useState(0)
-
+  const [alertModalVisible, setAlertModalVisible] = useState(false);
 
   const Finish = () => {
     if (props.powerRate > 0 && props.defenceRate > 0 && props.attackRate > 0) {
@@ -21,7 +22,7 @@ export default function ModalRankPlayer(props) {
       props.setOpenModal(false)
     }
     else
-      alert("Please fill in all types of rank")
+    setAlertModalVisible(true)
   }
 
   const SetRating = () => {
@@ -38,6 +39,7 @@ export default function ModalRankPlayer(props) {
       onRequestClose={() => props.setOpenModal(false)}>
 
       <View style={styles.centeredView}>
+        {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={"Please fill in all types of rank"} />}
         <View style={styles.modal_View}>
           <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../assets/WallPaperWhite2.png')}>
             {props.playerChoosen == "" ? null :
@@ -47,15 +49,15 @@ export default function ModalRankPlayer(props) {
                   <Text style={[appCss.inputLabel, { alignSelf: 'center', fontSize: 25 }]}>{props.playerChoosen.FirstName + ' ' + props.playerChoosen.LastName} </Text>
                 </View>
                 <View style={[appCss.rates_View, { paddingBottom: 10 }]}>
-                  <TouchableOpacity onPress={() => props.setSelectedRate("Attack")} style={props.selectRate == "Attack"?[appCss.rate, { backgroundColor:'orange',paddingBottom: 10 }]:[appCss.rate, { paddingBottom: 10 }]}>
+                  <TouchableOpacity onPress={() => props.setSelectedRate("Attack")} style={props.selectRate == "Attack" ? [appCss.rate, { backgroundColor: 'orange', paddingBottom: 10 }] : [appCss.rate, { paddingBottom: 10 }]}>
                     <Text>Attack</Text>
                     {props.attackRate !== null ? <Text>{props.attackRate}</Text> : null}
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => props.setSelectedRate("Defence")} style={props.selectRate == "Defence"?[appCss.rate, { backgroundColor:'orange',paddingBottom: 10 }]:[appCss.rate, { paddingBottom: 10 }]}>
+                  <TouchableOpacity onPress={() => props.setSelectedRate("Defence")} style={props.selectRate == "Defence" ? [appCss.rate, { backgroundColor: 'orange', paddingBottom: 10 }] : [appCss.rate, { paddingBottom: 10 }]}>
                     <Text>Defence</Text>
                     {props.defenceRate !== null ? <Text>{props.defenceRate}</Text> : null}
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => props.setSelectedRate("Power")} style={props.selectRate == "Power"?[appCss.rate, { backgroundColor:'orange',paddingBottom: 10 }]:[appCss.rate, { paddingBottom: 10 }]}>
+                  <TouchableOpacity onPress={() => props.setSelectedRate("Power")} style={props.selectRate == "Power" ? [appCss.rate, { backgroundColor: 'orange', paddingBottom: 10 }] : [appCss.rate, { paddingBottom: 10 }]}>
                     <Text>Power</Text>
                     {props.powerRate !== null ? <Text>{props.powerRate}</Text> : null}
                   </TouchableOpacity>

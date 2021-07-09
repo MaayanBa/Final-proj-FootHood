@@ -13,6 +13,7 @@ import { Context as AuthContext } from '../../../Contexts/AuthContext';
 import { Context as EquipmentContext } from '../../../Contexts/EquipmentContext';
 import { Context as TeamContext } from '../../../Contexts/TeamContext';
 import EquipmentsRadioBtns from './EquipmentsRadioBtns';
+import Modal_Alert from '../../Modal_Alert';
 
 export default function Modal_PlayerBringsEquipment(props) {
     const index = props.index;
@@ -27,11 +28,18 @@ export default function Modal_PlayerBringsEquipment(props) {
     // const [user, setUser] = useState(token)
     const { state: { equipments }, AssignEquipment2Player, GetAllEquipments, GetItemsAssignForGame, AddNewItem } = useContext(EquipmentContext);
     const [newEquipment, setNewEquipment] = useState()
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
+    const [alertText, setAlertText] = useState('');
 
     useEffect(() => {
         GetPlayers4Game(gamesList[index].GameSerialNum, players);
         GetAllEquipments(gamesList[index].GameSerialNum);
     }, [])
+
+    const Alert = (message) => {
+        setAlertText(message)
+        setAlertModalVisible(true)
+    }
 
     const AssignEquipment = async () => {
         if (choosenPlayer != null && choosenEquipment != null) {
@@ -47,7 +55,7 @@ export default function Modal_PlayerBringsEquipment(props) {
             setPlayerBringsModalVisible(false)
         }
         else
-            alert("You must pick a player and item")
+            Alert("You must pick a player and item")
     }
 
     const AddNewEquipment = async () => {
@@ -59,9 +67,10 @@ export default function Modal_PlayerBringsEquipment(props) {
             await AddNewItem(equipment);
             await GetAllEquipments(gamesList[index].GameSerialNum);
             setNewEquipment(null)
+            Alert("Equipment has been added successfully")
         }
         else
-            alert("Please enter equipment name")
+            Alert("Please enter equipment name")
     }
     const playersInGameList = playersPerGame.map((p, i) => (
         <ListItem key={i} containerStyle={{ backgroundColor: "transparent" }}>
@@ -78,21 +87,6 @@ export default function Modal_PlayerBringsEquipment(props) {
             </View>
         </ListItem>
     ))
-    // const equipmentsList = () => equipments.map((e, i) => (
-    //     <ListItem key={i} containerStyle={{ backgroundColor: "transparent" }} >
-    //         <ListItem.Content style={{ alignItems: 'flex-end' }} >
-    //             <ListItem.Title style={styles.label}>{e.EquipmentName}</ListItem.Title>
-    //         </ListItem.Content>
-    //         <View>
-    //             <RadioButton
-    //                 value={i}
-    //                 status={choosenEquipment === i ? 'checked' : 'unchecked'}
-    //                 onPress={() => setChoosenEquipment(i)}
-    //             />
-    //         </View>
-    //     </ListItem>
-    // ))
-
 
     const Close = () => {
         setChoosenPlayer(null)
@@ -106,6 +100,7 @@ export default function Modal_PlayerBringsEquipment(props) {
     >
         <SafeAreaView>
             <ScrollView keyboardShouldPersistTaps="handled">
+                {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
                 <View style={styles.centeredView}>
                     <View style={styles.modal_View}>
                         <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../../assets/WallPaperWhite2.png')}>

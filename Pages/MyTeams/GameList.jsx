@@ -9,6 +9,7 @@ import { Context as TeamContext } from '../../Contexts/TeamContext';
 //import LaunchNavigator from 'react-native-launch-navigator';
 import * as Linking from 'expo-linking';
 import NotificationActions from '../../Services/NotificationActions';
+import Modal_ActionAlert from '../Modal_ActionAlert';
 
 
 export default function GameList(props) {
@@ -17,6 +18,10 @@ export default function GameList(props) {
     const keyTeam = key;
     const { state: { token } } = useContext(AuthContext)
     const { state: { myTeams } } = useContext(TeamContext);
+    const [alertActionModalVisible, setAlertActionModalVisible] = useState(false);
+    const [alertText, setAlertText] = useState('');
+    const [alertAction, setAlertAction] = useState('');
+    const [alertTeam, setAlertTeam] = useState()
 
     const convertDate = (date) => {
         return (`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
@@ -32,33 +37,11 @@ export default function GameList(props) {
     }, [props.navigation]);
 
 
-    const RemoveBtn = (g) =>
-        Alert.alert(
-            "Remove Game",
-            "Do you want to remove this game? ",
-            [
-                {
-                    text: "OK",
-                    onPress: () => RemoveGame(g),
-                    style: "ok"
-                },
-                {
-                    text: "Cancel",
-                    onPress: () => console.log("Cancel Pressed"),
-                    style: "cancel"
-                },
-            ]
-        );
-
-    const RemoveGame = async (g) => {
-        let game2Remove = {
-            EmailManager: token.Email,
-            GameSerialNum: g.GameSerialNum,
-            TeamSerialNum: g.TeamSerialNum
-        }
-        await RemoveGameFromList(game2Remove)
-        // setForceState(!forceState);
-
+    const RemoveBtn = (g) => {
+        setAlertText("Do you want to remove this game?")
+        setAlertAction("RemoveGame")
+        setAlertActionModalVisible(true)
+        setAlertTeam(g)
     }
 
     //Builds up togther the date and time
@@ -109,6 +92,7 @@ export default function GameList(props) {
     });
     return (
         <View style={[appCss.container, { paddingTop: 50 }]}>
+            {alertActionModalVisible && <Modal_ActionAlert alertActionModalVisible={alertActionModalVisible} setAlertActionModalVisible={() => setAlertActionModalVisible(!alertActionModalVisible)} text={alertText} action={alertAction} item={alertTeam} />}
             <NotificationActions navigation={props.navigation} />
             <Text style={[appCss.title, { top: 5, paddingBottom: 20, }]}>Game List</Text>
             <ScrollView>

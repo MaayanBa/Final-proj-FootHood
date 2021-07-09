@@ -7,6 +7,7 @@ import { ListItem, Avatar } from 'react-native-elements';
 import { MaterialCommunityIcons as Podium, Feather as Filter } from '@expo/vector-icons';
 import ModalRankPlayer from './ModalRankPlayer'
 import ModalFilterPlayer from './ModalFilterPlayer'
+import Modal_Alert from '../Modal_Alert';
 
 export default function Players({ navigation }) {
     const { state: { searchedPlayers }, SearchPlayer, SetSearchPlayer } = useContext(TeamContext);
@@ -14,6 +15,7 @@ export default function Players({ navigation }) {
     const [fullName, setFullName] = useState("");
     const [playerChoosen, setPlayerChoosen] = useState("");
     const [powerRate, setPowerRate] = useState(null)
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [defenceRate, setDefenceRate] = useState(null)
     const [attackRate, setAttackRate] = useState(null)
     const [allPlayers, setAllPlayers] = useState([])
@@ -59,7 +61,7 @@ export default function Players({ navigation }) {
             }
             SearchPlayer(player)
         } else {
-            alert("Please Enter Name")
+            setAlertModalVisible(true)
         }
 
     }
@@ -188,6 +190,7 @@ export default function Players({ navigation }) {
 
     return (
         <View>
+            {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={"Please enter name"} />}
             {openModalFilter ? <ModalFilterPlayer setOpenModalFilter={setOpenModalFilter} filterResults={(filter) => getFilterResults(filter)} /> : null}
             <Text style={[appCss.title, appCss.space]}>Players</Text>
             <View style={styles.searchRow}>

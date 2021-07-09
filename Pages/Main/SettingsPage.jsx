@@ -4,14 +4,16 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import AppCss from '../../CSS/AppCss';
 import { AntDesign } from '@expo/vector-icons';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
-// import Header from './Header';
-
-
+import Modal_ActionAlert from '../Modal_ActionAlert';
 
 
 export default function Settings(props) {
     const { state: { token,enableNotifications }, signOut, setSettingNotifications } = useContext(AuthContext);
     const [isEnabledChatAlert, setIsEnabledChatAlert] = useState(enableNotifications)
+    const [alertActionModalVisible, setAlertActionModalVisible] = useState(false);
+    const [alertText, setAlertText] = useState('');
+    const [alertAction, setAlertAction] = useState('');
+
     const toggleSwitch = () => { setIsEnabledChatAlert(previousState => !previousState) }
 
     useEffect(() => {
@@ -19,16 +21,9 @@ export default function Settings(props) {
     }, [isEnabledChatAlert])
 
     const SignOut = () => {
-        Alert.alert(
-            "Log Out",
-            "Are you sure you want to log out?",
-            [
-                {
-                    text: "Cancel",
-                },
-                { text: "OK", onPress: () => signOut(token.Email) }
-            ]
-        );
+        setAlertText("Are you sure you want to log out?")
+        setAlertAction("LogOutUser")
+        setAlertActionModalVisible(true)
     }
 
     return (
@@ -40,6 +35,7 @@ export default function Settings(props) {
 
             {/* <MainContent /> */}
             <View style={styles.mainContent}>
+            {alertActionModalVisible && <Modal_ActionAlert alertActionModalVisible={alertActionModalVisible} setAlertActionModalVisible={() => setAlertActionModalVisible(!alertActionModalVisible)} text={alertText} action={alertAction}/>}
                 <TouchableOpacity style={[appCss.btnTouch, styles.btnTouch_Extra]} onPress={() => props.navigation.navigate('EditPersonalDetails')}>
                     <Text style={appCss.txtBtnTouch}>  Change personal details  </Text>
                 </TouchableOpacity>

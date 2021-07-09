@@ -9,15 +9,18 @@ import { Context as TeamContext } from '../../../Contexts/TeamContext';
 import { Context as AuthContext } from '../../../Contexts/AuthContext';
 import { Context as JarvisContext } from '../../../Contexts/JarvisContext';
 import { getLocation, geocodeLocationByName } from '../../../Services/location-service';
+import Modal_Alert from '../../Modal_Alert';
 
 export default function Players_Window(props) {
-  const { state: { gamesList, playersPerGame }, GetPlayers4Game, GetGamesList,  } = useContext(GameContext);
+  const { state: { gamesList, playersPerGame }, GetPlayers4Game, GetGamesList, } = useContext(GameContext);
   const { state: { players } } = useContext(PlayerContext);
   const { Jarvis_FindPlayers4Game } = useContext(JarvisContext);
   const { state: { myTeams } } = useContext(TeamContext);
   const [findPlayersActivated, setFindPlayersActivated] = useState(gamesList[props.indexGame].FindPlayersActive);
   const [region, setRegion] = useState(null)
   const { state: { token } } = useContext(AuthContext)
+  const [alertModalVisible, setAlertModalVisible] = useState(false);
+  const [alertText, setAlertText] = useState('');
 
   useEffect(() => {
     GetPlayers4Game(gamesList[props.indexGame].GameSerialNum, players);
@@ -25,7 +28,7 @@ export default function Players_Window(props) {
     geocodeLocationByName(gamesList[props.indexGame].GameLocation).then(
       (data) => {
         if (data === undefined || data === null) {
-          alert("there is a problem with the location cordinats")
+          Alert("there is a problem with the location cordinats")
         }
         else {
           setRegion({
@@ -39,6 +42,11 @@ export default function Players_Window(props) {
   }, [])
 
 
+  const Alert = (message) => {
+    setAlertText(message)
+    setAlertModalVisible(true)
+  }
+
   const activeFindPlayers = async () => {
     if (region != null) {
       await Jarvis_FindPlayers4Game(gamesList[props.indexGame].TeamSerialNum, gamesList[props.indexGame].GameSerialNum, gamesList[props.indexGame].AvgPlayerAge, gamesList[props.indexGame].AvgPlayerRating, region)
@@ -47,7 +55,7 @@ export default function Players_Window(props) {
 
     }
     else
-      alert("Something went wrong please go to Home page and try again")
+      Alert("Something went wrong please go to Home page and try again")
   }
 
   const registeredPlayers = playersPerGame.map((p, key) => {
@@ -62,6 +70,7 @@ export default function Players_Window(props) {
   return (
     <View style={styles.playersAndEquipment_Window}>
       <View style={styles.playersAndEquipment_Title}>
+        {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
         <Text style={styles.txtGame}>Registerd players :</Text>
       </View>
       <ScrollView style={styles.playerList_scrollView}>

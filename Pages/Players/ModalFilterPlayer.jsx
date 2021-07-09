@@ -5,6 +5,7 @@ import { ListItem } from 'react-native-elements';
 import { RadioButton } from 'react-native-paper';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import Modal_LocationMap from '../MyTeams/Components/Modal_LocationMap';
+import Modal_Alert from '../Modal_Alert';
 
 export default function ModalFilterPlayer(props) {
     const [modalVisible, setModalVisible] = useState(false);
@@ -13,6 +14,8 @@ export default function ModalFilterPlayer(props) {
     const [rankValues, setRankValues] = useState([0, 100])
     const [ageValues, setAgeValues] = useState([18, 100])
     const [playerLocation, setPlayerLocation] = useState('');
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
+    const [alertText, setAlertText] = useState('');
     const [locationCord, setLocationCord] = useState({
         latitude: 0,
         longitude: 0,
@@ -37,10 +40,8 @@ export default function ModalFilterPlayer(props) {
 
     const Filter = () => {
         var distance;
-        console.log(typeof (radius))
-        if (radius == '') { distance = 0; }
+        console.log(typeof (radius) + "HERE")
         // parseInt(radius) <= 40 && parseInt(radius) > 0
-        else {
             distance = parseInt(radius)
             console.log(typeof (radius))
             if (distance <= 40 && distance > 0) {
@@ -56,18 +57,18 @@ export default function ModalFilterPlayer(props) {
                         distanceRadius: distance,
                         filterOn: true,
                     }
-                    alert("Filter Applied Successfully")
                     props.filterResults(filterResults)
                     props.setOpenModalFilter(false)
                 }
-                else
-                    alert("If you want to filter by location, you must enter location and radius!")
+                else{
+                setAlertText("If you want to filter by location, you must enter location and radius!")
+                setAlertModalVisible(true)
+                }
             }
             else {
-                console.log("big number")
-                alert("Radius Should only be numbers between 1-40")
+                setAlertText("Radius Should only be numbers between 1-40")
+                setAlertModalVisible(true)
             }
-        }
     }
 
 
@@ -75,6 +76,7 @@ export default function ModalFilterPlayer(props) {
         <Modal animationType="slide" transparent={true} visible={props.openModalFilter}
             onRequestClose={() => props.setOpenModalFilter(false)}>
             <View style={styles.centeredView}>
+                {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
                 <View style={styles.modal_View}>
                     <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../assets/WallPaperWhite2.png')}>
                         <View style={{ marginTop: 30 }}>
@@ -90,7 +92,7 @@ export default function ModalFilterPlayer(props) {
                             {modalVisible && <Modal_LocationMap modalVisible={modalVisible} setModalVisible={() => setModalVisible(!modalVisible)} location={(loc) => getLocation(loc)} locationCord={(data) => getLocationCord(data)} />}
 
                             <ListItem style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
-                                <TextInput style={[appCss.inputBox,{padding:10}]} onChangeText={text => setRadius(text)} keyboardType="phone-pad" placeholder="KM" />
+                                <TextInput style={[appCss.inputBox, { padding: 10 }]} onChangeText={text => setRadius(text)} keyboardType="phone-pad" placeholder="KM" />
                                 <ListItem.Content style={{ alignItems: 'flex-end' }} >
                                     <ListItem.Title>Radius:</ListItem.Title>
                                 </ListItem.Content>

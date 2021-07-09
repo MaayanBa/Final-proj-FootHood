@@ -10,6 +10,7 @@ import { Context as TeamContext } from '../../Contexts/TeamContext';
 import { Context as JarvisContext } from '../../Contexts/JarvisContext';
 import Modal_GamePlayers from '../FindGame/Modal_GamePlayers';
 import TextTickerRow from '../Main/TextTickerRow';
+import Modal_Alert from '../Modal_Alert';
 
 export default function GameList(props) {
     const { state: { gamesPlayerNotRegistered }, GetGamesPlayerNotRegistered } = useContext(GameContext)
@@ -18,9 +19,11 @@ export default function GameList(props) {
     const { state: { joinRequests }, AddNewJoinRequests, GetJoinRequests } = useContext(TeamContext);
     const [modalVisible, setModalVisible] = useState(false);
     const [choosenGame, setChoosenGame] = useState(null);
-
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
+    const [alertText, setAlertText] = useState('');
     const [modalPlayersVisible, setModalPlayersVisible] = useState(false);
     const [filterLocationName, setFilterLocationName] = useState("");
+    const [filterDistance, setFilterDistance] = useState(0)
     const [filterLocationCord, setFilterLocationCord] = useState({
         latitude: 0,
         longitude: 0,
@@ -36,7 +39,6 @@ export default function GameList(props) {
         return () => unsubscribe();
     }, [props.navigation]);
 
-    const [filterDistance, setFilterDistance] = useState(0)
 
     const getLocation = (loc) => {
         setFilterLocationName(loc);
@@ -47,6 +49,11 @@ export default function GameList(props) {
 
     const getDistance = (radius) => {
         setFilterDistance(radius);
+    }
+
+    const Alert = (message) => {
+        setAlertText(message)
+        setAlertModalVisible(true)
     }
 
     const ResetSearch = () => {
@@ -138,14 +145,15 @@ export default function GameList(props) {
     });
     return (
         <View style={{ alignItems: 'center' }}>
-            <Text style={[appCss.title, {marginTop: 60}]}>Find Game</Text>
+            {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
+            <Text style={[appCss.title, { marginTop: 60 }]}>Find Game</Text>
             <View style={styles.buttons}>
                 <TouchableOpacity style={[appCss.btnTouch, { width: '40%', }]} onPress={() => setModalVisible(true)}>
                     <Text style={appCss.txtBtnTouch}>Filter</Text>
                 </TouchableOpacity>
-                {modalPlayersVisible && <Modal_GamePlayers modalPlayersVisible={modalPlayersVisible} setModalPlayersVisible={() => setModalPlayersVisible(!modalPlayersVisible)} gameSerialNum={choosenGame} navigation={props.navigation}/>}
+                {modalPlayersVisible && <Modal_GamePlayers modalPlayersVisible={modalPlayersVisible} setModalPlayersVisible={() => setModalPlayersVisible(!modalPlayersVisible)} gameSerialNum={choosenGame} navigation={props.navigation} />}
                 {modalVisible && <Modal_FilterMap modalVisible={modalVisible} setModalVisible={() => setModalVisible(!modalVisible)} location={(loc) => getLocation(loc)} distance={(radius) => getDistance(radius)} locationCord={(data) => getLocationCord(data)} />}
-                <TouchableOpacity style={[appCss.btnTouch, { width: '40%' }, { flexDirection: "row", backgroundColor: "#FE5C5C", justifyContent: 'space-around' }]} onPress={() => hotGames.length == 0 ? alert("You do not have Hot Games right now") : props.navigation.navigate('HotGames')}>
+                <TouchableOpacity style={[appCss.btnTouch, { width: '40%' }, { flexDirection: "row", backgroundColor: "#FE5C5C", justifyContent: 'space-around' }]} onPress={() => hotGames.length == 0 ? Alert("You do not have Hot Games right now") : props.navigation.navigate('HotGames')}>
                     <Octicons name="flame" size={24} color="black" />
                     <Text style={appCss.txtBtnTouch}>Hot Games</Text>
                     <Octicons name="flame" size={24} color="black" />
@@ -170,7 +178,7 @@ export default function GameList(props) {
                     <ImageCourt source={require('../../assets/Court.png')} style={styles.court_img} />
                 </TouchableOpacity>
             </View>
-            <TextTickerRow navigation={props.navigation}/>
+            <TextTickerRow navigation={props.navigation} />
         </View>
     );
 }

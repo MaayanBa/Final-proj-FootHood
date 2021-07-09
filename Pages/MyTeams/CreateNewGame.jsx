@@ -7,6 +7,7 @@ import NumOfTeamsAndPlayers from './Components/NumOfTeamsAndPlayers';
 import Modal_LocationMap from './Components/Modal_LocationMap';
 import { Context as GameContext } from '../../Contexts/GameContext'
 import { Feather as LocationFeather } from '@expo/vector-icons';
+import Modal_Alert from '../Modal_Alert';
 
 const equipmentList = [
   { id: 0, title: 'Water', checked: false },
@@ -31,6 +32,7 @@ export default function CreateNewGame(props) {
   const [lastRegistrationTime, setLastRegistrationTime] = useState(null);
   const [selectedEquipments, setSelectedEquipments] = useState(null);
   const [edit, setEdit] = useState(false);
+  const [alertModalVisible, setAlertModalVisible] = useState(false);
   const [locationCord, setLocationCord] = useState({
     latitude: 0,
     longitude: 0,
@@ -99,7 +101,8 @@ export default function CreateNewGame(props) {
       props.navigation.goBack();
     }
     else {
-      alert("one or more of the field is missing")
+      setAlertModalVisible(true)
+      // alert("one or more of the field is missing")
     }
   }
 
@@ -114,6 +117,7 @@ export default function CreateNewGame(props) {
   return (
     <SafeAreaView>
       <ScrollView keyboardShouldPersistTaps="handled">
+        {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={"one or more of the field are missing"} />}
         <View style={[appCss.container, styles.container_extra]}>
           {/* Header */}
           <View style={styles.headerView}>

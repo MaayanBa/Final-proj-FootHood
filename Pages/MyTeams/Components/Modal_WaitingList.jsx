@@ -7,13 +7,15 @@ import AppCss from '../../../CSS/AppCss';
 import { Avatar, ListItem, Badge } from 'react-native-elements';
 import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 import { Context as GameContext } from '../../../Contexts/GameContext';
+import Modal_Alert from '../../Modal_Alert';
 
 export default function Modal_WaitingList(props) {
     const [waitingModalVisible, setWaitingModalVisible] = useState(false);
     const { state: { players } } = useContext(PlayerContext);
     const { state: { playersPerGame, waitList }, GetPlayers4Game, GetPlayerWaiting } = useContext(GameContext);
     const [waitBadge, setWaitBadge] = useState(0);
-
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
+    const [alertText, setAlertText] = useState('');
 
     useEffect(() => {
         GetPlayers4Game(props.game.GameSerialNum, players);
@@ -29,6 +31,11 @@ export default function Modal_WaitingList(props) {
         props.navigation.navigate('CardPlayer', { p })
         setWaitingModalVisible(!waitingModalVisible)
     }
+
+    const Alert=(message)=>{
+        setAlertText(message)
+        setAlertModalVisible(true)
+      }
 
     const waitingList = waitList.map((p, i) => (
         <ListItem key={i} style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
@@ -64,7 +71,8 @@ export default function Modal_WaitingList(props) {
 
     return (
         <View>
-            <TouchableOpacity onPress={() => waitBadge === 0 ? alert("There is no one currently waiting") : setWaitingModalVisible(true)} style={styles.WaitingList}>
+            {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
+            <TouchableOpacity onPress={() => waitBadge === 0 ? Alert("There is no one currently waiting") : setWaitingModalVisible(true)} style={styles.WaitingList}>
                 <Text style={styles.btnText}>Waiting List</Text>
             </TouchableOpacity>
             {modal_WaitingList}
@@ -122,7 +130,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 10,
         alignSelf: "center",
-        marginBottom:20
+        marginBottom: 20
     },
     playerList_scrollView: {
         height: 460,

@@ -3,20 +3,8 @@ import { View, Text, TouchableOpacity, Image, StyleSheet, LogBox } from 'react-n
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AppCss from '../../../CSS/AppCss';
 import { date } from 'yup';
+import Modal_Alert from '../../Modal_Alert';
 
-const appCss = AppCss;
-const styles = StyleSheet.create({
-    dateTime_View: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginTop: 25
-    },
-    calander_img: {
-        width: 60,
-        height: 60
-    },
-})
 
 export default function DateAndTime(props) {
     const [mode, setMode] = useState(null);
@@ -29,7 +17,8 @@ export default function DateAndTime(props) {
     const [dateRegistration, setDateRegistration] = useState(props.lastRegistrationDate != undefined ? new Date(props.lastRegistrationDate) : new Date());
     const [registrationTime, setRegistretionTime] = useState(props.lastRegistrationTime != undefined ? props.lastRegistrationTime : new Date());
     const [showLastRegistration, setShowLastRegistration] = useState(false);
-    //to use
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
+    const [alertText, setAlertText] = useState('');
 
     LogBox.ignoreLogs([
         'TypeError: _reactNative.NativeModules.RNDatePickerAndroid.dismiss is not a function',
@@ -38,6 +27,10 @@ export default function DateAndTime(props) {
         'Cannot update a component from inside the function body of a different component',
     ]);
 
+    const Alert = (message) => {
+        setAlertText(message)
+        setAlertModalVisible(true)
+    }
 
     useEffect(() => {
         props.liftState(dateGame, gameTime, dateRegistration, registrationTime);
@@ -57,7 +50,7 @@ export default function DateAndTime(props) {
                     setShowDateTimePicker_Game(true)
                 }
                 else {
-                    alert("You must choose date in feature")
+                    Alert("You must choose date in future")
                     setShowChoosenDateGame(false)
                 }
             } else if (mode === 'time') {
@@ -73,7 +66,7 @@ export default function DateAndTime(props) {
                         setShowChoosenDateGame(true);
                     }
                     else {
-                        alert("You must choose the future game time")
+                        Alert("You must choose the future game time")
                         setShowChoosenDateGame(false)
                     }
                 }
@@ -90,7 +83,7 @@ export default function DateAndTime(props) {
                     setMode('time');
                     setShowDateTimePicker_Regi(true); // to show the picker again in time mode
                 } else
-                    alert("The date you have choosen is after the game date.Please choose another date.")
+                    Alert("The date you have choosen is after the game date.Please choose another date.")
 
             } else if (mode === 'time') {
                 const selectedlastTime = selectedValue;
@@ -104,7 +97,7 @@ export default function DateAndTime(props) {
                         setShowLastRegistration(true);
                     }
                     else {
-                        alert("You must choose the last registration time before the game time")
+                        Alert("You must choose the last registration time before the game time")
                         setShowLastRegistration(false)
                     }
                 }
@@ -131,7 +124,7 @@ export default function DateAndTime(props) {
                 </TouchableOpacity>
                 <Text style={appCss.inputLabel}>Game Date {'&'} Time:</Text>
             </View>
-
+            {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
             {showshowDateTimePicker_Game && (
                 <DateTimePicker
                     testID="dateTimePicker"
@@ -186,6 +179,20 @@ export default function DateAndTime(props) {
         </View>
     )
 }
+
+const appCss = AppCss;
+const styles = StyleSheet.create({
+    dateTime_View: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 25
+    },
+    calander_img: {
+        width: 60,
+        height: 60
+    },
+})
 
 
 

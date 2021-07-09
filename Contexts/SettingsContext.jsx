@@ -14,7 +14,7 @@ const AddFeedback = dispatch => async (newFeedback) => {
         // console.log(FeedbackContext)
         const response = await SettingsApi.post('/AddFeedback', newFeedback)
         console.log(response.data)
-        alert("Thank you for leaving a feedback")
+        //alert("Thank you for leaving a feedback")
     } catch (err) {
         console.log("error in AddFeedback")
         console.log(err)
@@ -31,7 +31,7 @@ const ChangePasscode = dispatch => async (player) => {
         })
 
         if (response.status < 400 || response.status >= 500) {
-            alert(response.data)
+            //alert(response.data)
         }
     } catch (err) {
         console.log("error in ChangePasscode ")

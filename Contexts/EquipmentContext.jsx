@@ -60,7 +60,7 @@ const AddNewItem = dispatch => async (newEquipment) => {
         console.log(newEquipment)
         const response = await EquipmentApi.post('/AddNewItem', newEquipment)
         GetAllEquipments(newEquipment.GameSerialNum)
-        alert(response.data)
+        // alert(response.data)
         //dispatch({ type: 'AssignEquipment2Player', payload: response.data })
     } catch (err) {
         console.log(err.data)

@@ -6,6 +6,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import { Context as SettingsContext } from '../../Contexts/SettingsContext';
 import { useTheme } from '@react-navigation/native';
+import Modal_Alert from '../Modal_Alert';
 
 export default function ChangePassWord(props) {
     const { state: { token } } = useContext(AuthContext);
@@ -16,7 +17,9 @@ export default function ChangePassWord(props) {
     const [confirmPassCode, setConfirmPassCode] = useState(null);
     const [invalidPassword, setInvalidPassword] = useState(true)
     const [secureCurrentPassword, setSecureCurrentPassword] = useState(true);
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [secureNewPassword, setSecureNewPassword] = useState(true);
+    const [alertText, setAlertText] = useState('');
     const { colors } = useTheme();
 
     useEffect(() => {
@@ -44,17 +47,22 @@ export default function ChangePassWord(props) {
                     ChangePasscode(player);
                     props.navigation.goBack();
                 }
-                else
-                    alert("Please make sure to confirm password")
+                else {
+                    setAlertText("Please make sure to confirm the password")
+                    setAlertModalVisible(true)
+                }
             }
             else
                 setInvalidPassword(false)
         }
-        else
-            alert("Something wrong with your email or password,\nPlease make sure you inserted the correct details")
+        else{
+            setAlertText("Please make sure you inserted the correct email and password")
+            setAlertModalVisible(true)
+        }
     }
     return (
         <View style={[appCss.container, { paddingHorizontal: 35 }]}>
+            {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
             {/* <Header /> */}
             <View style={styles.header}>
                 <Text style={[appCss.title, appCss.space]}>Change Password</Text>

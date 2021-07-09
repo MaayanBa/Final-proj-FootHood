@@ -26,7 +26,7 @@ export default function EmailVerification() {
    const verifyEmail = async (values) => {
       console.log(values.email)
       await restorePassCode(values.email)
-      alert("Email has been sended")
+      alert("Email has been sent")
       //console.log("Success Restore");
    }
    return (

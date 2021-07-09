@@ -12,7 +12,8 @@ import { Feather } from '@expo/vector-icons';
 import Modal_RulesAndLaws from './Components/Modal_RulesAndLaws';
 import Modal_AddPlayers from './Components/Modal_AddPlayers';
 import NotificationActions from '../../Services/NotificationActions';
-
+import Modal_ActionAlert from '../Modal_ActionAlert';
+import Modal_Alert from '../Modal_Alert';
 
 export default function TeamDetailsPage(props) {
   const { key } = props.route.params;
@@ -22,40 +23,24 @@ export default function TeamDetailsPage(props) {
   const [user, setUser] = useState(token)
   const [forceState, setForceState] = useState(false);
   const [newKey, setNewKey] = useState(key);
-  // const [pushedLeave, setPushedLeave] = useState(false);
-
-  const RemovePlayer = async (p) => {
-    let playerInTeam = {
-      TeamSerialNum: myTeams[newKey].TeamSerialNum,
-      EmailPlayer: p.Email
-    }
-    await RemoveFromTeam(playerInTeam)
-    await GetTeamDetails(token.Email);
-    // setForceState(!forceState);
-  }
+  const [alertActionModalVisible, setAlertActionModalVisible] = useState(false);
+  const [alertText, setAlertText] = useState('');
+  const [alertAction, setAlertAction] = useState('');
+  const [alertPlayer, setAlertPlayer] = useState()
+  const [alertTeam, setAlertTeam] = useState()
+  const [alertModalVisible, setAlertModalVisible] = useState(false);
 
   useEffect(() => {
     ForceState()
   }, [myTeams])
 
-  const RemoveBtn = (p) =>
-    Alert.alert(
-      "Remove Player",
-      "Do you want to remove " + p.FirstName + " " + p.LastName + " From the team? ",
-      [
-        {
-          text: "OK",
-          onPress: () => RemovePlayer(p),
-          style: "ok"
-        },
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-
-      ]
-    );
+  const RemoveBtn = (p) => {
+    setAlertText("Do you want to remove this player?")
+    setAlertAction("RemovePlayer")
+    setAlertActionModalVisible(true)
+    setAlertPlayer(p)
+    setAlertTeam(myTeams[newKey].TeamSerialNum)
+  }
 
   const ForceState = async () => {
     setTeamPlayers(myTeams[newKey], players);
@@ -72,17 +57,13 @@ export default function TeamDetailsPage(props) {
       TeamSerialNum: myTeams[newKey].TeamSerialNum,
       EmailPlayer: user.Email
     }
-
+    await setAlertModalVisible(true)
     props.navigation.navigate('MyTeams');
     props.navigation.navigate('Main');
-
     await LeaveTeam(playerInTeam)
     await props.navigation.navigate('Main');
 
-
-
-    alert("You have left the team successfully");
-
+    // alert("You have left the team successfully");
     // props.navigation.goBack();
     // props.navigation.goBack();
     // //GetTeamDetails(token.Email);
@@ -91,6 +72,8 @@ export default function TeamDetailsPage(props) {
 
   return (
     <SafeAreaView style={[appCss.container, styles.container_extra]} >
+      {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={"You have left the team successfully"} />}
+      {alertActionModalVisible && <Modal_ActionAlert alertActionModalVisible={alertActionModalVisible} setAlertActionModalVisible={() => setAlertActionModalVisible(!alertActionModalVisible)} text={alertText} action={alertAction} item={alertPlayer} team={alertTeam} />}
       <NotificationActions navigation={props.navigation} />
       {/* ImageBackGround With Buttons */}
       <ImageBackground style={styles.imgBG} source={{ uri: myTeams[newKey].TeamPicture }}>

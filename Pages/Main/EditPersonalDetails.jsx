@@ -14,6 +14,7 @@ import { Context as CitiesContext } from '../../Contexts/CitiesContext';
 import CitiesDropDown from '../MyTeams/Components/CitiesDropDown';
 import { getLocation, geocodeLocationByName } from '../../Services/location-service';
 import Slider from '@react-native-community/slider';
+import Modal_Alert from '../Modal_Alert';
 
 LogBox.ignoreLogs([
     'TypeError: _reactNative.NativeModules.RNDatePickerAndroid.dismiss is not a function',
@@ -35,11 +36,18 @@ export default function EditPersonalDetails(props) {
     const [sliderValue, setSliderValue] = useState(token.DistanceOfInvites)
     const { state: { cities }, GetListCities } = useContext(CitiesContext);
     const [cityLive, setCityLive] = useState(token.PlayerCity);
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
+    const [alertText, setAlertText] = useState('');
     const [region, setRegion] = useState({
         latitude: token.LatitudeHomeCity,
         longitude: token.LongitudeHomeCity,
     });
     const phoneNumber = +JSON.stringify(token.Phone)
+
+    const Alert=(message)=>{
+        setAlertText(message)
+        setAlertModalVisible(true)
+      }
 
     useEffect(() => {
         GetListCities();
@@ -133,7 +141,7 @@ export default function EditPersonalDetails(props) {
         if (`${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}` === `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
             return null;
         else if (today.setHours(0, 0, 0, 0) < date.setHours(0, 0, 0, 0)) {
-            alert("Please enter valid date of birth");
+            Alert("Please enter valid date of birth");
             setDate(new Date());
         }
         else
@@ -183,11 +191,12 @@ export default function EditPersonalDetails(props) {
             ChangePersonalDetails(player)
             props.navigation.goBack()
         }
-        else alert("Something wrong with your pohne number")
+        else Alert("Something wrong with your phone number")
     }
     return (
         <SafeAreaView>
             <ScrollView>
+            {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
                 <StatusBar backgroundColor='transparent' barStyle="light-content" />
                 <View style={appCss.container, { padding: 40 }}>
                     <View style={styles.title_View}>

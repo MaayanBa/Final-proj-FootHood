@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext,useState} from 'react';
 import {
     StyleSheet, TextInput,
     View, Text, TouchableOpacity,
@@ -10,13 +10,14 @@ import { Formik } from "formik";
 import AppCss from '../../CSS/AppCss';
 import { Context as SettingsContext } from '../../Contexts/SettingsContext';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
-
+import Modal_Alert from '../Modal_Alert';
 
 
 export default function SendFeedback(props) {
     const { AddFeedback } = useContext(SettingsContext);
     const { state: { token } } = useContext(AuthContext);
-
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
+    const [alertText, setAlertText] = useState('');
 
     const SendFeedback = (values) => {
         if (values.subject !== '' && values.content !== '') {
@@ -29,7 +30,8 @@ export default function SendFeedback(props) {
             props.navigation.goBack();
         }
         else {
-            alert("Please fill in all the details.")
+            setAlertText("Please fill in all the details.")
+            setAlertModalVisible(true)
         }
     }
 
@@ -37,6 +39,7 @@ export default function SendFeedback(props) {
     return (
         <SafeAreaView>
             <ScrollView>
+            {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
                 <View style={[styles.container, { padding: 20, paddingTop: 60 }]}>
                     <Text style={[appCss.title, { paddingBottom: 20 }]}>Feedback</Text>
                     <Formik

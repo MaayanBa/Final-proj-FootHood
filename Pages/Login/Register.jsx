@@ -15,10 +15,11 @@ import { Context as CitiesContext } from '../../Contexts/CitiesContext';
 import CitiesDropDown from '../MyTeams/Components/CitiesDropDown';
 import { getLocation, geocodeLocationByName } from '../../Services/location-service';
 import Slider from '@react-native-community/slider';
-
+import Modal_Alert from '../Modal_Alert';
 
 LogBox.ignoreLogs([
   'TypeError: _reactNative.NativeModules.RNDatePickerAndroid.dismiss is not a function',
+  'Warning: Cannot update a component from inside the function body of a different component.'
 ]);
 export default function Register(props) {
   const { state: { token, userFromGoogle }, register } = useContext(AuthContext);
@@ -26,7 +27,7 @@ export default function Register(props) {
   const [gender, setGender] = useState(null);
   const [date, setDate] = useState(new Date());
   //const [dateBigger, setDateBigger] = useState(false);
-
+  const [alertModalVisible, setAlertModalVisible] = useState(false);
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [staminaStars, setStaminaStars] = useState(4);
@@ -133,7 +134,7 @@ export default function Register(props) {
     if (`${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}` === `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
       return null;
     else if (today.setHours(0, 0, 0, 0) < date.setHours(0, 0, 0, 0)) {
-      alert("Please enter valid date of birth");
+      setAlertModalVisible(true);
       setDate(new Date());
     }
     else
@@ -393,7 +394,7 @@ export default function Register(props) {
                     <TouchableOpacity onPress={() => showDatepicker()}>
                       <Image source={require("../../assets/Calander.png")} style={styles.calanderStyle} />
                     </TouchableOpacity>
-
+                    {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={"Please enter a valid date of birth"}/>}
                   </View>
 
                   {show && (

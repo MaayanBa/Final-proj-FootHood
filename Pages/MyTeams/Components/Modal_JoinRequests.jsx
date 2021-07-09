@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import {
     StyleSheet, TouchableOpacity, View, Text,
-    Modal as ModalJoinRequests, Pressable, Image, ImageBackground,ScrollView
+    Modal as ModalJoinRequests, Pressable, Image, ImageBackground, ScrollView
 } from 'react-native';
 import { AntDesign as MailIcon, AntDesign as PlusIcon, Feather as RequestAction } from '@expo/vector-icons';
 import AppCss from '../../../CSS/AppCss';
@@ -10,6 +10,7 @@ import { Context as TeamContext } from '../../../Contexts/TeamContext';
 import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 import { Context as GameContext } from '../../../Contexts/GameContext';
 import { Context as AuthContext } from '../../../Contexts/AuthContext';
+import Modal_Alert from '../../Modal_Alert';
 
 export default function Modal_JoinRequests(props) {
     const [requestsModalVisible, setRequestsModalVisible] = useState(false);
@@ -18,7 +19,7 @@ export default function Modal_JoinRequests(props) {
     const { DeleteRequest, ApproveRequest, GetPlayers4Game } = useContext(GameContext);
     const { state: { token } } = useContext(AuthContext)
     const [badge, setBadge] = useState(0);
-
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
 
     useEffect(() => {
         GetJoinRequests(props.game, players)
@@ -87,7 +88,8 @@ export default function Modal_JoinRequests(props) {
 
     return (
         <View>
-            <TouchableOpacity onPress={() => badge === 0 ? alert("There are no requests") : setRequestsModalVisible(true)} style={styles.PlayerRequest}>
+            {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={"There are no requests"} />}
+            <TouchableOpacity onPress={() => badge === 0 ?setAlertModalVisible(true): setRequestsModalVisible(true)} style={styles.PlayerRequest}>
                 <Text style={styles.btnText}>Join Requests</Text>
                 <MailIcon name="mail" size={24} color="black" />
             </TouchableOpacity>
@@ -147,7 +149,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 10,
         alignSelf: "center",
-        marginBottom:20,
+        marginBottom: 20,
     },
     playerList_scrollView: {
         height: 460,

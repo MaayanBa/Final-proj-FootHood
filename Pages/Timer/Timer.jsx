@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, TextInput, TouchableOpacity, Image as ImageBall, ScrollView } from 'react-native';
 import CountDown from 'react-native-countdown-component';
 import AppCss from '../../CSS/AppCss';
+import Modal_Alert from '../Modal_Alert';
 
 const appCss = AppCss;
 
@@ -11,7 +12,7 @@ export default function Timer() {
     const [clicked, setClicked] = useState(false);
     const [run, setRun] = useState(true);
     const [pauseBtn, setPauseBtn] = useState('Pause')
-
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
 
     useEffect(() => {
         setSelectTime(totalDuration)
@@ -19,7 +20,7 @@ export default function Timer() {
 
     const StartTimer = () => {
         if (totalDuration == "")
-            alert("Please insert minutes of game")
+            setAlertModalVisible(true)
         else {
             setClicked(true)
         }
@@ -38,7 +39,6 @@ export default function Timer() {
 
     const Finish = () => {
         setClicked(false)
-        //alert('Times up!')
     }
 
     const Reset = () => {
@@ -47,6 +47,7 @@ export default function Timer() {
     return (
         <View style={appCss.container} >
             <View style={appCss.container}>
+                {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={"Please insert the minutes of the game"} />}
                 <Text style={[appCss.title, { paddingBottom: 20 }]}>Timer</Text>
                 {clicked == true ? <CountDown until={selectTime * 60} timeToShow={['H', 'M', 'S']} digitStyle={{ backgroundColor: '#FFF' }}
                     digitTxtStyle={{ color: 'black' }} timeLabelStyle={{ color: 'white', fontWeight: 'bold' }}
