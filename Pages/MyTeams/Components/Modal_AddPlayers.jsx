@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import AppCss from '../../../CSS/AppCss';
-import Modal_SearchInApp from './Modal_SearchInApp';
+import ModalAddPlayers4NewTeam from '../Components/ModalAddPlayers4NewTeam';
 import Modal_ContactList from './Modal_ContactList';
 
 
@@ -67,12 +67,15 @@ export default function Modal_AddPlayers(props) {
       {modal_AddNewPlayer}
       {
         showSearchPlayer_Modal &&
-        <Modal_SearchInApp showSearchPlayer_Modal={showSearchPlayer_Modal}
+        <ModalAddPlayers4NewTeam showSearchPlayer_Modal={showSearchPlayer_Modal}
           setShowSearchPlayer_Modal={setShowSearchPlayer_Modal}
           setAddPlayerModalVisible={setAddPlayerModalVisible}
           teamKey={props.teamKey}
           setForceState={props.setForceState}
-          props={props} />
+          props={props} 
+          addedPlayers={props.addedPlayers}
+          setAddedPlayers={props.setAddedPlayers}
+          />
       }
       {showContactListModal && <Modal_ContactList showContactListModal={showContactListModal}
         setShowContactListModal={setShowContactListModal}

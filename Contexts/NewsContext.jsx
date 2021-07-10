@@ -17,8 +17,9 @@ const GetNews = dispatch => async (israelNews) => {
         let linkArr = [];
         let israelUrl = 'https://www.one.co.il/cat/coop/xml/rss/newsfeed.aspx?c=1';
         let worldNews = 'https://www.one.co.il/cat/coop/xml/rss/newsfeed.aspx?c=3';
-
-        fetch(israelNews === true ? israelUrl : worldNews)
+        // let worldNews = 'https://www.one.co.il/cat/coop/xml/rss/newsfeed.aspx';
+        
+        await fetch(israelNews === true ? israelUrl : worldNews)
             .then(res => res.text())
             .then(data => {
                 var XMLParser = require('react-xml-parser');
@@ -49,9 +50,6 @@ const GetNews = dispatch => async (israelNews) => {
                 dispatch({ type: 'SetLinks', payload: linkArr })
             })
             .catch(err => console.log(err));
-
-
-
     } catch (error) {
         console.log("err GetNews")
         console.log(error)

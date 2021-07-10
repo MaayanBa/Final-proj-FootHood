@@ -31,14 +31,16 @@ const streetFootballRules = "‣Teams- Street team can have between 4-8 player i
 
 
 
-export default function CreateNewTeam({ navigation }) {
+export default function CreateNewTeam(props) {
   const { state: { token } } = useContext(AuthContext);
-  const { teamState, CreateNewTeam } = useContext(TeamContext);
+  const { CreateNewTeam } = useContext(TeamContext);
   const [emailManager, setEmailManager] = useState(token.Email)
   const [privateOrPublic, setPrivateOrPublic] = useState('public');
   const [TeamImageUri, setimageUri] = useState(null);
   const [addPlayer, setAddPlayer] = useState(false)
   const [autoRules, setAutoRules] = useState('')
+  const [addedPlayers, setAddedPlayers] = useState([])
+
 
   const btnOpenGalery = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -53,19 +55,25 @@ export default function CreateNewTeam({ navigation }) {
   };
 
   const CreateTeam = async (values) => {
-    let priOpub = false; //private or public 
-    privateOrPublic === 'public' ? priOpub = false : null;
-    let newTeam = {
-      teamName: values.teamName,
-      TeamPicture: TeamImageUri,
-      isPrivate: priOpub,
-      rulesAndLaws: autoRules,
-      EmailManager: emailManager,
-      addPlayers: []/*values.addPlayers*/,
+    if (TeamImageUri !== null) {
+      let priOpub = false; //private or public 
+      privateOrPublic === 'public' ? priOpub = false : null;
+      let newTeam = {
+        TeamName: values.teamName,
+        TeamPicture: TeamImageUri,
+        IsPrivate: priOpub,
+        RulesAndLaws: autoRules,
+        EmailManager: emailManager,
+        PlayersList: addedPlayers
+      }
+      await CreateNewTeam(newTeam);
+      // alert("The Team has Added")
+      props.navigation.navigate('MyTeams')
     }
-    await CreateNewTeam(newTeam);
-    // alert("The Team has Added")
-    navigation.navigate('MyTeams')
+    else {
+      alert("You must to choos picture")
+    }
+
   }
   return (
     <SafeAreaView>
@@ -132,7 +140,7 @@ export default function CreateNewTeam({ navigation }) {
                 </View>
                 <Text style={appCss.inputLabel}>Teams Rules And Laws:</Text>
                 <View style={styles.buttons}>
-                <TouchableOpacity style={[appCss.btnTouch, { marginTop: 10, width: '40%' }]} onPress={() => setAutoRules(streetFootballRules)}>
+                  <TouchableOpacity style={[appCss.btnTouch, { marginTop: 10, width: '40%' }]} onPress={() => setAutoRules(streetFootballRules)}>
                     <Text style={appCss.txtBtnTouch}>Street Rules</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[appCss.btnTouch, { marginTop: 10, width: '40%', }]} onPress={() => setAutoRules(footballRules)}>
@@ -150,7 +158,7 @@ export default function CreateNewTeam({ navigation }) {
                   />
                 </View>
 
-                <Modal_AddPlayers />
+                <Modal_AddPlayers props={props} addedPlayers={addedPlayers} setAddedPlayers={setAddedPlayers} />
 
                 <TouchableOpacity activeOpacity={0.8} disabled={!isValid} onPress={handleSubmit} style={[appCss.btnTouch, { width: '60%' }]}>
                   <Text style={appCss.txtBtnTouch}>Create New Team</Text>

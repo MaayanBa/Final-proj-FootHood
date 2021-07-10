@@ -8,7 +8,7 @@ import Modal_FullNews from './Modal_FullNews';
 
 
 export default function News() {
-    const [israelNews, setIsraelNews] = useState(true)
+    const [israelNews, setIsraelNews] = useState(false)
     const { state: { titles, links }, GetNews, } = useContext(NewsContext);
     const [modalNewsVisible, setModalNewsVisible] = useState(false);
 

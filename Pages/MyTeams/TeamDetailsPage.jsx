@@ -57,7 +57,7 @@ export default function TeamDetailsPage(props) {
       TeamSerialNum: myTeams[newKey].TeamSerialNum,
       EmailPlayer: user.Email
     }
-    await setAlertModalVisible(true)
+    // setAlertModalVisible(true)
     props.navigation.navigate('MyTeams');
     props.navigation.navigate('Main');
     await LeaveTeam(playerInTeam)
