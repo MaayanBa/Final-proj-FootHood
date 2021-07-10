@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     modal_Txt: {
         padding: 20,
         alignItems: 'center',
-        textAlign: 'left',
+        textAlign: 'center',
         fontWeight: "bold",
         color: 'white'
     },

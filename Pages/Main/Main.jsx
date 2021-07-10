@@ -21,11 +21,18 @@ Notifications.setNotificationHandler({
 
 export default function Main({ navigation }) {
     const { state: { token }, tryLocalSignin, pushNotificationToken, getSettingNotifications } = useContext(AuthContext)
-    const { state: { myTeams }, GetTeamDetails, } = useContext(TeamContext);
+    const { state: { myTeams, LeaveTeamAlert }, GetTeamDetails, } = useContext(TeamContext);
     const { GetTodaysGame } = useContext(GameContext);
     const { GetPlayers } = useContext(PlayerContext);
     const [user, setUser] = useState(token)
     const [renderScreen, setRenderScreen] = useState(false)
+    // const [alertActive, setAlertActive] = useState()
+
+    // useEffect(() => {
+    //     if (LeaveTeamAlert === 'The Team Has Been Removeed') {
+    //         console.log("IM HERE")
+    //     }
+    // }, [alertActive])
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {

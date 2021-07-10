@@ -57,13 +57,23 @@ export default function TeamDetailsPage(props) {
       TeamSerialNum: myTeams[newKey].TeamSerialNum,
       EmailPlayer: user.Email
     }
-    await setAlertModalVisible(true)
+    // await setAlertModalVisible(true)
     props.navigation.navigate('MyTeams');
     props.navigation.navigate('Main');
     await LeaveTeam(playerInTeam)
     await props.navigation.navigate('Main');
-
     // alert("You have left the team successfully");
+
+    Alert.alert(
+      "Leave Team",
+      "You have left the team successfully",
+      [
+        {
+          text: "Ok",
+          style: "cancel"
+        },
+      ]
+    );
     // props.navigation.goBack();
     // props.navigation.goBack();
     // //GetTeamDetails(token.Email);

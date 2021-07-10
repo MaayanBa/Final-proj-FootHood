@@ -152,12 +152,13 @@ const restorePassCode = dispatch => async (email) => {
         //console.log("Email -----> " + emailVerify.data + "----- ststus----->" + emailVerify.status);
         if (emailVerify.data == true && emailVerify.status === 200) {
             dispatch({ type: 'verifyEmail', payload: emailVerify.data })
+            alert("Email has been sent")
         }
     } catch (error) {
         //console.log("im in catch in restore psscode  ===== > " + error.response)
         //console.log(error.response.data)
-        // alert("The email you have entered is wrong. Please try again")
-        dispatch({type: 'add_error',payload: 'The email you entered is wrong. Please try again'})
+        alert("The you have entered a wrong email. Please try again")
+        //dispatch({type: 'add_error',payload: 'The email you entered is wrong. Please try again'})
     }
 }
 
@@ -174,8 +175,8 @@ const updatPassCode = dispatch => async (player) => {
     } catch (error) {
         // console.log("im in catch in reset passcode  ===== > " + error.response)
         // console.log(error.response.data)
-        // alert("The otp you have entered is wrong. Please try again")
-        dispatch({type: 'add_error',payload: 'The otp you have entered is wrong. Please try again'})
+        alert("The otp you have entered is wrong. Please try again")
+        // dispatch({type: 'add_error',payload: 'The otp you have entered is wrong. Please try again'})
     }
 }
 const resetRestore_PassCode_values = dispatch => async (player) => {

@@ -141,9 +141,9 @@ export default function GamePage(props) {
               <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>{(registered || isWaiting) ? "Leave" : "Join"}</Text>
               <Image source={require('../../assets/ball.png')} resizeMode="contain" style={styles.imgBall} />
             </TouchableOpacity>
-            {/* <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('RateGame', { index, keyTeam })} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('RateGame', { index, keyTeam })} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
               <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>Test-GameRank</Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
