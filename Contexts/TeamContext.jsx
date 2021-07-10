@@ -8,7 +8,7 @@ const teamReducer = (state, action) => {
             return { ...state, myTeams: action.payload }
         }
         case 'LeaveTeam': {
-            return { ...state, myTeams: action.payload }
+            return { ...state, LeaveTeamAlert: action.payload }
         }
         case 'clearState': {
             return { ...state, myTeams: [] }
@@ -91,10 +91,10 @@ const LeaveTeam = dispatch => async (playerInTeam) => {
         const response = await TeamApi.post('/LeaveTeam', playerInTeam);
         console.log("Leave teame")
         console.log(response.data)
-        // if (response.data.length == 0)
-        //     await dispatch({ type: 'LeaveTeam', payload: [] })
-        // else
-        //     await dispatch({ type: 'LeaveTeam', payload: response.data })
+        if (response.data.length == 0)
+            await dispatch({ type: 'LeaveTeam', payload: [] })
+        else
+            await dispatch({ type: 'LeaveTeam', payload: response.data })
     } catch (err) {
         console.log("in error In Leave team" + err.response.data)
         console.log(err.response.data)
@@ -238,6 +238,7 @@ export const { Context, Provider } = CreateDataContext(
         searchedPlayers: [],
         joinRequests: [],
         teamPlayers: [],
-        loadMessages: ''
+        loadMessages: '',
+        LeaveTeamAlert:''
     }
 );

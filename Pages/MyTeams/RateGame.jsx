@@ -14,7 +14,7 @@ export default function RateGame(props) {
     const { state: { token } } = useContext(AuthContext)
     // const { state: { myTeams } } = useContext(TeamContext);
     const { state: { gamesList, playersPerGame }, GetPlayers4Game } = useContext(GameContext);
-    const { state: { players } } = useContext(PlayerContext);
+    const { state: { players }, RankPlayerAfterGame } = useContext(PlayerContext);
     const [playerChoosen, setPlayerChoosen] = useState("");
     const [selectRate, setSelectedRate] = useState("")
     const [powerRate, setPowerRate] = useState(null)
@@ -72,15 +72,23 @@ export default function RateGame(props) {
     }
 
     const Finish = () => {
+
         if (powerRate > 0 && defenceRate > 0 && attackRate > 0) {
-            //RankPlayer(playerChoosen.Email, token.Email, powerRate, defenceRate, attackRate)
-            //Create a function that send gameserialnumber and email player rates and email player rated. If rated,
-            //Do not let rate again by the same player
+            if (powerRate === 100 && defenceRate === 100 && attackRate === 100) {
+                Alert("No one is perfect except Messi and Ronaldo =)\nPlease rate more detailed the values")
+            }
+            else{
+            RankPlayerAfterGame(playerChoosen, token.Email, powerRate, attackRate, defenceRate, gamesList[index].GameSerialNum)
+            const temp = playersToRate.filter((item) => item.Email !== playerChoosen);
+            setPlayersToRate(temp)
+
             setPlayerChoosen("")
             setPowerRate(null)
             setAttackRate(null)
             setDefenceRate(null)
             setSelectedRate("")
+            //console.log(playerChoosen)
+            }
         }
         else
             Alert("Please fill in all types of rank")
@@ -108,7 +116,7 @@ export default function RateGame(props) {
             <Text style={[appCss.inputLabel, { marginTop: 30 }]}>Game Date: {showDate(new Date(gamesList[index].GameDate))}</Text>
             <Text style={[appCss.inputLabel, { marginTop: 30, marginBottom: 30 }]}>Choose Player To Rank:</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                {playerToRateView}
+                {playersToRate.length==0?<Text style={[appCss.noResultsTxt,{textAlign:'center'}]}>You Have Rated All The Players!{"\n"}See You Next Game!</Text>:playerToRateView}
             </View>
             {playerChoosen == "" ? null :
                 <View>

@@ -49,7 +49,7 @@ const AssignEquipment2Player = dispatch => async (assignEquipment2Player) => {
     try {
         //console.log(assignEquipment2Player)
         const response = await EquipmentApi.post('/AssignEquipment2Player', assignEquipment2Player)
-        alert("The equipment was assigned successfuly")
+        // alert("The equipment was assigned successfuly")
     } catch (err) {
         console.log(err.data)
     }

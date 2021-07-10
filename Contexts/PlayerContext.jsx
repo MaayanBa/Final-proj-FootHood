@@ -39,12 +39,28 @@ const RankPlayer = dispatch => async (EmailofRatedPlayer, EmailofRatingPlayer, P
     }
 }
 
+const RankPlayerAfterGame = dispatch => async (EmailofRatedPlayer, EmailofRatingPlayer, PowerRating, AttackRating, DefenseRating,GameSerialNum) => {
+    try {
+        if (EmailofRatedPlayer == EmailofRatingPlayer)
+            alert("You can't rate yourself")
+        else {
+            const response = await RankApi.post('/RankPlayerAfterGame', { EmailofRatedPlayer, EmailofRatingPlayer, PowerRating, AttackRating, DefenseRating,GameSerialNum })
+            alert(response.data);
+            console.log(response.data)
+        }
+    } catch (err) {
+        console.log("err RankPlayerAfterGame - Player Context")
+        console.log(err)
+    }
+}
+
 export const { Context, Provider } = CreateDataContext(
     //Reducer
     playerReducer,
     {
         GetPlayers,
         RankPlayer,
+        RankPlayerAfterGame,
     },
     {
         players: [],
