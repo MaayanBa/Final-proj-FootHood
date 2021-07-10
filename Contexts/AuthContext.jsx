@@ -2,6 +2,8 @@ import CreateDataContext from './createDataContext';
 import AuthApi from '../api/Auth';
 import SettingsApi from '../api/Settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import TimerApi from '../api/Timer';
+
 
 const authReducer = (state, action) => {
     switch (action.type) {
@@ -279,7 +281,7 @@ const ChangePersonalDetails = dispatch => async (player)=>{
 
 const StartTimer = dispatch => async ()=>{
     try {
-        await Timer.get('/StartTimer');
+        await TimerApi.get('/StartTimer');
     } catch (error) {
         console.log("error in StartTimer")
     }
@@ -287,7 +289,7 @@ const StartTimer = dispatch => async ()=>{
 
 const StopTimer = dispatch => async ()=>{
     try {
-        await Timer.get('/StopTimer');
+        await TimerApi.get('/StopTimer');
     } catch (error) {
         console.log("error in StopTimer")
     }
