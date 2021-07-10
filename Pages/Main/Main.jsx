@@ -9,8 +9,6 @@ import { Context as GameContext } from '../../Contexts/GameContext'
 import { Context as PlayerContext } from '../../Contexts/PlayerContext'
 import * as Notifications from 'expo-notifications';
 import NotificationActions from '../../Services/NotificationActions';
-import XMLParser from 'react-xml-parser';
-import TextTicker from 'react-native-text-ticker'
 import { Dimensions } from 'react-native';
 
 Notifications.setNotificationHandler({

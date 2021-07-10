@@ -47,7 +47,6 @@ const GetNews = dispatch => async (israelNews) => {
                 })
                 // console.log(linkArr)
                 dispatch({ type: 'SetLinks', payload: linkArr })
-
             })
             .catch(err => console.log(err));
 

@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { ActionSheetIOS } from 'react-native';
-import {StyleSheet, View, Text,Modal as ModalAlertAction, Pressable, ImageBackground} from 'react-native';
+import { StyleSheet, View, Text, Modal as ModalAlertAction, Pressable, ImageBackground } from 'react-native';
 import AppCss from '../CSS/AppCss';
 import { Context as AuthContext } from '../Contexts/AuthContext';
 import { Context as GameContext } from '../Contexts/GameContext';
@@ -8,35 +7,33 @@ import { Context as TeamContext } from '../Contexts/TeamContext';
 
 export default function Modal_ActionAlert(props) {
     const { RemoveGameFromList } = useContext(GameContext);
-    const { state: { token } ,signOut} = useContext(AuthContext)
-    const { GetTeamDetails,RemoveFromTeam } = useContext(TeamContext);
-
+    const { state: { token }, signOut } = useContext(AuthContext)
+    const { GetTeamDetails, RemoveFromTeam } = useContext(TeamContext);
 
     const Action = async (action, item) => {
-        if (action === 'RemoveGame') {
-            let game2Remove = {
-                EmailManager: token.Email,
-                GameSerialNum: item.GameSerialNum,
-                TeamSerialNum: item.TeamSerialNum
-            }
-            await RemoveGameFromList(game2Remove)
-            props.setAlertActionModalVisible()
+        switch (action) {
+            case 'RemoveGame':
+                let game2Remove = {
+                    EmailManager: token.Email,
+                    GameSerialNum: item.GameSerialNum,
+                    TeamSerialNum: item.TeamSerialNum
+                }
+                await RemoveGameFromList(game2Remove)
+                break;
+            case 'RemovePlayer':
+                let playerInTeam = {
+                    TeamSerialNum: props.team,
+                    EmailPlayer: item.Email
+                }
+                console.log(playerInTeam)
+                await RemoveFromTeam(playerInTeam)
+                await GetTeamDetails(token.Email);
+                break;
+            case 'LogOutUser':
+                signOut(token.Email)
+                break;
         }
-        if (action === 'RemovePlayer') {
-            let playerInTeam = {
-                TeamSerialNum: props.team,
-                EmailPlayer: item.Email
-            }
-            console.log(playerInTeam)
-            await RemoveFromTeam(playerInTeam)
-            await GetTeamDetails(token.Email);
-            props.setAlertActionModalVisible()
-
-        }
-        if (action === 'LogOutUser') {
-            signOut(token.Email)
-            props.setAlertActionModalVisible()
-        }
+        props.setAlertActionModalVisible()
     }
     return (
         <ModalAlertAction animationType="slide"
