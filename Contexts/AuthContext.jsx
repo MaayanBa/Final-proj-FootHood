@@ -277,6 +277,22 @@ const ChangePersonalDetails = dispatch => async (player)=>{
     }
 }
 
+const StartTimer = dispatch => async ()=>{
+    try {
+        await Timer.get('/StartTimer');
+    } catch (error) {
+        console.log("error in StartTimer")
+    }
+}
+
+const StopTimer = dispatch => async ()=>{
+    try {
+        await Timer.get('/StopTimer');
+    } catch (error) {
+        console.log("error in StopTimer")
+    }
+}
+
 export const { Context, Provider } = CreateDataContext(
     //Reducer
     authReducer,
@@ -295,7 +311,9 @@ export const { Context, Provider } = CreateDataContext(
         CheckIfExist,
         getSettingNotifications,
         setSettingNotifications,
-        ChangePersonalDetails
+        ChangePersonalDetails,
+        StartTimer,
+        StopTimer
     },
     {
         token: null,

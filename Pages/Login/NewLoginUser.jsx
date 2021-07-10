@@ -18,11 +18,8 @@ import LoginCss from '../../CSS/LoginCss';
 import FaceBookLogin from './Components/FaceBookLogin';
 import GmailLogin from './Components/GmailLogin';
 
-
-
 const appCss = AppCss;
 const loginCss = LoginCss;
-
 
 export default function NewLoginUser({ navigation }) {
     const { state, signIn, tryLocalSignin, clearErrorMessage,clearUserFromGoogle } = useContext(AuthContext);

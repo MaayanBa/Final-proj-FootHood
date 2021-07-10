@@ -20,7 +20,7 @@ Notifications.setNotificationHandler({
 });
 
 export default function Main({ navigation }) {
-    const { state: { token }, tryLocalSignin, pushNotificationToken, getSettingNotifications } = useContext(AuthContext)
+    const { state: { token }, tryLocalSignin, pushNotificationToken, getSettingNotifications,StartTimer } = useContext(AuthContext)
     const { state: { myTeams, LeaveTeamAlert }, GetTeamDetails, } = useContext(TeamContext);
     const { GetTodaysGame } = useContext(GameContext);
     const { GetPlayers } = useContext(PlayerContext);
@@ -33,6 +33,10 @@ export default function Main({ navigation }) {
     //         console.log("IM HERE")
     //     }
     // }, [alertActive])
+
+    useEffect(() => {
+        StartTimer();
+    }, [])
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
