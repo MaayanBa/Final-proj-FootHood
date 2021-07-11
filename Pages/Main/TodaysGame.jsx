@@ -61,19 +61,17 @@ export default function TodaysGame() {
                                     <Text style={styles.detailText}><Image source={require('../../assets/Watch.png')} style={styles.ImageStyle} /> Time: {sliceTime(todaysGame.Game.GameTime)}</Text>
                                 </View>
                             </View>
-                            {/* {todaysGame.Players.length > 1 ? */}
-                            {/* <View> */}
-                            <View style={styles.border} />
-                            <View style={styles.playersView}>
-                                <Text style={[styles.detailText, {alignSelf:'center', marginVertical:5}]}>Your Group:</Text>
-                                <View style={styles.players}>
-                                    {showPlayers}
+                            {todaysGame.Players.length > 1 ?
+                            <View>
+                                <View style={styles.border} />
+                                <View style={styles.playersView}>
+                                    <Text style={[styles.detailText, { alignSelf: 'center', marginVertical: 5 }]}>Your Group:</Text>
+                                    <View style={styles.players}>
+                                        {showPlayers}
+                                    </View>
                                 </View>
-                            </View>
-                            {/* </View>  */}
-                            {/* :
-                            <Text style={{ alignSelf: 'center', color: 'red' }}> Your group will opend only 24 hours before game</Text>
-                        } */}
+                            </View> : 
+                            <Text style={{ alignSelf: 'center', color: '#FFBA80' }}> Your group will show only 24 hours before game</Text>}
                         </View>
                     </View> : null
                 }
@@ -112,15 +110,15 @@ const styles = StyleSheet.create({
         borderBottomEndRadius: 100,
         borderBottomStartRadius: 100,
         width: Dimensions.get('window').width - 150,
-        paddingVertical:10
+        paddingVertical: 10
     },
     detailText: {
         fontWeight: 'bold',
         padding: 2,
-        
+
     },
-    detailsRight:{
-left:15
+    detailsRight: {
+        left: 15
     },
     playersView: {
         paddingHorizontal: 10,

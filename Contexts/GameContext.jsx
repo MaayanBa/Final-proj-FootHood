@@ -3,9 +3,6 @@ import GameApi from '../api/Game';
 
 const gameReducer = (state, action) => {
     switch (action.type) {
-        case 'CreateNewGame': {
-            return { ...state, gamesList: action.payload }
-        }
         case 'GetGamesList': {
             return { ...state, gamesList: action.payload }
         }
@@ -64,9 +61,7 @@ const GetGamesList = dispatch => async (teamSerialNum) => {
 const CreatNewGame = dispatch => async (game, equipments) => {
     try {
         const response = await GameApi.post('/CreateNewGame', { game, equipments });
-        console.log("CreateGame======>")
         console.log(response.data);
-        //dispatch({ type: 'CreatNewGame', payload: response.data }) 
     } catch (err) {
         console.log("in error Create New Game")
         console.log(err)

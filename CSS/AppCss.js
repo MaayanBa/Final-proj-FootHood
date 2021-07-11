@@ -168,6 +168,7 @@ export default styles = StyleSheet.create({
     width: '95%',
     borderRadius: 10,
     margin: 5,
+    paddingLeft:15,
     alignSelf: 'center'
   },
   inputBox: {

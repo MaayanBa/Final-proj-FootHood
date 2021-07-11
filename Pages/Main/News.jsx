@@ -43,8 +43,6 @@ export default function News() {
                 </TouchableOpacity>
             </View>
 
-
-
             <View style={styles.newsPart}>
                 <ScrollView style={styles.news_scrollView}>
                     {News}

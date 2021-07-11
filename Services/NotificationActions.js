@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function NotificationActions({ navigation }) {
-    const { state: { token,enableNotifications }, pushNotificationToken, } = useContext(AuthContext)
+    const { state: { token, enableNotifications }, pushNotificationToken, } = useContext(AuthContext)
     const { state: { myTeams, loadMessages }, GetTeamDetails, LoadMessages } = useContext(TeamContext);
     const { state: { gamesList }, GetGamesList } = useContext(GameContext);
     const [notificationIncome, setNotificationIncome] = useState(false)
@@ -24,9 +24,9 @@ export default function NotificationActions({ navigation }) {
     const [responsedAction, setResponsedAction] = useState(false)
     const [alerts, setAlerts] = useState(enableNotifications)
 
-useEffect(() => {
-    setAlerts(enableNotifications)
-}, [enableNotifications])
+    useEffect(() => {
+        setAlerts(enableNotifications)
+    }, [enableNotifications])
 
     const route = useRoute();
 
@@ -74,6 +74,7 @@ useEffect(() => {
                             break;
                     }
                 }
+
                 else {
                     setReceivedAction(true)
                     setNotification(not.request.content.data)
@@ -85,10 +86,18 @@ useEffect(() => {
 
         // This listener is fired whenever a user taps on or interacts with a notifi5cation (works when app is foregrounded, backgrounded, or killed)
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-            setResponsedAction(true)
-            setNotification(response.notification.request.content.data)
-            setNotificationIncome(true)
-            GetTeamDetails(token.Email)
+            if (not.request.content.data.name == "RankPlayerFromGame") {
+                navigation.navigate('StackNav_MyTeams', { screen: 'RateGame',params:{
+                    TeamSerialNum: response.notification.request.content.data.T_SerialNum,
+                    GameSerialNum: response.notification.request.content.data.G_SerialNum,
+                    EmailPlayer: token.Email
+                } });
+            } else {
+                setResponsedAction(true)
+                setNotification(response.notification.request.content.data)
+                setNotificationIncome(true)
+                GetTeamDetails(token.Email)
+            }
         });
 
         return () => {
