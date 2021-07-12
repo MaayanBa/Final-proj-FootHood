@@ -4,7 +4,6 @@ import Carousel, { Pagination } from 'react-native-snap-carousel';
 import AppCss from '../../../CSS/AppCss';
 import { Avatar } from 'react-native-elements';
 import { Context as GameContext } from '../../../Contexts/GameContext';
-import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 import { MaterialCommunityIcons as Podium } from '@expo/vector-icons';
 
 
@@ -72,7 +71,6 @@ export default function GameTeamsCard(props) {
 
   return (
     <View style={styles.carousel_Container}>
-    
           <Carousel layout={'default'}
             sliderWidth={screenWidth}
             sliderHeight={screenWidth}
@@ -98,7 +96,6 @@ export default function GameTeamsCard(props) {
             inactiveDotOpacity={0.4}
             inactiveDotScale={0.6}
           />
-  
     </View>
   );
 }

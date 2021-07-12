@@ -184,8 +184,8 @@ export default styles = StyleSheet.create({
     // left: 2,
     // top: 0,
     zIndex: 1,
-    right: 70,
-    bottom: 27
+    right: 80,
+    bottom: 25
 
   },
   xIcon: {

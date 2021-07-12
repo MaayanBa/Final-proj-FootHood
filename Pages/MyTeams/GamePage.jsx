@@ -1,8 +1,8 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
-import {SafeAreaView, ScrollView, Text, StyleSheet, View, TouchableOpacity, StatusBar, Image, LogBox
+import React, { useState, useContext, useEffect } from 'react';
+import {
+  SafeAreaView, ScrollView, Text, StyleSheet, View, TouchableOpacity, StatusBar, Image, LogBox
 } from "react-native";
 import { Entypo as Pencil } from '@expo/vector-icons';
-// import { Context as TeamContext } from '../../Contexts/TeamContext';
 import AppCss from '../../CSS/AppCss';
 import Modal_JoinRequests from './Components/Modal_JoinRequests';
 import Modal_WaitingList from './Components/Modal_WaitingList';
@@ -16,7 +16,6 @@ import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 import { Context as EquipmentContext } from '../../Contexts/EquipmentContext';
 import Modal_EditGame from './Components/Modal_EditGame';
 import NotificationActions from '../../Services/NotificationActions';
-import Modal_PlayerBringsEquipment from './Components/Modal_PlayerBringsEquipment';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -32,9 +31,9 @@ export default function GamePage(props) {
   const [user, setUser] = useState(token)
   const { state: { gamesList, playersPerGame, waitList }, RegisterGame, GetPlayers4Game, GetPlayersDivied2Groups, LeaveGame, GetAmountRegisteredPlayersEachGame, GetPlayerWaiting } = useContext(GameContext);
   const [showEditGame_Modal, setShowEditGame_Modal] = useState(false)
-  const { state: { gameEquipments }, GetAllEquipments, GetItemsAssignForGame } = useContext(EquipmentContext);
+  const { GetAllEquipments } = useContext(EquipmentContext);
 
-  const gameDate = new Date(gamesList[index].GameDate); 
+  const gameDate = new Date(gamesList[index].GameDate);
   // const gameDate = new Date(); //Need to enter here game date
   const oneDay = 60 * 60 * 24 * 1000 //This give us 24 hours parmeter
 
@@ -96,10 +95,10 @@ export default function GamePage(props) {
       setIsWaiting(false)
     }
   }
+
   const showDate = (date) => {
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;//Builds up togther the date and time
   };
-
 
   return (
     <SafeAreaView>

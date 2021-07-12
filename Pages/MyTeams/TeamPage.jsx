@@ -18,7 +18,7 @@ export default function TeamPage(props) {
 
     const { key } = props.route.params;
     const { state: { myTeams, teamPlayers,loadMessages }, setTeamPlayers, GetTeamDetails, SendMessageTeamChat } = useContext(TeamContext);
-    const { state: { gamesList }, GetGamesList, GameRegisterd, GetAmountRegisteredPlayersEachGame } = useContext(GameContext);
+    const { state: { gamesList }, GetGamesList, CheckIfRegisterd2AnyGame, GetAmountRegisteredPlayersEachGame } = useContext(GameContext);
     const { state: { players } } = useContext(PlayerContext);
     const [messages, setMessages] = useState([]);
     const { state: { token } } = useContext(AuthContext)
@@ -71,7 +71,7 @@ export default function TeamPage(props) {
 
             await setTeamPlayers(myTeams[key], players);
             await GetAmountRegisteredPlayersEachGame(myTeams[key].TeamSerialNum)
-
+            CheckIfRegisterd2AnyGame()
         });
         return () => unsubscribe();
     }, [props.navigation, myTeams]);

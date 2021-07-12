@@ -8,7 +8,7 @@ import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 import { Context as TeamContext } from '../../../Contexts/TeamContext';
 import { Context as AuthContext } from '../../../Contexts/AuthContext';
 import { Context as JarvisContext } from '../../../Contexts/JarvisContext';
-import { getLocation, geocodeLocationByName } from '../../../Services/location-service';
+import { geocodeLocationByName } from '../../../Services/location-service';
 import Modal_Alert from '../../Modal_Alert';
 
 export default function Players_Window(props) {
@@ -38,9 +38,7 @@ export default function Players_Window(props) {
         }
       }
     )
-
   }, [])
-
 
   const Alert = (message) => {
     setAlertText(message)
@@ -52,7 +50,6 @@ export default function Players_Window(props) {
       await Jarvis_FindPlayers4Game(gamesList[props.indexGame].TeamSerialNum, gamesList[props.indexGame].GameSerialNum, gamesList[props.indexGame].AvgPlayerAge, gamesList[props.indexGame].AvgPlayerRating, region)
       setFindPlayersActivated(true);
       GetGamesList(myTeams[props.keyTeam].TeamSerialNum)
-
     }
     else
       Alert("Something went wrong please go to Home page and try again")

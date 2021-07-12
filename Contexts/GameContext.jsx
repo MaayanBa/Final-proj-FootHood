@@ -1,5 +1,6 @@
 import CreateDataContext from './createDataContext';
 import GameApi from '../api/Game';
+import { requestPermission } from 'react-native-contacts';
 
 const gameReducer = (state, action) => {
     switch (action.type) {
@@ -39,6 +40,12 @@ const gameReducer = (state, action) => {
         case 'TodaysGame': {
             return { ...state, todaysGame: action.payload }
         }
+        case 'CheckIfRegisterd2AnyGame':{
+            return { ...state, registeredAtList1Game: action.payload }
+        }
+        case 'CleanTodaysGame':{
+            return { ...state, todaysGame: action.payload }
+        }
         default:
             return state
     }
@@ -46,16 +53,11 @@ const gameReducer = (state, action) => {
 
 const GetGamesList = dispatch => async (teamSerialNum) => {
     try {
-        //console.log(teamSerialNum);
         const response = await GameApi.post('/GamesList', { TeamSerialNum: teamSerialNum });
         dispatch({ type: 'GetGamesList', payload: response.data })
-        //console.log(response.data)
-        // let tempData = response.data; //להביא שחקנים עבור כל משחק
-        // const res = await GameApi.post('/PlayersPerGame')
     } catch (err) {
         console.log("in error GetGameList " + err.data)
         console.log(err)
-        dispatch({ type: 'add_error', payload: 'Somthing went wrong when getting games list' })
     }
 }
 const CreatNewGame = dispatch => async (game, equipments) => {
@@ -65,7 +67,6 @@ const CreatNewGame = dispatch => async (game, equipments) => {
     } catch (err) {
         console.log("in error Create New Game")
         console.log(err)
-        //dispatch({ type: 'add_error', payload: 'Somthing went wrong when post new games ' })
     }
 }
 
@@ -73,10 +74,8 @@ const RegisterGame = dispatch => async (addPlayer2Game, needsToWait) => {
     try {
         console.log(addPlayer2Game)
         const response = await GameApi.post('/RegisterGame', addPlayer2Game);
-
-        if (needsToWait) {
+        if (needsToWait) 
             alert("The Game Is Full! You Have Been Added To The Waiting List")
-        }
         else {
             response.data == "The Player Has already Registered The Game" ?
                 alert("The Player Has already Registered The Game")
@@ -84,8 +83,7 @@ const RegisterGame = dispatch => async (addPlayer2Game, needsToWait) => {
                 alert("You have joined the game successfuly");
         }
     } catch (err) {
-        console.log(err)
-        dispatch({ type: 'add_error', payload: 'Somthing went wrong when joining a game' })
+        console.log("err in RegisterGame")
     }
 }
 
@@ -106,27 +104,27 @@ const GetPlayers4Game = dispatch => async (gameSerialNum, players) => {
         const response = await GameApi.post('/GetPlayers4Game', { gameSerialNum });
         let emailsPlayers = response.data;
         let allPlayers4Game = [];
-        console.log("nasldnlasknd1111",emailsPlayers)
 
-        if (emailsPlayers.length>0) {
-            
+        if (emailsPlayers.length > 0) {
+            console.log("GetPlayers4Game")
             emailsPlayers.map(p => {
                 let playerThatReg = players.find(x => x.Email == p.EmailPlayer);
                 if (playerThatReg !== null)
                     allPlayers4Game.push(playerThatReg)
             })
-            //log(allPlayers4Game)
             dispatch({ type: 'GetPlayers4Game', payload: allPlayers4Game })
         }
+        else
+        dispatch({ type: 'GetPlayers4Game', payload: [] })
+
     }
     catch (error) {
-        console.log("err")
+        console.log("err in get players 4 game")
     }
 }
 const DeleteRequest = dispatch => async (EmailPlayer, GameSerialNum, TeamSerialNum) => {
     try {
         await GameApi.post('/DeleteRequest', { EmailPlayer, GameSerialNum });
-        console.log(TeamSerialNum)
         GetGamesList(TeamSerialNum);
     } catch (error) {
         console.log("err DeleteRequest")
@@ -136,7 +134,6 @@ const DeleteRequest = dispatch => async (EmailPlayer, GameSerialNum, TeamSerialN
 
 const ApproveRequest = dispatch => async (EmailPlayer, GameSerialNum) => {
     try {
-
         await GameApi.post('/AcceptRequest', { EmailPlayer, GameSerialNum });
     } catch (error) {
         console.log("err ApproveRequest")
@@ -157,7 +154,6 @@ const EditGameDetailes = dispatch => async (game) => {
 const GetPlayersDivied2Groups = dispatch => async (GameSerialNum, registeredPlayers) => {
     try {
         const res = await GameApi.post('/GetPlayersDivied2Groups', { GameSerialNum });
-        //console.log(res.data)
         if (res.data != "No one has registered yet for this game")
             dispatch({ type: 'GetPlayersDivied2Groups', payload: res.data })
     } catch (error) {
@@ -181,8 +177,6 @@ const GetAmountRegisteredPlayersEachGame = dispatch => async (TeamSerialNum) => 
 
 const LeaveGame = dispatch => async (EmailPlayer, GameSerialNum) => {
     try {
-        console.log(EmailPlayer)
-        console.log(GameSerialNum)
         const res = await GameApi.post('/LeaveGame', { EmailPlayer, GameSerialNum });
         if (res.data == "You Have Left the Game Succesfully")
             alert("You Have Left the Game Succesfully");
@@ -197,8 +191,7 @@ const GetPlayerWaiting = dispatch => async (GameSerialNum, players) => {
         const response = await GameApi.post('/GetPlayerWaiting', { GameSerialNum });
         let emailsPlayers = response.data;
         let waitingListPlayers = [];
-        console.log("nasldnlasknd2222",emailsPlayers)
-        if (emailsPlayers.length>0) {
+        if (emailsPlayers.length > 0 && typeof emailsPlayers !== 'string') {
             emailsPlayers.map(p => {
                 let waitingPlayer = players.find(x => x.Email == p.EmailPlayer);
                 if (waitingPlayer !== null)
@@ -206,18 +199,14 @@ const GetPlayerWaiting = dispatch => async (GameSerialNum, players) => {
             })
             dispatch({ type: 'GetPlayerWaiting', payload: waitingListPlayers })
         }
-       
-
     } catch (err) {
         console.log("in error GetPlayerWaiting " + err.data)
         console.log(err)
-        dispatch({ type: 'add_error', payload: 'Somthing went wrong when getting waiting list' })
     }
 }
 
 const GetGamesPlayerNotRegistered = dispatch => async (EmailPlayer) => {
     try {
-        // console.log(EmailPlayer);
         const response = await GameApi.post('/GamesThatUserNotRegisterd', { EmailPlayer });
         if (typeof response.data !== 'string')
             dispatch({ type: 'GetGamesPlayerNotRegistered', payload: response.data })
@@ -226,18 +215,15 @@ const GetGamesPlayerNotRegistered = dispatch => async (EmailPlayer) => {
             console.log(response.data)
         }
     } catch (err) {
-        console.log("in error ")
+        console.log("in error GetGamesPlayerNotRegistered")
         console.log(err)
-        dispatch({ type: 'add_error', payload: 'Somthing went wrong when getting games' })
     }
 }
 
 const RemoveGameFromList = dispatch => async (game2Remove) => {
     try {
-        // console.log(EmailPlayer);
         const response = await GameApi.post('/RemoveGameFromList', game2Remove);
         dispatch({ type: 'RemoveGameFromList', payload: response.data })
-
     } catch (err) {
         console.log("Something Went wrong when you tried to remove this game  ! ")
         console.log(err.message)
@@ -247,9 +233,35 @@ const RemoveGameFromList = dispatch => async (game2Remove) => {
 const GetTodaysGame = dispatch => async (EmailPlayer) => {
     try {
         const response = await GameApi.post('/TodaysGame', { EmailPlayer });
-        dispatch({ type: 'TodaysGame', payload: response.data })
+        if (response.data !== null &&response.data!==-1){
+            dispatch({ type: 'TodaysGame', payload: response.data })
+        }
     } catch (err) {
         console.log("Something Went wrong in todays game  ! ")
+        console.log(err.message)
+    }
+}
+
+const CheckIfRegisterd2AnyGame = dispatch => async (EmailPlayer) => {
+    try {
+        const response = await GameApi.post('/CheckIfRegisterd2AnyGame', { EmailPlayer });
+        if (response.data=== true || response.data=== false) {
+            dispatch({ type: 'CheckIfRegisterd2AnyGame', payload: response.data })
+        }
+        else {
+            CleanTodaysGame()
+        }
+    } catch (err) {
+        console.log("Something Went wrong in CheckIfRegisterd2AnyGame  ! ")
+        console.log(err.message)
+    }
+}
+
+const CleanTodaysGame = dispatch => async () => {
+    try {
+            dispatch({ type: 'CleanTodaysGame', payload: null })
+    } catch (err) {
+        console.log("Something Went wrong in CleanTodaysGame ! ")
         console.log(err.message)
     }
 }
@@ -272,17 +284,20 @@ export const { Context, Provider } = CreateDataContext(
         GetGamesPlayerNotRegistered,
         RemoveGameFromList,
         GetPlayerWaiting,
-        GetTodaysGame
+        GetTodaysGame,
+        CheckIfRegisterd2AnyGame,
+        CleanTodaysGame
     },
     {
         gamesList: [],
         registeredTo: [],
-        //emailsOfPlayersPerGame: [],
         playersPerGame: [],
         playersPerGroups: [],
         amountRegisteredPlayersEachGame: [],
         gamesPlayerNotRegistered: [],
         waitList: [],
-        todaysGame: null
+        todaysGame: null,
+        registeredAtList1Game: true
+
     }
 );
