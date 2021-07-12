@@ -106,13 +106,18 @@ const GetPlayers4Game = dispatch => async (gameSerialNum, players) => {
         const response = await GameApi.post('/GetPlayers4Game', { gameSerialNum });
         let emailsPlayers = response.data;
         let allPlayers4Game = [];
-        emailsPlayers.map(p => {
-            let playerThatReg = players.find(x => x.Email == p.EmailPlayer);
-            if (playerThatReg !== null)
-                allPlayers4Game.push(playerThatReg)
-        })
-        //log(allPlayers4Game)
-        dispatch({ type: 'GetPlayers4Game', payload: allPlayers4Game })
+        console.log("nasldnlasknd1111",emailsPlayers)
+
+        if (emailsPlayers.length>0) {
+            
+            emailsPlayers.map(p => {
+                let playerThatReg = players.find(x => x.Email == p.EmailPlayer);
+                if (playerThatReg !== null)
+                    allPlayers4Game.push(playerThatReg)
+            })
+            //log(allPlayers4Game)
+            dispatch({ type: 'GetPlayers4Game', payload: allPlayers4Game })
+        }
     }
     catch (error) {
         console.log("err")
@@ -192,12 +197,16 @@ const GetPlayerWaiting = dispatch => async (GameSerialNum, players) => {
         const response = await GameApi.post('/GetPlayerWaiting', { GameSerialNum });
         let emailsPlayers = response.data;
         let waitingListPlayers = [];
-        emailsPlayers.map(p => {
-            let waitingPlayer = players.find(x => x.Email == p.EmailPlayer);
-            if (waitingPlayer !== null)
-                waitingListPlayers.push(waitingPlayer)
-        })
-        dispatch({ type: 'GetPlayerWaiting', payload: waitingListPlayers })
+        console.log("nasldnlasknd2222",emailsPlayers)
+        if (emailsPlayers.length>0) {
+            emailsPlayers.map(p => {
+                let waitingPlayer = players.find(x => x.Email == p.EmailPlayer);
+                if (waitingPlayer !== null)
+                    waitingListPlayers.push(waitingPlayer)
+            })
+            dispatch({ type: 'GetPlayerWaiting', payload: waitingListPlayers })
+        }
+       
 
     } catch (err) {
         console.log("in error GetPlayerWaiting " + err.data)

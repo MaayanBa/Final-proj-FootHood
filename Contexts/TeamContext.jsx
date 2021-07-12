@@ -122,14 +122,19 @@ const GetJoinRequests = dispatch => async (game, players) => {
         const response = await TeamApi.post('/JoinRequests', { GameSerialNum: game.GameSerialNum });
 
         let emailsPlayers = response.data;
+        console.log("nasldnlasknd333",emailsPlayers)
+
         let allRequests4Game = [];
-        emailsPlayers.map(p => {
+        if (emailsPlayers.length>0) {
+              emailsPlayers.map(p => {
             let playerThatReg = players.find(x => x.Email == p.EmailPlayer);
             if (playerThatReg !== null)
                 allRequests4Game.push(playerThatReg)
         })
 
         dispatch({ type: 'GetJoinRequests', payload: allRequests4Game })
+        }
+      
     } catch (err) {
         console.log("in error" + err.response.data)
         console.log(err.response.data)

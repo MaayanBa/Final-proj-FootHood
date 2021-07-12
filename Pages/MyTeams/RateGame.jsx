@@ -10,7 +10,7 @@ import { addPushTokenListener, setAutoServerRegistrationEnabledAsync } from 'exp
 import Modal_Alert from '../Modal_Alert';
 
 export default function RateGame(props) {
-    const { index, keyTeam } = props.route.params;
+    const { index, keyTeam,GameSerialNum } = props.route.params;
     const { state: { token } } = useContext(AuthContext)
     // const { state: { myTeams } } = useContext(TeamContext);
     const { state: { gamesList, playersPerGame }, GetPlayers4Game } = useContext(GameContext);
@@ -31,7 +31,12 @@ export default function RateGame(props) {
         GetPlayers4Game(gamesList[index].GameSerialNum, players);
         var arr = shuffle(playersPerGame)
         const newArr = arr.filter((item) => item.Email !== token.Email);
-        setPlayersToRate([newArr[0], newArr[1], newArr[2]])
+        if(newArr[0]!== undefined)
+            setPlayersToRate([newArr[0]])
+        if(newArr[1]!== undefined)
+            setPlayersToRate([...newArr,newArr[1]])
+        if(newArr[2]!== undefined)
+            setPlayersToRate([...newArr,newArr[2]])
     }, [props.navigation]);
 
 
