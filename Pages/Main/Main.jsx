@@ -10,6 +10,7 @@ import { Context as PlayerContext } from '../../Contexts/PlayerContext'
 import * as Notifications from 'expo-notifications';
 import NotificationActions from '../../Services/NotificationActions';
 import { Dimensions } from 'react-native';
+import Modal_Alert from '../Modal_Alert';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -21,11 +22,13 @@ Notifications.setNotificationHandler({
 
 export default function Main({ navigation }) {
     const { state: { token }, getSettingNotifications, StartTimer } = useContext(AuthContext)
-    const { GetTeamDetails, } = useContext(TeamContext);
+    const { state: { leaveTeamAlert }, GetTeamDetails, ClearLeaveAlert } = useContext(TeamContext);
     const { state: { registeredAtList1Game }, GetTodaysGame, CleanTodaysGame, CheckIfRegisterd2AnyGame } = useContext(GameContext);
     const { GetPlayers } = useContext(PlayerContext);
     const [user, setUser] = useState(token)
     const [renderScreen, setRenderScreen] = useState(false)
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
+    const [alertText, setAlertText] = useState('');
 
     useEffect(() => {
         StartTimer();
@@ -36,6 +39,18 @@ export default function Main({ navigation }) {
             CleanTodaysGame();
         }
     }, [registeredAtList1Game])
+
+    useEffect(() => {
+        if (leaveTeamAlert !== '') {
+            Alert("You have left the team successfully!")
+            ClearLeaveAlert()
+        }
+    }, [leaveTeamAlert])
+
+    const Alert = (message) => {
+        setAlertText(message)
+        setAlertModalVisible(true)
+    }
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -53,6 +68,7 @@ export default function Main({ navigation }) {
 
     return (
         <View style={styles.container}>
+            {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
             <NotificationActions navigation={navigation} />
             <Header navigation={navigation} />
             <TodaysGame />

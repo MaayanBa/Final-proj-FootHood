@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect,useState } from 'react';
 import { View, TextInput, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from "yup";
@@ -35,7 +35,7 @@ export default function EmailVerification() {
       console.log(values.email)
       await restorePassCode(values.email)
 
-      Alert("Email has been sent")
+      alert("Email has been sent")
       //console.log("Success Restore");
    }
    return (

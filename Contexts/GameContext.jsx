@@ -199,8 +199,8 @@ const GetPlayerWaiting = dispatch => async (GameSerialNum, players) => {
                 if (waitingPlayer !== null)
                     waitingListPlayers.push(waitingPlayer)
             })
-            dispatch({ type: 'GetPlayerWaiting', payload: waitingListPlayers })
         }
+        dispatch({ type: 'GetPlayerWaiting', payload: waitingListPlayers })
     } catch (err) {
         console.log("in error GetPlayerWaiting " + err.data)
         console.log(err)

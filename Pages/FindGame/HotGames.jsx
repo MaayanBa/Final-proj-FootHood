@@ -5,11 +5,14 @@ import { Octicons } from '@expo/vector-icons';
 import { Context as JarvisContext } from '../../Contexts/JarvisContext';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
+import Modal_Alert from '../Modal_Alert';
 
 export default function HotGames(props) {
     const { state: { hotGames }, Jarvis_GetHotGames } = useContext(JarvisContext)
     const { state: { token } } = useContext(AuthContext);
     const { state: { joinRequests }, AddNewJoinRequests, GetJoinRequests } = useContext(TeamContext);
+    const [alertModalVisible, setAlertModalVisible] = useState(false);
+    const [alertText, setAlertText] = useState('');
 
     useEffect(() => {
         const unsubscribe = props.navigation.addListener('focus', () => {
@@ -27,9 +30,14 @@ export default function HotGames(props) {
         return (`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
     }
 
+    const Alert = (message) => {
+        setAlertText(message)
+        setAlertModalVisible(true)
+    }
 
     const sendJoinRequest = (gameSerialNum) => {
         AddNewJoinRequests(token.Email, gameSerialNum)
+        Alert("You have sent a request to join! Please wait for the manager of the team to accept you")
     }
     let counter = 0;
     let gameCards = hotGames.map((g, key) => {
@@ -37,6 +45,7 @@ export default function HotGames(props) {
             counter++;
             return <View key={key} style={styles.GameInformation_Touch}>
                 <View style={styles.gameInformation_View}>
+                {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
                     <View style={styles.gameInformation_View_R}>
                         <View>
                             <Text style={styles.txtStyle}>Time: {sliceTime(g.GameTime)}</Text>

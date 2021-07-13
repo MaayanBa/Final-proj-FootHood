@@ -81,6 +81,8 @@ export default function GameList(props) {
 
     const sendJoinRequest = (gameSerialNum) => {
         AddNewJoinRequests(token.Email, gameSerialNum)
+        Alert("You have sent a request to join! Please wait for the manager of the team to accept you")
+        GetGamesPlayerNotRegistered(token.Email)
     }
     const openPlayerModal = (gameSerialNum) => {
         setModalPlayersVisible(true)

@@ -16,6 +16,7 @@ import { Context as TeamContext } from '../../Contexts/TeamContext';
 //import {navigate} from '../../Navigations/navigationRef'
 import AppCss from '../../CSS/AppCss';
 import Modal_AddPlayers from './Components/Modal_AddPlayers';
+import Modal_Alert from '../Modal_Alert';
 
 //Fix YellowBox Error
 LogBox.ignoreLogs(['Setting a timer for a long period of time, i.e.']);
@@ -40,7 +41,8 @@ export default function CreateNewTeam(props) {
   const [addPlayer, setAddPlayer] = useState(false)
   const [autoRules, setAutoRules] = useState('')
   const [addedPlayers, setAddedPlayers] = useState([])
-
+  const [alertModalVisible, setAlertModalVisible] = useState(false);
+  const [alertText, setAlertText] = useState('');
 
   const btnOpenGalery = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -53,6 +55,11 @@ export default function CreateNewTeam(props) {
       setimageUri(result.uri);
     }
   };
+
+  const Alert = (message) => {
+    setAlertText(message)
+    setAlertModalVisible(true)
+}
 
   const CreateTeam = async (values) => {
     if (TeamImageUri !== null) {
@@ -67,17 +74,17 @@ export default function CreateNewTeam(props) {
         PlayersList: addedPlayers
       }
       await CreateNewTeam(newTeam);
-      // alert("The Team has Added")
       props.navigation.navigate('MyTeams')
     }
     else {
-      alert("You must to choos picture")
+      Alert("You must to choose a picture")
     }
 
   }
   return (
     <SafeAreaView>
       <ScrollView>
+      {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
         <View style={[styles.container, { padding: 20, paddingTop: 60 }]}>
           <Text style={[appCss.title, { paddingBottom: 20 }]}>Create A New Team</Text>
           <Formik

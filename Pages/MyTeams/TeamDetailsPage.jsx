@@ -64,16 +64,16 @@ export default function TeamDetailsPage(props) {
     await props.navigation.navigate('Main');
     // alert("You have left the team successfully");
 
-    Alert.alert(
-      "Leave Team",
-      "You have left the team successfully",
-      [
-        {
-          text: "Ok",
-          style: "cancel"
-        },
-      ]
-    );
+    // Alert.alert(
+    //   "Leave Team",
+    //   "You have left the team successfully",
+    //   [
+    //     {
+    //       text: "Ok",
+    //       style: "cancel"
+    //     },
+    //   ]
+    // );
     // props.navigation.goBack();
     // props.navigation.goBack();
     // //GetTeamDetails(token.Email);
