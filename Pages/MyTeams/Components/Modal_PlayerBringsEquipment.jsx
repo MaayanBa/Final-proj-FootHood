@@ -26,7 +26,7 @@ export default function Modal_PlayerBringsEquipment(props) {
     const [choosenEquipment, setChoosenEquipment] = useState();
     const { state: { token } } = useContext(AuthContext)
     // const [user, setUser] = useState(token)
-    const { state: { equipments }, AssignEquipment2Player, GetAllEquipments, GetItemsAssignForGame, AddNewItem } = useContext(EquipmentContext);
+    const { state: { equipments,response }, AssignEquipment2Player, GetAllEquipments, GetItemsAssignForGame, AddNewItem } = useContext(EquipmentContext);
     const [newEquipment, setNewEquipment] = useState()
     const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [alertText, setAlertText] = useState('');
@@ -49,10 +49,12 @@ export default function Modal_PlayerBringsEquipment(props) {
                 BringItems: equipments[choosenEquipment].EquipmentName,
             }
             await AssignEquipment2Player(assignEquipment2Player)
+            if(response==="The equipment was assigned successfully"){
+                Alert("The equipment was assigned successfully")
+            }
             await GetItemsAssignForGame(gamesList[index].GameSerialNum)
             setChoosenPlayer(null)
             setChoosenEquipment(null)
-            setPlayerBringsModalVisible(false)
         }
         else
             Alert("You must pick a player and item")

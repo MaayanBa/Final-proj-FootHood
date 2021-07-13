@@ -23,16 +23,10 @@ const GetPlayers = dispatch => async () => {
 
 const RankPlayer = dispatch => async (EmailofRatedPlayer, EmailofRatingPlayer, PowerRating, AttackRating, DefenseRating) => {
     try {
-        if (EmailofRatedPlayer == EmailofRatingPlayer)
-            alert("You can't rate yourself")
-        else if (PowerRating === 100 && AttackRating === 100 && DefenseRating === 100) {
-            alert("No one is perfect except Messi and Ronaldo =)\nPlease rate more detailed the values")
-        }
-        else {
             const response = await RankApi.post('/RankPlayer', { EmailofRatedPlayer, EmailofRatingPlayer, PowerRating, AttackRating, DefenseRating })
             alert(response.data);
             console.log(response.data)
-        }
+
     } catch (err) {
         console.log("err RankPlayer - Player Context")
         console.log(err)
@@ -45,8 +39,8 @@ const RankPlayerAfterGame = dispatch => async (EmailofRatedPlayer, EmailofRating
             alert("You can't rate yourself")
         else {
             const response = await RankApi.post('/RankPlayerAfterGame', { EmailofRatedPlayer, EmailofRatingPlayer, PowerRating, AttackRating, DefenseRating,GameSerialNum })
-            alert(response.data);
-            console.log(response.data)
+            //alert(response.data);
+            //console.log(response.data)
         }
     } catch (err) {
         console.log("err RankPlayerAfterGame - Player Context")

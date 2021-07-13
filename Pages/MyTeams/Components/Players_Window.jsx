@@ -14,7 +14,7 @@ import Modal_Alert from '../../Modal_Alert';
 export default function Players_Window(props) {
   const { state: { gamesList, playersPerGame }, GetPlayers4Game, GetGamesList, } = useContext(GameContext);
   const { state: { players } } = useContext(PlayerContext);
-  const { Jarvis_FindPlayers4Game } = useContext(JarvisContext);
+  const { state: { searchRes }, Jarvis_FindPlayers4Game, CleanSearchRes } = useContext(JarvisContext);
   const { state: { myTeams } } = useContext(TeamContext);
   const [findPlayersActivated, setFindPlayersActivated] = useState(gamesList[props.indexGame].FindPlayersActive);
   const [region, setRegion] = useState(null)
@@ -51,12 +51,26 @@ export default function Players_Window(props) {
     if (region != null) {
       await Jarvis_FindPlayers4Game(gamesList[props.indexGame].TeamSerialNum, gamesList[props.indexGame].GameSerialNum, gamesList[props.indexGame].AvgPlayerAge, gamesList[props.indexGame].AvgPlayerRating, region)
       setFindPlayersActivated(true);
+      console.log("RESSSSSSSSSS")
+      console.log(searchRes)
       GetGamesList(myTeams[props.keyTeam].TeamSerialNum)
-
     }
     else
       Alert("Something went wrong please go to Home page and try again")
   }
+
+  useEffect(() => {
+    console.log("................", searchRes)
+    if (searchRes !== '') {
+      if (searchRes.AmountOfResults > 0) {
+        Alert(`Jarvis has found  ${searchRes.AmountOfResults} matching players for this game with ${searchRes.MatchPrecent}% - 100% match! \n\nPlease keep up on your join requests ! `)
+      }
+      else {
+        Alert(`Jarvis hasn't found any matching players for this game ! \n\nWe welcome you to invite new friends ! `)
+      }
+      CleanSearchRes()
+    }
+  }, [searchRes])
 
   const registeredPlayers = playersPerGame.map((p, key) => {
     return <ListItem key={key} style={styles.playerInGameList}>

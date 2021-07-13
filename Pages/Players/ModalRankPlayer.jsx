@@ -13,16 +13,30 @@ export default function ModalRankPlayer(props) {
   const { RankPlayer } = useContext(PlayerContext);
   const [sliderValue, setSliderValue] = useState(0)
   const [alertModalVisible, setAlertModalVisible] = useState(false);
+  const [alertText, setAlertText] = useState('');
 
-  const Finish = () => {
-    if (props.powerRate > 0 && props.defenceRate > 0 && props.attackRate > 0) {
+  const Alert = (message) => {
+    setAlertText(message)
+    setAlertModalVisible(true)
+  }
+
+
+  const Finish = async () => {
+    if (props.playerChoosen.Email == token.Email)
+      Alert("You can't rate yourself")
+    else if (props.powerRate > 0 && props.defenceRate > 0 && props.attackRate > 0) {
+      if (props.powerRate === 100 && props.defenceRate === 100 && props.attackRate === 100) {
+        Alert("No one is perfect except Messi and Ronaldo =)\nPlease rate more detailed the values")
+      }
       // console.log("Power: " + props.powerRate + " ,Defence: " + props.defenceRate + " ,Attack: " + props.attackRate)
-      RankPlayer(props.playerChoosen.Email, token.Email, props.powerRate, props.defenceRate, props.attackRate)
-      props.setPlayerChoosen("")
-      props.setOpenModal(false)
+      else {
+        await RankPlayer(props.playerChoosen.Email, token.Email, props.powerRate, props.defenceRate, props.attackRate)
+        props.setPlayerChoosen("")
+        props.setOpenModal(false)
+      }
     }
     else
-    setAlertModalVisible(true)
+      Alert("Please fill in all types of rank")
   }
 
   const SetRating = () => {
@@ -39,7 +53,7 @@ export default function ModalRankPlayer(props) {
       onRequestClose={() => props.setOpenModal(false)}>
 
       <View style={styles.centeredView}>
-        {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={"Please fill in all types of rank"} />}
+        {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
         <View style={styles.modal_View}>
           <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../assets/WallPaperWhite2.png')}>
             {props.playerChoosen == "" ? null :

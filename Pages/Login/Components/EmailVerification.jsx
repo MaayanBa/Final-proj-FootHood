@@ -4,6 +4,7 @@ import { Formik } from 'formik';
 import * as yup from "yup";
 import { Context as AuthContext } from '../../../Contexts/AuthContext'
 import AppCss from '../../../CSS/AppCss';
+import Modal_Alert from '../../Modal_Alert';
 
 const appCss = AppCss;
 
@@ -17,16 +18,24 @@ const RestorePassordSchema = yup.object().shape(
 )
 
 export default function EmailVerification() {
-   const {  restorePassCode, resetRestore_PassCode_values } = useContext(AuthContext);
+   const { restorePassCode, resetRestore_PassCode_values } = useContext(AuthContext);
+   const [alertModalVisible, setAlertModalVisible] = useState(false);
+   const [alertText, setAlertText] = useState('');
 
    useEffect(() => {
       resetRestore_PassCode_values()
    }, [])
 
+   const Alert = (message) => {
+      setAlertText(message)
+      setAlertModalVisible(true)
+   }
+
    const verifyEmail = async (values) => {
       console.log(values.email)
       await restorePassCode(values.email)
-      //alert("Email has been sent")
+
+      Alert("Email has been sent")
       //console.log("Success Restore");
    }
    return (
@@ -35,6 +44,7 @@ export default function EmailVerification() {
          validationSchema={RestorePassordSchema}>
          {({ handleChange, handleSubmit, values, errors, isValid, touched }) => (
             <View style={styles.verifyContainer}>
+               {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
                <View style={styles.formGroup}>
                   <Text style={appCss.explanationText}>Please enter your email to send an OTP code</Text>
                </View>
@@ -58,7 +68,7 @@ export default function EmailVerification() {
                </View>
 
                <View style={styles.formgruop}>
-                  <TouchableOpacity activeOpacity={0.8} onPress={handleSubmit} style={[appCss.btnTouch,{width:'60%'}]}>
+                  <TouchableOpacity activeOpacity={0.8} onPress={handleSubmit} style={[appCss.btnTouch, { width: '60%' }]}>
                      <Text style={appCss.txtBtnTouch}>Send OTP Code</Text>
                   </TouchableOpacity>
                </View>

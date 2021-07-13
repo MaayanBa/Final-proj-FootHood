@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     },
     modal_Closebtn: {
         backgroundColor: "#2196F3",
-        marginTop: 50,
+        marginTop: 30,
         borderRadius: 20,
         padding: 15,
         margin: 10,

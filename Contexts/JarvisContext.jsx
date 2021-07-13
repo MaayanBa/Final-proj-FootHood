@@ -6,6 +6,10 @@ const jarvisReducer = (state, action) => {
     switch (action.type) {
         case 'Jarvis_GetHotGames':
             return { ...state, hotGames: action.payload }
+        case 'Jarvis_FindPlayers4Game':
+            return { ...state, searchRes: action.payload }
+        case 'CleanSearchRes':
+            return { ...state, searchRes: action.payload }
         default:
             return state
     }
@@ -23,13 +27,9 @@ const Jarvis_FindPlayers4Game = dispatch => async (TeamSerialNum, GameSerialNum,
         }
         console.log(gameDetailes)
         const res = await JarvisApi.post('/Jarvis_FindPlayers4Game', gameDetailes);
-        console.log("RES:")
-        console.log(res.data)
-        if (res.data.AmountOfResults > 0)
-            alert(`Jarvis has found  ${res.data.AmountOfResults} matching players for this game with ${res.data.MatchPrecent}% - 100% match! \n\nPlease keep up on your join requests ! `)
-        else
-            alert(`Jarvis hasn't found any matching players for this game ! \n\nWe welcome you to invite new friends ! `)
-
+        // console.log("RES:")
+        // console.log(res.data)
+        dispatch({ type: 'Jarvis_FindPlayers4Game', payload: res.data })
 
     } catch (error) {
         console.log("err Jarvis_FindPlayers4Game")
@@ -49,14 +49,20 @@ const Jarvis_GetHotGames = dispatch => async (EmailPlayer) => {
     }
 }
 
+const CleanSearchRes = dispatch => async () => {
+    dispatch({ type: 'CleanSearchRes', payload: '' })
+}
+
 export const { Context, Provider } = CreateDataContext(
     //Reducer
     jarvisReducer,
     {
         Jarvis_FindPlayers4Game,
         Jarvis_GetHotGames,
+        CleanSearchRes,
     },
     {
         hotGames: [],
+        searchRes: '',
     }
 );

@@ -77,17 +77,17 @@ export default function RateGame(props) {
             if (powerRate === 100 && defenceRate === 100 && attackRate === 100) {
                 Alert("No one is perfect except Messi and Ronaldo =)\nPlease rate more detailed the values")
             }
-            else{
-            RankPlayerAfterGame(playerChoosen, token.Email, powerRate, attackRate, defenceRate, gamesList[index].GameSerialNum)
-            const temp = playersToRate.filter((item) => item.Email !== playerChoosen);
-            setPlayersToRate(temp)
+            else {
+                RankPlayerAfterGame(playerChoosen, token.Email, powerRate, attackRate, defenceRate, gamesList[index].GameSerialNum)
+                const temp = playersToRate.filter((item) => item.Email !== playerChoosen);
+                setPlayersToRate(temp)
 
-            setPlayerChoosen("")
-            setPowerRate(null)
-            setAttackRate(null)
-            setDefenceRate(null)
-            setSelectedRate("")
-            //console.log(playerChoosen)
+                setPlayerChoosen("")
+                setPowerRate(null)
+                setAttackRate(null)
+                setDefenceRate(null)
+                setSelectedRate("")
+                //console.log(playerChoosen)
             }
         }
         else
@@ -116,7 +116,7 @@ export default function RateGame(props) {
             <Text style={[appCss.inputLabel, { marginTop: 30 }]}>Game Date: {showDate(new Date(gamesList[index].GameDate))}</Text>
             <Text style={[appCss.inputLabel, { marginTop: 30, marginBottom: 30 }]}>Choose Player To Rank:</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                {playersToRate.length==0?<Text style={[appCss.noResultsTxt,{textAlign:'center'}]}>You Have Rated All The Players!{"\n"}See You Next Game!</Text>:playerToRateView}
+                {playersToRate.length == 0 ? <Text style={[appCss.noResultsTxt, { textAlign: 'center' }]}>You Have Rated All The Players!{"\n"}See You Next Game!</Text> : playerToRateView}
             </View>
             {playerChoosen == "" ? null :
                 <View>
@@ -157,6 +157,9 @@ export default function RateGame(props) {
                     </View>}
                 </View>
             }
+            {playersToRate.length == 0 ? <TouchableOpacity style={[appCss.btnTouch, { width: '40%', }]} onPress={() => props.navigation.navigate('MyTeams')}>
+                <Text style={appCss.txtBtnTouch}>Go Back</Text>
+            </TouchableOpacity>:null}
         </View>
     );
 }

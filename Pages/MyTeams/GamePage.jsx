@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
-import {SafeAreaView, ScrollView, Text, StyleSheet, View, TouchableOpacity, StatusBar, Image, LogBox
+import {
+  SafeAreaView, ScrollView, Text, StyleSheet, View, TouchableOpacity, StatusBar, Image, LogBox
 } from "react-native";
 import { Entypo as Pencil } from '@expo/vector-icons';
 // import { Context as TeamContext } from '../../Contexts/TeamContext';
@@ -17,6 +18,7 @@ import { Context as EquipmentContext } from '../../Contexts/EquipmentContext';
 import Modal_EditGame from './Components/Modal_EditGame';
 import NotificationActions from '../../Services/NotificationActions';
 import Modal_PlayerBringsEquipment from './Components/Modal_PlayerBringsEquipment';
+import Modal_Alert from '../Modal_Alert';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -33,10 +35,17 @@ export default function GamePage(props) {
   const { state: { gamesList, playersPerGame, waitList }, RegisterGame, GetPlayers4Game, GetPlayersDivied2Groups, LeaveGame, GetAmountRegisteredPlayersEachGame, GetPlayerWaiting } = useContext(GameContext);
   const [showEditGame_Modal, setShowEditGame_Modal] = useState(false)
   const { state: { gameEquipments }, GetAllEquipments, GetItemsAssignForGame } = useContext(EquipmentContext);
+  const [alertModalVisible, setAlertModalVisible] = useState(false);
+  const [alertText, setAlertText] = useState('');
 
-  const gameDate = new Date(gamesList[index].GameDate); 
+  const gameDate = new Date(gamesList[index].GameDate);
   // const gameDate = new Date(); //Need to enter here game date
   const oneDay = 60 * 60 * 24 * 1000 //This give us 24 hours parmeter
+
+  const Alert=(message)=>{
+    setAlertText(message)
+    setAlertModalVisible(true)
+  }
 
   useEffect(() => {
     var totalNumPlayers = gamesList[index].NumOfTeams * gamesList[index].NumOfPlayersInTeam
@@ -79,6 +88,12 @@ export default function GamePage(props) {
       TeamSerialNum: myTeams[keyTeam].TeamSerialNum,
     }
     await RegisterGame(addPlayer2Game, needsToWait)
+    if (needsToWait) {
+      Alert("The Game Is Full! You Have Been Added To The Waiting List")
+    }
+    else{
+      Alert("You have joined the game successfuly")
+    }
     await GetPlayers4Game(gamesList[index].GameSerialNum, players)
     await GetPlayersDivied2Groups(gamesList[index].GameSerialNum);
     await GetAmountRegisteredPlayersEachGame(myTeams[keyTeam].TeamSerialNum)
@@ -89,6 +104,7 @@ export default function GamePage(props) {
 
   const LeaveGameFunction = async () => {
     await LeaveGame(user.Email, gamesList[index].GameSerialNum)
+    Alert("You have Left the game successfuly")
     await GetPlayers4Game(gamesList[index].GameSerialNum, players)
     await GetPlayersDivied2Groups(gamesList[index].GameSerialNum);
     await GetAmountRegisteredPlayersEachGame(myTeams[keyTeam].TeamSerialNum)
@@ -104,6 +120,7 @@ export default function GamePage(props) {
   return (
     <SafeAreaView>
       <NotificationActions navigation={props.navigation} />
+      {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={styles.container}>
           <View style={styles.labels}>
@@ -141,9 +158,9 @@ export default function GamePage(props) {
               <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>{(registered || isWaiting) ? "Leave" : "Join"}</Text>
               <Image source={require('../../assets/ball.png')} resizeMode="contain" style={styles.imgBall} />
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('RateGame', { index, keyTeam })} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
+            {/* <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('RateGame', { index, keyTeam })} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
               <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>Test-GameRank</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </ScrollView>
