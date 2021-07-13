@@ -12,7 +12,7 @@ import Modal_Alert from '../../Modal_Alert';
 export default function Modal_WaitingList(props) {
     const [waitingModalVisible, setWaitingModalVisible] = useState(false);
     const { state: { players } } = useContext(PlayerContext);
-    const { state: { playersPerGame, waitList }, GetPlayers4Game, GetPlayerWaiting } = useContext(GameContext);
+    const { state: { waitList }, GetPlayers4Game, GetPlayerWaiting } = useContext(GameContext);
     const [waitBadge, setWaitBadge] = useState(0);
     const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [alertText, setAlertText] = useState('');

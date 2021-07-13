@@ -88,7 +88,6 @@ export default function ModalAddPlayers4NewTeam(props) {
                 }}>
                     <PlusIcon name="trash" size={25} color="black" />
                 </TouchableOpacity>
-
             }
             <ListItem.Content style={{ alignItems: 'flex-end' }} >
                 <ListItem.Title>{p.FirstName + " " + p.LastName}</ListItem.Title>

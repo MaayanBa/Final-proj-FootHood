@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { View, Text, StyleSheet } from 'react-native';
 import Header from './Header';
 import News from './News';
@@ -20,26 +20,27 @@ Notifications.setNotificationHandler({
 });
 
 export default function Main({ navigation }) {
-    const { state: { token }, tryLocalSignin, pushNotificationToken, getSettingNotifications,StartTimer } = useContext(AuthContext)
-    const { state: { myTeams, LeaveTeamAlert }, GetTeamDetails, } = useContext(TeamContext);
-    const { GetTodaysGame } = useContext(GameContext);
+    const { state: { token }, getSettingNotifications, StartTimer } = useContext(AuthContext)
+    const { GetTeamDetails, } = useContext(TeamContext);
+    const { state: { registeredAtList1Game }, GetTodaysGame, CleanTodaysGame, CheckIfRegisterd2AnyGame } = useContext(GameContext);
     const { GetPlayers } = useContext(PlayerContext);
     const [user, setUser] = useState(token)
     const [renderScreen, setRenderScreen] = useState(false)
-    // const [alertActive, setAlertActive] = useState()
-
-    // useEffect(() => {
-    //     if (LeaveTeamAlert === 'The Team Has Been Removeed') {
-    //         console.log("IM HERE")
-    //     }
-    // }, [alertActive])
 
     useEffect(() => {
         StartTimer();
     }, [])
 
     useEffect(() => {
+        if (!registeredAtList1Game) {
+            CleanTodaysGame();
+        }
+    }, [registeredAtList1Game])
+
+    useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
+            console.log("Main")
+            CheckIfRegisterd2AnyGame(token.Email)
             GetTodaysGame(token.Email)
             setRenderScreen(!renderScreen)
             GetTeamDetails(user.Email)
@@ -66,5 +67,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 40
     },
-
 });

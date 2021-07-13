@@ -11,6 +11,7 @@ import { Context as GameContext } from '../../Contexts/GameContext'
 import { Context as PlayerContext } from '../../Contexts/PlayerContext'
 import * as Notifications from 'expo-notifications';
 import NotificationActions from '../../Services/NotificationActions';
+import { object } from 'yup/lib/locale';
 
 
 export default function TodaysGame() {
@@ -19,9 +20,13 @@ export default function TodaysGame() {
     const [bring, setBring] = useState("")
     const [game, setGame] = useState(null)
     const [players, setPlayers] = useState([])
-
+    const oneDay = 1000*60*60*24;
+    const today = new Date();
+    
     useEffect(() => {
-        if (todaysGame != null) {
+        // console.log(todaysGame.length)
+        if (todaysGame !== null && typeof todaysGame == "object") {
+            // console.log(todaysGame.length)
             setBring(todaysGame.Bring)
             setGame(todaysGame.Game)
             setPlayers(todaysGame.Players)
@@ -43,12 +48,13 @@ export default function TodaysGame() {
     return (
         <>
             <View style={styles.container}>
-                {todaysGame !== null ?
-                    <View>{
-                        new Date(todaysGame.Game.GameDate).toLocaleDateString() == new Date().toLocaleDateString() ?
-                            <Text style={[appCss.title, { paddingTop: 20 }]}>Todays Game</Text> :
-                            <Text style={[appCss.title, { paddingTop: 20 }]}>Next Game</Text>
-                    }
+                {todaysGame != null && typeof todaysGame == "object" ?
+                    <View>
+                        {
+                            new Date(todaysGame.Game.GameDate).toLocaleDateString() == new Date().toLocaleDateString() ?
+                                <Text style={[appCss.title, { paddingTop: 20 }]}>Todays Game</Text> :
+                                <Text style={[appCss.title, { paddingTop: 20 }]}>Next Game</Text>
+                        }
                         <View style={styles.card}>
                             <View style={styles.details}>
                                 <View style={styles.detailsRight}>
@@ -61,17 +67,19 @@ export default function TodaysGame() {
                                     <Text style={styles.detailText}><Image source={require('../../assets/Watch.png')} style={styles.ImageStyle} /> Time: {sliceTime(todaysGame.Game.GameTime)}</Text>
                                 </View>
                             </View>
-                            {todaysGame.Players.length > 1 ?
-                            <View>
-                                <View style={styles.border} />
-                                <View style={styles.playersView}>
-                                    <Text style={[styles.detailText, { alignSelf: 'center', marginVertical: 5 }]}>Your Group:</Text>
-                                    <View style={styles.players}>
-                                        {showPlayers}
+                            {/* {Math.round(Math.abs((new Date(todaysGame.Game.GameDate) - today) / oneDay))} */}
+                            {/* {new Date(todaysGame.Game.GameDate).toLocaleDateString() === new Date().toDateString() ? */}
+                            {Math.round(Math.abs((new Date(todaysGame.Game.GameDate) - today) / oneDay)) <=1 ?
+                                <View>
+                                    <View style={styles.border} />
+                                    <View style={styles.playersView}>
+                                        <Text style={[styles.detailText, { alignSelf: 'center', marginVertical: 5 }]}>Your Group:</Text>
+                                        <View style={styles.players}>
+                                            {showPlayers}
+                                        </View>
                                     </View>
-                                </View>
-                            </View> : 
-                            <Text style={{ alignSelf: 'center', color: '#FFBA80' }}> Your group will show only 24 hours before game</Text>}
+                                </View> :
+                                <Text style={{ alignSelf: 'center', color: '#FFBA80' }}> Your group will show only 24 hours before game</Text>}
                         </View>
                     </View> : null
                 }

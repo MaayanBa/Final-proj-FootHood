@@ -106,7 +106,7 @@ export default function TeamDetailsPage(props) {
               <View key={i}>
                 <ListItem style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
                   <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('CardPlayer', { p })} >
-                    <Image style={[appCss.playerCardIcon_Btn, { left: 5 }]} source={require('../../assets/PlayerCardIcon.png')} />
+                    <Image style={[appCss.playerCardIcon_Btn, { right: 5 }]} source={require('../../assets/PlayerCardIcon.png')} />
                   </TouchableOpacity>
                   {user.Email !== myTeams[newKey].EmailManager ? null :
                     p.Email !== myTeams[newKey].EmailManager ?

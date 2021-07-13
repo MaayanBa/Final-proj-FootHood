@@ -72,17 +72,20 @@ export default function Modal_AddPlayers(props) {
           setAddPlayerModalVisible={setAddPlayerModalVisible}
           teamKey={props.teamKey}
           setForceState={props.setForceState}
-          props={props} 
+          props={props}
           addedPlayers={props.addedPlayers}
           setAddedPlayers={props.setAddedPlayers}
-          />
+        />
       }
       {showContactListModal && <Modal_ContactList showContactListModal={showContactListModal}
         setShowContactListModal={setShowContactListModal}
         setAddPlayerModalVisible={setAddPlayerModalVisible}
         teamKey={props.teamKey}
-        setForceState={props.setForceState} 
-        props={props}/>
+        setForceState={props.setForceState}
+        props={props}
+        addedPlayers={props.addedPlayers}
+        setAddedPlayers={props.setAddedPlayers}
+      />
       }
     </View>
   )

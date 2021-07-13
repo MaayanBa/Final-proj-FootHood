@@ -7,13 +7,13 @@ import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 import EquipmentList from './EquipmentList';
 
 export default function EquipmentWindow(props) {
-  const {  GetItemsAssignForGame } = useContext(EquipmentContext);
+  const { GetItemsAssignForGame } = useContext(EquipmentContext);
   const { state: { players } } = useContext(PlayerContext)
   const { state: { gamesList }, GetPlayers4Game } = useContext(GameContext);
 
   useEffect(() => {
     GetItemsAssignForGame(gamesList[props.index].GameSerialNum)
-    GetPlayers4Game(gamesList[props.index].GameSerialNum, players)
+    // GetPlayers4Game(gamesList[props.index].GameSerialNum, players)
   }, [])
 
   return (
