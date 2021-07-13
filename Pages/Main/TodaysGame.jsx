@@ -20,7 +20,9 @@ export default function TodaysGame() {
     const [bring, setBring] = useState("")
     const [game, setGame] = useState(null)
     const [players, setPlayers] = useState([])
-
+    const oneDay = 1000*60*60*24;
+    const today = new Date();
+    
     useEffect(() => {
         // console.log(todaysGame.length)
         if (todaysGame !== null && typeof todaysGame == "object") {
@@ -65,7 +67,9 @@ export default function TodaysGame() {
                                     <Text style={styles.detailText}><Image source={require('../../assets/Watch.png')} style={styles.ImageStyle} /> Time: {sliceTime(todaysGame.Game.GameTime)}</Text>
                                 </View>
                             </View>
-                            {new Date(todaysGame.Game.GameDate).toLocaleDateString() === new Date().toDateString() ?
+                            {/* {Math.round(Math.abs((new Date(todaysGame.Game.GameDate) - today) / oneDay))} */}
+                            {/* {new Date(todaysGame.Game.GameDate).toLocaleDateString() === new Date().toDateString() ? */}
+                            {Math.round(Math.abs((new Date(todaysGame.Game.GameDate) - today) / oneDay)) <=1 ?
                                 <View>
                                     <View style={styles.border} />
                                     <View style={styles.playersView}>
