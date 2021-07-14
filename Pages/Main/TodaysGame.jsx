@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
 
     },
     detailsRight: {
-        left: 15
+        // left: 5
     },
     playersView: {
         paddingHorizontal: 10,

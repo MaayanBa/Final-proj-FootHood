@@ -7,10 +7,12 @@ import { Entypo as PlusIcon } from '@expo/vector-icons';
 import { ListItem, Avatar } from 'react-native-elements';
 import AppCss from '../../../CSS/AppCss';
 import { Context as TeamContext } from '../../../Contexts/TeamContext';
+import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 
 export default function ModalAddPlayers4NewTeam(props) {
     const [fullName, setFullName] = useState("");
-    const { state: { searchedPlayers, myTeams }, SearchPlayer, AddPlayer, SetSearchPlayer, GetPlayers4Team } = useContext(TeamContext);
+    const { state: { searchedPlayers, myTeams }, SearchPlayer, AddPlayer, SetSearchPlayer, GetPlayers4Team ,setTeamPlayers} = useContext(TeamContext);
+    const { state: { players }, } = useContext(PlayerContext);
     const teamKey = props.teamKey;
 
 
@@ -53,12 +55,37 @@ export default function ModalAddPlayers4NewTeam(props) {
         // Close();
     }
 
+    const AddPlayerNow = async (p) => {
+        console.log(myTeams[teamKey].TeamSerialNum)
+        const selectedPlayer = {
+            EmailPlayer: p.Email,
+            TeamSerialNum: myTeams[teamKey].TeamSerialNum
+        }
+        await AddPlayer(selectedPlayer)
+        await GetPlayers4Team(myTeams[teamKey].TeamSerialNum, myTeams);
+    }
+
     const ReamoveFromArray2AddTeam = async (p) => {
         let tempArr = props.addedPlayers;
         tempArr = tempArr.filter(x => x.EmailPlayer !== p.Email);
         props.setAddedPlayers(tempArr);
     }
 
+
+    const AddTeam = async (p) => {
+        let player2Add = {
+            EmailPlayer: p.Email,
+            TeamSerialNum: myTeams[teamKey].TeamSerialNum
+        }
+        await AddPlayer(player2Add)
+        await GetPlayers4Team(myTeams[teamKey].TeamSerialNum, myTeams);
+          props.setForceState();
+          setTeamPlayers(myTeams[teamKey], players);
+
+        Close();
+
+    }
+    
     const Close = () => {
         const player = {
             FirstName: null,
@@ -77,17 +104,23 @@ export default function ModalAddPlayers4NewTeam(props) {
             <TouchableOpacity activeOpacity={0.8} onPress={() => PushCard(p)} >
                 <Image style={appCss.playerCardIcon_Btn} source={require('../../../assets/PlayerCardIcon.png')} />
             </TouchableOpacity>
-            {props.addedPlayers.find(x => x.EmailPlayer == p.Email) == null ?
-                <TouchableOpacity onPress={async () => {
-                    await AddNewPlayerToTeam(p);
-                }}>
-                    <PlusIcon name="plus" size={25} color="black" />
-                </TouchableOpacity> :
-                <TouchableOpacity onPress={async () => {
-                    await ReamoveFromArray2AddTeam(p);
-                }}>
-                    <PlusIcon name="trash" size={25} color="black" />
-                </TouchableOpacity>
+            {
+                props.addedPlayers !== null ?
+                    props.addedPlayers.find(x => x.EmailPlayer == p.Email) == null ?
+                        <TouchableOpacity onPress={async () => {
+                            await AddNewPlayerToTeam(p);
+                        }}>
+                            <PlusIcon name="plus" size={25} color="black" />
+                        </TouchableOpacity> :
+                        <TouchableOpacity onPress={async () => {
+                            await ReamoveFromArray2AddTeam(p);
+                        }}>
+                            <PlusIcon name="trash" size={25} color="black" />
+                        </TouchableOpacity>
+                    :
+                    <TouchableOpacity onPress={async () => { await AddTeam(p) }}>
+                        <PlusIcon name="plus" size={25} color="black" />
+                    </TouchableOpacity>
             }
             <ListItem.Content style={{ alignItems: 'flex-end' }} >
                 <ListItem.Title>{p.FirstName + " " + p.LastName}</ListItem.Title>

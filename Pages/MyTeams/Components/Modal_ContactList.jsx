@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
     StyleSheet, TouchableOpacity, View, Text,
-    Modal as ModalContactList, Pressable, Image, ScrollView, SafeAreaView, ImageBackground
+    Modal as ModalContactList, Pressable, Image, ScrollView, ImageBackground
 } from 'react-native';
 import { Entypo as PlusIcon } from '@expo/vector-icons';
 import { ListItem, Avatar } from 'react-native-elements';
@@ -13,18 +13,13 @@ import { Dimensions } from 'react-native';
 
 
 export default function Modal_ContactList(props) {
-    const { state: { myTeams, teamPlayers }, AddPlayer, GetPlayers4Team } = useContext(TeamContext);
+    const { state: { myTeams, teamPlayers }, AddPlayer, GetPlayers4Team,setTeamPlayers } = useContext(TeamContext);
     const { state: { players }, } = useContext(PlayerContext);
     const teamKey = props.teamKey;
     const [contactList, setContactList] = useState([])
 
     useEffect(() => {
         (async () => {
-            teamPlayers.map(t => {
-                if (t.Email.includes("maayanstudent@gmail.com")) {
-                    console.log("sakldnasld")
-                }
-            })
             const { status } = await Contacts.requestPermissionsAsync();
             if (status === 'granted') {
                 const { data } = await Contacts.getContactsAsync({
@@ -34,9 +29,8 @@ export default function Modal_ContactList(props) {
                 players.forEach(p => {
                     let checkIfAlreadyInTeam = false;
                     teamPlayers.map(t => {
-                        if (t.Email.includes(p.Email)) {
+                        if (t.Email.includes(p.Email))
                             checkIfAlreadyInTeam = true
-                        }
                     })
                     if (!checkIfAlreadyInTeam) {
                         data.forEach(contact => {
@@ -44,19 +38,14 @@ export default function Modal_ContactList(props) {
                                 contact.phoneNumbers.map(x => {
                                     if (x.number.includes(p.Phone) && !playersInContacts.includes(p)) {
                                         playersInContacts.push(p);
-                                        console.log(p.Phone)
+                                        // console.log(p.Phone)
                                     }
                                 })
-                                // console.log(contact.phoneNumbers[0].number)
-
                             }
                         });
                     }
-
                 })
-
                 setContactList(playersInContacts);
-                //     console.log(data.length)
             }
         })();
     }, []);
@@ -81,12 +70,10 @@ export default function Modal_ContactList(props) {
             EmailPlayer: p.Email,
             //   TeamSerialNum: myTeams[teamKey].TeamSerialNum
         }
-        if (props.addedPlayers.find(x => x.EmailPlayer == p.Email) == null) {
+        if (props.addedPlayers.find(x => x.EmailPlayer == p.Email) == null)
             props.setAddedPlayers([...props.addedPlayers, selectedPlayer])
-        }
-        else {
+        else
             console.log("Exist")
-        }
         //   props.setForceState();
 
         // await AddPlayer(selectedPlayer)
@@ -101,35 +88,43 @@ export default function Modal_ContactList(props) {
         props.setAddedPlayers(tempArr);
     }
 
+    const AddTeam = async (p) => {
+        let player2Add = {
+            EmailPlayer: p.Email,
+            TeamSerialNum: myTeams[teamKey].TeamSerialNum
+        }
+        await AddPlayer(player2Add)
+        await GetPlayers4Team(myTeams[teamKey].TeamSerialNum, myTeams);
+          props.setForceState();
+          setTeamPlayers(myTeams[teamKey], players);
+
+        Close();
+
+    }
 
     const contactListClicked = contactList.map((p, key) => {
         return <ListItem key={key} style={appCss.playerCardInList} containerStyle={{ backgroundColor: "transparent" }}>
             <TouchableOpacity activeOpacity={0.8} onPress={() => { props.props.props.navigation.navigate('CardPlayer', { p }); Close() }} >
                 <Image style={appCss.playerCardIcon_Btn} source={require('../../../assets/PlayerCardIcon.png')} />
             </TouchableOpacity>
-            {/* <TouchableOpacity onPress={async () => {
-                await AddNewPlayerToTeam(p);
-                props.setForceState();
-            }}> */}
-                {props.addedPlayers.find(x => x.EmailPlayer == p.Email) == null ?
-                    <TouchableOpacity onPress={async () => {
-                        await AddNewPlayerToTeam(p);
-                    }}>
+            {
+                props.addedPlayers !== null ?
+                    props.addedPlayers.find(x => x.EmailPlayer == p.Email) == null ?
+                        <TouchableOpacity onPress={async () => await AddNewPlayerToTeam(p)}>
+                            <PlusIcon name="plus" size={25} color="black" />
+                        </TouchableOpacity> :
+                        <TouchableOpacity onPress={async () => await ReamoveFromArray2AddTeam(p)}>
+                            <PlusIcon name="trash" size={25} color="black" />
+                        </TouchableOpacity>
+                    : <TouchableOpacity onPress={async () => await AddTeam(p)}>
                         <PlusIcon name="plus" size={25} color="black" />
-                    </TouchableOpacity> :
-                    <TouchableOpacity onPress={async () => {
-                        await ReamoveFromArray2AddTeam(p);
-                    }}>
-                        <PlusIcon name="trash" size={25} color="black" />
                     </TouchableOpacity>
-                }
-            {/* </TouchableOpacity> */}
+            }
             <ListItem.Content style={{ alignItems: 'flex-end' }} >
                 <ListItem.Title>{p.FirstName + " " + p.LastName}</ListItem.Title>
             </ListItem.Content>
             <Avatar rounded source={{ uri: p.PlayerPicture }} />
         </ListItem>
-
     })
 
     return (
@@ -140,7 +135,6 @@ export default function Modal_ContactList(props) {
             <View style={styles.centeredView}>
                 <View style={[appCss.modal_View, { height: Dimensions.get('window').height - 100, paddingBottom: 1 }]}>
                     <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../../assets/WallPaperWhite2.png')}>
-
                         {
                             contactListClicked.length == 0 ? null :
                                 <View style={styles.playerList_View}>

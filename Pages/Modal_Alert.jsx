@@ -13,7 +13,7 @@ export default function Modal_Alert(props) {
             <View style={styles.centeredView}>
                 <View style={styles.modal_View}>
                     <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../assets/WallPaperWhite2.png')}>
-                    <Text style={[appCss.modal_Txt, { paddingTop: 25,color:'white' }]}>Alert!</Text>
+                    <Text style={[appCss.modal_Txt, { paddingTop: 35,color:'white',fontSize:30 }]}>Alert !</Text>
                         <Text style={styles.modal_Txt}>
                             {props.text}
                         </Text>
@@ -42,13 +42,14 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         alignItems: 'center',
-        height: '40%',
+        height: '42%',
         borderRadius: 30,
         elevation: 30,
         borderRadius: 30
     },
     modal_Txt: {
         padding: 20,
+        fontSize:20,
         alignItems: 'center',
         textAlign: 'center',
         fontWeight: "bold",
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     },
     modal_Closebtn: {
         backgroundColor: "#2196F3",
-        marginTop: 30,
+        marginTop: 20,
         borderRadius: 20,
         padding: 15,
         margin: 10,

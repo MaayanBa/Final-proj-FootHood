@@ -103,7 +103,8 @@ const LeaveTeam = dispatch => async (playerInTeam) => {
 const RemoveFromTeam = dispatch => async (playerInTeam, players) => {
     try {
         const response = await TeamApi.post('/RemoveFromTeam', playerInTeam);
-        dispatch({ type: 'GetTeamDetails', payload: response.data })
+        // console.log(response.data)
+        // dispatch({ type: 'GetTeamDetails', payload: response.data })
 
         // console.log(typeof response.data)
         // if (typeof response.data== 'object') {
@@ -122,7 +123,6 @@ const GetJoinRequests = dispatch => async (game, players) => {
         const response = await TeamApi.post('/JoinRequests', { GameSerialNum: game.GameSerialNum });
 
         let emailsPlayers = response.data;
-        console.log("nasldnlasknd333",emailsPlayers)
 
         let allRequests4Game = [];
         if (emailsPlayers.length>0) {
@@ -172,9 +172,10 @@ const SetSearchPlayer = dispatch => async () => {
 const setTeamPlayers = dispatch => async (team, players) => {
     try {
         let tempArr = [];
-        // console.log("team")
-        // console.log(team)
-        team.PlayersList.forEach(p => {
+        console.log("team")
+        console.log(team.PlayersList)
+        team.PlayersList.map(p => {
+            console.log(p)
             let player = players.find(x => x.Email === p.EmailPlayer)
             if (player !== null)
                 tempArr.push(player);

@@ -28,14 +28,14 @@ export default function Modal_AddPlayers(props) {
     onRequestClose={() => setAddPlayerModalVisible(!addPlayerModalVisible)}
   >
     <View style={styles.centeredView}>
-      <View style={[appCss.modal_View, { height: '45%' }]}>
+      <View style={[appCss.modal_View, { height: '35%' }]}>
         <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../../assets/WallPaperWhite2.png')}>
-          <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch, { width: "90%" }]}>
+          {/* <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch, { width: "90%" }]}>
             <View style={styles.addPlayersBtns}>
               <Feather name="link" size={24} color="black" />
               <Text style={[appCss.txtBtnTouch, { fontSize: 16 }]}>&nbsp; Via Link</Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch, { width: "90%" }]} onPress={() => clickOnContactList()}>
             <View style={styles.addPlayersBtns}>
               <Feather name="user-plus" size={24} color="black" />

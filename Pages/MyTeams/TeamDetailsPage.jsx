@@ -48,10 +48,8 @@ export default function TeamDetailsPage(props) {
   }
 
   const ExitTeam = async () => {
-
     if (myTeams.length > 1)
       myTeams.length - 1 == newKey ? setNewKey(newKey - 1) : null
-
 
     let playerInTeam = {
       TeamSerialNum: myTeams[newKey].TeamSerialNum,
@@ -77,7 +75,7 @@ export default function TeamDetailsPage(props) {
     // props.navigation.goBack();
     // props.navigation.goBack();
     // //GetTeamDetails(token.Email);
-    // props.navigation.goBack();
+  // props.navigation.goBack();
   }
 
   return (
@@ -91,7 +89,9 @@ export default function TeamDetailsPage(props) {
         <View style={styles.options_View}>
           <Modal_RulesAndLaws team={myTeams[newKey]} />
           {myTeams[newKey].EmailManager !== user.Email ? null :
-            <Modal_AddPlayers props={props} teamKey={newKey} setForceState={() => ForceState()} />
+            // <Modal_AddPlayers props={props} teamKey={newKey} setForceState={() => ForceState()} />
+            <Modal_AddPlayers props={props} addedPlayers={null} setAddedPlayers={null} teamKey={newKey} setForceState={setForceState}/>
+
           }
         </View>
       </ImageBackground>
