@@ -34,7 +34,6 @@ export default function ResetPassCode() {
         await updatPassCode(changes)
         // state.passCodeHasChanged ? resetRestore_PassCode_values() : null
         //navigation.navigate("NewLoginUser")
-        alert("Password updated")
         console.log("Success Reset");
         
     }

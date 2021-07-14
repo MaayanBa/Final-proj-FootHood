@@ -58,7 +58,6 @@ export default function Players_Window(props) {
   }
 
   useEffect(() => {
-    console.log("................", searchRes)
     if (searchRes !== '') {
       if (searchRes.AmountOfResults > 0) {
         Alert(`Jarvis has found  ${searchRes.AmountOfResults} matching players for this game with ${searchRes.MatchPrecent}% - 100% match! \n\nPlease keep up on your join requests ! `)

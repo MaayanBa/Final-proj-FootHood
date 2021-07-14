@@ -11,7 +11,7 @@ import Modal_Alert from '../Modal_Alert';
 
 export default function Players({ navigation }) {
     const { state: { searchedPlayers }, SearchPlayer, SetSearchPlayer } = useContext(TeamContext);
-    const { state: { players }, GetPlayers, } = useContext(PlayerContext);
+    const { state: { players, ranked }, GetPlayers,CleanRankRes } = useContext(PlayerContext);
     const [fullName, setFullName] = useState("");
     const [playerChoosen, setPlayerChoosen] = useState("");
     const [powerRate, setPowerRate] = useState(null)
@@ -23,6 +23,7 @@ export default function Players({ navigation }) {
     const [selectRate, setSelectedRate] = useState("")
     const [openModalFilter, setOpenModalFilter] = useState(false)
     const [filterResults, setFilterResults] = useState(null)
+    const [alertText, setAlertText] = useState('');
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -61,7 +62,7 @@ export default function Players({ navigation }) {
             }
             SearchPlayer(player)
         } else {
-            setAlertModalVisible(true)
+            Alert("Please enter name")
         }
 
     }
@@ -78,6 +79,18 @@ export default function Players({ navigation }) {
         setPlayerChoosen("")
         SearchPlayer(player)
     }
+
+    useEffect(() => {
+        if (ranked !== '') {
+            Alert(ranked)
+            CleanRankRes()
+        }
+    }, [ranked])
+
+    const Alert = (message) => {
+        setAlertText(message)
+        setAlertModalVisible(true)
+      }
 
     const shuffle = (array) => {
         var currentIndex = array.length, randomIndex;
@@ -190,7 +203,7 @@ export default function Players({ navigation }) {
 
     return (
         <View>
-            {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={"Please enter name"} />}
+            {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
             {openModalFilter ? <ModalFilterPlayer setOpenModalFilter={setOpenModalFilter} filterResults={(filter) => getFilterResults(filter)} /> : null}
             <Text style={[appCss.title, appCss.space]}>Players</Text>
             <View style={styles.searchRow}>

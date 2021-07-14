@@ -173,6 +173,7 @@ const updatPassCode = dispatch => async (player) => {
 
         if (passCodeChanged.status < 400 || passCodeChanged.status >= 500) {
             dispatch({ type: 'changePasscode', payload: true })
+            alert("Password updated")
         }
     } catch (error) {
         // console.log("im in catch in reset passcode  ===== > " + error.response)

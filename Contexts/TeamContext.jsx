@@ -8,7 +8,7 @@ const teamReducer = (state, action) => {
             return { ...state, myTeams: action.payload }
         }
         case 'LeaveTeam': {
-            return { ...state, LeaveTeamAlert: action.payload }
+            return { ...state, leaveTeamAlert: action.payload }
         }
         case 'clearState': {
             return { ...state, myTeams: [] }
@@ -33,6 +33,10 @@ const teamReducer = (state, action) => {
         }
         case 'LoadMessages': {
             return { ...state, loadMessages: action.payload }
+        }
+        case 'ClearLeaveAlert': {
+            return { ...state, ClearLeaveAlert: action.payload }
+
         }
         default:
             return state
@@ -92,7 +96,7 @@ const LeaveTeam = dispatch => async (playerInTeam) => {
         console.log("Leave teame")
         console.log(response.data)
         if (response.data.length == 0)
-            await dispatch({ type: 'LeaveTeam', payload: [] })
+            await dispatch({ type: 'LeaveTeam', payload: '' })
         else
             await dispatch({ type: 'LeaveTeam', payload: response.data })
     } catch (err) {
@@ -123,18 +127,19 @@ const GetJoinRequests = dispatch => async (game, players) => {
         const response = await TeamApi.post('/JoinRequests', { GameSerialNum: game.GameSerialNum });
 
         let emailsPlayers = response.data;
+        console.log("nasldnlasknd333", emailsPlayers)
 
         let allRequests4Game = [];
-        if (emailsPlayers.length>0) {
-              emailsPlayers.map(p => {
-            let playerThatReg = players.find(x => x.Email == p.EmailPlayer);
-            if (playerThatReg !== null)
-                allRequests4Game.push(playerThatReg)
-        })
+        if (emailsPlayers.length > 0) {
+            emailsPlayers.map(p => {
+                let playerThatReg = players.find(x => x.Email == p.EmailPlayer);
+                if (playerThatReg !== null)
+                    allRequests4Game.push(playerThatReg)
+            })
 
-        dispatch({ type: 'GetJoinRequests', payload: allRequests4Game })
+            dispatch({ type: 'GetJoinRequests', payload: allRequests4Game })
         }
-      
+
     } catch (err) {
         console.log("in error" + err.response.data)
         console.log(err.response.data)
@@ -192,7 +197,7 @@ const AddNewJoinRequests = dispatch => async (EmailPlayer, GameSerialNum) => {
         console.log(EmailPlayer)
         console.log(GameSerialNum)
         const response = await TeamApi.post('/AddNewJoinRequests', { EmailPlayer, GameSerialNum });
-        alert("You have sent a request to join! Please wait for the manager of the team to accept you")
+        //alert("You have sent a request to join! Please wait for the manager of the team to accept you")
         console.log("response . data === " + response.data);
         //console.log(response.data);
     } catch (err) {
@@ -220,6 +225,10 @@ const LoadMessages = dispatch => async (CreatedAt) => {
     }
 }
 
+const ClearLeaveAlert = dispatch => async () => {
+    dispatch({ type: 'ClearLeaveAlert', payload: '' })
+}
+
 export const { Context, Provider } = CreateDataContext(
     //Reducer
     teamReducer,
@@ -238,6 +247,7 @@ export const { Context, Provider } = CreateDataContext(
         SendMessageTeamChat,
         LoadMessages,
         RemoveFromTeam,
+        ClearLeaveAlert,
     },
     {
         myTeams: [],
@@ -245,6 +255,6 @@ export const { Context, Provider } = CreateDataContext(
         joinRequests: [],
         teamPlayers: [],
         loadMessages: '',
-        LeaveTeamAlert:''
+        leaveTeamAlert: ''
     }
 );
