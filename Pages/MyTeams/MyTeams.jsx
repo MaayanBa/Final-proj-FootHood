@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
-    StyleSheet, View, Text, Image, Image as ImageBall, TouchableOpacity, ScrollView, SafeAreaView, StatusBar, Dimensions
+    StyleSheet, ActivityIndicator, View, Text, Image, Image as ImageBall, TouchableOpacity, ScrollView, SafeAreaView, StatusBar, Dimensions
 } from 'react-native';
 import { Badge } from 'react-native-elements'
 //import ScrollView from 'rn-faded-scrollview';
@@ -16,62 +16,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // import {useFocusEffect} from "@react-navigation/core";
 
 
-const appCss = AppCss;
-const styles = StyleSheet.create({
-    mainContent: {
-        flex: 1,
-    },
-    ball_img: {
-        marginBottom: 90,
-        height: 110,
-        width: 100,
-        alignSelf: 'center',
-        top: 100
-    },
-    manager_img: {
-        height: 22,
-        width: 22,
-        bottom: 20,
-        left: 8
-    },
-    footer: {
-        justifyContent: 'flex-end',
-    },
-    plusStyle: {
-        margin: 5,
-        height: 30,
-        width: 30,
-    },
-    createNewTeam_btn: {
-        flexDirection: "row-reverse",
-        alignItems: 'center',
-    },
-    teamCard: {
-        backgroundColor: '#D9D9D9',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexDirection: 'row',
-        borderRadius: 30,
-        width: '90%',
-        height: 80,
-        margin: 20,
-        padding: 5,
-    },
-    contextSide: {
-        flex: 1,
-        padding: 10,
-    },
-    headerCard_View: {
-        alignSelf: 'center',
-        flexDirection: 'row',
-        // width: Dimensions.get('screen').width -20
-    },
-    descripitionCard: {
-        flexDirection: 'row-reverse',
-        justifyContent: 'space-between',
-    },
-    side_img: {},
-});
 
 export default function MyTeams(props) {
     const { state: { myTeams }, GetTeamDetails } = useContext(TeamContext);
@@ -79,6 +23,7 @@ export default function MyTeams(props) {
     const { state: { token } } = useContext(AuthContext)
     const [teamCards, setTeamCards] = useState(null);
     const [forceState, setForceState] = useState(false)
+    const [loading, setLoading] = useState(true);
 
     const convertToArray = (data) => {
         let res = []
@@ -148,8 +93,12 @@ export default function MyTeams(props) {
 
     useEffect(() => {
         const unsubscribe = props.navigation.addListener('focus', () => {
+            setTimeout(() => {
+                setLoading(false);
+            }, 3000);
             calcTeamCards();
             GetTeamDetails(token.Email)
+
             //GetTeamDetails(token.Email)
         });
         // Return the function to unsubscribe from the event so it gets removed on unmount
@@ -163,23 +112,87 @@ export default function MyTeams(props) {
         <View style={appCss.container}>
             {/* <Header /> */}
             <Text style={[appCss.title, appCss.space]}>My Teams</Text>
-            <View style={styles.mainContent}>
-                <SafeAreaView>
-                    <ScrollView>
-                        {myTeams.length == 0 ? null : teamCards}
-                    </ScrollView>
-                </SafeAreaView>
-            </View>
-            <View style={styles.footer}>
+            {loading ?
+                <View style={styles.loading}>
+                    <ActivityIndicator size={80} color="#0000ff" style={{alignItems:'center'}}/>
+                </View> 
+                :
+                <View style={styles.mainContent}>
+                    <SafeAreaView>
+                        <ScrollView>
+                            {myTeams.length == 0 ? null : teamCards}
+                        </ScrollView>
+                    </SafeAreaView>
+                </View>}
+            {loading ? null : <View style={styles.footer}>
                 <ImageBall source={require('../../assets/ball.png')} style={styles.ball_img} />
                 <TouchableOpacity style={styles.createNewTeam_btn}
                     onPress={() => props.navigation.navigate('AddNewTeam')}>
                     <Image source={require('../../assets/plus.png')} style={styles.plusStyle} />
                     <Text style={appCss.inputLabel}>Add New Team</Text>
                 </TouchableOpacity>
-            </View>
+            </View>}
         </View>
 
     )
 }
 
+const appCss = AppCss;
+const styles = StyleSheet.create({
+    mainContent: {
+        flex: 1,
+    },
+    ball_img: {
+        marginBottom: 90,
+        height: 110,
+        width: 100,
+        alignSelf: 'center',
+        top: 100
+    },
+    loading:{
+    marginTop:200
+    },
+    manager_img: {
+        height: 22,
+        width: 22,
+        bottom: 20,
+        left: 8
+    },
+    footer: {
+        justifyContent: 'flex-end',
+    },
+    plusStyle: {
+        margin: 5,
+        height: 30,
+        width: 30,
+    },
+    createNewTeam_btn: {
+        flexDirection: "row-reverse",
+        alignItems: 'center',
+    },
+    teamCard: {
+        backgroundColor: '#D9D9D9',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+        borderRadius: 30,
+        width: '90%',
+        height: 80,
+        margin: 20,
+        padding: 5,
+    },
+    contextSide: {
+        flex: 1,
+        padding: 10,
+    },
+    headerCard_View: {
+        alignSelf: 'center',
+        flexDirection: 'row',
+        // width: Dimensions.get('screen').width -20
+    },
+    descripitionCard: {
+        flexDirection: 'row-reverse',
+        justifyContent: 'space-between',
+    },
+    side_img: {},
+});

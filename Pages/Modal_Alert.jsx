@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     },
     modal_Txt: {
         padding: 20,
-        fontSize:20,
+        fontSize:16,
         alignItems: 'center',
         textAlign: 'center',
         fontWeight: "bold",
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     },
     modal_Closebtn: {
         backgroundColor: "#2196F3",
-        marginTop: 20,
+        marginTop: 5,
         borderRadius: 20,
         padding: 15,
         margin: 10,

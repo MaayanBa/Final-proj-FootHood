@@ -70,7 +70,7 @@ export default function Main({ navigation }) {
         <View style={styles.container}>
             {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
             <NotificationActions navigation={navigation} />
-            <Header navigation={navigation} />
+            {token==null?null:<Header navigation={navigation} />}
             <TodaysGame />
             <News />
         </View>
