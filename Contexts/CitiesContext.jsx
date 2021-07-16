@@ -15,8 +15,8 @@ const GetListCities = dispatch => async () => {
         const response = await fetch('https://parseapi.back4app.com/classes/Israelcities_City?limit=10000&order=name&keys=name,country,location',
             {
                 headers: {
-                    'X-Parse-Application-Id': '2crO70TFYqZq3sHRNNlspnAWvXV5UN866dxE50eO', // This is your app's application id
-                    'X-Parse-REST-API-Key': 'G3QLN54fOIbaLAAZA56jJMiS2YmHYYzNwuWe9xWe            ', // This is your app's REST API key
+                    'X-Parse-Application-Id': 'EE7AbXbB3u1OJeNLNDcvpFArcuDiG8ZsGRhxPKIx', // This is your app's application id
+                    'X-Parse-REST-API-Key': 'g0vJDyl3B3uLtupA8KyBKiamNsTFTyAZA8CiFM70', // This is your app's REST API key
                 }
             }
         );

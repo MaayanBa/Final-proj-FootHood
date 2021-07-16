@@ -114,8 +114,8 @@ export default function MyTeams(props) {
             <Text style={[appCss.title, appCss.space]}>My Teams</Text>
             {loading ?
                 <View style={styles.loading}>
-                    <ActivityIndicator size={80} color="#0000ff" style={{alignItems:'center'}}/>
-                </View> 
+                    <ActivityIndicator size={80} color="#0000ff" style={{ alignItems: 'center' }} />
+                </View>
                 :
                 <View style={styles.mainContent}>
                     <SafeAreaView>
@@ -149,8 +149,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         top: 100
     },
-    loading:{
-    marginTop:200
+    loading: {
+        marginTop: 200
     },
     manager_img: {
         height: 22,
