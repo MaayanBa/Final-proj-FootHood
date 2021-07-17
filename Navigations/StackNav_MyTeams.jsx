@@ -7,7 +7,6 @@ import GameList from '../Pages/MyTeams/GameList';
 import MyTeams from '../Pages/MyTeams/MyTeams';
 import GamePage from '../Pages/MyTeams/GamePage';
 import CardPlayer from '../Pages/Players/CardPlayer';
-import RateGame from '../Pages/MyTeams/RateGame'
 //import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 
 import { createStackNavigator } from '@react-navigation/stack';
@@ -36,7 +35,6 @@ export default function StackNav_MyTeams() {
                 <Stack.Screen name="GameList" component={GameList} />
                 <Stack.Screen name="GamePage" component={GamePage} />
                 <Stack.Screen name="CardPlayer" component={CardPlayer} />
-                <Stack.Screen name="RateGame" component={RateGame} />
             </Stack.Navigator>
        
 
