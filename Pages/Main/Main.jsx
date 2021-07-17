@@ -61,7 +61,6 @@ export default function Main({ navigation }) {
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            console.log("Main")
             CheckIfRegisterd2AnyGame(token.Email)
             GetTodaysGame(token.Email)
             GetTeamDetails(user.Email)

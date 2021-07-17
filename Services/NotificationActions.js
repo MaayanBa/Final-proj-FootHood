@@ -88,7 +88,7 @@ export default function NotificationActions({ navigation }) {
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
             // console.log(response.notification.request.content.data)
             if (response.notification.request.content.data.name == "RankPlayerFromGame") {
-                navigation.navigate('StackNav_MyTeams', { screen: 'RateGame',params:{
+                navigation.navigate('StackNav_Main', { screen: 'RateGame',params:{
                     TeamSerialNum: response.notification.request.content.data.T_SerialNum,
                     GameSerialNum: response.notification.request.content.data.G_SerialNum,
                     EmailPlayer: token.Email

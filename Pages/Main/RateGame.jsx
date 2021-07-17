@@ -26,24 +26,27 @@ export default function RateGame(props) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        console.log(GameSerialNum)
-        setPlayersToRate([])
         GetPlayers4Game(GameSerialNum, players);
-        var arr = shuffle(playersPerGame)
-        let newArr = arr.filter((item) => item.Email !== token.Email);
-        setPlayersToRate(newArr)
-        setPlayersToRate([newArr[0], newArr[1], newArr[2]])
-
-        if (newArr[0] !== undefined)
-            setPlayersToRate([newArr[0]])
-        if (newArr[1] !== undefined)
-            setPlayersToRate([...playersToRate, newArr[1]])
-        if (newArr[2] !== undefined)
-            setPlayersToRate([...playersToRate, newArr[2]])
         setTimeout(() => {
             setLoading(false);
-        }, 2100);
+        }, 3100);
     }, [props.navigation]);
+
+    useEffect(() => {
+        if (playersPerGame !== []) {
+            var arr = shuffle(playersPerGame)
+            let newArr = arr.filter((item) => item.Email !== token.Email);
+            setPlayersToRate(newArr)
+            setPlayersToRate([newArr[0], newArr[1], newArr[2]])
+
+            if (newArr[0] !== undefined)
+                setPlayersToRate([newArr[0]])
+            if (newArr[1] !== undefined)
+                setPlayersToRate([...playersToRate, newArr[1]])
+            if (newArr[2] !== undefined)
+                setPlayersToRate([...playersToRate, newArr[2]])
+        }
+    }, [playersPerGame])
 
 
     const SetRating = () => {
@@ -107,24 +110,25 @@ export default function RateGame(props) {
         <View style={{ alignItems: 'center' }}>
             {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
             <Text style={[appCss.title, appCss.space]}>Rate Game Players</Text>
-            <Text style={[appCss.inputLabel, { marginTop: 30 }]}>We hope that you enjoyed the game!{"\n"} Please rate your game friends</Text>
+            <Text style={[appCss.inputLabel, { marginTop: 30, justifyContent: 'center' }]}>We hope that you enjoyed the game!{"\n\n"} Please rate your game friends</Text>
             <Text style={[appCss.inputLabel, { marginTop: 30, marginBottom: 30 }]}>Choose Player To Rank:</Text>
             {loading ? <View style={styles.loading}>
                 <ActivityIndicator size={80} color="#0000ff" style={{ alignItems: 'center' }} />
             </View>
                 :
                 <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                    {playersToRate.length == 0 ? <Text style={[appCss.noResultsTxt, { textAlign: 'center' }]}>You Have Rated All The Players!{"\n"}See You Next Game!</Text>
-                        : null}
-                    {playersToRate.map((p, key) => {
-                        return <View key={key} style={playerChoosen == p.Email ? { padding: 20 } : { padding: 20, opacity: 0.5 }}>
-                            <TouchableOpacity activeOpacity={0.8} onPress={() => SetPlayer(p)}>
-                                <Avatar size="large" rounded source={{ uri: p.PlayerPicture }} />
-                                <Text style={[appCss.inputLabel, { alignSelf: 'center', paddingTop: 20 }]}>{p.FirstName}</Text>
-                                <Text style={[appCss.inputLabel, { alignSelf: 'center' }]}>{p.LastName}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    })}
+                    {playersToRate.length === 0 ? <Text style={[appCss.noResultsTxt, { textAlign: 'center' }]}>You Have Rated All The Players!{"\n"}See You Next Game!</Text>
+                        :
+                        playersToRate.map((p, key) => {
+                            return <View key={key} style={playerChoosen == p.Email ? { padding: 20 } : { padding: 20, opacity: 0.5 }}>
+                                <TouchableOpacity activeOpacity={0.8} onPress={() => SetPlayer(p)}>
+                                    <Avatar size="large" rounded source={{ uri: p.PlayerPicture }} />
+                                    <Text style={[appCss.inputLabel, { alignSelf: 'center', paddingTop: 20 }]}>{p.FirstName}</Text>
+                                    <Text style={[appCss.inputLabel, { alignSelf: 'center' }]}>{p.LastName}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        })
+                    }
                 </View>}
             {playerChoosen == "" ? null :
                 <View>
