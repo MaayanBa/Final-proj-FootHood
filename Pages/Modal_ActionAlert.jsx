@@ -25,7 +25,6 @@ export default function Modal_ActionAlert(props) {
                     TeamSerialNum: props.team,
                     EmailPlayer: item.Email
                 }
-                console.log(playerInTeam)
                 await RemoveFromTeam(playerInTeam)
                 await GetTeamDetails(token.Email);
                 break;

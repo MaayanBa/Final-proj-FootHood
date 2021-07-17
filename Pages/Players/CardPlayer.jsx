@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, Dimensions, ImageBackground, Animated, } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions, ImageBackground} from 'react-native';
 import AppCss from '../../CSS/AppCss';
 import { Feather } from '@expo/vector-icons';
 import PlayerApi from '../../api/Player';
 import StarRating from 'react-native-star-rating';
 import NotificationActions from '../../Services/NotificationActions';
-
-const { height } = Dimensions.get("screen");
-const height_logo = height * 0.3;
 
 export default function CardPlayer({ navigation, route }) {
     const player = route.params.p;
@@ -15,24 +12,7 @@ export default function CardPlayer({ navigation, route }) {
     const [age, setAge] = useState(new Date().getFullYear() - new Date(player.DateOfBirth).getFullYear())
     const stamina = player.Stamina;
 
-    // const animate = new Animated.Value(1);
-    // const animatedStyles={
-    //     transform:[
-    //         {
-    //             scale: animate
-    //         }
-    //     ]
-    // }
-    // const startAnimation = ()=>{
-    //     Animated.timing(animate,{
-    //         toValue: 2,
-    //         duration: 1500,
-    //         useNativeDriver: true,
-    //     }).start();
-    // } 
-
     useEffect(() => {
-        //startAnimation();
         getRate()
     }, [])
     const getRate = async () => {
@@ -49,8 +29,6 @@ export default function CardPlayer({ navigation, route }) {
         <View>
             <ImageBackground style={styles.card_bg} source={require('../../assets/BG_PlayerCard.png')} >
                 <NotificationActions navigation={navigation} />
-
-
                 <View style={styles.content}>
                     <View style={styles.imgAndName_View}>
                         <View style={styles.name_View}>
@@ -77,12 +55,10 @@ export default function CardPlayer({ navigation, route }) {
                             maxStars={5}
                             reversed={true}
                             rating={stamina}
-                            //selectedStar={(rating) => setStaminaStars(rating)}
                             fullStarColor={'gold'}
                             size={10}
                         />
                     </View>
-
                     <Text style={[appCss.inputLabel, styles.inputLabel_extra]}>PreferRole:  {player.PreferredRole} </Text>
                     <View style={appCss.rates_View}>
                         <View style={[appCss.rate, { left: 22 }]}>

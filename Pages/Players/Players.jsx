@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Pressable, SafeAreaView, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Pressable, ScrollView, TouchableOpacity, Image } from 'react-native';
 import AppCss from '../../CSS/AppCss';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
 import { Context as PlayerContext } from '../../Contexts/PlayerContext';
@@ -11,7 +11,7 @@ import Modal_Alert from '../Modal_Alert';
 
 export default function Players({ navigation }) {
     const { state: { searchedPlayers }, SearchPlayer, SetSearchPlayer } = useContext(TeamContext);
-    const { state: { players, ranked }, GetPlayers,CleanRankRes } = useContext(PlayerContext);
+    const { state: { players, ranked }, CleanRankRes } = useContext(PlayerContext);
     const [fullName, setFullName] = useState("");
     const [playerChoosen, setPlayerChoosen] = useState("");
     const [powerRate, setPowerRate] = useState(null)
@@ -37,8 +37,6 @@ export default function Players({ navigation }) {
 
     const getFilterResults = (filter) => {
         setFilterResults(filter);
-        console.log("Filter Results==========")
-        console.log(filter)
     }
 
     const SearchPlayers = () => {
@@ -48,7 +46,6 @@ export default function Players({ navigation }) {
             var lastName = "";
             var checkName = fullName.split(' ');
             if (checkName.length === 1) {
-                console.log("checkName" + checkName);
                 firstName = fullName;
                 lastName = null;
             }

@@ -1,15 +1,14 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Dimensions, Modal, Pressable, ImageBackground, SafeAreaView, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Modal, Pressable, ImageBackground, TouchableOpacity} from 'react-native';
 import AppCss from '../../CSS/AppCss';
 import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
-import { ListItem, Avatar } from 'react-native-elements';
+import { Avatar } from 'react-native-elements';
 import Slider from '@react-native-community/slider';
 import Modal_Alert from '../Modal_Alert';
 
 export default function ModalRankPlayer(props) {
   const { state: { token } } = useContext(AuthContext)
-  // const [selectRate, setSelectedRate] = useState("")
   const { RankPlayer } = useContext(PlayerContext);
   const [sliderValue, setSliderValue] = useState(0)
   const [alertModalVisible, setAlertModalVisible] = useState(false);
@@ -28,7 +27,6 @@ export default function ModalRankPlayer(props) {
       if (props.powerRate === 100 && props.defenceRate === 100 && props.attackRate === 100) {
         Alert("No one is perfect except Messi and Ronaldo =)\nPlease rate more detailed the values")
       }
-      // console.log("Power: " + props.powerRate + " ,Defence: " + props.defenceRate + " ,Attack: " + props.attackRate)
       else {
         await RankPlayer(props.playerChoosen.Email, token.Email, props.powerRate, props.defenceRate, props.attackRate)
         props.setPlayerChoosen("")
@@ -51,7 +49,6 @@ export default function ModalRankPlayer(props) {
   return (
     <Modal animationType="slide" transparent={true} visible={props.openModal}
       onRequestClose={() => props.setOpenModal(false)}>
-
       <View style={styles.centeredView}>
         {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
         <View style={styles.modal_View}>
@@ -108,14 +105,10 @@ export default function ModalRankPlayer(props) {
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
-  // footer: {
-  //   alignItems: 'center'
-  // },
   centeredView: {
     flex: 1,
     justifyContent: "center",
     top: 30
-    // marginBottom: 10
   },
   modal_View: {
     margin: 5,
@@ -123,8 +116,6 @@ const styles = StyleSheet.create({
     shadowColor: "#D9D9D9",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
-    // shadowRadius: 4,
-    // elevation: 20,
     height: '55%',
     borderRadius: 30
   },

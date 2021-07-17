@@ -26,7 +26,6 @@ export default function MyTeams(props) {
     }
     const calcBadge = async (team) => {
         let lastCount = parseInt(await AsyncStorage.getItem(`messages_count_${team.TeamSerialNum}`));
-        console.log(`lastCount=${lastCount}`)
         let totalInDb = await firebase.database().ref(`${team.TeamSerialNum}`).get();
         if (totalInDb.exists()) {
             totalInDb = totalInDb.exportVal()
