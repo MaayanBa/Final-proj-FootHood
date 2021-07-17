@@ -31,7 +31,6 @@ export default function News() {
 
     return (
         <View style={styles.container}>
-            {/* {console.log(titles)} */}
             <Text style={[appCss.title, { paddingTop: 10 }]}>News</Text>
             {modalNewsVisible && <Modal_FullNews modalNewsVisible={modalNewsVisible} setModalNewsVisible={() => setModalNewsVisible(!modalNewsVisible)} News={News} />}
             <View style={styles.buttons}>
@@ -64,7 +63,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         width: '100%',
-        // marginBottom: 30
     },
 
     btnTouch_Extra: {
@@ -79,18 +77,12 @@ const styles = StyleSheet.create({
         margin: 10
     },
     newsPart: {
-        // backgroundColor: 'rgba(250, 252, 252, 0.4)',
-        // justifyContent: 'space-around',
-        // borderRadius: 30,
         alignSelf: 'center',
         width: Dimensions.get('window').width - 60,
         height: 270,
-        // margin: 10,
-        // padding:10,
     },
     newsCard: { flexDirection: 'row-reverse', paddingHorizontal: 10 },
     newsItem: {
-        // margin:5,
         backgroundColor: 'rgba(250, 252, 252, 0.4)',
         borderRadius: 20,
         height: 60,
@@ -98,5 +90,4 @@ const styles = StyleSheet.create({
         paddingLeft:10,
         alignItems: 'center'
     },
-
 });

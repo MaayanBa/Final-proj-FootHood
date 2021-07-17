@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
     },
     newsCard: { flexDirection: 'row-reverse', paddingHorizontal: 10 },
     newsItem: {
-        // margin:5,
         backgroundColor: 'rgba(250, 252, 252, 0.4)',
         borderRadius: 20,
         height: 60,

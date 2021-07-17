@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {
-    StyleSheet, TouchableOpacity, View, Text, TextInput,
-    Modal, Dimensions, Pressable, ImageBackground
-} from 'react-native';
+import { StyleSheet, View, Text, Modal, Pressable, ImageBackground } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import DropDownPicker from 'react-native-dropdown-picker';
 import AppCss from '../../CSS/AppCss';
@@ -20,8 +17,6 @@ export default function Modal_LocationMap(props) {
         longitudeDelta: 0,
     });
     const [locationName, setLocationName] = useState("");
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
     const [radius, setRadius] = useState('');
 
     useEffect(() => {
@@ -48,7 +43,6 @@ export default function Modal_LocationMap(props) {
         loc !== undefined ?
             geocodeLocationByName(loc).then(
                 (data) => {
-                    // console.log("Data====>" + data);
                     // console.log(data);
                     setRegion({
                         latitude: data.lat,
@@ -75,7 +69,7 @@ export default function Modal_LocationMap(props) {
             transparent={true} visible={props.modalVisible} onRequestClose={() => props.setModalVisible()}>
 
             <View style={appCss.modal_View}>
-            {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={"You must enter place name and radius for search"}/>}
+                {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={"You must enter place name and radius for search"} />}
                 <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../assets/WallPaperWhite2.png')}>
                     <Text style={[appCss.modal_Txt, { paddingTop: 20, }]}>Choose Location:</Text>
                     <GooglePlacesInput notifyChange={(loc) => getCoordsFromName(loc)} />
@@ -93,7 +87,7 @@ export default function Modal_LocationMap(props) {
                         </MapView>
                     </View>
 
-                    <View style={{ justifyContent: 'space-around',marginTop: 20, flexDirection: 'row-reverse'}}>
+                    <View style={{ justifyContent: 'space-around', marginTop: 20, flexDirection: 'row-reverse' }}>
                         <Text style={[appCss.modal_Txt, { paddingTop: 20 }]}>Set radius limit:</Text>
                         <DropDownPicker
                             items={[

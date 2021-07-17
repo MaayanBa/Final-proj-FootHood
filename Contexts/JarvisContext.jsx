@@ -27,25 +27,20 @@ const Jarvis_FindPlayers4Game = dispatch => async (TeamSerialNum, GameSerialNum,
         }
         console.log(gameDetailes)
         const res = await JarvisApi.post('/Jarvis_FindPlayers4Game', gameDetailes);
-        // console.log("RES:")
-        // console.log(res.data)
         dispatch({ type: 'Jarvis_FindPlayers4Game', payload: res.data })
 
     } catch (error) {
-        console.log("err Jarvis_FindPlayers4Game")
-        console.log(error)
+        console.log("err Jarvis_FindPlayers4Game",error)
     }
 }
 
 const Jarvis_GetHotGames = dispatch => async (EmailPlayer) => {
     try {
-        console.log(EmailPlayer)
         const res = await JarvisApi.post('/Jarvis_GetHotGames', { EmailPlayer });
         if (res.data.length > 0)
             dispatch({ type: 'Jarvis_GetHotGames', payload: res.data })
     } catch (error) {
-        console.log("err Jarvis_GetHotGames")
-        console.log(error)
+        console.log("err Jarvis_GetHotGames",error)
     }
 }
 

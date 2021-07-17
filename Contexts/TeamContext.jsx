@@ -176,6 +176,7 @@ const SendMessageTeamChat = dispatch => async (EmailPlayer, TeamSerialNum, TeamN
 
 const LoadMessages = dispatch => async (CreatedAt) => {
     try {
+
         dispatch({ type: 'LoadMessages', payload: CreatedAt })
     } catch (error) {
         console.log("error in LoadMessages")

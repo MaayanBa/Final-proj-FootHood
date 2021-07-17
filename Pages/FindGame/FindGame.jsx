@@ -16,7 +16,7 @@ export default function GameList(props) {
     const { state: { gamesPlayerNotRegistered }, GetGamesPlayerNotRegistered } = useContext(GameContext)
     const { state: { hotGames }, Jarvis_GetHotGames } = useContext(JarvisContext)
     const { state: { token } } = useContext(AuthContext);
-    const { state: { joinRequests }, AddNewJoinRequests, GetJoinRequests } = useContext(TeamContext);
+    const { AddNewJoinRequests  } = useContext(TeamContext);
     const [modalVisible, setModalVisible] = useState(false);
     const [choosenGame, setChoosenGame] = useState(null);
     const [alertModalVisible, setAlertModalVisible] = useState(false);
@@ -30,6 +30,7 @@ export default function GameList(props) {
         latitudeDelta: 0,
         longitudeDelta: 0,
     });
+
     useEffect(() => {
         const unsubscribe = props.navigation.addListener('focus', () => {
             GetGamesPlayerNotRegistered(token.Email)
@@ -88,6 +89,7 @@ export default function GameList(props) {
         setModalPlayersVisible(true)
         setChoosenGame(gameSerialNum)
     }
+    
     let counter = 0;
     let gameCards = gamesPlayerNotRegistered.map((g, key) => {
         if (filterDistance > 0) {

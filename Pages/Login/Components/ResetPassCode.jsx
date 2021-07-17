@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, TextInput, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, TextInput, Text, Image, TouchableOpacity } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from "yup";
 import { Context as AuthContext } from '../../../Contexts/AuthContext';
@@ -32,16 +32,13 @@ export default function ResetPassCode() {
             otp: values.otp,
         }
         await updatPassCode(changes)
-        // state.passCodeHasChanged ? resetRestore_PassCode_values() : null
-        //navigation.navigate("NewLoginUser")
-        console.log("Success Reset");
-        
+        // console.log("Success Reset");
     }
     return (
         <Formik initialValues={{ otp: '', newPassCode: '', passCodeConfirmation: '' }}
             onSubmit={(values) => changePassCode(values)}
             validationSchema={RestorePassordSchema}>
-            {({ handleChange, handleSubmit, values, errors, isValid, touched }) => (
+            {({ handleChange, handleSubmit, values, errors,  touched }) => (
                 <View style={styles.verifyContainer}>
                     <View style={styles.formGroup}>
                         <Text style={appCss.explanationText}>Please enter the OTP code and insert a new password</Text>
@@ -98,7 +95,7 @@ export default function ResetPassCode() {
                     </View>
 
                     <View style={styles.formgruop}>
-                        <TouchableOpacity activeOpacity={0.8} onPress={handleSubmit} style={[appCss.btnTouch,{width:'60%'}]}>
+                        <TouchableOpacity activeOpacity={0.8} onPress={handleSubmit} style={[appCss.btnTouch, { width: '60%' }]}>
                             <Text style={appCss.txtBtnTouch}>Reset Password</Text>
                         </TouchableOpacity>
                     </View>

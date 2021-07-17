@@ -14,6 +14,7 @@ export default function MyProfile() {
     useEffect(() => {
         getRate()
     }, [])
+    
     const getRate = async () => {
         try {
             const response = await PlayerApi.post('/GetWeightedRate', { EmailofRatingPlayer: user.Email })

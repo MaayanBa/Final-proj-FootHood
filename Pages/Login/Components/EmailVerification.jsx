@@ -1,13 +1,11 @@
 import React, { useContext, useEffect,useState } from 'react';
-import { View, TextInput, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, TextInput, Text, Image, TouchableOpacity } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from "yup";
 import { Context as AuthContext } from '../../../Contexts/AuthContext'
 import AppCss from '../../../CSS/AppCss';
-import Modal_Alert from '../../Modal_Alert';
 
 const appCss = AppCss;
-
 const RestorePassordSchema = yup.object().shape(
    {
       email: yup
@@ -26,25 +24,18 @@ export default function EmailVerification() {
       resetRestore_PassCode_values()
    }, [])
 
-   const Alert = (message) => {
-      setAlertText(message)
-      setAlertModalVisible(true)
-   }
-
    const verifyEmail = async (values) => {
       console.log(values.email)
       await restorePassCode(values.email)
-
       alert("Email has been sent")
-      //console.log("Success Restore");
    }
+
    return (
       <Formik initialValues={{ email: '' }}
          onSubmit={(values) => verifyEmail(values)}
          validationSchema={RestorePassordSchema}>
          {({ handleChange, handleSubmit, values, errors, isValid, touched }) => (
             <View style={styles.verifyContainer}>
-               {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
                <View style={styles.formGroup}>
                   <Text style={appCss.explanationText}>Please enter your email to send an OTP code</Text>
                </View>
@@ -59,7 +50,6 @@ export default function EmailVerification() {
                         onChangeText={handleChange('email')}
                         value={values.email}
                         keyboardType="email-address"
-
                      />
                   </View>
                   {errors.email && touched.email ?

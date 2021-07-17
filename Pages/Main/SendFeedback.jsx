@@ -1,9 +1,6 @@
-import React, { useContext,useState} from 'react';
+import React, { useContext, useState } from 'react';
 import {
-    StyleSheet, TextInput,
-    View, Text, TouchableOpacity,
-    ScrollView, SafeAreaView,
-    Image, LogBox, Dimensions
+    StyleSheet, TextInput, View, Text, TouchableOpacity, ScrollView, SafeAreaView, Image, Dimensions
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Formik } from "formik";
@@ -35,11 +32,10 @@ export default function SendFeedback(props) {
         }
     }
 
-
     return (
         <SafeAreaView>
             <ScrollView>
-            {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
+                {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
                 <View style={[styles.container, { padding: 20, paddingTop: 60 }]}>
                     <Text style={[appCss.title, { paddingBottom: 20 }]}>Feedback</Text>
                     <Formik
@@ -60,7 +56,6 @@ export default function SendFeedback(props) {
                                             placeholder="Enter Subject"
                                             onChangeText={handleChange('subject')}
                                             value={values.subject}
-
                                         />
                                     </View>
                                     <Text style={appCss.inputLabel}>Content: {"\n"}</Text>
@@ -121,8 +116,8 @@ const styles = StyleSheet.create({
         flexDirection: "row-reverse",
     },
     btnSend: {
-        flexDirection: "row", 
+        flexDirection: "row",
         width: Dimensions.get('window').width - 150,
-        justifyContent:'space-evenly'
+        justifyContent: 'space-evenly'
     }
 })

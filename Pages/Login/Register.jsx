@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, TextInput, View, Dimensions, TouchableOpacity,LogBox, ScrollView, SafeAreaView, StatusBar, Platform, Image, Text } from 'react-native';
+import { StyleSheet, TextInput, View, Dimensions, TouchableOpacity, LogBox, ScrollView, SafeAreaView, StatusBar, Platform, Image, Text } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import { Formik } from "formik";
 import * as yup from 'yup';
@@ -13,7 +13,7 @@ import { Context as AuthContext } from '../../Contexts/AuthContext';
 import AppCss from '../../CSS/AppCss'
 import { Context as CitiesContext } from '../../Contexts/CitiesContext';
 import CitiesDropDown from '../MyTeams/Components/CitiesDropDown';
-import { getLocation, geocodeLocationByName } from '../../Services/location-service';
+import { geocodeLocationByName } from '../../Services/location-service';
 import Slider from '@react-native-community/slider';
 import Modal_Alert from '../Modal_Alert';
 
@@ -26,7 +26,6 @@ export default function Register(props) {
   const [imageUri, setimageUri] = useState(null);
   const [gender, setGender] = useState(null);
   const [date, setDate] = useState(new Date());
-  //const [dateBigger, setDateBigger] = useState(false);
   const [alertModalVisible, setAlertModalVisible] = useState(false);
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
@@ -34,7 +33,7 @@ export default function Register(props) {
   const [prefferedRole, setPrefferedRole] = useState('midfield');
   const [strongLeg, setStrongLeg] = React.useState('right');
   const [sliderValue, setSliderValue] = useState(0)
-  const { state: { cities }, GetListCities } = useContext(CitiesContext);
+  const { GetListCities } = useContext(CitiesContext);
   const [cityLive, setCityLive] = useState(null);
   const [region, setRegion] = useState({
     latitude: 0,
@@ -45,7 +44,6 @@ export default function Register(props) {
 
   useEffect(() => {
     GetListCities();
-    // console.log(cityLive)
   }, []);
 
   useEffect(() => {
@@ -57,8 +55,6 @@ export default function Register(props) {
   }
 
   const getCoordsFromName = () => {
-    //props.location(loc)
-    // console.log(cityLive)
     cityLive !== null ?
       geocodeLocationByName(cityLive).then(
         (data) => {
@@ -75,7 +71,6 @@ export default function Register(props) {
   }
 
   const onChange = (event, selectedDate) => {
-    //setDateBigger(false)
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
@@ -97,7 +92,6 @@ export default function Register(props) {
     else
       setGender('Female');
   }
-
 
   const btnOpenGalery = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -128,7 +122,6 @@ export default function Register(props) {
     }
   }
 
-
   const printDate = () => {
     let today = new Date()
     if (`${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}` === `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`)
@@ -142,7 +135,6 @@ export default function Register(props) {
   };
 
   const SignUp = (values) => {
-    // console.log(values.firstName)
     let player = {
       FirstName: "",
       LastName: "",
@@ -150,16 +142,16 @@ export default function Register(props) {
       Phone: "",
       Passcode: "",
       Gender: "",
-      PlayerCity:"", 
+      PlayerCity: "",
       DateOfBirth: "",
       PlayerPicture: "",
       Height: "",
       StrongLeg: "",
       Stamina: "",
-      PreferredRole:"",
+      PreferredRole: "",
       LatitudeHomeCity: "",
       LongitudeHomeCity: "",
-      DistanceOfInvites:"",
+      DistanceOfInvites: "",
     }
     // console.log(userFromGoogle.givenName) 
     if (userFromGoogle === null) {
@@ -194,10 +186,12 @@ export default function Register(props) {
     // });
     // console.log(values)
   }
+
   useEffect(() => {
-    if(token!==null)    
+    if (token !== null)
       props.navigation.navigate('TabNav')
   }, [token])
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -209,10 +203,10 @@ export default function Register(props) {
           <Formik
             validationSchema={loginValidationSchema}
             initialValues={{
-              firstName: userFromGoogle!==null? userFromGoogle.givenName: '',
-              lastName: userFromGoogle!==null? userFromGoogle.familyName: '',
-              email: userFromGoogle!==null? userFromGoogle.email: '',
-              password: userFromGoogle!==null? userFromGoogle.id: '',
+              firstName: userFromGoogle !== null ? userFromGoogle.givenName : '',
+              lastName: userFromGoogle !== null ? userFromGoogle.familyName : '',
+              email: userFromGoogle !== null ? userFromGoogle.email : '',
+              password: userFromGoogle !== null ? userFromGoogle.id : '',
               phoneNumber: '',
               playerGender: '',
               city: '',
@@ -242,11 +236,11 @@ export default function Register(props) {
                     {userFromGoogle !== null ?
                       <Image style={{ zIndex: 1, right: 100 }} source={require('../../assets/CheckMark.png')} style={appCss.soccerPlayer_img} />
                       : null}
-
                   </View>
                   {errors.firstName && touched.firstName ?
                     <Text style={{ fontSize: 10, color: 'red' }}>{errors.firstName}</Text> : null
                   }
+
                 </View>
                 <View style={styles.formGroup}>
                   <Text style={appCss.inputLabel}>Last Name:</Text>
@@ -362,16 +356,6 @@ export default function Register(props) {
                 <View style={[styles.formGroup, { paddingBottom: 20 }]}>
                   <Text style={[appCss.inputLabel, { paddingBottom: 10 }]}>City:</Text>
                   <CitiesDropDown width={315} ChoosenCity={(city) => GetCityFromUser(city)} city={cityLive} />
-
-                  {/* <View style={appCss.sectionStyle}>
-                    <Image source={require('../../assets/soccerPlayer.png')} style={appCss.soccerPlayer_img} />
-                    <TextInput
-                      name="city"
-                      placeholder="City"
-                      onChangeText={handleChange('city')}
-                      value={values.city}
-                    />
-                  </View> */}
                 </View>
 
                 <View style={styles.formGroup}>
@@ -394,7 +378,7 @@ export default function Register(props) {
                     <TouchableOpacity onPress={() => showDatepicker()}>
                       <Image source={require("../../assets/Calander.png")} style={styles.calanderStyle} />
                     </TouchableOpacity>
-                    {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={"Please enter a valid date of birth"}/>}
+                    {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={"Please enter a valid date of birth"} />}
                   </View>
 
                   {show && (
@@ -565,13 +549,4 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     padding: 8,
   },
-  //   textInputExtra:{
-  //         width: Dimensions.get('window').width - 40,
-  //  alignItems:'flex-end'
-  //   },
-  //   blockInput: {
-  //     backgroundColor: 'gray',
-
-  //   },
-
 })

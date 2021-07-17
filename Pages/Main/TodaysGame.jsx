@@ -74,7 +74,6 @@ export default function TodaysGame() {
     )
 }
 
-
 const appCss = AppCss;
 const styles = StyleSheet.create({
     card: {

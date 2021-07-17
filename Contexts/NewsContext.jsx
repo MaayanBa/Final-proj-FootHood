@@ -30,8 +30,6 @@ const GetNews = dispatch => async (israelNews) => {
                 var link = xml.getElementsByTagName('link')
                 headers.map(x => {
                     if (x.value != "ONE") {
-                        // console.log(x.value)
-                        // console.log("===============")
                         title.push(x.value);
                     }
                 })
@@ -39,8 +37,6 @@ const GetNews = dispatch => async (israelNews) => {
 
                 link.map(x => {
                     if (x.value !== "https://www.ONE.co.il") {
-                        // console.log(x.value)
-                        // console.log("===============")
                         if (x.value !== "https://images.one.co.il//images/one/logosmall.jpg") {
                             linkArr.push(x.value);
                         }

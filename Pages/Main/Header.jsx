@@ -3,7 +3,6 @@ import { StyleSheet, View, Text, TouchableOpacity, Image, Dimensions } from 'rea
 import { Context as AuthContext } from '../../Contexts/AuthContext'
 import { Avatar } from 'react-native-elements';
 
-
 export default function Header(props) {
     const { state: { token } } = useContext(AuthContext)
 
@@ -23,7 +22,6 @@ export default function Header(props) {
         </View>
     )
 }
-
 
 const styles = StyleSheet.create({
     headerRow: {

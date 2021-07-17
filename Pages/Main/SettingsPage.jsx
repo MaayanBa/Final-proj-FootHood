@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, StyleSheet, Alert, Image as ImageBall, Dimensions, Switch } from 'react-native'
+import { View, Text, StyleSheet, Image as ImageBall, Dimensions, Switch } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AppCss from '../../CSS/AppCss';
 import { AntDesign } from '@expo/vector-icons';
@@ -8,7 +8,7 @@ import Modal_ActionAlert from '../Modal_ActionAlert';
 
 
 export default function Settings(props) {
-    const { state: { token,enableNotifications }, signOut, setSettingNotifications } = useContext(AuthContext);
+    const { state: { enableNotifications }, setSettingNotifications } = useContext(AuthContext);
     const [isEnabledChatAlert, setIsEnabledChatAlert] = useState(enableNotifications)
     const [alertActionModalVisible, setAlertActionModalVisible] = useState(false);
     const [alertText, setAlertText] = useState('');
@@ -35,7 +35,7 @@ export default function Settings(props) {
 
             {/* <MainContent /> */}
             <View style={styles.mainContent}>
-            {alertActionModalVisible && <Modal_ActionAlert alertActionModalVisible={alertActionModalVisible} setAlertActionModalVisible={() => setAlertActionModalVisible(!alertActionModalVisible)} text={alertText} action={alertAction}/>}
+                {alertActionModalVisible && <Modal_ActionAlert alertActionModalVisible={alertActionModalVisible} setAlertActionModalVisible={() => setAlertActionModalVisible(!alertActionModalVisible)} text={alertText} action={alertAction} />}
                 <TouchableOpacity style={[appCss.btnTouch, styles.btnTouch_Extra]} onPress={() => props.navigation.navigate('EditPersonalDetails')}>
                     <Text style={appCss.txtBtnTouch}>  Change personal details  </Text>
                 </TouchableOpacity>
@@ -71,12 +71,10 @@ export default function Settings(props) {
                 <TouchableOpacity style={{ right: 30, bottom: 20 }} onPress={() => props.navigation.goBack()}>
                     <AntDesign name="arrowleft" size={30} color="white" />
                 </TouchableOpacity>
-
             </View>
         </View>
     )
-} ``
-
+}
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
@@ -91,8 +89,6 @@ const styles = StyleSheet.create({
     },
     mainContent: {
         flex: 1,
-        // justifyContent: 'space-around',
-        // alignItems: 'center',
     },
     btnTouch_Extra: {
         width: Dimensions.get('window').width - 80,
@@ -103,27 +99,18 @@ const styles = StyleSheet.create({
     },
     switchBtn: {
         justifyContent: 'space-evenly'
-
     },
-
     changeBtn: {
         backgroundColor: 'black',
         padding: 5,
         borderRadius: 5,
         width: 200,
         alignItems: 'center',
-
     },
     ball_img: {
         marginTop: 50,
         height: 110,
         width: 100,
         alignSelf: 'center',
-        // top: 40
-    },
-
-    footer: {
-        // justifyContent: 'flex-end',
-        // flex: 1,
     },
 });

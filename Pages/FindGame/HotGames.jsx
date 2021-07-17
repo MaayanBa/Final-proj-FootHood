@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Text, StyleSheet, View, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import { Text, StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
 import AppCss from '../../CSS/AppCss';
 import { Octicons } from '@expo/vector-icons';
 import { Context as JarvisContext } from '../../Contexts/JarvisContext';
@@ -10,7 +10,7 @@ import Modal_Alert from '../Modal_Alert';
 export default function HotGames(props) {
     const { state: { hotGames }, Jarvis_GetHotGames } = useContext(JarvisContext)
     const { state: { token } } = useContext(AuthContext);
-    const { state: { joinRequests }, AddNewJoinRequests, GetJoinRequests } = useContext(TeamContext);
+    const {  AddNewJoinRequests } = useContext(TeamContext);
     const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [alertText, setAlertText] = useState('');
 
@@ -39,6 +39,7 @@ export default function HotGames(props) {
         AddNewJoinRequests(token.Email, gameSerialNum)
         Alert("You have sent a request to join! Please wait for the manager of the team to accept you")
     }
+    
     let counter = 0;
     let gameCards = hotGames.map((g, key) => {
         if (counter == 0) {
@@ -64,9 +65,6 @@ export default function HotGames(props) {
                     </View>
                 </View>
             </View>
-        }
-        else {
-
         }
     })
 
@@ -122,10 +120,8 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     court_img: {
-        //marginBottom: 90,
         height: 45,
         width: 45,
-        //alignSelf: 'flex-end',
         marginHorizontal: 20
     },
     games_scrollView: {

@@ -5,19 +5,6 @@ import EmailVerification from './Components/EmailVerification';
 import ResetPassCode from './Components/ResetPassCode';
 import AppCss from '../../CSS/AppCss';
 
-const appCss = AppCss;
-const styles = StyleSheet.create({
-  title_View: {
-    alignItems: 'center',
-    padding: 20,
-    paddingTop: 50
-  },
-  mainContent: {
-    justifyContent: 'center',
-    marginTop: 40
-  },
-})
-
 export default function ForgotPassword() {
   const { state } = useContext(AuthContext);
   return (
@@ -31,3 +18,18 @@ export default function ForgotPassword() {
     </View>
   )
 }
+
+
+const appCss = AppCss;
+const styles = StyleSheet.create({
+  title_View: {
+    alignItems: 'center',
+    padding: 20,
+    paddingTop: 50
+  },
+  mainContent: {
+    justifyContent: 'center',
+    marginTop: 40
+  },
+})
+

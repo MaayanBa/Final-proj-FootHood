@@ -1,7 +1,6 @@
 import CreateDataContext from './createDataContext';
 import PlayerApi from '../api/Player';
 import RankApi from '../api/Rank'
-import { requestPermissionsAsync } from 'expo-notifications';
 
 const playerReducer = (state, action) => {
     switch (action.type) {
@@ -21,21 +20,16 @@ const GetPlayers = dispatch => async () => {
         const response = await PlayerApi.get('/GetPlayers')
         dispatch({ type: 'GetPlayers', payload: response.data })
     } catch (err) {
-        console.log("err GetPlayers - Player Context")
-        console.log(err)
+        console.log("err GetPlayers - Player Context",err)
     }
 }
 
 const RankPlayer = dispatch => async (EmailofRatedPlayer, EmailofRatingPlayer, PowerRating, AttackRating, DefenseRating) => {
     try {
         const response = await RankApi.post('/RankPlayer', { EmailofRatedPlayer, EmailofRatingPlayer, PowerRating, AttackRating, DefenseRating })
-        //alert(response.data);
         dispatch({ type: 'RankPlayer', payload: response.data })
-        // console.log(response.data)
-
     } catch (err) {
-        console.log("err RankPlayer - Player Context")
-        console.log(err)
+        console.log("err RankPlayer - Player Context",err.message)
     }
 }
 
@@ -44,13 +38,10 @@ const RankPlayerAfterGame = dispatch => async (EmailofRatedPlayer, EmailofRating
         if (EmailofRatedPlayer == EmailofRatingPlayer)
             alert("You can't rate yourself")
         else {
-            const response = await RankApi.post('/RankPlayerAfterGame', { EmailofRatedPlayer, EmailofRatingPlayer, PowerRating, AttackRating, DefenseRating, GameSerialNum })
-            //alert(response.data);
-            //console.log(response.data)
+            await RankApi.post('/RankPlayerAfterGame', { EmailofRatedPlayer, EmailofRatingPlayer, PowerRating, AttackRating, DefenseRating, GameSerialNum })
         }
     } catch (err) {
-        console.log("err RankPlayerAfterGame - Player Context")
-        console.log(err)
+        console.log("err RankPlayerAfterGame - Player Context",err)
     }
 }
 

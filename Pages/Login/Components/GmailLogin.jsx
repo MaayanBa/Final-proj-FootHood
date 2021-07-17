@@ -7,7 +7,6 @@ import { Context as AuthContext } from '../../../Contexts/AuthContext';
 const appCss = AppCss;
 
 export default function GmailLogin({ navigation }) {
-
     const { state: { signFromGoogle, userFromGoogle }, setUserFromGoogle, signIn, clearUserFromGoogle, CheckIfExist } = useContext(AuthContext)
 
 
@@ -28,17 +27,9 @@ export default function GmailLogin({ navigation }) {
                 // console.log(user);
                 setUserFromGoogle(user);
                 CheckIfExist(user)
-
-                // navigation.navigate('Register')
-
-                // let player = {
-                //     email: user.email,
-                //     passcode: user.id
-                // }
             }
         } catch (e) {
-            console.log("Error")
-            console.log(e)
+            console.log("Error",e)
             return { error: true };
         }
     }
@@ -54,8 +45,8 @@ export default function GmailLogin({ navigation }) {
         }
         else if (signFromGoogle === false)
             navigation.navigate('Register')
-
     }, [signFromGoogle])
+    
     return (
         <TouchableOpacity onPress={() => signInWithGoogleAsync()}>
             <View style={appCss.social_btn}>

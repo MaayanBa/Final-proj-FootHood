@@ -37,7 +37,6 @@ export default function NewLoginUser({ navigation }) {
         clearErrorMessage();
         tryLocalSignin();
         GetListCities();
-        // { console.log("The From storage is : ===> " + state.token) }
     }, []);
 
     const textInputChange = (val) => {
@@ -186,7 +185,6 @@ export default function NewLoginUser({ navigation }) {
                     </View>
                 </View>
             </Animatable.View>
-
         </View>
     )
 }

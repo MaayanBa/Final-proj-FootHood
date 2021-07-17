@@ -1,7 +1,5 @@
 import React, { useEffect, useContext } from 'react'
-import {
-    StyleSheet, TouchableOpacity, View, Text, ScrollView, Image, Modal, Pressable, ImageBackground
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Text, ScrollView, Image, Modal, Pressable, ImageBackground } from 'react-native';
 import { Avatar, ListItem } from 'react-native-elements';
 import AppCss from '../../CSS/AppCss';
 import { Context as GameContext } from '../../Contexts/GameContext';
@@ -9,7 +7,7 @@ import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 
 
 export default function Modal_GamePlayers(props) {
-    const { state: { gamesList, playersPerGame }, GetPlayers4Game } = useContext(GameContext);
+    const { state: { playersPerGame }, GetPlayers4Game } = useContext(GameContext);
     const { state: { players } } = useContext(PlayerContext);
 
     useEffect(() => {
@@ -33,7 +31,6 @@ export default function Modal_GamePlayers(props) {
         </ListItem>
     ))
 
-
     return (
         <Modal animationType="slide"
             transparent={true} visible={props.modalPlayersVisible} onRequestClose={() => props.setModalPlayersVisible()}>
@@ -47,7 +44,6 @@ export default function Modal_GamePlayers(props) {
                         <Pressable style={styles.modal_Closebtn} onPress={() => props.setModalPlayersVisible()} >
                             <Text style={appCss.inputLabel}>Close</Text>
                         </Pressable>
-
                     </ImageBackground>
                 </View>
             </View>
@@ -82,7 +78,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 10,
         alignSelf: "center",
-        marginBottom:20,
+        marginBottom: 20,
     },
     playerList_scrollView: {
         height: 460,

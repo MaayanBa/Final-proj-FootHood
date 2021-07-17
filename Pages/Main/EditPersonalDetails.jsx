@@ -23,9 +23,9 @@ LogBox.ignoreLogs([
 
 export default function EditPersonalDetails(props) {
 
-    const { state: { token },ChangePersonalDetails } = useContext(AuthContext);
+    const { state: { token }, ChangePersonalDetails } = useContext(AuthContext);
     const [imageUri, setimageUri] = useState(token.PlayerPicture);
-    const [gender, setGender] = useState(token.Gender ?'Male': 'Female'  );
+    const [gender, setGender] = useState(token.Gender ? 'Male' : 'Female');
     const [genderBool, setGenderBool] = useState(token.Gender)
     const [date, setDate] = useState(new Date(token.DateOfBirth));
     const [mode, setMode] = useState('date');
@@ -34,7 +34,7 @@ export default function EditPersonalDetails(props) {
     const [prefferedRole, setPrefferedRole] = useState(token.PreferredRole);
     const [strongLeg, setStrongLeg] = React.useState(token.StrongLeg ? 'left' : 'right');
     const [sliderValue, setSliderValue] = useState(token.DistanceOfInvites)
-    const { state: { cities }, GetListCities } = useContext(CitiesContext);
+    const { GetListCities } = useContext(CitiesContext);
     const [cityLive, setCityLive] = useState(token.PlayerCity);
     const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [alertText, setAlertText] = useState('');
@@ -44,14 +44,13 @@ export default function EditPersonalDetails(props) {
     });
     const phoneNumber = +JSON.stringify(token.Phone)
 
-    const Alert=(message)=>{
+    const Alert = (message) => {
         setAlertText(message)
         setAlertModalVisible(true)
-      }
+    }
 
     useEffect(() => {
         GetListCities();
-        // console.log(cityLive)
     }, []);
 
     useEffect(() => {
@@ -63,8 +62,6 @@ export default function EditPersonalDetails(props) {
     }
 
     const getCoordsFromName = () => {
-        //props.location(loc)
-        // console.log(cityLive)
         cityLive !== null ?
             geocodeLocationByName(cityLive).then(
                 (data) => {
@@ -81,7 +78,6 @@ export default function EditPersonalDetails(props) {
     }
 
     const onChange = (event, selectedDate) => {
-        //setDateBigger(false)
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
         setDate(currentDate);
@@ -101,7 +97,7 @@ export default function EditPersonalDetails(props) {
             setGender('Male');
             setGenderBool(true);
         }
-        else{
+        else {
             setGender('Female');
             setGenderBool(false);
         }
@@ -171,7 +167,7 @@ export default function EditPersonalDetails(props) {
         player.LastName = values.lastName;
         player.Phone = values.phoneNumber;
         player.Gender = genderBool;
-        if (cityLive == "" ||cityLive == null )
+        if (cityLive == "" || cityLive == null)
             player.PlayerCity = token.PlayerCity
         player.DateOfBirth = date
         player.PlayerPicture = imageUri
@@ -183,20 +179,19 @@ export default function EditPersonalDetails(props) {
         player.LongitudeHomeCity = region.longitude
 
         player.DistanceOfInvites = sliderValue
-
-
         let phoneNumber = JSON.stringify(player.Phone).length
 
-        if ((phoneNumber >= 9 && phoneNumber <= 10) || player.Phone.length ===10){
+        if ((phoneNumber >= 9 && phoneNumber <= 10) || player.Phone.length === 10) {
             ChangePersonalDetails(player)
             props.navigation.goBack()
         }
         else Alert("Something wrong with your phone number")
     }
+
     return (
         <SafeAreaView>
             <ScrollView>
-            {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
+                {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
                 <StatusBar backgroundColor='transparent' barStyle="light-content" />
                 <View style={appCss.container, { padding: 40 }}>
                     <View style={styles.title_View}>
@@ -342,7 +337,6 @@ export default function EditPersonalDetails(props) {
                                             ]}
                                             defaultValue={prefferedRole}
                                             containerStyle={{ height: 30, width: 200 }}
-                                            //placeholder="Choose Preffered Role"
                                             style={{ backgroundColor: '#fafafa' }}
                                             itemStyle={{
                                                 justifyContent: 'flex-end',

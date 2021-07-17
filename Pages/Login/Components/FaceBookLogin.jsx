@@ -1,10 +1,9 @@
 import React from 'react'
-import { StyleSheet ,View, TouchableOpacity,Image } from 'react-native';
+import { View, TouchableOpacity,Image } from 'react-native';
 import AppCss from '../../../CSS/AppCss';
 const appCss = AppCss;
 
 export default function FaceBookLogin(props) {
-
     async function fetchdataFromFacebook() {
         try {
             await Facebook.initializeAsync({
@@ -16,9 +15,9 @@ export default function FaceBookLogin(props) {
             const {
                 type,
                 token,
-                expires,
-                permissions,
-                declinedPermissions,
+                // expires,
+                // permissions,
+                // declinedPermissions,
             } = await Facebook.logInWithReadPermissionsAsync({
                 permissions: ["public_profile", "email"],
             });
@@ -30,8 +29,6 @@ export default function FaceBookLogin(props) {
                 const userInfo = await response.json();
                 console.log(userInfo)
                 //add async and db
-                // email = userInfo.email;
-                // password = userInfo.id;
                 checkUserLogin();
             } else {
                 alert(`Facebook Login cancel`);
