@@ -1,17 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import AppCss from '../../../CSS/AppCss';
 import { Context as CitiesContext } from '../../../Contexts/CitiesContext';
 
-
-const appCss = AppCss;
-const styles = StyleSheet.create({
-    dropDown: {
-        alignItems: 'center',
-        // padding: 20,
-    }
-})
 
 export default function CitiesDropDown(props) {
     const { state: { cities } } = useContext(CitiesContext);
@@ -31,7 +23,6 @@ export default function CitiesDropDown(props) {
 
     return (
         <View style={styles.dropDown}>
-            {/* {console.log(citiesNames)} */}
             <DropDownPicker
                 items={citiesNames}
                 value={city}
@@ -50,3 +41,11 @@ export default function CitiesDropDown(props) {
         </View>
     )
 }
+
+
+const appCss = AppCss;
+const styles = StyleSheet.create({
+    dropDown: {
+        alignItems: 'center',
+    }
+})

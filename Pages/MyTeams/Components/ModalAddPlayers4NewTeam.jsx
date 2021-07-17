@@ -1,8 +1,5 @@
-import React, { useState, useContext, useEffect } from 'react';
-import {
-    StyleSheet, TouchableOpacity, View, Text,
-    Modal as ModalSearchInApp, Pressable, TextInput, Image, ScrollView, SafeAreaView, ImageBackground
-} from 'react-native';
+import React, { useState, useContext } from 'react';
+import {StyleSheet, TouchableOpacity, View, Text,Modal as ModalSearchInApp, Pressable, TextInput, Image, ScrollView, SafeAreaView, ImageBackground} from 'react-native';
 import { Entypo as PlusIcon } from '@expo/vector-icons';
 import { ListItem, Avatar } from 'react-native-elements';
 import AppCss from '../../../CSS/AppCss';
@@ -11,7 +8,7 @@ import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 
 export default function ModalAddPlayers4NewTeam(props) {
     const [fullName, setFullName] = useState("");
-    const { state: { searchedPlayers, myTeams }, SearchPlayer, AddPlayer, SetSearchPlayer, GetPlayers4Team ,setTeamPlayers} = useContext(TeamContext);
+    const { state: { searchedPlayers, myTeams }, SearchPlayer, AddPlayer, GetPlayers4Team ,setTeamPlayers} = useContext(TeamContext);
     const { state: { players }, } = useContext(PlayerContext);
     const teamKey = props.teamKey;
 
@@ -39,7 +36,6 @@ export default function ModalAddPlayers4NewTeam(props) {
     const AddNewPlayerToTeam = async (p) => {
         const selectedPlayer = {
             EmailPlayer: p.Email,
-            //   TeamSerialNum: myTeams[teamKey].TeamSerialNum
         }
         if (props.addedPlayers.find(x => x.EmailPlayer == p.Email) == null) {
             props.setAddedPlayers([...props.addedPlayers, selectedPlayer])
@@ -47,12 +43,6 @@ export default function ModalAddPlayers4NewTeam(props) {
         else {
             console.log("Exist")
         }
-        //   props.setForceState();
-
-        // await AddPlayer(selectedPlayer)
-        // await GetPlayers4Team(myTeams[teamKey].TeamSerialNum, myTeams);
-        // SetSearchPlayer();
-        // Close();
     }
 
     const AddPlayerNow = async (p) => {

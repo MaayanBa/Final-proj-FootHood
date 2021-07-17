@@ -24,7 +24,6 @@ export default function Players_Window(props) {
 
   useEffect(() => {
     GetPlayers4Game(gamesList[props.indexGame].GameSerialNum, players);
-
     geocodeLocationByName(gamesList[props.indexGame].GameLocation).then(
       (data) => {
         if (data === undefined || data === null) {
@@ -126,6 +125,5 @@ const styles = StyleSheet.create({
   },
   playerInGameList: {
     backgroundColor: '#D9D9D9',
-
   }
 })

@@ -1,8 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import {
-    StyleSheet, TouchableOpacity, View, Text,
-    Modal as ModalContactList, Pressable, Image, ScrollView, ImageBackground
-} from 'react-native';
+import {StyleSheet, TouchableOpacity, View, Text,Modal as ModalContactList, Pressable, Image, ScrollView, ImageBackground} from 'react-native';
 import { Entypo as PlusIcon } from '@expo/vector-icons';
 import { ListItem, Avatar } from 'react-native-elements';
 import AppCss from '../../../CSS/AppCss';
@@ -38,7 +35,6 @@ export default function Modal_ContactList(props) {
                                 contact.phoneNumbers.map(x => {
                                     if (x.number.includes(p.Phone) && !playersInContacts.includes(p)) {
                                         playersInContacts.push(p);
-                                        // console.log(p.Phone)
                                     }
                                 })
                             }
@@ -50,17 +46,6 @@ export default function Modal_ContactList(props) {
         })();
     }, []);
 
-
-    // const AddNewPlayerToTeam = async (p) => {
-    //     const selectedPlayer = {
-    //         EmailPlayer: p.Email,
-    //         TeamSerialNum: myTeams[teamKey].TeamSerialNum
-    //     }
-    //     await AddPlayer(selectedPlayer)
-    //     await GetPlayers4Team(myTeams[teamKey].TeamSerialNum, myTeams);
-    //     Close();
-    // }
-
     const Close = () => {
         props.setShowContactListModal(false)
     }
@@ -68,18 +53,11 @@ export default function Modal_ContactList(props) {
     const AddNewPlayerToTeam = async (p) => {
         const selectedPlayer = {
             EmailPlayer: p.Email,
-            //   TeamSerialNum: myTeams[teamKey].TeamSerialNum
         }
         if (props.addedPlayers.find(x => x.EmailPlayer == p.Email) == null)
             props.setAddedPlayers([...props.addedPlayers, selectedPlayer])
         else
             console.log("Exist")
-        //   props.setForceState();
-
-        // await AddPlayer(selectedPlayer)
-        // await GetPlayers4Team(myTeams[teamKey].TeamSerialNum, myTeams);
-        // SetSearchPlayer();
-        // Close();
     }
 
     const ReamoveFromArray2AddTeam = async (p) => {

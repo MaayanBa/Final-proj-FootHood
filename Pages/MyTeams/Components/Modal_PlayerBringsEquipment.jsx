@@ -1,17 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react'
-import {
-    StyleSheet, TouchableOpacity, View, Text, TextInput, Modal as ModalPlayerBringsEquipment,
-    Pressable, ImageBackground, ScrollView, SafeAreaView
-} from 'react-native';
+import {StyleSheet, TouchableOpacity, View, Text, TextInput, Modal as ModalPlayerBringsEquipment,Pressable, ImageBackground, ScrollView, SafeAreaView} from 'react-native';
 import AppCss from '../../../CSS/AppCss';
-import { Avatar, ListItem } from 'react-native-elements';
+import { ListItem } from 'react-native-elements';
 import { RadioButton } from 'react-native-paper';
 import { Entypo as Pencil } from '@expo/vector-icons';
 import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 import { Context as GameContext } from '../../../Contexts/GameContext';
 import { Context as AuthContext } from '../../../Contexts/AuthContext';
 import { Context as EquipmentContext } from '../../../Contexts/EquipmentContext';
-import { Context as TeamContext } from '../../../Contexts/TeamContext';
 import EquipmentsRadioBtns from './EquipmentsRadioBtns';
 import Modal_Alert from '../../Modal_Alert';
 
@@ -21,11 +17,9 @@ export default function Modal_PlayerBringsEquipment(props) {
     const [playerBringsModalVisible, setPlayerBringsModalVisible] = useState(false);
     const { state: { gamesList, playersPerGame }, GetPlayers4Game } = useContext(GameContext);
     const { state: { players } } = useContext(PlayerContext);
-    const { state: { myTeams } } = useContext(TeamContext);
     const [choosenPlayer, setChoosenPlayer] = useState();
     const [choosenEquipment, setChoosenEquipment] = useState();
     const { state: { token } } = useContext(AuthContext)
-    // const [user, setUser] = useState(token)
     const { state: { equipments,response }, AssignEquipment2Player, GetAllEquipments, GetItemsAssignForGame, AddNewItem } = useContext(EquipmentContext);
     const [newEquipment, setNewEquipment] = useState()
     const [alertModalVisible, setAlertModalVisible] = useState(false);
@@ -79,7 +73,6 @@ export default function Modal_PlayerBringsEquipment(props) {
             <ListItem.Content style={{ alignItems: 'flex-end' }} >
                 <ListItem.Title style={styles.label}>{p.FirstName + " " + p.LastName}</ListItem.Title>
             </ListItem.Content>
-            {/* <Avatar rounded source={{ uri: p.PlayerPicture }} /> */}
             <View>
                 <RadioButton
                     value={i}
@@ -111,7 +104,6 @@ export default function Modal_PlayerBringsEquipment(props) {
                                 <View style={{ width: 170 }}>
                                     <Text style={styles.modal_Txt}>Equipment:</Text>
                                     <ScrollView style={{ height: 300, backgroundColor: 'rgba(52, 52, 52, 0.1)', borderRadius: 20, left: 10 }}>
-                                        {/* {equipments == "There are no Equipments for this game" ? null : equipmentsList()} */}
                                         {equipments == "There are no Equipments for this game" ? null : <EquipmentsRadioBtns index={index} keyTeam={keyTeam} setChoosenEquipment={(e) => setChoosenEquipment(e)} choosenEquipment={choosenEquipment} />}
                                     </ScrollView>
                                 </View>
@@ -147,11 +139,9 @@ export default function Modal_PlayerBringsEquipment(props) {
 
     return (
         <View style={{ padding: 10 }}>
-            {/* {myTeams[keyTeam].EmailManager !== user.Email ? null : */}
             <TouchableOpacity onPress={() => setPlayerBringsModalVisible(true)} style={{ alignItems: 'flex-start' }}>
                 <Pencil name="pencil" size={24} color="black" />
             </TouchableOpacity>
-            {/* } */}
             {modal_PlayerBringsEquipment}
         </View>
     )
@@ -166,7 +156,6 @@ const styles = StyleSheet.create({
         marginBottom: 70
     },
     modal_View: {
-        // margin: 20,
         borderRadius: 20,
         padding: 5,
         paddingBottom: 20,

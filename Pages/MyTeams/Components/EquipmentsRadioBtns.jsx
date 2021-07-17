@@ -28,6 +28,7 @@ export default function EquipmentsRadioBtns(props) {
         </View>
     )
 }
+
 const styles = StyleSheet.create({
     label: {
         fontWeight: "bold",

@@ -1,11 +1,7 @@
 import React,{useState} from 'react'
 import { StyleSheet,View, Text, TouchableOpacity } from 'react-native';
-import {
-  Feather as Minus,
-  Feather as Plus,
-} from '@expo/vector-icons';
+import { Feather as Minus,Feather as Plus,} from '@expo/vector-icons';
 import Modal_Alert from '../../Modal_Alert';
-
 
 export default function NumOfTeamsAndPlayers(props) {
   const [alertModalVisible, setAlertModalVisible] = useState(false);
@@ -36,7 +32,6 @@ export default function NumOfTeamsAndPlayers(props) {
   }
   return (
     <>    
-      {/* number of teams */}
       <View style={styles.plusAndMinus_View}>
       {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
         <View style={styles.plusAndMinus_Btns}>
@@ -52,15 +47,12 @@ export default function NumOfTeamsAndPlayers(props) {
           <Text style={styles.txt_Label}>Number Of Teams:</Text>
         </View>
       </View>
-
-      {/* number of player each team */}
       <View style={styles.plusAndMinus_View}>
         <View style={styles.plusAndMinus_Btns}>
           <TouchableOpacity onPress={() => ChangeNum_state('plus', 'numOfPlayersInTeam')}>
             <Plus name="plus" size={35} color="white" />
           </TouchableOpacity>
           <Text style={styles.plusAndMinus_Numbers}>{props.numOfPlayersInTeam}</Text>
-
           <TouchableOpacity onPress={() => ChangeNum_state('minus', 'numOfPlayersInTeam')}>
             <Minus name="minus" size={35} color="white" />
           </TouchableOpacity>

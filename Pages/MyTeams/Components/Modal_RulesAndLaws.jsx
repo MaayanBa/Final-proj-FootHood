@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import {StyleSheet, TouchableOpacity, View, Text,ScrollView,
- Modal as ModalRulsAndLaws, Pressable,ImageBackground
-} from 'react-native';
+import {StyleSheet, TouchableOpacity, View, Text,ScrollView,Modal as ModalRulsAndLaws, Pressable,ImageBackground} from 'react-native';
 import AppCss from '../../../CSS/AppCss';
 
 export default function Modal_RulesAndLaws({team}) {

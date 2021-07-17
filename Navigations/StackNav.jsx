@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import NewLoginUser from '../Pages/Login/NewLoginUser';
-
 import Register from '../Pages/Login/Register';
 import ForgotPassword from '../Pages/Login/ForgotPassword';
 import TabNav from './TabNav';
@@ -13,7 +12,6 @@ const MyTheme = {
     ...DefaultTheme,
     colors: {
         ...DefaultTheme.colors,
-        //primary: 'rgb(255, 45, 85)',
         background: 'transparent',
     },
 };

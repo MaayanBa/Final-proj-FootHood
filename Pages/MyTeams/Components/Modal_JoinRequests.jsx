@@ -1,8 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import {
-    StyleSheet, TouchableOpacity, View, Text,
-    Modal as ModalJoinRequests, Pressable, Image, ImageBackground, ScrollView
-} from 'react-native';
+import {StyleSheet, TouchableOpacity, View, Text,Modal as ModalJoinRequests, Pressable, Image, ImageBackground, ScrollView} from 'react-native';
 import { AntDesign as MailIcon, AntDesign as PlusIcon, Feather as RequestAction } from '@expo/vector-icons';
 import AppCss from '../../../CSS/AppCss';
 import { Avatar, ListItem, Badge } from 'react-native-elements';
@@ -51,21 +48,18 @@ export default function Modal_JoinRequests(props) {
             <TouchableOpacity onPress={() => DeleteRequests(p)}>
                 <RequestAction name="x" size={25} color="red" />
             </TouchableOpacity>
-
             <TouchableOpacity onPress={() => ApproveRequests(p)}>
                 <RequestAction name="check" size={25} color="green" />
             </TouchableOpacity>
             <TouchableOpacity activeOpacity={0.8} onPress={() => PlayerCard(p)} >
                 <Image style={[appCss.playerCardIcon_Btn, { left: 5 }]} source={require('../../../assets/PlayerCardIcon.png')} />
             </TouchableOpacity>
-
             <ListItem.Content style={{ alignItems: 'flex-end' }} >
                 <ListItem.Title>{p.FirstName + " " + p.LastName}</ListItem.Title>
             </ListItem.Content>
             <Avatar rounded source={{ uri: p.PlayerPicture }} />
         </ListItem>
     ))
-
 
     const modal_JoinRequests = <ModalJoinRequests animationType="slide"
         transparent={true} visible={requestsModalVisible}

@@ -1,7 +1,5 @@
-import React, { useState, useContext } from 'react'
-import {
-  StyleSheet, TouchableOpacity, View, Text, Modal as ModalAddNewPlayer, Pressable, ImageBackground
-} from 'react-native';
+import React, { useState } from 'react'
+import { StyleSheet, TouchableOpacity, View, Text, Modal as ModalAddNewPlayer, Pressable, ImageBackground} from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import AppCss from '../../../CSS/AppCss';
 import ModalAddPlayers4NewTeam from '../Components/ModalAddPlayers4NewTeam';
@@ -30,12 +28,6 @@ export default function Modal_AddPlayers(props) {
     <View style={styles.centeredView}>
       <View style={[appCss.modal_View, { height: '35%' }]}>
         <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../../assets/WallPaperWhite2.png')}>
-          {/* <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch, { width: "90%" }]}>
-            <View style={styles.addPlayersBtns}>
-              <Feather name="link" size={24} color="black" />
-              <Text style={[appCss.txtBtnTouch, { fontSize: 16 }]}>&nbsp; Via Link</Text>
-            </View>
-          </TouchableOpacity> */}
           <TouchableOpacity activeOpacity={0.8} style={[appCss.btnTouch, { width: "90%" }]} onPress={() => clickOnContactList()}>
             <View style={styles.addPlayersBtns}>
               <Feather name="user-plus" size={24} color="black" />
@@ -59,7 +51,6 @@ export default function Modal_AddPlayers(props) {
 
   return (
     <View>
-
       <TouchableOpacity activeOpacity={0.8} onPress={() => setAddPlayerModalVisible(true)} style={styles.options_Btn}>
         <Text style={[appCss.txtBtnTouch, { fontSize: 16 }]}>Add New Players</Text>
         <Feather name="user-plus" size={24} color="black" style={{ left: 10 }} />

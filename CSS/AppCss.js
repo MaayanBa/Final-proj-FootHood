@@ -1,10 +1,9 @@
-import { StyleSheet, StatusBar, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 
 export default styles = StyleSheet.create({
   container: {
     flex: 1,
-    //paddingTop: StatusBar.currentHeight
   },
   imageBackGround: {
     flex: 1,
@@ -65,7 +64,6 @@ export default styles = StyleSheet.create({
     color: "black",
     fontWeight: "bold",
     alignSelf: "center",
-    //textTransform: "uppercase"
   },
   sectionStyle: {
     flexDirection: 'row-reverse',
@@ -181,16 +179,12 @@ export default styles = StyleSheet.create({
     paddingRight: 10,
   },
   x_TouchIcon: {
-    // left: 2,
-    // top: 0,
     zIndex: 1,
     right: 80,
     bottom: 25
-
   },
   xIcon: {
     width: 22,
     height: 22,
-
   }
 });

@@ -1,8 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import {
-    StyleSheet, TouchableOpacity, View, Text,
-    Modal as ModalWaitingList, Pressable, Image, ImageBackground, ScrollView
-} from 'react-native';
+import {StyleSheet, TouchableOpacity, View, Text,Modal as ModalWaitingList, Pressable, Image, ImageBackground, ScrollView} from 'react-native';
 import AppCss from '../../../CSS/AppCss';
 import { Avatar, ListItem, Badge } from 'react-native-elements';
 import { Context as PlayerContext } from '../../../Contexts/PlayerContext';

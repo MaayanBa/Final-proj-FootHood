@@ -8,7 +8,6 @@ import { Context as PlayerContext } from '../../Contexts/PlayerContext'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Context as GameContext } from '../../Contexts/GameContext';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
-// import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { Context as AuthContext } from '../../Contexts/AuthContext'
 import NotificationActions from '../../Services/NotificationActions';
 import TextTickerRow from '../Main/TextTickerRow';
@@ -30,7 +29,6 @@ export default function TeamPage(props) {
         fetchMessages().catch(e => console.log(e))
         GetGamesList(myTeams[key].TeamSerialNum)
         GetAmountRegisteredPlayersEachGame(myTeams[key].TeamSerialNum)
-        //GameRegisterd(user.Email,myTeams[key].TeamSerialNum);
     }, [])
 
     useEffect(() => {
@@ -87,7 +85,6 @@ export default function TeamPage(props) {
             })
             await firebase.database().ref(`${myTeams[key].TeamSerialNum}`).set(messagesToSave)
             await AsyncStorage.setItem(`messages_count_${myTeams[key].TeamSerialNum}`, `${messagesToSave.length}`)
-            //console.log("Updating messages")
         } catch (e) {
             console.log(e)
             return Promise.reject(e + " Failed fetching data")
@@ -95,7 +92,6 @@ export default function TeamPage(props) {
     }
 
     const onSend = useCallback((message = []) => {
-        // console.log("On send")
         setMessages((prev) => {
             let newMessages = [...prev, ...message]
             GiftedChat.append(prev, message)
@@ -172,7 +168,6 @@ export default function TeamPage(props) {
     );
 }
 
-
 const appCss = AppCss;
 const styles = StyleSheet.create({
     container_extra: {
@@ -215,12 +210,5 @@ const styles = StyleSheet.create({
     },
     chatContainer: {
         width: Dimensions.get('window').width - 20,
-        // height: team.EmailManager == user.Email ? Dimensions.get('window').height - 320:Dimensions.get('window').height - 370,
-        // flexDirection:'row',
-        // alignSelf:'flex-end'
-        // paddingBottom: 40,
-
-        // top:40,
     },
-
 })

@@ -102,7 +102,6 @@ export default function CreateNewGame(props) {
     }
     else {
       setAlertModalVisible(true)
-      // alert("one or more of the field is missing")
     }
   }
 
@@ -119,20 +118,15 @@ export default function CreateNewGame(props) {
       <ScrollView keyboardShouldPersistTaps="handled">
         {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={"one or more of the field are missing"} />}
         <View style={[appCss.container, styles.container_extra]}>
-          {/* Header */}
           <View style={styles.headerView}>
             <Text style={appCss.title}>Create New Game</Text>
           </View>
-
-          {/* number of teams and players each team */}
           <NumOfTeamsAndPlayers
             numOfTeamsState={numOfTeamsState}
             setTeams={setNumOfTeamsState}
             numOfPlayersInTeam={numOfPlayersInTeam}
             setPlayers={setNumOfPlayersInTeam}
           />
-
-          {/* Location */}
           <View style={styles.location_View}>
             <TouchableOpacity onPress={() => setModalVisible(true)} >
               <LocationFeather name="map-pin" size={40} color="white" style={{ marginLeft: 10 }} />
@@ -141,18 +135,11 @@ export default function CreateNewGame(props) {
           </View>
           {modalVisible && <Modal_LocationMap modalVisible={modalVisible} setModalVisible={() => setModalVisible(!modalVisible)} location={(loc) => getLocation(loc)} locationCord={(data) => getLocationCord(data)} />}
           <Text style={[appCss.inputLabel, { textAlign: 'center', color: 'orange' }]}> {gameLocation}</Text>
-
-          {/* Date and Time */}
           <DateAndTime liftState={liftState} edit={edit} setEdit={setEdit} />
-
-          {/* Equipment required */}
           <View style={styles.checkBox_View}>
             <Text style={appCss.inputLabel}>Equipment List:</Text>
-            {/* {itemBoxesOld} */}
             {itemBoxes}
           </View>
-
-          {/* btn Create Game */}
           {renderCB && <TouchableOpacity activeOpacity={0.8} onPress={() => send2Context()} style={[appCss.btnTouch, { width: "80%" }]}>
             <Text style={appCss.txtBtnTouch}>Create New Game</Text>
           </TouchableOpacity>}
@@ -161,7 +148,6 @@ export default function CreateNewGame(props) {
     </SafeAreaView>
   )
 }
-
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
