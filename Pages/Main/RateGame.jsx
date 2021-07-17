@@ -26,25 +26,27 @@ export default function RateGame(props) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        setPlayersToRate([]);
         GetPlayers4Game(GameSerialNum, players);
         setTimeout(() => {
             setLoading(false);
-        }, 3100);
+        }, 2100);
     }, [props.navigation]);
 
     useEffect(() => {
         if (playersPerGame !== []) {
+            let tempArr=[];
+            let counter =0;
             var arr = shuffle(playersPerGame)
             let newArr = arr.filter((item) => item.Email !== token.Email);
-            setPlayersToRate(newArr)
-            setPlayersToRate([newArr[0], newArr[1], newArr[2]])
-
-            if (newArr[0] !== undefined)
-                setPlayersToRate([newArr[0]])
-            if (newArr[1] !== undefined)
-                setPlayersToRate([...playersToRate, newArr[1]])
-            if (newArr[2] !== undefined)
-                setPlayersToRate([...playersToRate, newArr[2]])
+            newArr.forEach(p => {
+                if (p!==undefined && counter<=3) {
+                    tempArr.push(p)
+                    counter++;
+                }
+            });
+            setPlayersToRate(tempArr)
+            
         }
     }, [playersPerGame])
 
@@ -117,7 +119,7 @@ export default function RateGame(props) {
             </View>
                 :
                 <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                    {playersToRate.length === 0 ? <Text style={[appCss.noResultsTxt, { textAlign: 'center' }]}>You Have Rated All The Players!{"\n"}See You Next Game!</Text>
+                    {playersToRate.length == 0 ? <Text style={[appCss.noResultsTxt, { textAlign: 'center' }]}>You Have Rated All The Players!{"\n"}See You Next Game!</Text>
                         :
                         playersToRate.map((p, key) => {
                             return <View key={key} style={playerChoosen == p.Email ? { padding: 20 } : { padding: 20, opacity: 0.5 }}>
