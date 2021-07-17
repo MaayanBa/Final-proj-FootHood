@@ -4,7 +4,6 @@ import { Context as AuthContext } from '../../Contexts/AuthContext'
 import { Avatar } from 'react-native-elements';
 
 
-
 export default function Header(props) {
     const { state: { token } } = useContext(AuthContext)
 
@@ -20,8 +19,6 @@ export default function Header(props) {
                     <Avatar size={28} rounded source={{ uri: token.PlayerPicture }} />
                     : <Image source={require('../../assets/Nyemar.png')} resizeMode="contain" style={styles.imgProfile} />
                 }
-
-
             </TouchableOpacity>
         </View>
     )
@@ -34,17 +31,12 @@ const styles = StyleSheet.create({
         width: Dimensions.get('screen').width - 80,
         paddingTop: 15,
         flexDirection: 'row',
-        // paddingHorizontal: '10',
-        // paddingVertical: 10,
         alignItems: 'center',
         right: 10
     },
     btnProfile: {
         flexDirection: 'row',
         width: 100,
-        //height: ,
-        //alignItems: 'flex-end'
-
     },
     imgProfile: {
         width: 30,
@@ -58,7 +50,6 @@ const styles = StyleSheet.create({
     },
     btnSetting: {
         width: 50,
-        //height: 50,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
     },
@@ -71,5 +62,4 @@ const styles = StyleSheet.create({
         height: 20,
         width: 20
     }
-
 })

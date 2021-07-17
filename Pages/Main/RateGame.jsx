@@ -21,7 +21,6 @@ export default function RateGame(props) {
     const [sliderValue, setSliderValue] = useState(0)
     const [playersToRate, setPlayersToRate] = useState([])
     const [playerRateName, setPlayerRateName] = useState('')
-    const [rated, setRated] = useState([])
     const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [alertText, setAlertText] = useState('');
     const [loading, setLoading] = useState(true);
@@ -70,7 +69,6 @@ export default function RateGame(props) {
             [array[currentIndex], array[randomIndex]] = [
                 array[randomIndex], array[currentIndex]];
         }
-
         return array;
     }
 
@@ -80,7 +78,6 @@ export default function RateGame(props) {
     }
 
     const Finish = () => {
-
         if (powerRate > 0 && defenceRate > 0 && attackRate > 0) {
             if (powerRate === 100 && defenceRate === 100 && attackRate === 100) {
                 Alert("No one is perfect except Messi and Ronaldo =)\nPlease rate more detailed the values")

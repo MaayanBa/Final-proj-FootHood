@@ -84,6 +84,7 @@ export default function GameList(props) {
             </View>
         </View>
     });
+    
     return (
         <View style={[appCss.container, { paddingTop: 50 }]}>
             {alertActionModalVisible && <Modal_ActionAlert alertActionModalVisible={alertActionModalVisible} setAlertActionModalVisible={() => setAlertActionModalVisible(!alertActionModalVisible)} text={alertText} action={alertAction} item={alertTeam} />}

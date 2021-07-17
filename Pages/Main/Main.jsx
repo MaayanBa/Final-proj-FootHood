@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { View, StyleSheet, ActivityIndicator,LogBox } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, LogBox } from 'react-native';
 import Header from './Header';
 import News from './News';
 import TodaysGame from './TodaysGame';
@@ -30,7 +30,6 @@ export default function Main({ navigation }) {
     const { state: { registeredAtList1Game }, GetTodaysGame, CleanTodaysGame, CheckIfRegisterd2AnyGame } = useContext(GameContext);
     const { GetPlayers } = useContext(PlayerContext);
     const [user, setUser] = useState(token)
-    const [renderScreen, setRenderScreen] = useState(false)
     const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [alertText, setAlertText] = useState('');
     const [loading, setLoading] = useState(true);
@@ -65,7 +64,6 @@ export default function Main({ navigation }) {
             console.log("Main")
             CheckIfRegisterd2AnyGame(token.Email)
             GetTodaysGame(token.Email)
-            // setRenderScreen(!renderScreen)
             GetTeamDetails(user.Email)
             GetPlayers();
             getSettingNotifications();
@@ -76,13 +74,11 @@ export default function Main({ navigation }) {
 
     return (
         <View style={styles.container}>
-
             {loading ?
                 <View style={styles.loading}>
                     <ActivityIndicator size={80} color="#0000ff" style={{ alignItems: 'center' }} />
                 </View>
-                :
-                <>
+                : <>
                     {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
                     <NotificationActions navigation={navigation} />
                     {token == null ? null : <Header navigation={navigation} />}
@@ -90,7 +86,6 @@ export default function Main({ navigation }) {
                     <News />
                 </>
             }
-
         </View>
     )
 }

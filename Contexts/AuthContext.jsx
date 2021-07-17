@@ -4,7 +4,6 @@ import SettingsApi from '../api/Settings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TimerApi from '../api/Timer';
 
-
 const authReducer = (state, action) => {
     switch (action.type) {
         case 'resetRestore_PassCode_values': {
@@ -58,10 +57,9 @@ const authReducer = (state, action) => {
             return state
     }
 };
+
 const tryLocalSignin = dispatch => async () => {
     const token = await AsyncStorage.getItem('token');
-    //console.log("this is the token after get async storage = " + token)
-    //console.log("im tring to get async storage", JSON.parse(token) )
     if (token) {
         dispatch({ type: 'signin', payload: JSON.parse(token) })
     }
@@ -73,7 +71,6 @@ const clearErrorMessage = dispatch => () => {
 
 const register = dispatch => {
     return async (player, callBack) => {
-
         //api request
         try {
             const response = await AuthApi.post('/Register', player);
@@ -87,9 +84,6 @@ const register = dispatch => {
             console.log(err.response.data)
             dispatch({ type: 'add_error', payload: 'Somthing went wrong with registration' })
         }
-        //if sign up, modify our state, and say ok
-
-        //if fail error massege
     }
 }
 
@@ -97,7 +91,6 @@ const signIn = dispatch => {
     return async (player, checked) => {
         //api request
         try {
-            // console.log("Player" + player)
             const data = {
                 Email: player.email,
                 Passcode: player.passcode
@@ -127,7 +120,6 @@ const signIn = dispatch => {
         } catch (err) {
             //if fail error massege
             console.log("im in catch of sign in")
-            // console.log(err.response.data)
             dispatch({
                 type: 'add_error',
                 payload: 'Somthing went wrong with the SignIn'
@@ -135,56 +127,43 @@ const signIn = dispatch => {
         }
     }
 }
+
 const signOut = dispatch => async (Email) => {
     //console.log(JSON.stringify( AsyncStorage.getItem('token')))
     await AsyncStorage.removeItem('token');
     await AsyncStorage.removeItem('expoTokenDate')
     await AsyncStorage.removeItem('Settings')
-    const res = await AuthApi.post('/LogOut', { Email });
-    console.log(res.data)
-
-    //console.log("The local storge has cleaned")
+    await AuthApi.post('/LogOut', { Email });
     dispatch({ type: 'signOut' })
 }
 
 const restorePassCode = dispatch => async (email) => {
-    //console.log("Email -----> " + email);
     try {
         let emailVerify = await AuthApi.post('/RequestOTP', { email });
-        //console.log("Email -----> " + emailVerify.data + "----- ststus----->" + emailVerify.status);
         if (emailVerify.data == true && emailVerify.status === 200) {
             dispatch({ type: 'verifyEmail', payload: emailVerify.data })
             alert("Email has been sent")
         }
     } catch (error) {
-        //console.log("im in catch in restore psscode  ===== > " + error.response)
-        //console.log(error.response.data)
         alert("The you have entered a wrong email. Please try again")
-        //dispatch({type: 'add_error',payload: 'The email you entered is wrong. Please try again'})
     }
 }
 
 const updatPassCode = dispatch => async (player) => {
-    // console.log("changes -----> " + player);
-    // console.log(player);
     try {
         let passCodeChanged = await AuthApi.put('/ChangePassCode', player);
-        //console.log(" newPassCode-----> " + passCodeChanged.data + "----- status----->" + passCodeChanged.status);
-
         if (passCodeChanged.status < 400 || passCodeChanged.status >= 500) {
             dispatch({ type: 'changePasscode', payload: true })
             alert("Password updated")
         }
     } catch (error) {
-        // console.log("im in catch in reset passcode  ===== > " + error.response)
-        // console.log(error.response.data)
         alert("The otp you have entered is wrong. Please try again")
-        // dispatch({type: 'add_error',payload: 'The otp you have entered is wrong. Please try again'})
     }
 }
 const resetRestore_PassCode_values = dispatch => async (player) => {
     dispatch({ type: 'resetRestore_PassCode_values' })
 }
+
 const pushNotificationToken = dispatch => async (Email, TokenNotfication) => {
     try {
         let response = await AuthApi.post('/PushNotificationToken', { Email, TokenNotfication });
@@ -206,7 +185,6 @@ const setUserFromGoogle = dispatch => async (user) => {
 
 const CheckIfExist = dispatch => async (user) => {
     try {
-        // console.log(EmailPlayer);
         const data = {
             Email: user.email,
             Passcode: user.id
@@ -223,14 +201,6 @@ const CheckIfExist = dispatch => async (user) => {
     }
 }
 
-// const signInFromGoogle = dispatch => async (bool) => {
-//     try {
-//         dispatch({ type: 'signInFromGoogle', payload: bool })
-//     } catch (error) {
-//         console.log("error in signInFromGoogle")
-//         console.log(error.message)
-//     }
-// }
 const clearUserFromGoogle = dispatch => async (bool) => {
     try {
         dispatch({ type: 'clearUserFromGoogle', payload: null })
@@ -261,7 +231,6 @@ const setSettingNotifications = dispatch => async (bool)=>{
         console.log(error.message)
     }
 }
-
 
 const ChangePersonalDetails = dispatch => async (player)=>{
     try {
