@@ -52,10 +52,13 @@ export default function NotificationActions({ navigation }) {
                 LoadMessages(not.request.content.data.CreatedAt)
                 console.log(not.request.content.data)
             }
+            else if(not.request.content.data.name == "RankPlayerFromGame"){
+                return null;
+            }
             else {
                 if (not.request.content.data.name == "RemoveFromTeam" && not.request.content.data.T_SerialNum === -1) {
                     console.log(route.name)
-                    GetTeamDetails(token.Email)
+                    GetTeamDetails(token.Email) 
                     switch (route.name) {
                         case "TeamPage":
                             navigation.navigate('StackNav_MyTeams', { screen: 'MyTeams' });
@@ -86,7 +89,8 @@ export default function NotificationActions({ navigation }) {
 
         // This listener is fired whenever a user taps on or interacts with a notifi5cation (works when app is foregrounded, backgrounded, or killed)
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-            if (not.request.content.data.name == "RankPlayerFromGame") {
+            // console.log(response.notification.request.content.data)
+            if (response.notification.request.content.data.name == "RankPlayerFromGame") {
                 navigation.navigate('StackNav_MyTeams', { screen: 'RateGame',params:{
                     TeamSerialNum: response.notification.request.content.data.T_SerialNum,
                     GameSerialNum: response.notification.request.content.data.G_SerialNum,

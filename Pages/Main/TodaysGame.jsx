@@ -1,21 +1,11 @@
-import React, { useState, useEffect, useContext, useRef } from 'react'
-import { View, Text, StyleSheet, Dimensions, ImageBackground, Image } from 'react-native';
-import Header from './Header';
+import React, { useState, useEffect, useContext } from 'react'
+import { View, Text, StyleSheet, Dimensions, Image } from 'react-native';
 import AppCss from '../../CSS/AppCss';
 import { Avatar } from 'react-native-elements';
-
-
-import { Context as AuthContext } from '../../Contexts/AuthContext'
-import { Context as TeamContext } from '../../Contexts/TeamContext'
 import { Context as GameContext } from '../../Contexts/GameContext'
-import { Context as PlayerContext } from '../../Contexts/PlayerContext'
-import * as Notifications from 'expo-notifications';
-import NotificationActions from '../../Services/NotificationActions';
-import { object } from 'yup/lib/locale';
 
 
 export default function TodaysGame() {
-    const { state: { token } } = useContext(AuthContext)
     const { state: { todaysGame }, } = useContext(GameContext);
     const [bring, setBring] = useState("")
     const [game, setGame] = useState(null)
@@ -24,9 +14,7 @@ export default function TodaysGame() {
     const today = new Date();
     
     useEffect(() => {
-        // console.log(todaysGame.length)
         if (todaysGame !== null && typeof todaysGame == "object") {
-            // console.log(todaysGame.length)
             setBring(todaysGame.Bring)
             setGame(todaysGame.Game)
             setPlayers(todaysGame.Players)
@@ -91,9 +79,6 @@ export default function TodaysGame() {
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
-    container: {
-
-    },
     card: {
         backgroundColor: 'rgba(250, 252, 252, 0.4)',
         justifyContent: 'space-around',
@@ -108,7 +93,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexDirection: 'row',
         paddingHorizontal: 20,
-        left: 10,
+        right: 5,
 
     },
     border: {
@@ -126,7 +111,7 @@ const styles = StyleSheet.create({
 
     },
     detailsRight: {
-        // left: 5
+        right: 5
     },
     playersView: {
         paddingHorizontal: 10,

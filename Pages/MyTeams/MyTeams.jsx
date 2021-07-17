@@ -1,19 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
-import {
-    StyleSheet, ActivityIndicator, View, Text, Image, Image as ImageBall, TouchableOpacity, ScrollView, SafeAreaView, StatusBar, Dimensions
-} from 'react-native';
+import { StyleSheet, ActivityIndicator, View, Text, Image, Image as ImageBall, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import { Badge } from 'react-native-elements'
-//import ScrollView from 'rn-faded-scrollview';
 import { Avatar } from 'react-native-paper';
-//import { LinearGradient } from 'expo-linear-gradient';
-import Header from '../Main/Header';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
 import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import AppCss from '../../CSS/AppCss';
 import { firebase } from '../../api/FireBase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import {useFocusEffect} from "@react-navigation/core";
 
 
 
@@ -22,7 +16,6 @@ export default function MyTeams(props) {
     const { state: { players } } = useContext(PlayerContext);
     const { state: { token } } = useContext(AuthContext)
     const [teamCards, setTeamCards] = useState(null);
-    const [forceState, setForceState] = useState(false)
     const [loading, setLoading] = useState(true);
 
     const convertToArray = (data) => {
@@ -53,7 +46,6 @@ export default function MyTeams(props) {
         if (myTeams.length > 0) {
             const teamCards = await Promise.all(myTeams.map(async (team, key) => {
                 let manager = players.find(x => x.Email === team.EmailManager);
-                // fetchMessages(team)
                 const badge = await calcBadge(team);
                 return <TouchableOpacity style={styles.teamCard} key={key}
                     onPress={() => props.navigation.navigate('TeamPage', { key })}>
@@ -84,7 +76,6 @@ export default function MyTeams(props) {
                             value={badge} //Need to count length of messages from DB
                             status="error" />
                     }
-
                 </TouchableOpacity>
             }))
             setTeamCards(teamCards);
@@ -95,15 +86,14 @@ export default function MyTeams(props) {
         const unsubscribe = props.navigation.addListener('focus', () => {
             setTimeout(() => {
                 setLoading(false);
-            }, 3000);
+            }, 2100);
             calcTeamCards();
             GetTeamDetails(token.Email)
-
-            //GetTeamDetails(token.Email)
         });
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return () => unsubscribe();
     }, [props.navigation, myTeams]);
+    
     useEffect(() => {
         calcTeamCards();
     }, [myTeams])
@@ -114,8 +104,8 @@ export default function MyTeams(props) {
             <Text style={[appCss.title, appCss.space]}>My Teams</Text>
             {loading ?
                 <View style={styles.loading}>
-                    <ActivityIndicator size={80} color="#0000ff" style={{alignItems:'center'}}/>
-                </View> 
+                    <ActivityIndicator size={80} color="#0000ff" style={{ alignItems: 'center' }} />
+                </View>
                 :
                 <View style={styles.mainContent}>
                     <SafeAreaView>
@@ -133,7 +123,6 @@ export default function MyTeams(props) {
                 </TouchableOpacity>
             </View>}
         </View>
-
     )
 }
 
@@ -149,8 +138,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         top: 100
     },
-    loading:{
-    marginTop:200
+    loading: {
+        marginTop: 200
     },
     manager_img: {
         height: 22,
@@ -188,7 +177,6 @@ const styles = StyleSheet.create({
     headerCard_View: {
         alignSelf: 'center',
         flexDirection: 'row',
-        // width: Dimensions.get('screen').width -20
     },
     descripitionCard: {
         flexDirection: 'row-reverse',

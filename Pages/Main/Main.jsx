@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import Header from './Header';
 import News from './News';
 import TodaysGame from './TodaysGame';
@@ -29,8 +29,12 @@ export default function Main({ navigation }) {
     const [renderScreen, setRenderScreen] = useState(false)
     const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [alertText, setAlertText] = useState('');
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        setTimeout(() => {
+            setLoading(false);
+        }, 1300);
         StartTimer();
     }, [])
 
@@ -57,7 +61,7 @@ export default function Main({ navigation }) {
             console.log("Main")
             CheckIfRegisterd2AnyGame(token.Email)
             GetTodaysGame(token.Email)
-            setRenderScreen(!renderScreen)
+            // setRenderScreen(!renderScreen)
             GetTeamDetails(user.Email)
             GetPlayers();
             getSettingNotifications();
@@ -68,11 +72,21 @@ export default function Main({ navigation }) {
 
     return (
         <View style={styles.container}>
-            {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
-            <NotificationActions navigation={navigation} />
-            {token==null?null:<Header navigation={navigation} />}
-            <TodaysGame />
-            <News />
+
+            {loading ?
+                <View style={styles.loading}>
+                    <ActivityIndicator size={80} color="#0000ff" style={{ alignItems: 'center' }} />
+                </View>
+                :
+                <>
+                    {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
+                    <NotificationActions navigation={navigation} />
+                    {token == null ? null : <Header navigation={navigation} />}
+                    <TodaysGame />
+                    <News />
+                </>
+            }
+
         </View>
     )
 }
@@ -82,5 +96,8 @@ const styles = StyleSheet.create({
         height: Dimensions.get('window').height,
         alignItems: 'center',
         paddingTop: 40
+    },
+    loading: {
+        marginTop: 200
     },
 });
