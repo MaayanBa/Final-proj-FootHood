@@ -10,7 +10,7 @@ import { addPushTokenListener, setAutoServerRegistrationEnabledAsync } from 'exp
 import Modal_Alert from '../Modal_Alert';
 
 export default function RateGame(props) {
-    const { index, keyTeam,GameSerialNum } = props.route.params;
+    const { index, GameSerialNum,TeamSerialNum } = props.route.params;
     const { state: { token } } = useContext(AuthContext)
     // const { state: { myTeams } } = useContext(TeamContext);
     const { state: { gamesList, playersPerGame }, GetPlayers4Game } = useContext(GameContext);
@@ -28,7 +28,7 @@ export default function RateGame(props) {
     const [alertText, setAlertText] = useState('');
 
     useEffect(() => {
-        GetPlayers4Game(gamesList[index].GameSerialNum, players);
+        GetPlayers4Game(GameSerialNum, players);
         var arr = shuffle(playersPerGame)
         const newArr = arr.filter((item) => item.Email !== token.Email);
         if(newArr[0]!== undefined)
@@ -83,7 +83,7 @@ export default function RateGame(props) {
                 Alert("No one is perfect except Messi and Ronaldo =)\nPlease rate more detailed the values")
             }
             else {
-                RankPlayerAfterGame(playerChoosen, token.Email, powerRate, attackRate, defenceRate, gamesList[index].GameSerialNum)
+                RankPlayerAfterGame(playerChoosen, token.Email, powerRate, attackRate, defenceRate, GameSerialNum)
                 const temp = playersToRate.filter((item) => item.Email !== playerChoosen);
                 setPlayersToRate(temp)
 
@@ -118,7 +118,7 @@ export default function RateGame(props) {
         <View style={{ alignItems: 'center' }}>
             {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
             <Text style={[appCss.title, appCss.space]}>Rate Game Players</Text>
-            <Text style={[appCss.inputLabel, { marginTop: 30 }]}>Game Date: {showDate(new Date(gamesList[index].GameDate))}</Text>
+            {/* <Text style={[appCss.inputLabel, { marginTop: 30 }]}>Game Date: {showDate(new Date(gamesList[index].GameDate))}</Text> */}
             <Text style={[appCss.inputLabel, { marginTop: 30, marginBottom: 30 }]}>Choose Player To Rank:</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                 {playersToRate.length == 0 ? <Text style={[appCss.noResultsTxt, { textAlign: 'center' }]}>You Have Rated All The Players!{"\n"}See You Next Game!</Text> : playerToRateView}

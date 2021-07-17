@@ -100,7 +100,6 @@ export default function MyTeams(props) {
 
     return (
         <View style={appCss.container}>
-            {/* <Header /> */}
             <Text style={[appCss.title, appCss.space]}>My Teams</Text>
             {loading ?
                 <View style={styles.loading}>
