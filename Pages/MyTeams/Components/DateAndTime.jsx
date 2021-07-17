@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, Image, StyleSheet, LogBox } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AppCss from '../../../CSS/AppCss';
-import { date } from 'yup';
 import Modal_Alert from '../../Modal_Alert';
 
 

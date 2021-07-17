@@ -1,10 +1,5 @@
 import React, { useState, useContext } from 'react';
-import {
-  StyleSheet, TextInput,
-  View, Text, TouchableOpacity,
-  ScrollView, SafeAreaView, StatusBar,
-  Image, LogBox
-} from 'react-native';
+import { StyleSheet, TextInput, View, Text, TouchableOpacity, ScrollView, SafeAreaView, Image, LogBox } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import { Formik } from "formik";
 import * as yup from 'yup';
@@ -13,7 +8,6 @@ import * as ImagePicker from 'expo-image-picker';
 import { Avatar } from 'react-native-paper';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
-//import {navigate} from '../../Navigations/navigationRef'
 import AppCss from '../../CSS/AppCss';
 import Modal_AddPlayers from './Components/Modal_AddPlayers';
 import Modal_Alert from '../Modal_Alert';
@@ -38,7 +32,6 @@ export default function CreateNewTeam(props) {
   const [emailManager, setEmailManager] = useState(token.Email)
   const [privateOrPublic, setPrivateOrPublic] = useState('public');
   const [TeamImageUri, setimageUri] = useState(null);
-  const [addPlayer, setAddPlayer] = useState(false)
   const [autoRules, setAutoRules] = useState('')
   const [addedPlayers, setAddedPlayers] = useState([])
   const [alertModalVisible, setAlertModalVisible] = useState(false);
@@ -59,11 +52,11 @@ export default function CreateNewTeam(props) {
   const Alert = (message) => {
     setAlertText(message)
     setAlertModalVisible(true)
-}
+  }
 
   const CreateTeam = async (values) => {
     if (TeamImageUri !== null) {
-      let priOpub = false; //private or public 
+      let priOpub = false;
       privateOrPublic === 'public' ? priOpub = false : null;
       let newTeam = {
         TeamName: values.teamName,
@@ -84,7 +77,7 @@ export default function CreateNewTeam(props) {
   return (
     <SafeAreaView>
       <ScrollView>
-      {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
+        {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={alertText} />}
         <View style={[styles.container, { padding: 20, paddingTop: 60 }]}>
           <Text style={[appCss.title, { paddingBottom: 20 }]}>Create A New Team</Text>
           <Formik
@@ -109,7 +102,6 @@ export default function CreateNewTeam(props) {
                     <Avatar.Image size={100} source={{ uri: TeamImageUri }} />
                   </TouchableOpacity>
                 }
-
                 <Text style={appCss.inputLabel}>Team Name:</Text>
                 <View style={appCss.sectionStyle}>
                   <Image source={require('../../assets/soccerPlayer.png')} style={styles.ImageStyle} />
@@ -119,12 +111,10 @@ export default function CreateNewTeam(props) {
                     onChangeText={handleChange('teamName')}
                     value={values.teamName}
                   />
-
                 </View>
                 {errors.teamName &&
                   <Text style={{ fontSize: 12, color: 'red', alignSelf: 'center' }}>{errors.teamName}</Text>
                 }
-
                 <Text style={appCss.inputLabel}>Private Or Public?</Text>
                 <View style={styles.privateOrPublic}>
                   <TouchableOpacity>
@@ -164,9 +154,7 @@ export default function CreateNewTeam(props) {
                     style={[styles.textInput, { padding: 10 }]}
                   />
                 </View>
-
                 <Modal_AddPlayers props={props} addedPlayers={addedPlayers} setAddedPlayers={setAddedPlayers} />
-
                 <TouchableOpacity activeOpacity={0.8} disabled={!isValid} onPress={handleSubmit} style={[appCss.btnTouch, { width: '60%' }]}>
                   <Text style={appCss.txtBtnTouch}>Create New Team</Text>
                 </TouchableOpacity>

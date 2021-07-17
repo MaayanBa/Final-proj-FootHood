@@ -8,7 +8,6 @@ const MyMapView = (props) => {
             region={props.region}
             showsUserLocation={true}
             onRegionChange={(reg) => props.onRegionChange(reg)}>
-
             <Marker draggable coordinate={props.region} />
         </MapView>
     )

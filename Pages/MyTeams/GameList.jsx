@@ -1,12 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, StyleSheet, Image, View, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { Text, StyleSheet, Image, View, TouchableOpacity, ScrollView } from 'react-native';
 // import Navigation from '../../Pages/MyTeams/Components/Navigation'
 import AppCss from '../../CSS/AppCss';
 import { Context as GameContext } from '../../Contexts/GameContext';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
-// import DateAndTime from './Components/DateAndTime';
-//import LaunchNavigator from 'react-native-launch-navigator';
 import * as Linking from 'expo-linking';
 import NotificationActions from '../../Services/NotificationActions';
 import Modal_ActionAlert from '../Modal_ActionAlert';
@@ -51,8 +49,7 @@ export default function GameList(props) {
 
     const navInWaze = (loc) => {
         console.log(loc)
-        Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + loc) //מנווט למקום ספציפי
-        // Linking.openURL('https://www.google.com/maps/search/?api=1&query=%D7%9E%D7%92%D7%A8%D7%A9+%D7%9B%D7%93%D7%95%D7%A8%D7%92%D7%9C'); //ניווט לכל המגרשי ספורט
+        Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + loc) //Navigate to specific location
     }
 
     let gameCards = gamesList.map((game, index) => {
@@ -77,10 +74,7 @@ export default function GameList(props) {
                 <View style={styles.gameInformation_View_L}>
                     <Text style={styles.txtStyle}>Date: {convertDate(new Date(game.GameDate))}</Text>
                     <Text style={styles.txtStyle}>Number of Registered: {amountRegisteredPlayersEachGame == undefined ? null : amountRegisteredPlayersEachGame.find(x => x.GameSerialNum === game.GameSerialNum).NumOfPlayers}</Text>
-                    {/* {console.log(amountRegisteredPlayersEachGame)} */}
-
                     <Text style={styles.txtStyle}>Location: {game.GameLocation}</Text>
-                    {/* <Navigation location={game.GameLocation} /> */}
                     <TouchableOpacity onPress={() => navInWaze(game.GameLocation)}>
                         <Text style={styles.txtStyle}>Take me there
                             <Image source={require('../../assets/Waze.png')} resizeMode="contain" style={styles.waze_Icon} />

@@ -1,8 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import {
-  StyleSheet, View, SafeAreaView, ScrollView, TouchableOpacity,
-  StatusBar, ImageBackground, Image, Alert
-} from 'react-native';
+import {StyleSheet, View, SafeAreaView, ScrollView, TouchableOpacity,StatusBar, ImageBackground, Image,} from 'react-native';
 import AppCss from '../../CSS/AppCss';
 import { Context as TeamContext } from '../../Contexts/TeamContext';
 import { Context as AuthContext } from '../../Contexts/AuthContext';
@@ -17,7 +14,7 @@ import Modal_Alert from '../Modal_Alert';
 
 export default function TeamDetailsPage(props) {
   const { key } = props.route.params;
-  const { state: { myTeams, teamPlayers }, setTeamPlayers, LeaveTeam, GetTeamDetails, RemoveFromTeam } = useContext(TeamContext);
+  const { state: { myTeams, teamPlayers }, setTeamPlayers, LeaveTeam} = useContext(TeamContext);
   const { state: { players } } = useContext(PlayerContext);
   const { state: { token } } = useContext(AuthContext)
   const [user, setUser] = useState(token)
@@ -55,27 +52,10 @@ export default function TeamDetailsPage(props) {
       TeamSerialNum: myTeams[newKey].TeamSerialNum,
       EmailPlayer: user.Email
     }
-    // setAlertModalVisible(true)
     props.navigation.navigate('MyTeams');
     props.navigation.navigate('Main');
     await LeaveTeam(playerInTeam)
     await props.navigation.navigate('Main');
-    // alert("You have left the team successfully");
-
-    // Alert.alert(
-    //   "Leave Team",
-    //   "You have left the team successfully",
-    //   [
-    //     {
-    //       text: "Ok",
-    //       style: "cancel"
-    //     },
-    //   ]
-    // );
-    // props.navigation.goBack();
-    // props.navigation.goBack();
-    // //GetTeamDetails(token.Email);
-  // props.navigation.goBack();
   }
 
   return (
@@ -83,24 +63,19 @@ export default function TeamDetailsPage(props) {
       {alertModalVisible && <Modal_Alert alertModalVisible={alertModalVisible} setAlertModalVisible={() => setAlertModalVisible(!alertModalVisible)} text={"You have left the team successfully"} />}
       {alertActionModalVisible && <Modal_ActionAlert alertActionModalVisible={alertActionModalVisible} setAlertActionModalVisible={() => setAlertActionModalVisible(!alertActionModalVisible)} text={alertText} action={alertAction} item={alertPlayer} team={alertTeam} />}
       <NotificationActions navigation={props.navigation} />
-      {/* ImageBackGround With Buttons */}
       <ImageBackground style={styles.imgBG} source={{ uri: myTeams[newKey].TeamPicture }}>
         <Text style={appCss.title}>{myTeams[newKey].TeamName}</Text>
         <View style={styles.options_View}>
           <Modal_RulesAndLaws team={myTeams[newKey]} />
           {myTeams[newKey].EmailManager !== user.Email ? null :
-            // <Modal_AddPlayers props={props} teamKey={newKey} setForceState={() => ForceState()} />
             <Modal_AddPlayers props={props} addedPlayers={null} setAddedPlayers={null} teamKey={newKey} setForceState={setForceState}/>
 
           }
         </View>
       </ImageBackground>
-
-      {/* Player List */}
       <View style={styles.playerList_View}>
         <Text style={styles.teamPlayers_Text}>Team Players:</Text>
         <ScrollView>
-          {/* {playerList} */}
           {
             teamPlayers.map((p, i) => (
               <View key={i}>
@@ -114,7 +89,6 @@ export default function TeamDetailsPage(props) {
                         <Image style={appCss.xIcon} source={require('../../assets/X.png')} />
                       </TouchableOpacity> : null
                   }
-
                   <ListItem.Content style={{ alignItems: 'flex-end' }} >
                     <ListItem.Title>{p.FirstName + " " + p.LastName}</ListItem.Title>
                   </ListItem.Content>
@@ -124,14 +98,10 @@ export default function TeamDetailsPage(props) {
           }
         </ScrollView>
       </View>
-
-
-      {/* Leave Team */}
       <TouchableOpacity style={styles.leaveTeam_Btn} onPress={() => ExitTeam()}>
         <Text style={styles.leaveTeam_txt}>Leave Team </Text>
         <Feather name="log-out" size={24} color="white" />
       </TouchableOpacity>
-
     </SafeAreaView>
   )
 }
@@ -179,5 +149,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white'
   },
-
 })

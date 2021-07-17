@@ -7,25 +7,12 @@ import GameList from '../Pages/MyTeams/GameList';
 import MyTeams from '../Pages/MyTeams/MyTeams';
 import GamePage from '../Pages/MyTeams/GamePage';
 import CardPlayer from '../Pages/Players/CardPlayer';
-//import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-
 import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
-// const MyTheme = {
-//     ...DefaultTheme,
-//     colors: {
-//         ...DefaultTheme.colors,
-//         //primary: 'rgb(255, 45, 85)',
-//         background: 'transparent',
-
-//     },
-
-// };
 
 export default function StackNav_MyTeams() {
     return (
-       
             <Stack.Navigator initialRouteName="MyTeams" screenOptions={{ headerBackTitleVisible: false, headerShown: false }}>
                 <Stack.Screen name="AddNewTeam" component={AddNewTeam} />
                 <Stack.Screen name="MyTeams" component={MyTeams} />
@@ -36,7 +23,5 @@ export default function StackNav_MyTeams() {
                 <Stack.Screen name="GamePage" component={GamePage} />
                 <Stack.Screen name="CardPlayer" component={CardPlayer} />
             </Stack.Navigator>
-       
-
     )
 }

@@ -1,9 +1,6 @@
 
-import React, { useState, useContext, useEffect } from 'react';
-import {
-  StyleSheet, TouchableOpacity, View, Text,
-  Modal as ModalSearchInApp, Pressable, TextInput, Image, ScrollView, SafeAreaView, ImageBackground
-} from 'react-native';
+import React, { useState, useContext } from 'react';
+import {StyleSheet, TouchableOpacity, View, Text,Modal as ModalSearchInApp, Pressable, TextInput, Image, ScrollView, SafeAreaView, ImageBackground} from 'react-native';
 import { Entypo as PlusIcon } from '@expo/vector-icons';
 import { ListItem, Avatar } from 'react-native-elements';
 import AppCss from '../../../CSS/AppCss';
@@ -13,7 +10,6 @@ export default function Modal_SearchInApp(props) {
   const [fullName, setFullName] = useState("");
   const { state: { searchedPlayers, myTeams }, SearchPlayer, AddPlayer, SetSearchPlayer, GetPlayers4Team } = useContext(TeamContext);
   const teamKey = props.teamKey;
-
 
   const SearchPlayers = () => {
     var firstName = "";
@@ -85,7 +81,6 @@ export default function Modal_SearchInApp(props) {
     >
       <SafeAreaView>
         <ScrollView>
-
           <View style={styles.centeredView}>
             <View style={[appCss.modal_View, { height: '100%', paddingBottom: 1 }, searchedPlayers.length == 0 ? { height: '92%' } : null]}>
               <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../../../assets/WallPaperWhite2.png')}>

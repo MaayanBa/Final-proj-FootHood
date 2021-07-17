@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { View, Dimensions, StyleSheet } from 'react-native'
 
@@ -16,8 +16,6 @@ const styles = StyleSheet.create({
 
 const GooglePlacesInput = (props) => {
     return (
-
-
             <View style={styles.googleInput} >
                 <GooglePlacesAutocomplete
                     placeholder='Search'
@@ -38,7 +36,6 @@ const GooglePlacesInput = (props) => {
                     debounce={300}
                 />
             </View >
-
     );
 };
 

@@ -1,6 +1,5 @@
 import { StyleSheet,Dimensions } from 'react-native';
 
-
 const { height } = Dimensions.get("screen");
 const height_logo = height * 0.4;
 

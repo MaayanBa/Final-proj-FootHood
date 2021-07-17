@@ -1,18 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
-import {
-    StyleSheet, TouchableOpacity, View, Text, Image, TextInput,
-    Modal, Dimensions, Pressable,ImageBackground
-} from 'react-native';
+import {View, Text,Modal,Pressable,ImageBackground} from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import AppCss from '../../../CSS/AppCss';
 import { getLocation, geocodeLocationByName } from '../../../Services/location-service';
 import { Context as CitiesContext } from '../../../Contexts/CitiesContext';
-import CitiesDropDown from './CitiesDropDown';
 import GooglePlacesInput from './GooglePlacesInput';
 
 export default function Modal_LocationMap(props) {
     const { state: { cities } } = useContext(CitiesContext);
-
     const [region, setRegion] = useState({
         latitude: 0,
         longitude: 0,
@@ -85,7 +80,6 @@ export default function Modal_LocationMap(props) {
                             onDragEnd={(e) => console.log(e.nativeEvent)/*setDestination({ destination: e.nativeEvent.coordinate })*/} />
                     </MapView>
                 </View>
-
                 <Pressable style={appCss.map_BtnClose} onPress={() => props.setModalVisible()}>
                     <Text style={appCss.inputLabel}>Close Map</Text>
                 </Pressable>
@@ -96,6 +90,3 @@ export default function Modal_LocationMap(props) {
 }
 
 const appCss = AppCss;
-const styles = StyleSheet.create({
-
-})

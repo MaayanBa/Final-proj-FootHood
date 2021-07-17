@@ -9,8 +9,6 @@ import AppCss from '../../CSS/AppCss';
 import { firebase } from '../../api/FireBase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-
 export default function MyTeams(props) {
     const { state: { myTeams }, GetTeamDetails } = useContext(TeamContext);
     const { state: { players } } = useContext(PlayerContext);
@@ -73,7 +71,7 @@ export default function MyTeams(props) {
                     {badge === 0 ? null :
                         <Badge
                             containerStyle={{ position: 'absolute', top: 0, left: 0 }}
-                            value={badge} //Need to count length of messages from DB
+                            value={badge} //Counts the length of messages from DB
                             status="error" />
                     }
                 </TouchableOpacity>

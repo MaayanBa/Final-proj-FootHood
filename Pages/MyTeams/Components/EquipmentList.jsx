@@ -1,12 +1,11 @@
-import React ,{useContext} from 'react'
+import React, { useContext } from 'react'
 import { View, Text } from 'react-native';
 import { Context as EquipmentContext } from '../../../Contexts/EquipmentContext';
 import { Context as PlayerContext } from '../../../Contexts/PlayerContext';
 import { Context as GameContext } from '../../../Contexts/GameContext';
 
-
 export default function EquipmentList() {
-    const { state: { gameEquipments }, GetItemsAssignForGame } = useContext(EquipmentContext);
+    const { state: { gameEquipments }, } = useContext(EquipmentContext);
     const { state: { playersPerGame } } = useContext(GameContext);
     const { state: { players } } = useContext(PlayerContext)
 
@@ -18,18 +17,14 @@ export default function EquipmentList() {
                 :
                 gameEquipments.map((g, key) => {
                     let player = playersPerGame.find(x => x.Email == g.EmailPlayer);
-                    // console.log("dan")
-                    // console.log(player)
                     if (player !== undefined) {
                         return <View key={key}>
                             <Text>
                                 {g.BringItems + "   -   " + player.FirstName + " " + player.LastName}
-                                {/* {g.BringItems} */}
                             </Text>
                         </View>
                     }
-                })
-            }
+                })}
         </View>
     )
 }

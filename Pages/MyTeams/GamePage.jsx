@@ -16,13 +16,11 @@ import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 import { Context as EquipmentContext } from '../../Contexts/EquipmentContext';
 import Modal_EditGame from './Components/Modal_EditGame';
 import NotificationActions from '../../Services/NotificationActions';
-import Modal_PlayerBringsEquipment from './Components/Modal_PlayerBringsEquipment';
 import Modal_Alert from '../Modal_Alert';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
 export default function GamePage(props) {
-  //index = GameKey || keyTeam = keyTeam
   const { index, keyTeam } = props.route.params;
   const [registered, setRegistered] = useState(false)
   const [isWaiting, setIsWaiting] = useState(false);
@@ -38,7 +36,6 @@ export default function GamePage(props) {
   const [alertText, setAlertText] = useState('');
 
   const gameDate = new Date(gamesList[index].GameDate);
-  // const gameDate = new Date(); //Need to enter here game date
   const oneDay = 60 * 60 * 24 * 1000 //This give us 24 hours parmeter
 
   const Alert=(message)=>{
@@ -133,23 +130,15 @@ export default function GamePage(props) {
             }
             <Text style={[appCss.inputLabel, { paddingBottom: 30 }]}>Game Date: {showDate(new Date(gamesList[index].GameDate))} </Text>
           </View>
-
-          {/* Join Requests */}
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             {myTeams[keyTeam].EmailManager !== user.Email ? null : <Modal_JoinRequests navigation={props.navigation} game={gamesList[index]} />}
-
-            {/* Waiting List */}
             {myTeams[keyTeam].EmailManager !== user.Email ? null : <Modal_WaitingList navigation={props.navigation} game={gamesList[index]} />}
           </View>
-          {/* Players Window Or Teams Cards*/}
           {(new Date() <= gameDate - oneDay) ?
             <Players_Window game={gamesList[index]} indexGame={index} keyTeam={keyTeam} />
             :
             <GameTeamsCard game={gamesList[index]} index={index} keyTeam={keyTeam} />}
-
-          {/* Equipment Window */}
           <Equipment_Window keyTeam={keyTeam} index={index} />
-
           <View style={{ paddingTop: 20 }}>
             {(new Date() <= gameDate - oneDay) ? <Text style={appCss.inputLabel}>Last Registration Date: {showDate(new Date(gamesList[index].LastRegistrationDate))}</Text> : null}
             <TouchableOpacity activeOpacity={0.8} onPress={() => (registered || isWaiting) ? LeaveGameFunction() : JoinGame()} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
@@ -157,16 +146,12 @@ export default function GamePage(props) {
               <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>{(registered || isWaiting) ? "Leave" : "Join"}</Text>
               <Image source={require('../../assets/ball.png')} resizeMode="contain" style={styles.imgBall} />
             </TouchableOpacity>
-            {/* <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('RateGame', { index, keyTeam })} style={[appCss.btnTouch, styles.btnTouch_Extra]}>
-              <Text style={[appCss.txtBtnTouch, { padding: 5 }]}>Test-GameRank</Text>
-            </TouchableOpacity> */}
           </View>
         </View>
       </ScrollView>
     </SafeAreaView >
   );
 }
-
 
 const appCss = AppCss;
 const styles = StyleSheet.create({
