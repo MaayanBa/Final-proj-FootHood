@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet, View, Text, Modal as ModalAlertAction, Pressable, ImageBackground } from 'react-native';
 import AppCss from '../CSS/AppCss';
 import { Context as AuthContext } from '../Contexts/AuthContext';

@@ -23,7 +23,7 @@ const GetListCities = dispatch => async () => {
         const data = await response.json(); // Here you have the data that you need
         dispatch({ type: 'GetListCities', payload: data });
     } catch (error) {
-        console.log(error)
+        console.log("error in GetListCities",error)
     }
 }
 

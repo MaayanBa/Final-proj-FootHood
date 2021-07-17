@@ -5,9 +5,6 @@ import { Context as GameContext } from '../Contexts/GameContext';
 import * as Notifications from 'expo-notifications';
 import pushNotifications from '../Services/pushNotifications'
 import { useRoute } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
 
 
 export default function NotificationActions({ navigation }) {
@@ -112,10 +109,6 @@ export default function NotificationActions({ navigation }) {
 
     useEffect(() => {
         if (notificationIncome) {
-            console.log(notification.T_SerialNum)
-            console.log(notification.name)
-
-            // console.log("TEAM-------------->" + myTeams.length)
             myTeams.map(async (team, i) => {
                 if (team.TeamSerialNum == notification.T_SerialNum) {
                     setKeyTeam(i)
@@ -144,7 +137,6 @@ export default function NotificationActions({ navigation }) {
                     setReceivedAction(false)
                 }
             })
-
         }
     }, [myTeams]);
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image as ImageBall, LogBox, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity,  LogBox } from 'react-native';
 import AppCss from '../../CSS/AppCss';
 import StopWatch from './StopWatch';
 import Timer from './Timer';
@@ -35,7 +35,6 @@ const appCss = AppCss;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // padding: 10,
         marginTop:10
     },
     buttons: {

@@ -6,13 +6,11 @@ import { Context as GameContext } from '../../Contexts/GameContext';
 import { Context as PlayerContext } from '../../Contexts/PlayerContext';
 import { Avatar } from 'react-native-elements';
 import Slider from '@react-native-community/slider';
-import { addPushTokenListener, setAutoServerRegistrationEnabledAsync } from 'expo-notifications';
 import Modal_Alert from '../Modal_Alert';
 
 export default function RateGame(props) {
     const { index, GameSerialNum, TeamSerialNum } = props.route.params;
     const { state: { token } } = useContext(AuthContext)
-    // const { state: { myTeams } } = useContext(TeamContext);
     const { state: { gamesList, playersPerGame }, GetPlayers4Game } = useContext(GameContext);
     const { state: { players }, RankPlayerAfterGame } = useContext(PlayerContext);
     const [playerChoosen, setPlayerChoosen] = useState("");
@@ -23,7 +21,6 @@ export default function RateGame(props) {
     const [sliderValue, setSliderValue] = useState(0)
     const [playersToRate, setPlayersToRate] = useState([])
     const [playerRateName, setPlayerRateName] = useState('')
-    const [rated, setRated] = useState([])
     const [alertModalVisible, setAlertModalVisible] = useState(false);
     const [alertText, setAlertText] = useState('');
 
@@ -36,11 +33,11 @@ export default function RateGame(props) {
         setPlayersToRate(newArr)
         setPlayersToRate([newArr[0], newArr[1], newArr[2]])
 
-        if (newArr[0] !== undefined) 
+        if (newArr[0] !== undefined)
             setPlayersToRate([newArr[0]])
-        if (newArr[1] !== undefined) 
+        if (newArr[1] !== undefined)
             setPlayersToRate([...playersToRate, newArr[1]])
-        if (newArr[2] !== undefined) 
+        if (newArr[2] !== undefined)
             setPlayersToRate([...playersToRate, newArr[2]])
     }, [props.navigation]);
 
@@ -53,10 +50,6 @@ export default function RateGame(props) {
         else if (selectRate == "Power")
             setPowerRate(sliderValue)
     }
-
-    const showDate = (date) => {
-        return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;//Builds up togther the date and time
-    };
 
     const shuffle = (array) => {
         var currentIndex = array.length, randomIndex;
@@ -72,7 +65,6 @@ export default function RateGame(props) {
             [array[currentIndex], array[randomIndex]] = [
                 array[randomIndex], array[currentIndex]];
         }
-
         return array;
     }
 
@@ -82,7 +74,6 @@ export default function RateGame(props) {
     }
 
     const Finish = () => {
-
         if (powerRate > 0 && defenceRate > 0 && attackRate > 0) {
             if (powerRate === 100 && defenceRate === 100 && attackRate === 100) {
                 Alert("No one is perfect except Messi and Ronaldo =)\nPlease rate more detailed the values")
@@ -103,16 +94,6 @@ export default function RateGame(props) {
         else
             Alert("Please fill in all types of rank")
     }
-
-    // const playerToRateView = playersToRate.map((p, key) => {
-    //     return <View key={key} style={playerChoosen == p.Email ? { padding: 20 } : { padding: 20, opacity: 0.5 }}>
-    //         <TouchableOpacity activeOpacity={0.8} onPress={() => SetPlayer(p)}>
-    //             <Avatar size="large" rounded source={{ uri: p.PlayerPicture }} />
-    //             <Text style={[appCss.inputLabel, { alignSelf: 'center', paddingTop: 20 }]}>{p.FirstName}</Text>
-    //             <Text style={[appCss.inputLabel, { alignSelf: 'center' }]}>{p.LastName}</Text>
-    //         </TouchableOpacity>
-    //     </View>
-    // })
 
     const Alert = (message) => {
         setAlertText(message)

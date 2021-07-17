@@ -1,6 +1,5 @@
 import CreateDataContext from './createDataContext';
 import GameApi from '../api/Game';
-import { requestPermission } from 'react-native-contacts';
 
 const gameReducer = (state, action) => {
     switch (action.type) {
@@ -56,36 +55,24 @@ const GetGamesList = dispatch => async (teamSerialNum) => {
         const response = await GameApi.post('/GamesList', { TeamSerialNum: teamSerialNum });
         dispatch({ type: 'GetGamesList', payload: response.data })
     } catch (err) {
-        console.log("in error GetGameList " + err.data)
-        console.log(err)
+        console.log("in error GetGameList " , err.data)
     }
 }
+
 const CreatNewGame = dispatch => async (game, equipments) => {
     try {
-        const response = await GameApi.post('/CreateNewGame', { game, equipments });
-        console.log(response.data);
+        await GameApi.post('/CreateNewGame', { game, equipments });
     } catch (err) {
-        console.log("in error Create New Game")
-        console.log(err)
+        console.log("in error Create New Game",err)
     }
 }
 
 const RegisterGame = dispatch => async (addPlayer2Game, needsToWait) => {
     try {
         console.log(addPlayer2Game)
-        const response = await GameApi.post('/RegisterGame', addPlayer2Game);
-
-        // if (needsToWait) {
-        //     alert("The Game Is Full! You Have Been Added To The Waiting List")
-        // }
-        // else {
-        //     response.data == "The Player Has already Registered The Game" ?
-        //         alert("The Player Has already Registered The Game")
-        //         :
-        //         alert("You have joined the game successfuly");
-        // }
+        await GameApi.post('/RegisterGame', addPlayer2Game);
     } catch (err) {
-        console.log("err in RegisterGame")
+        console.log("err in RegisterGame",err)
     }
 }
 

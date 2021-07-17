@@ -55,8 +55,6 @@ export default function TodaysGame() {
                                     <Text style={styles.detailText}><Image source={require('../../assets/Watch.png')} style={styles.ImageStyle} /> Time: {sliceTime(todaysGame.Game.GameTime)}</Text>
                                 </View>
                             </View>
-                            {/* {Math.round(Math.abs((new Date(todaysGame.Game.GameDate) - today) / oneDay))} */}
-                            {/* {new Date(todaysGame.Game.GameDate).toLocaleDateString() === new Date().toDateString() ? */}
                             {Math.round(Math.abs((new Date(todaysGame.Game.GameDate) - today) / oneDay)) <=1 ?
                                 <View>
                                     <View style={styles.border} />
