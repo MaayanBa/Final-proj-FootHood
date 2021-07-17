@@ -143,7 +143,7 @@ const setTeamPlayers = dispatch => async (team, players) => {
     try {
         let tempArr = [];
         team.PlayersList.map(p => {
-            console.log(p)
+            // console.log(p)
             let player = players.find(x => x.Email === p.EmailPlayer)
             if (player !== null)
                 tempArr.push(player);

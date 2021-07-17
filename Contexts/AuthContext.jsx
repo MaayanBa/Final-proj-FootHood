@@ -38,7 +38,6 @@ const authReducer = (state, action) => {
             return { ...state, token: action.payload }
         }
         case 'SetUserFromGoogle': {
-            console.log(action.payload)
             return { ...state, userFromGoogle: action.payload }
         }
         case 'signInFromGoogle': {
@@ -237,8 +236,6 @@ const ChangePersonalDetails = dispatch => async (player)=>{
         const response = await SettingsApi.post('/ChangePersonalDetails', player);
         let jsonValue = JSON.stringify(response.data);
         await AsyncStorage.setItem('token', jsonValue)
-        console.log("response . data === " + response.data);
-        console.log( response.data);
         dispatch({ type: 'ChangePersonalDetails', payload: response.data })
         alert("Details updated succesfuly ! \nEnjoy")
         
@@ -251,6 +248,7 @@ const ChangePersonalDetails = dispatch => async (player)=>{
 
 const StartTimer = dispatch => async ()=>{
     try {
+        // console.log("Start timer")
         await TimerApi.post('/StartTimer');
     } catch (error) {
         console.log("error in StartTimer")
