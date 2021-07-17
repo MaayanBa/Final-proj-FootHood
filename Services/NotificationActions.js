@@ -20,12 +20,12 @@ export default function NotificationActions({ navigation }) {
     const [receivedAction, setReceivedAction] = useState(false)
     const [responsedAction, setResponsedAction] = useState(false)
     const [alerts, setAlerts] = useState(enableNotifications)
+    const route = useRoute();
 
     useEffect(() => {
         setAlerts(enableNotifications)
     }, [enableNotifications])
 
-    const route = useRoute();
 
     Notifications.setNotificationHandler({
         handleNotification: async () => ({
@@ -44,8 +44,6 @@ export default function NotificationActions({ navigation }) {
 
         notificationListener.current = Notifications.addNotificationReceivedListener(not => {
             if (not.request.content.data.name === "message") {
-                // console.log("loadMessages" +loadMessages)
-                // loadMessages?LoadMessages(false) :LoadMessages(true); 
                 LoadMessages(not.request.content.data.CreatedAt)
                 console.log(not.request.content.data)
             }
@@ -54,7 +52,6 @@ export default function NotificationActions({ navigation }) {
             }
             else {
                 if (not.request.content.data.name == "RemoveFromTeam" && not.request.content.data.T_SerialNum === -1) {
-                    console.log(route.name)
                     GetTeamDetails(token.Email) 
                     switch (route.name) {
                         case "TeamPage":

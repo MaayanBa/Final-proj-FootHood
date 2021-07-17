@@ -46,7 +46,6 @@ export default function RateGame(props) {
                 }
             });
             setPlayersToRate(tempArr)
-            
         }
     }, [playersPerGame])
 

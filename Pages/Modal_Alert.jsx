@@ -1,8 +1,5 @@
-import React, { useState } from 'react'
-import {
-    StyleSheet, TouchableOpacity, View, Text, ScrollView,
-    Modal as ModalAlert, Pressable, ImageBackground
-} from 'react-native';
+import React from 'react'
+import { StyleSheet, View, Text, Modal as ModalAlert, Pressable, ImageBackground } from 'react-native';
 import AppCss from '../CSS/AppCss';
 
 export default function Modal_Alert(props) {
@@ -13,7 +10,7 @@ export default function Modal_Alert(props) {
             <View style={styles.centeredView}>
                 <View style={styles.modal_View}>
                     <ImageBackground style={{ width: '100%', height: '100%', }} imageStyle={{ borderRadius: 50 }} source={require('../assets/WallPaperWhite2.png')}>
-                    <Text style={[appCss.modal_Txt, { paddingTop: 35,color:'white',fontSize:30 }]}>Alert !</Text>
+                        <Text style={[appCss.modal_Txt, { paddingTop: 35, color: 'white', fontSize: 30 }]}>Alert !</Text>
                         <Text style={styles.modal_Txt}>
                             {props.text}
                         </Text>
@@ -49,11 +46,11 @@ const styles = StyleSheet.create({
     },
     modal_Txt: {
         padding: 20,
-        fontSize:16,
+        fontSize: 16,
         alignItems: 'center',
         textAlign: 'center',
         fontWeight: "bold",
-        color:'white'
+        color: 'white'
     },
     modal_Closebtn: {
         backgroundColor: "#2196F3",

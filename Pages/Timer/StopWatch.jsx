@@ -20,10 +20,6 @@ export default function StopWatch() {
             reset={resetStopwatch}
             // To reset
             options={options}
-          // Options for the styling
-          // getTime={(time) => {
-          //     console.log(time);
-          // }}
           />
         </View>
         <View style={styles.buttons}>
@@ -48,7 +44,6 @@ export default function StopWatch() {
         </View>
       </View>
       <ImageBall source={require('../../assets/ball.png')} style={appCss.ball_img} />
-
     </SafeAreaView>
   );
 };

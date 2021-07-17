@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, TextInput, TouchableOpacity, Image as ImageBall, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image as ImageBall } from 'react-native';
 import CountDown from 'react-native-countdown-component';
 import AppCss from '../../CSS/AppCss';
 import Modal_Alert from '../Modal_Alert';
 
-const appCss = AppCss;
 
 export default function Timer() {
     const [totalDuration, setTotalDuration] = useState("");
@@ -74,16 +73,15 @@ export default function Timer() {
                 </View>
             </View>
         </View>
-
     );
 };
 
+const appCss = AppCss;
 const styles = StyleSheet.create({
     watchStyle: {
         alignItems: 'center',
         flex: 1,
         marginTop: 10,
-        // justifyContent: 'center',
     },
     buttons: {
         flexDirection: 'row',
@@ -92,13 +90,11 @@ const styles = StyleSheet.create({
     input: {
         height: 56,
         fontSize: 22,
-        //margin: 12,
         marginTop: 20,
         borderWidth: 1,
         paddingRight: 43,
         width: 300,
         backgroundColor: '#D9D9D9',
         borderRadius: 20,
-        // padding:10
     }
 });

@@ -251,7 +251,7 @@ const ChangePersonalDetails = dispatch => async (player)=>{
 
 const StartTimer = dispatch => async ()=>{
     try {
-        await TimerApi.get('/StartTimer');
+        await TimerApi.post('/StartTimer');
     } catch (error) {
         console.log("error in StartTimer")
     }
