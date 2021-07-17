@@ -17,14 +17,14 @@ export default function Watches(props) {
         <View style={styles.container}>
             <View style={styles.buttons}>
                 <TouchableOpacity activeOpacity={0.8} onPress={() => setStopWatch(true)} style={[appCss.btnTouch, { width: "45%" }, stopwatch ? { backgroundColor: 'rgba(100,100, 100, 0.8)' } : null]}>
-                    <Text style={appCss.txtBtnTouch}>StopWatch</Text>
+                    <Text style={appCss.txtBtnTouch}>Timer</Text>
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.8} onPress={() => setStopWatch(false)} style={[appCss.btnTouch, { width: "45%" }, stopwatch ? null : { backgroundColor: 'rgba(100,100, 100, 0.8)' }]}>
-                    <Text style={appCss.txtBtnTouch}>Timer</Text>
+                    <Text style={appCss.txtBtnTouch}>StopWatch</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.container}>
-                {stopwatch == true ? <StopWatch /> : <Timer />}
+                {stopwatch == true ?  <Timer />: <StopWatch />}
             </View>
             <TextTickerRow navigation={props.navigation} />
         </View>

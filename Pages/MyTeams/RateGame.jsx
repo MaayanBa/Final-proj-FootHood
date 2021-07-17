@@ -10,7 +10,7 @@ import { addPushTokenListener, setAutoServerRegistrationEnabledAsync } from 'exp
 import Modal_Alert from '../Modal_Alert';
 
 export default function RateGame(props) {
-    const { index, GameSerialNum,TeamSerialNum } = props.route.params;
+    const { index, GameSerialNum, TeamSerialNum } = props.route.params;
     const { state: { token } } = useContext(AuthContext)
     // const { state: { myTeams } } = useContext(TeamContext);
     const { state: { gamesList, playersPerGame }, GetPlayers4Game } = useContext(GameContext);
@@ -28,15 +28,20 @@ export default function RateGame(props) {
     const [alertText, setAlertText] = useState('');
 
     useEffect(() => {
+        console.log(GameSerialNum)
+        setPlayersToRate([])
         GetPlayers4Game(GameSerialNum, players);
         var arr = shuffle(playersPerGame)
-        const newArr = arr.filter((item) => item.Email !== token.Email);
-        if(newArr[0]!== undefined)
+        let newArr = arr.filter((item) => item.Email !== token.Email);
+        setPlayersToRate(newArr)
+        setPlayersToRate([newArr[0], newArr[1], newArr[2]])
+
+        if (newArr[0] !== undefined) 
             setPlayersToRate([newArr[0]])
-        if(newArr[1]!== undefined)
-            setPlayersToRate([...newArr,newArr[1]])
-        if(newArr[2]!== undefined)
-            setPlayersToRate([...newArr,newArr[2]])
+        if (newArr[1] !== undefined) 
+            setPlayersToRate([...playersToRate, newArr[1]])
+        if (newArr[2] !== undefined) 
+            setPlayersToRate([...playersToRate, newArr[2]])
     }, [props.navigation]);
 
 
@@ -99,15 +104,15 @@ export default function RateGame(props) {
             Alert("Please fill in all types of rank")
     }
 
-    const playerToRateView = playersToRate.map((p, key) => {
-        return <View key={key} style={playerChoosen == p.Email ? { padding: 20 } : { padding: 20, opacity: 0.5 }}>
-            <TouchableOpacity activeOpacity={0.8} onPress={() => SetPlayer(p)}>
-                <Avatar size="large" rounded source={{ uri: p.PlayerPicture }} />
-                <Text style={[appCss.inputLabel, { alignSelf: 'center', paddingTop: 20 }]}>{p.FirstName}</Text>
-                <Text style={[appCss.inputLabel, { alignSelf: 'center' }]}>{p.LastName}</Text>
-            </TouchableOpacity>
-        </View>
-    })
+    // const playerToRateView = playersToRate.map((p, key) => {
+    //     return <View key={key} style={playerChoosen == p.Email ? { padding: 20 } : { padding: 20, opacity: 0.5 }}>
+    //         <TouchableOpacity activeOpacity={0.8} onPress={() => SetPlayer(p)}>
+    //             <Avatar size="large" rounded source={{ uri: p.PlayerPicture }} />
+    //             <Text style={[appCss.inputLabel, { alignSelf: 'center', paddingTop: 20 }]}>{p.FirstName}</Text>
+    //             <Text style={[appCss.inputLabel, { alignSelf: 'center' }]}>{p.LastName}</Text>
+    //         </TouchableOpacity>
+    //     </View>
+    // })
 
     const Alert = (message) => {
         setAlertText(message)
@@ -121,7 +126,17 @@ export default function RateGame(props) {
             {/* <Text style={[appCss.inputLabel, { marginTop: 30 }]}>Game Date: {showDate(new Date(gamesList[index].GameDate))}</Text> */}
             <Text style={[appCss.inputLabel, { marginTop: 30, marginBottom: 30 }]}>Choose Player To Rank:</Text>
             <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                {playersToRate.length == 0 ? <Text style={[appCss.noResultsTxt, { textAlign: 'center' }]}>You Have Rated All The Players!{"\n"}See You Next Game!</Text> : playerToRateView}
+                {playersToRate.length == 0 ? <Text style={[appCss.noResultsTxt, { textAlign: 'center' }]}>You Have Rated All The Players!{"\n"}See You Next Game!</Text>
+                    : null}
+                {playersToRate.map((p, key) => {
+                    return <View key={key} style={playerChoosen == p.Email ? { padding: 20 } : { padding: 20, opacity: 0.5 }}>
+                        <TouchableOpacity activeOpacity={0.8} onPress={() => SetPlayer(p)}>
+                            <Avatar size="large" rounded source={{ uri: p.PlayerPicture }} />
+                            <Text style={[appCss.inputLabel, { alignSelf: 'center', paddingTop: 20 }]}>{p.FirstName}</Text>
+                            <Text style={[appCss.inputLabel, { alignSelf: 'center' }]}>{p.LastName}</Text>
+                        </TouchableOpacity>
+                    </View>
+                })}
             </View>
             {playerChoosen == "" ? null :
                 <View>
@@ -164,7 +179,7 @@ export default function RateGame(props) {
             }
             {playersToRate.length == 0 ? <TouchableOpacity style={[appCss.btnTouch, { width: '40%', }]} onPress={() => props.navigation.navigate('MyTeams')}>
                 <Text style={appCss.txtBtnTouch}>Go Back</Text>
-            </TouchableOpacity>:null}
+            </TouchableOpacity> : null}
         </View>
     );
 }

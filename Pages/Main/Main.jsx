@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, ActivityIndicator,LogBox } from 'react-native';
 import Header from './Header';
 import News from './News';
 import TodaysGame from './TodaysGame';
@@ -11,6 +11,10 @@ import * as Notifications from 'expo-notifications';
 import NotificationActions from '../../Services/NotificationActions';
 import { Dimensions } from 'react-native';
 import Modal_Alert from '../Modal_Alert';
+
+LogBox.ignoreLogs([
+    "Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.",
+]);
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({

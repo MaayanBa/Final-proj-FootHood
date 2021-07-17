@@ -106,6 +106,7 @@ const GetPlayers4Game = dispatch => async (gameSerialNum, players) => {
         const response = await GameApi.post('/GetPlayers4Game', { gameSerialNum });
         let emailsPlayers = response.data;
         let allPlayers4Game = [];
+        console.log("EmailPlayersss", emailsPlayers)
 
         if (emailsPlayers.length > 0) {
             console.log("GetPlayers4Game")
