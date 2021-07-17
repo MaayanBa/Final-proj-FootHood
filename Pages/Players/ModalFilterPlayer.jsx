@@ -1,5 +1,5 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Dimensions, Modal, Pressable, ImageBackground, SafeAreaView, ScrollView, TouchableOpacity, Image } from 'react-native';
+import React, { useState} from 'react';
+import { View, Text, StyleSheet, TextInput, Modal, Pressable, ImageBackground, TouchableOpacity } from 'react-native';
 import AppCss from '../../CSS/AppCss';
 import { ListItem } from 'react-native-elements';
 import { RadioButton } from 'react-native-paper';
@@ -41,7 +41,6 @@ export default function ModalFilterPlayer(props) {
     const Filter = () => {
         var distance;
         console.log(typeof (radius) + "HERE")
-        // parseInt(radius) <= 40 && parseInt(radius) > 0
             distance = parseInt(radius)
             console.log(typeof (radius))
             if (distance <= 40 && distance > 0) {
